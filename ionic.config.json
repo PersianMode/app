@@ -1,0 +1,8 @@
+{
+  "name": "persianmode-app",
+  "app_id": "8fdf3dd2",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
