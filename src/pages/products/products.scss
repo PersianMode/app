@@ -1,8 +1,14 @@
-* {
-  direction: rtl;
+.product-segment {
+  padding-left: 10px;
+  padding-right: 10px;
+
+  ion-segment-button {
+    //padding-left: 5px;
+  }
 }
 
 .products-page {
+  direction: rtl;
 
   ion-card {
     position: relative;

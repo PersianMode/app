@@ -3,7 +3,7 @@
     <ion-title>محصولات</ion-title>
   </ion-navbar>
   <ion-toolbar>
-    <ion-segment [(ngModel)]="currentType" color="dark">
+    <ion-segment [(ngModel)]="currentType" color="dark" class="product-segment">
       <ion-segment-button *ngFor="let type of types" value="{{type.name_en}}">
         {{type.name_fa}}
       </ion-segment-button>
