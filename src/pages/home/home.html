@@ -1,17 +1,30 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-align="center">Home</ion-title>
+    <ion-title>Feed</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2 class="page-home1">Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<!--<ion-content padding>-->
+  <!--<ion-card *ngFor="let feed of feeds">-->
+    <!--<img src="{{feed.url}}"/>-->
+    <!--<ion-card-content>-->
+      <!--<ion-card-title>-->
+        <!--Nine Inch Nails Live-->
+      <!--</ion-card-title>-->
+      <!--<p>-->
+        <!--The most popular industrial group ever, and largely-->
+        <!--responsible for bringing the music to a mass audience.-->
+      <!--</p>-->
+    <!--</ion-card-content>-->
+  <!--</ion-card>-->
+<!--</ion-content>-->
+
+<ion-content class="card-background-page">
+
+  <ion-card *ngFor="let feed of feeds">
+    <img src="{{feed.url}}"/>
+    <div class="card-title" [ngStyle]="setTitleStyles(feed)">{{feed.title}}</div>
+    <div class="card-subtitle" [ngStyle]="setSubtitleStyles(feed)">{{feed.subtitle}}</div>
+  </ion-card>
+
 </ion-content>

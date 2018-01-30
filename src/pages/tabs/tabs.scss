@@ -18,10 +18,21 @@
 @include makeIcon(my-inbox, url(../../assets/imgs/my-inbox.png))
 @include makeIcon(my-profile, url(../../assets/imgs/my-profile.png))
 
+@include makeIcon(my-events, url(../../assets/imgs/events.png))
+@include makeIcon(my-orders, url(../../assets/imgs/orders.png))
+@include makeIcon(my-pass, url(../../assets/imgs/pass.png))
+@include makeIcon(my-settings, url(../../assets/imgs/settings.png))
 
-.tabs-md  .tab-button[aria-selected=true] {
+.tabs-md .tab-button[aria-selected=true] {
   background: #c2c2c2;
 }
+
+.tabs-ios .tab-button[aria-selected=true] {
+  background: #c2c2c2;
+}
+
+
+
 
 
 //.tabs-md[tabsHighlight=“true”] .tab-highlight {
