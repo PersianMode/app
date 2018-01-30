@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Profile</ion-title>
+    <ion-title>پروفایل</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -21,29 +21,28 @@
         <div class="profile-picture big-profile-picture">
           <img src="{{user.imageUrl}}">
         </div>
-        <div class="profile-name dark">{{user.fullName | uppercase}}</div>
-        <!--<div class="profile-info">{{user.info}}</div>-->
+        <div class="profile-name dark">{{user.fullName}}</div>
         <button ion-button full color="light" class="edit-profile-button">
-          EDIT PROFILE
+          ویرایش پروفایل
         </button>
       </ion-item>
       <ion-item class="profile-item">
         <ion-row style="width: 100%">
           <ion-col width-25>
             <ion-icon name="my-orders"></ion-icon><br>
-            Orders
+            سفارشات
           </ion-col>
           <ion-col width-25 class="left-border">
             <ion-icon name="my-pass"></ion-icon><br>
-            Pass
+            کارت
           </ion-col>
           <ion-col width-25 class="left-border">
             <ion-icon name="my-events"></ion-icon><br>
-            Events
+            رویدادها
           </ion-col>
           <ion-col width-25 class="left-border">
             <ion-icon name="my-settings"></ion-icon><br>
-            Settings
+            تنظیمات
           </ion-col>
         </ion-row>
       </ion-item>

@@ -1,0 +1,39 @@
+.inbox-page {
+
+  ion-card {
+    direction: rtl;
+    position: relative;
+    margin: 0 0 2px 0;
+    width: 100%;
+  }
+
+  ion-card .inbox-image {
+    width: 30%;
+    max-height: 128px;
+  }
+
+  .card-title {
+    position: absolute;
+    top: 26%;
+    right: 35%;
+    font-size: 1.0em;
+    width: 100%;
+    font-weight: bold;
+  }
+
+  .card-subtitle {
+    font-size: 1.0em;
+    position: absolute;
+    top: 48%;
+    right: 35%;
+    width: 100%;
+  }
+
+  .card-date {
+    font-size: 1.0em;
+    position: absolute;
+    top: 70%;
+    right: 35%;
+    width: 100%;
+  }
+}

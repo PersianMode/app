@@ -1,9 +1,62 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Bag</ion-title>
+    <ion-title>کیف</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h1>Bag Page Works!</h1>
+<ion-content padding class="bag-page">
+  <!--<div class="list card">-->
+  <ion-item>
+    {{products.length}} عدد
+  </ion-item>
+  <ion-item>
+    <ion-row (click)="onClickedOnPromoCode()">
+      <ion-col>
+        اگر کد تخفیف دارید، اینجا وارد کنید (اختیاری)
+      </ion-col>
+      <ion-col text-left>
+        <ion-icon name="{{isPromoCodeShown? 'arrow-dropdown': 'arrow-dropup'}}"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+  <ion-item>
+    <ion-row>
+      <ion-col text-right>
+        جمع
+      </ion-col>
+      <ion-col text-left>
+{{getSubtotalCost()}} تومان
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-right>
+        هزینه ارسال
+      </ion-col>
+      <ion-col text-left>
+{{shippingCost}} تومان
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-right>
+        مالیات
+      </ion-col>
+      <ion-col text-left>
+{{estimatedTax}} تومان
+      </ion-col>
+    </ion-row>
+  </ion-item>
+  <ion-item>
+    <ion-row>
+      <ion-col text-right>
+        جمع کل
+      </ion-col>
+      <ion-col text-left>
+        {{getTotalCost()}}
+      </ion-col>
+    </ion-row>
+  </ion-item>
+  <ion-item>
+    <button ion-button full color="dark" large>تسویه حساب</button>
+  </ion-item>
+  <!--</div>-->
 </ion-content>

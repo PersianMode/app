@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Feed</ion-title>
+    <ion-title>خوراک</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -25,6 +25,8 @@
     <img src="{{feed.url}}"/>
     <div class="card-title" [ngStyle]="setTitleStyles(feed)">{{feed.title}}</div>
     <div class="card-subtitle" [ngStyle]="setSubtitleStyles(feed)">{{feed.subtitle}}</div>
+    <button ion-button outline color="light" class="card-button">خرید</button>
+    <ion-icon name="share-alt" class="card-icon"></ion-icon>
   </ion-card>
 
 </ion-content>

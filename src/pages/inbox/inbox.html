@@ -1,9 +1,14 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Inbox</ion-title>
+    <ion-title>صندوق</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h1>Inbox Page Done!</h1>
+<ion-content class="inbox-page">
+  <ion-card *ngFor="let message of messages">
+    <img class="inbox-image" src="{{message.imageUrl}}" alt="">
+    <div class="card-title">{{message.title}}</div>
+    <div class="card-subtitle">{{message.subtitle}}</div>
+    <div class="card-date">{{message.date | date:"MMM d, y - h:mm a"}}</div>
+  </ion-card>
 </ion-content>

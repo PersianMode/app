@@ -21,6 +21,7 @@ interface Feed {
     hor: Hor, //[top, center, bottom] -> title[2, 36, 75] & subtitle[18, 52, 91]
     ver: Ver  //[left, center, right] -> title[l2, , r2] & subtitle[l2, , r2]
   };
+  collection: string;
 }
 
 @Component({
@@ -31,28 +32,31 @@ export class HomePage {
   private feeds: Feed[] = [
     {
       url: 'https://metrouk2.files.wordpress.com/2018/01/911285518.jpg?w=748&h=498&crop=1',
-      title: 'Roger Federer',
-      subtitle: 'He\'s won all the matches!',
+      title: 'راجر فدرر',
+      subtitle: 'او تمام مسابقات را برده است',
       position: {
         hor: Hor.top,
         ver: Ver.center
-      }
+      },
+      collection: 'تنیس'
     }, {
-      url: 'https://metrouk2.files.wordpress.com/2018/01/911285518.jpg?w=748&h=498&crop=1',
-      title: 'Roger Federerrrrrrrrr',
-      subtitle: 'He\'s won all the matches!',
+      url: 'http://www.psdgraphics.com/file/orange-light-burst.jpg',
+      title: 'بدمینتون کار حرفه ای',
+      subtitle: 'بیست و یک برد متوالی',
       position: {
         hor: Hor.center,
         ver: Ver.right
-      }
+      },
+      collection: 'بدمینتون'
     }, {
       url: 'https://metrouk2.files.wordpress.com/2018/01/911285518.jpg',
-      title: 'Roger Federer',
-      subtitle: 'He\'s won all the matches!',
+      title: 'رونالدو',
+      subtitle: 'بازیکن سال',
       position: {
         hor: Hor.bottom,
         ver: Ver.left
-      }
+      },
+      collection: 'فوتبال'
     }
   ];
 

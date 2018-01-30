@@ -1,3 +1,8 @@
+ion-header {
+  direction: rtl;
+}
+
+
 @mixin makeIcon($arg, $val) {
   .ion-ios-#{$arg}:before ,
   .ion-ios-#{$arg}-circle:before ,

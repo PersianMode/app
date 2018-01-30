@@ -14,7 +14,7 @@ interface User {
 })
 export class ProfilePage {
   user: User = {
-    fullName: 'Iman Sahebi',
+    fullName: 'ایمان صاحبی',
     username: 'imans77',
     imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Vodafone_Logo_Speechmark.png/240px-Vodafone_Logo_Speechmark.png'
   };
