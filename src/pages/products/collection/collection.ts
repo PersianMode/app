@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, ViewController} from 'ionic-angular';
 import { Type, Entry } from "../products";
 
 export interface News {
@@ -7,6 +7,13 @@ export interface News {
   description: string;
   linkText: string;
   linkUrl: string;
+}
+
+export interface Product {
+  imageUrl: string;
+  name: string;
+  tags: string[];
+  cost: number;
 }
 
 @Component({
@@ -17,8 +24,7 @@ export class CollectionPage {
   currentType: Type;
   currentEntry: Entry;
 
-  news: News[] = [
-    {
+  news: News[] = [{
       title: 'تخفیف ۲۵٪',
       description: 'تا تاریخ ۱۳۹۶/۱۱/۳۰ از تخفیف‌های ویژه ما بهره‌مند شوید',
       linkText: 'هم‌اکنون خرید کنید',
@@ -33,12 +39,47 @@ export class CollectionPage {
       description: 'تغییر الهام‌بخش در قدرت ورزش',
       linkText: 'دیدن لینک',
       linkUrl: ''
-    }
-  ]
+    }];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  products: Product[] = [{
+    imageUrl: '../assets/imgs/shoeSample.png',
+    name: 'علی',
+    tags: ['مردانه', 'ورزشی'],
+    cost: 120
+  }, {
+    imageUrl: '../assets/imgs/shoeSample.png',
+    name: 'محسن',
+    tags: ['مردانه', 'ورزشی'],
+    cost: 150
+  }, {
+    imageUrl: '../assets/imgs/shoeSample.png',
+    name: 'ورزشی سوپرخفن',
+    tags: ['ورزشی', 'سوپرخفن'],
+    cost: 350
+  }];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
     this.currentType = this.navParams.get('type');
     this.currentEntry = this.navParams.get('entry');
+  }
+
+  ionViewWillEnter() {
+    this.viewCtrl.setBackButtonText('بازگشت');
+  }
+
+  getSeparatedRowProducts(s = 2) {
+    let total = [];
+    let chunk = [];
+    let i;
+    for(i = 0; i < this.products.length; i++) {
+      chunk.push(this.products[i]);
+      if(i % s == s-1 && i != 0) {
+        total.push(chunk);
+        chunk = [];
+      }
+    }
+    total.push(chunk);
+    return total;
   }
 
 }

@@ -25,8 +25,8 @@
     خرید از طریق برند
   </ion-item>
 
-  <ion-row *ngFor="let r of getSeparatedRowBrands(); let i = index;">
-    <ion-col *ngFor="let c of r;let i = index;" width-33>
+  <ion-row *ngFor="let r of getSeparatedRowBrands()">
+    <ion-col *ngFor="let c of r" width-33>
       <img src="{{c.imageUrl}}" alt="" class="brand-image">
     </ion-col>
   </ion-row>
