@@ -1,0 +1,29 @@
+.collection-page .collection-news-slider {
+  max-height: 50px;
+  border: 2px solid black;
+  background-color: black;
+  color: #fff;
+
+  font-family: 'iranyekan' !important;
+
+  .collection-news-slide {
+    direction: rtl;
+    line-height: 12px;
+    text-align: center;
+  }
+
+  div #news-text {
+    font-size: 0.6em;
+    font-weight: bold;
+
+  }
+  div #news-description {
+    font-size: 0.6em;
+    font-weight: normal;
+  }
+  div span a {
+    font-size: 0.5em;
+    font-style: italic;
+    font-weight: bold;
+  }
+}

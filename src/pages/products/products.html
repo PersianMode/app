@@ -14,7 +14,7 @@
 
   <div *ngFor="let type of types">
     <ion-list *ngIf="currentType == type.name_en">
-      <ion-card *ngFor="let entry of type.entries">
+      <ion-card *ngFor="let entry of type.entries" (click)="goToCollection(type, entry)">
         <img src="{{entry.imageUrl}}" alt="" class="card-image">
         <div class="card-title">{{entry.name}}</div>
       </ion-card>

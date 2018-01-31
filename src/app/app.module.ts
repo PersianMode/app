@@ -12,6 +12,7 @@ import {ProfilePage} from "../pages/profile/profile";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import {CollectionPage} from "../pages/products/collection/collection";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     BagPage,
     InboxPage,
     ProfilePage,
-    TabsPage
+    TabsPage,
+    CollectionPage
   ],
   imports: [
     BrowserModule,
@@ -35,7 +37,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     BagPage,
     InboxPage,
     ProfilePage,
-    TabsPage
+    TabsPage,
+    CollectionPage
   ],
   providers: [
     StatusBar,

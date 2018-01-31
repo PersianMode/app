@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{currentEntry.name}} {{currentType.name_fa}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="collection-page">
+  <ion-slides class="collection-news-slider">
+    <ion-slide *ngFor="let new of news" class="collection-news-slide">
+      <div>
+        <span id="news-title">{{new.title}}</span>
+        <span id="news-description">{{new.description}}</span>
+        <span><a href="{{new.linkUrl}}">{{new.linkText}}</a></span>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+
+</ion-content>
