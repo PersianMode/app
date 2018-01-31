@@ -6,13 +6,6 @@ import { BagPage } from "../bag/bag";
 import { InboxPage } from '../inbox/inbox';
 import {ProfilePage} from '../profile/profile';
 
-/*TODO s:
-  -> padding from right texts in the feed
-  -> color is given for the texts in the feed
-  -> padding from left in segment bar iOS
-  -> fonts
-*/
-
 @Component({
   templateUrl: 'tabs.html',
 })
