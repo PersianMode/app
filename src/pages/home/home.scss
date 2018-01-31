@@ -2,7 +2,7 @@
 
   ion-card {
     position: relative;
-    text-align: center; //left for left, center for center, right for right
+    text-align: center;
     margin: 0 0 2px 0;
     width: 100%;
     max-height: 256px;
@@ -14,28 +14,19 @@
 
   .card-title {
     position: absolute;
-    top: 36%; //2% for top, 36% for center, 75% for bottom
+    top: 36%;
     font-family: 'iranyekan';
     font-size: 1.8em;
     width: 100%;
     font-weight: bold;
     color: #fff;
-
-    //text-align: left;
-    //left: 2%;
-
-    //text-align: center;
-
-    //text-align: right;
-    //right: 20%;
-
   }
 
   .card-subtitle {
     font-family: 'iranyekan';
     font-size: 0.8em;
     position: absolute;
-    top: 90%; //18% for top, 52% for center, %90 for bottom
+    top: 52%;
     width: 100%;
     color: #fff;
   }

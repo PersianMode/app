@@ -18,7 +18,7 @@ interface Feed {
   title: string;
   subtitle: string;
   position: {
-    hor: Hor, //[top, center, bottom] -> title[2, 36, 75] & subtitle[18, 52, 91]
+    hor: Hor, //[top, center, bottom] -> title[2, 36, 70] & subtitle[18, 52, 86]
     ver: Ver  //[left, center, right] -> title[l2, , r2] & subtitle[l2, , r2]
   };
   textColor: string;
