@@ -84,9 +84,9 @@ export class ProductsPage {
   }
 
   getSeparatedRowBrands(s = 3) {
-    var total = [];
-    var chunk = [];
-    var i;
+    let total = [];
+    let chunk = [];
+    let i;
     for(i = 0; i < this.brands.length; i++) {
       chunk.push(this.brands[i]);
       if(i % s == s-1 && i != 0) {

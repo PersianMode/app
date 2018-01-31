@@ -39,7 +39,7 @@ export class HomePage {
         hor: Hor.top,
         ver: Ver.center
       },
-      textColor: 'blue',
+      textColor: 'cyan',
       collection: 'تنیس'
     }, {
       url: 'http://www.psdgraphics.com/file/orange-light-burst.jpg',
@@ -49,7 +49,7 @@ export class HomePage {
         hor: Hor.center,
         ver: Ver.right
       },
-      textColor: 'red',
+      textColor: 'black',
       collection: 'بدمینتون'
     }, {
       url: 'http://e0.365dm.com/17/12/16-9/20/skysports-cristiano-ronaldo-real-madrid_4176213.jpg?20171207091750',
