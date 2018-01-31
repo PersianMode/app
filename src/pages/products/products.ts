@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import {CollectionPage} from "./collection/collection";
 
 
-interface Entry {
+export interface Entry {
   name: string;
   imageUrl: string;
 }
 
-interface Type {
+export interface Type {
   name_en: string;
   name_fa: string;
   entries: Entry[];
@@ -76,11 +77,19 @@ export class ProductsPage {
     {imageUrl: 'https://www.underconsideration.com/brandnew/archives/converse_logo.png'},
     {imageUrl: 'https://s3.amazonaws.com/sneakerfreaker-cdn/image/2017/NIKELAB.jpg?mtime=20171016172748'}
   ];
-
   currentType: string = this.types[0].name_en;
+
+  // collectionPage: CollectionPage;
 
   constructor(public navCtrl: NavController) {
 
+  }
+
+  goToCollection(type: Type, entry: Entry) {
+    this.navCtrl.push(CollectionPage, {
+      type: type,
+      entry: entry
+    });
   }
 
   getSeparatedRowBrands(s = 3) {
