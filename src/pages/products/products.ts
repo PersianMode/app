@@ -35,6 +35,20 @@ export class ProductsPage {
     name: 'لوازم جانبی',
     imageUrl: 'https://cdn1.polaris.com/globalassets/pga/apparel/helmets--goggles/2867822.jpg?v=403d6039'
   }];
+  secondEntries: Entry[] = [{
+    name: 'ترند دوم',
+    imageUrl: 'https://i.pinimg.com/736x/4d/f6/a3/4df6a38b3aa59db5e1132868ac57c1e7--fashion-me-indie-fashion.jpg',
+  }, {
+    name: 'کفش دیگر',
+    imageUrl: 'https://smhttp-ssl-39255.nexcesscdn.net/wp-content/uploads/2013/07/Sanders-Shoes.jpg',
+  }, {
+    name: 'لباس های متنوع',
+    imageUrl: 'http://images.wisegeek.com/stack-of-colorful-wash-cloths.jpg',
+  }, {
+    name: 'لوازم جانبی',
+    imageUrl: 'https://cdn1.polaris.com/globalassets/pga/apparel/helmets--goggles/2867822.jpg?v=403d6039'
+  }];
+
 
   types: Type[] = [
     {
@@ -44,7 +58,7 @@ export class ProductsPage {
     }, {
       name_en: 'women',
       name_fa: 'زنانه',
-      entries: this.entries
+      entries: this.secondEntries
     }, {
       name_en: 'boys',
       name_fa: 'پسرانه',
@@ -52,7 +66,7 @@ export class ProductsPage {
     }, {
       name_en: 'girls',
       name_fa: 'دخترانه',
-      entries: this.entries
+      entries: this.secondEntries
     }
   ];
 

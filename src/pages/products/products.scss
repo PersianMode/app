@@ -1,14 +1,20 @@
 .product-segment {
-  padding-left: 10px;
-  padding-right: 10px;
+  //padding-left: 10px;
+  //padding-right: 10px;
+  padding: 5px;
+  //border: 10px solid gray;
 
-  ion-segment-button {
+  //ion-segment-button {
     //padding-left: 5px;
-  }
+    //margin: 20px;
+    //padding: 5px;
+    //border: 2px solid gray;
+  //}
 }
 
 .products-page {
   direction: rtl;
+  font-family: 'iranyekan';
 
   ion-card {
     position: relative;
@@ -19,7 +25,6 @@
   }
 
   .card-image {
-    //background-size: auto;
     max-height: 100%;
     max-width: 100%;
     height: 100%;
@@ -27,8 +32,29 @@
     object-fit: contain;
   }
 
+  ion-card:active {
+    opacity: 0.8;
+  }
+
   .brand-image {
-    max-width: 33%;
+    //max-width: 33%;
+    //width: 80%;
+    //left: 10%;
+    height: 80px;
+    padding: 10px;
+  }
+
+  .brand-image:active {
+    background-color: #c2c2c2;
+    opacity: 0.7;
+  }
+
+  .brand-image-left-border {
+    border-left: 1px solid gray;
+  }
+
+  .column-down-border {
+    border-bottom: 1px solid gray;
   }
 
   .card-title {

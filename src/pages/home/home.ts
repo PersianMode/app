@@ -21,6 +21,7 @@ interface Feed {
     hor: Hor, //[top, center, bottom] -> title[2, 36, 75] & subtitle[18, 52, 91]
     ver: Ver  //[left, center, right] -> title[l2, , r2] & subtitle[l2, , r2]
   };
+  textColor: string;
   collection: string;
 }
 
@@ -38,6 +39,7 @@ export class HomePage {
         hor: Hor.top,
         ver: Ver.center
       },
+      textColor: 'blue',
       collection: 'تنیس'
     }, {
       url: 'http://www.psdgraphics.com/file/orange-light-burst.jpg',
@@ -47,15 +49,17 @@ export class HomePage {
         hor: Hor.center,
         ver: Ver.right
       },
+      textColor: 'red',
       collection: 'بدمینتون'
     }, {
-      url: 'https://metrouk2.files.wordpress.com/2018/01/911285518.jpg',
+      url: 'http://e0.365dm.com/17/12/16-9/20/skysports-cristiano-ronaldo-real-madrid_4176213.jpg?20171207091750',
       title: 'رونالدو',
       subtitle: 'بازیکن سال',
       position: {
         hor: Hor.bottom,
         ver: Ver.left
       },
+      textColor: 'magenta',
       collection: 'فوتبال'
     }
   ];
@@ -71,11 +75,12 @@ export class HomePage {
     else if(feed.position.hor == Hor.center)
       styles['top'] = '36%';
     else if(feed.position.hor == Hor.bottom)
-      styles['top'] = '75%';
+      styles['top'] = '70%';
 
     if(feed.position.ver == Ver.left) {
       styles['text-align'] = 'left';
       styles['left'] = '2%';
+      styles['padding-left'] = '5px';
     }
     else if(feed.position.ver == Ver.center) {
       styles['text-align'] = 'center';
@@ -83,7 +88,9 @@ export class HomePage {
     else if(feed.position.ver == Ver.right) {
       styles['text-align'] = 'right';
       styles['right'] = '2%';
+      styles['padding-right'] = '5px';
     }
+    styles['color'] = feed.textColor;
 
     return styles;
   }
@@ -95,11 +102,12 @@ export class HomePage {
     else if(feed.position.hor == Hor.center)
       styles['top'] = '52%';
     else if(feed.position.hor == Hor.bottom)
-      styles['top'] = '91%';
+      styles['top'] = '86%';
 
     if(feed.position.ver == Ver.left) {
       styles['text-align'] = 'left';
       styles['left'] = '2%';
+      styles['padding-left'] = '5px';
     }
     else if(feed.position.ver == Ver.center) {
       styles['text-align'] = 'center';
@@ -107,7 +115,9 @@ export class HomePage {
     else if(feed.position.ver == Ver.right) {
       styles['text-align'] = 'right';
       styles['right'] = '2%';
+      styles['padding-right'] = '5px';
     }
+    styles['color'] = feed.textColor;
 
     return styles;
   }

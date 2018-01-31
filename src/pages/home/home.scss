@@ -5,12 +5,18 @@
     text-align: center; //left for left, center for center, right for right
     margin: 0 0 2px 0;
     width: 100%;
+    max-height: 256px;
+  }
+
+  ion-card div:active {
+    opacity: 0.8;
   }
 
   .card-title {
     position: absolute;
     top: 36%; //2% for top, 36% for center, 75% for bottom
-    font-size: 2.0em;
+    font-family: 'iranyekan';
+    font-size: 1.8em;
     width: 100%;
     font-weight: bold;
     color: #fff;
@@ -26,7 +32,8 @@
   }
 
   .card-subtitle {
-    font-size: 1.0em;
+    font-family: 'iranyekan';
+    font-size: 0.8em;
     position: absolute;
     top: 90%; //18% for top, 52% for center, %90 for bottom
     width: 100%;
@@ -34,6 +41,7 @@
   }
 
   .card-button {
+    font-family: 'iranyekan';
     position: absolute;
     bottom: 4%;
     right: 3%;
@@ -42,8 +50,12 @@
   .card-icon {
     position: absolute;
     bottom: 6%;
-    right: 21%;
-    font-size: 3em;
+    right: 24%;
+    font-size: 2.6em;
+  }
+
+  .card-icon:active {
+    opacity: 0.2;
   }
 
 }

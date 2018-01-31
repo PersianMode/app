@@ -22,9 +22,11 @@
 <ion-content class="card-background-page">
 
   <ion-card *ngFor="let feed of feeds">
-    <img src="{{feed.url}}"/>
-    <div class="card-title" [ngStyle]="setTitleStyles(feed)">{{feed.title}}</div>
-    <div class="card-subtitle" [ngStyle]="setSubtitleStyles(feed)">{{feed.subtitle}}</div>
+    <div>
+      <img src="{{feed.url}}"/>
+      <div class="card-title" [ngStyle]="setTitleStyles(feed)">{{feed.title}}</div>
+      <div class="card-subtitle" [ngStyle]="setSubtitleStyles(feed)">{{feed.subtitle}}</div>
+    </div>
     <button ion-button outline color="light" class="card-button">خرید</button>
     <ion-icon name="share-alt" class="card-icon"></ion-icon>
   </ion-card>

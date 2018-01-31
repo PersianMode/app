@@ -2,16 +2,16 @@
   <ion-navbar>
     <ion-title>محصولات</ion-title>
   </ion-navbar>
-  <ion-toolbar>
-    <ion-segment [(ngModel)]="currentType" color="dark" class="product-segment">
-      <ion-segment-button *ngFor="let type of types" value="{{type.name_en}}">
-        {{type.name_fa}}
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content class="products-page">
+  <ion-segment [(ngModel)]="currentType" color="dark" class="product-segment">
+    <ion-segment-button *ngFor="let type of types" value="{{type.name_en}}">
+      {{type.name_fa}}
+    </ion-segment-button>
+  </ion-segment>
+
+
   <div *ngFor="let type of types">
     <ion-list *ngIf="currentType == type.name_en">
       <ion-card *ngFor="let entry of type.entries">
@@ -25,9 +25,12 @@
     خرید از طریق برند
   </ion-item>
 
-  <ion-row *ngFor="let r of getSeparatedRowBrands()">
-    <ion-col *ngFor="let c of r" width-33>
+  <!--<ion-item>-->
+  <ion-row *ngFor="let r of getSeparatedRowBrands(); let i = index;">
+    <ion-col *ngFor="let c of r;let i = index;" width-33>
       <img src="{{c.imageUrl}}" alt="" class="brand-image">
     </ion-col>
   </ion-row>
+  <!--</ion-item>-->
 </ion-content>
+

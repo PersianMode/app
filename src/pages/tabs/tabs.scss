@@ -1,7 +1,7 @@
 ion-header {
   direction: rtl;
+  font-family: 'iranyekan';
 }
-
 
 @mixin makeIcon($arg, $val) {
   .ion-ios-#{$arg}:before ,
