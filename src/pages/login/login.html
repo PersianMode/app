@@ -1,0 +1,76 @@
+<ion-content style="direction: rtl" padding>
+  <div class="center">
+    <span class="persian-mode-center-logo">پرشین مد<span>ُ</span></span>
+  </div>
+  <div>
+    <div class="center">
+      <ion-label class="center">حساب کاربری شما برای</ion-label>
+    </div>
+    <div class="center">
+      <ion-label class="center">هر محصول NIKE</ion-label>
+    </div>
+  </div>
+  <div style="margin: 25px">
+    <form (ngSubmit)="login()" [formGroup]="loginForm">
+      <ion-grid>
+        <ion-row class="input-container">
+          <input class="input-field left-direction" type="email"
+                 formControlName="email" placeholder="ایمیل"
+                 (focus)="setSeen('email')"
+                 (blur)="curFocus = null"
+                 [ngClass]="(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email' ? 'input-error' : null"/>
+          <label *ngIf="(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email'" class="field-error">
+            لطفا آدرس ایمیل معتبری وارد کنید
+          </label>
+        </ion-row>
+        <ion-row class="input-container">
+          <input class="input-field left-direction" type="password"
+                 formControlName="password" placeholder="رمز عبور"
+                 (focus)="setSeen('password')"
+                 (blur)="curFocus = null"
+                 [ngClass]="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password' ? 'input-error' : null"/>
+          <label *ngIf="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password'" class="field-error">لطفا رمز عبور را وارد کنید</label>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <a class="clickable-link forgot-link">رمز خود را فراموش کرده اید؟</a>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <div class="policy-link input-container">
+            <label>با ورود به حساب کاربری،</label>
+            <label>
+              <a class="clickable-link">سیاست حفظ حریم خصوصی</a>
+            </label>
+            <label>و</label>
+            <label>
+              <a class="clickable-link">شرایط استفاده</a>
+            </label>
+            <label>پرشین مد را پذیرفته اید</label>
+          </div>
+        </ion-row>
+      </ion-grid>
+      <ion-grid class="button-area center">
+        <ion-row class="input-container">
+          <div class="btn-field login-btn div-btn inform-btn clickable-link" (click)="login()">
+            <label>ورود</label>
+          </div>
+        </ion-row>
+        <ion-row class="input-container">
+          <a href="api/login/google" class="google-btn-login clickable-link">
+            <div class="btn-field google-btn clickable-link">
+              <span>ورود با حساب گوگل</span>
+              <span style="float: left;">
+                <i class="fa fa-google" aria-hidden="true"></i>
+              </span>
+            </div>
+          </a>
+        </ion-row>
+      </ion-grid>
+    </form>
+    <div class="center join-link">
+      <label>عضو نیستید؟</label>
+      <a class="clickable-link" style="text-decoration: underline;" (click)="goToRegister()">به ما بپیوندید</a>
+    </div>
+  </div>
+</ion-content>

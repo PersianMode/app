@@ -14,3 +14,99 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+@font-face {
+  font-family: "nikeglyph";
+  src: url('../assets/fonts/OneNikeGlyphs.woff');
+}
+
+ion-label, label, ion-input, input, a {
+  font-family: iranyekan,sans-serif;
+}
+
+h1 {
+  font-family: irankharazmi;
+}
+
+.center {
+  text-align: center;
+}
+
+.persian-mode-center-logo {
+  font-family: nastaliq;
+  font-size: 30px;
+  display: inline-block;
+  color: black;
+  transition: all .3s ease-in;
+}
+
+.persian-mode-center-logo span {
+  top: -20px;
+  right: -16px;
+  position: relative;
+  font-size: 80%;
+}
+
+input {
+  border-radius: 5px;
+  border-color: #E5E5E5;
+  border-style: solid;
+  outline: none;
+  color: #8D8D8D;
+}
+
+.input-field {
+  padding: 5px 5px 5px 5px;
+  height: 30px;
+  width: 98%;
+  border-radius: 5px;
+}
+
+.left-direction {
+  direction: ltr;
+}
+
+.clickable-link {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.input-error {
+  border-color: red;
+  border-width: 1px;
+}
+
+.field-error {
+  font-size: 0.75em;
+  color: red;
+}
+
+.input-container {
+  margin: 5px;
+  width: 100%;
+}
+
+.btn-field {
+  padding: 5px 0px 5px 5px;
+  width: 100%;
+}
+
+.div-btn {
+  border: solid #E5E5E5 thin;
+  border-radius: 3px;
+  text-align: center;
+  color: #8D8D8D;
+}
+
+.inform-btn {
+  background-color: #000;
+  color: white;
+}
+
+.google-btn {
+  background: #df4a32;
+  color: white;
+  border-radius: 3px;
+  text-align: center;
+  vertical-align: middle;
+}
