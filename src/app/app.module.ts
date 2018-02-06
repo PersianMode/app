@@ -20,6 +20,7 @@ import {SocketService} from '../services/socket.service';
 import {IonicStorageModule} from '@ionic/storage';
 import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
+import {GooglePlus} from '@ionic-native/google-plus';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {HttpClientModule} from '@angular/common/http';
     AuthService,
     HttpService,
     SocketService,
+    GooglePlus,
   ]
 })
 export class AppModule {}

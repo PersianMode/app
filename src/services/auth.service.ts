@@ -49,9 +49,18 @@ export class AuthService {
   }
 
   logout() {
-    this.httpService.get('logout').subscribe(
-      (res) => this.removeUser(),
-      (err) => console.error('Cannot logout: ', err)
-    );
+    return new Promise((resolve, reject) => {
+      this.httpService.get('logout').subscribe(
+        (res) => {
+          this.removeUser();
+
+          resolve();
+        },
+        (err) => {
+          console.error('Cannot logout: ', err);
+
+          reject();
+        });
+    });
   }
 }

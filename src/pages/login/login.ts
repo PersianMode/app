@@ -4,6 +4,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RegisterPage} from '../register/register';
 import {AuthService} from '../../services/auth.service';
 import {TabsPage} from '../tabs/tabs';
+import {GooglePlus} from '@ionic-native/google-plus';
+
+declare var window: any;
 
 @Component({
   selector: 'page-login',
@@ -15,7 +18,7 @@ export class LoginPage implements OnInit{
   curFocus = null;
 
   constructor(private navCtrl: NavController, private authService: AuthService,
-              private toastCtrl: ToastController) {}
+              private toastCtrl: ToastController, private googlePlus: GooglePlus) {}
 
   ngOnInit() {
     this.initForm();
@@ -57,5 +60,21 @@ export class LoginPage implements OnInit{
 
   goToRegister() {
     this.navCtrl.push(RegisterPage);
+  }
+
+  googleLogin() {
+    this.googlePlus.login({
+      'webClientId': '636231560622-k5rqdq7bm2uh2hojcqnsarlrlmlh72i9.apps.googleusercontent.com',
+      'offline': false,
+    })
+      .then(res => {
+        this.toastCtrl.create({
+          message: res,
+          showCloseButton: true,
+        }).present();
+      })
+      .catch(err => {
+
+      });
   }
 }
