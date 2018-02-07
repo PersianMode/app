@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import {AuthService} from '../../services/auth.service';
+import {LoginPage} from '../login/login';
 
 interface User {
   fullName: string;
@@ -19,8 +21,17 @@ export class ProfilePage {
     imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Vodafone_Logo_Speechmark.png/240px-Vodafone_Logo_Speechmark.png'
   };
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, private authService: AuthService) {
 
   }
 
+  logout() {
+    this.authService.logout()
+      .then(res => {
+        this.navCtrl.setRoot(LoginPage);
+      })
+      .catch(err => {
+        console.error('Cannot logout: ', err);
+      });
+  }
 }

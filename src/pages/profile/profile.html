@@ -18,22 +18,35 @@
     <ion-item class="profile-item">
       <ion-row style="width: 100%">
         <ion-col width-25>
-          <ion-icon name="my-orders"></ion-icon><br>
+          <ion-icon name="my-orders"></ion-icon>
+          <br>
           سفارشات
         </ion-col>
         <ion-col width-25 class="left-border">
-          <ion-icon name="my-pass"></ion-icon><br>
+          <ion-icon name="my-pass"></ion-icon>
+          <br>
           کارت
         </ion-col>
         <ion-col width-25 class="left-border">
-          <ion-icon name="my-events"></ion-icon><br>
+          <ion-icon name="my-events"></ion-icon>
+          <br>
           رویدادها
         </ion-col>
         <ion-col width-25 class="left-border">
-          <ion-icon name="my-settings"></ion-icon><br>
+          <ion-icon name="my-settings"></ion-icon>
+          <br>
           تنظیمات
         </ion-col>
       </ion-row>
     </ion-item>
+  </div>
+  <div>
+    <ion-row>
+      <ion-col>
+        <div class="input-container">
+          <div class="inform-btn div-btn" (click)="logout()">خروج</div>
+        </div>
+      </ion-col>
+    </ion-row>
   </div>
 </ion-content>

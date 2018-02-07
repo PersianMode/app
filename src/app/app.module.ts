@@ -13,6 +13,14 @@ import {ProfilePage} from "../pages/profile/profile";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {CollectionPage} from "../pages/products/collection/collection";
+import {LoginPage} from '../pages/login/login';
+import {AuthService} from '../services/auth.service';
+import {HttpService} from '../services/http.service';
+import {SocketService} from '../services/socket.service';
+import {IonicStorageModule} from '@ionic/storage';
+import {RegisterPage} from '../pages/register/register';
+import {HttpClientModule} from '@angular/common/http';
+import {GooglePlus} from '@ionic-native/google-plus';
 
 @NgModule({
   declarations: [
@@ -23,11 +31,15 @@ import {CollectionPage} from "../pages/products/collection/collection";
     InboxPage,
     ProfilePage,
     TabsPage,
-    CollectionPage
+    CollectionPage,
+    LoginPage,
+    RegisterPage,
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    HttpClientModule,
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -38,12 +50,18 @@ import {CollectionPage} from "../pages/products/collection/collection";
     InboxPage,
     ProfilePage,
     TabsPage,
-    CollectionPage
+    CollectionPage,
+    LoginPage,
+    RegisterPage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AuthService,
+    HttpService,
+    SocketService,
+    GooglePlus,
   ]
 })
 export class AppModule {}
