@@ -1,6 +1,6 @@
-##The App Of Persian Mode
+## The App Of Persian Mode
 
-##Run
+# Run
 ```
 npm install
 ionic serve
