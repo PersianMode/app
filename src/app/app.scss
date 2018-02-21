@@ -56,10 +56,12 @@ input {
 }
 
 .input-field {
-  padding: 5px 5px 5px 5px;
-  height: 30px;
   width: 98%;
   border-radius: 5px;
+  border-color: #E5E5E5;
+  border-style: solid;
+  outline: none;
+  color: #8D8D8D;
 }
 
 .left-direction {
@@ -109,4 +111,8 @@ input {
   border-radius: 3px;
   text-align: center;
   vertical-align: middle;
+}
+
+.log-reg-main-content {
+  margin-top: 25px;
 }
