@@ -76,6 +76,7 @@ export class RegisterPage implements OnInit {
       ]],
       mobile_no: [null, [
         Validators.required,
+        Validators.pattern(/^((\+)?(\d{2}[-])?(\d{10}){1})?(\d{11}){0,1}?$/),
       ]],
     });
   }

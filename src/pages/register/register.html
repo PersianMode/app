@@ -40,12 +40,12 @@
                    placeholder="تلفن همراه" formControlName="mobile_no"
                    (focus)="setSeen('mobile_no')"
                    (blur)="curFocus = null"
-                   [ngClass]="registerForm.controls['mobile_no'].hasError('required') && seen['mobile_no'] && curFocus !== 'mobile_no' ? 'input-error' : null">
+                   [ngClass]="(registerForm.controls['mobile_no'].hasError('required') || registerForm.controls['mobile_no'].hasError('pattern')) && seen['mobile_no'] && curFocus !== 'mobile_no' ? 'input-error' : null">
         </ion-input>
       </ion-row>
       <ion-row
-        *ngIf="registerForm.controls['mobile_no'].hasError('required') && seen['mobile_no'] && curFocus !== 'mobile_no'">
-        <ion-label class="field-error">لطفا شماره تلفن همراه خود را وارد کنید</ion-label>
+        *ngIf="(registerForm.controls['mobile_no'].hasError('required') || registerForm.controls['mobile_no'].hasError('pattern')) && seen['mobile_no'] && curFocus !== 'mobile_no'">
+        <ion-label class="field-error">لطفا شماره تلفن همراه معتبری وارد کنید</ion-label>
       </ion-row>
       <ion-row class="input-container">
         <ion-input class="input-field left-direction" type="email"
