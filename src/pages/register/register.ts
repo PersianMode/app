@@ -89,13 +89,6 @@ export class RegisterPage implements OnInit {
     if (this.registerForm.valid && this.gender) {
       let data = {};
       Object.keys(this.registerForm.controls).forEach(el => data[el] = this.registerForm.controls[el].value);
-
-      console.log({
-        year: this.registerForm.controls['birthYear'].value,
-        month: this.registerForm.controls['birthMonth'].value,
-        day: this.registerForm.controls['birthDay'].value
-      });
-
       mom.locale('en');
       data['dob'] = mom({
         year: this.registerForm.controls['birthYear'].value,
