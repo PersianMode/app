@@ -20,11 +20,11 @@
   src: url('../assets/fonts/OneNikeGlyphs.woff');
 }
 
-ion-label, label, ion-input, input, a {
+ion-label, label, ion-input, input, a, div {
   font-family: iranyekan,sans-serif;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
   font-family: irankharazmi;
 }
 
@@ -66,6 +66,15 @@ input {
 
 .left-direction {
   direction: ltr;
+}
+
+.right-direction {
+  direction: rtl;
+}
+
+.right-direction input {
+  text-align: right;
+  padding-right: 5px;
 }
 
 .clickable-link {
@@ -115,4 +124,8 @@ input {
 
 .log-reg-main-content {
   margin-top: 25px;
+}
+
+.alert-radio-group {
+  direction: rtl;
 }

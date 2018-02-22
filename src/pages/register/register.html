@@ -36,15 +36,27 @@
   <form (ngSubmit)="register()" [formGroup]="registerForm">
     <ion-grid>
       <ion-row class="input-container">
-        <ion-input class="input-field left-direction" type="email"
-                   placeholder="ایمیل" formControlName="email"
-                   (focus)="setSeen('email')"
+        <ion-input class="input-field left-direction" type="text"
+                   placeholder="تلفن همراه" formControlName="mobile_no"
+                   (focus)="setSeen('mobile_no')"
                    (blur)="curFocus = null"
-                   [ngClass]="(registerForm.controls['email'].hasError('required') || registerForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email' ? 'input-error' : null">
+                   [ngClass]="registerForm.controls['mobile_no'].hasError('required') && seen['mobile_no'] && curFocus !== 'mobile_no' ? 'input-error' : null">
         </ion-input>
       </ion-row>
       <ion-row
-        *ngIf="(registerForm.controls['email'].hasError('required') || registerForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email'">
+        *ngIf="registerForm.controls['mobile_no'].hasError('required') && seen['mobile_no'] && curFocus !== 'mobile_no'">
+        <ion-label class="field-error">لطفا شماره تلفن همراه خود را وارد کنید</ion-label>
+      </ion-row>
+      <ion-row class="input-container">
+        <ion-input class="input-field left-direction" type="email"
+                   placeholder="ایمیل" formControlName="username"
+                   (focus)="setSeen('username')"
+                   (blur)="curFocus = null"
+                   [ngClass]="(registerForm.controls['username'].hasError('required') || registerForm.controls['username'].hasError('email')) && seen['username'] && curFocus !== 'username' ? 'input-error' : null">
+        </ion-input>
+      </ion-row>
+      <ion-row
+        *ngIf="(registerForm.controls['username'].hasError('required') || registerForm.controls['username'].hasError('email')) && seen['username'] && curFocus !== 'username'">
         <ion-label class="field-error">لطفا ایمیل معتبری وارد کنید</ion-label>
       </ion-row>
       <ion-row class="input-container">
@@ -59,7 +71,7 @@
         *ngIf="(registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('minlength') ) && seen['password'] && curFocus !== 'password'">
         <ion-label class="field-error">لطفا رمز عبور را وارد کنید (حداقل 8 کاراکتر)</ion-label>
       </ion-row>
-      <ion-row class="input-container">
+      <ion-row class="input-container right-direction">
         <ion-input class="input-field left-direction" type="text"
                    placeholder="نام" formControlName="first_name"
                    (focus)="setSeen('first_name')"
@@ -67,11 +79,11 @@
                    [ngClass]="registerForm.controls['first_name'].hasError('required') && seen['first_name'] && curFocus !== 'first_name' ? 'input-error' : null">
         </ion-input>
       </ion-row>
-      <ion-row
-        *ngIf="registerForm.controls['first_name'].hasError('required') && seen['first_name'] && curFocus !== 'first_name'">
+      <ion-row dir="rtl"
+               *ngIf="registerForm.controls['first_name'].hasError('required') && seen['first_name'] && curFocus !== 'first_name'">
         <ion-label class="field-error">لطفا نام را وارد کنید</ion-label>
       </ion-row>
-      <ion-row class="input-container">
+      <ion-row class="input-container right-direction">
         <ion-input class="input-field" type="text"
                    placeholder="نام خانوادگی" formControlName="surname"
                    (focus)="setSeen('surname')"
@@ -79,27 +91,71 @@
                    [ngClass]="registerForm.controls['surname'].hasError('required') && seen['surname'] && curFocus !== 'surname' ? 'input-error' : null">
         </ion-input>
       </ion-row>
-      <ion-row
-        *ngIf="registerForm.controls['surname'].hasError('required') && seen['surname'] && curFocus !== 'surname'">
+      <ion-row dir="rtl"
+               *ngIf="registerForm.controls['surname'].hasError('required') && seen['surname'] && curFocus !== 'surname'">
         <ion-label class="field-error">لطفا نام خانوادگی را وارد کنید</ion-label>
       </ion-row>
       <ion-row>
-        <ion-col col-3>
-          <ion-label>تاریخ تولد</ion-label>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label>تاریخ تولد</ion-label>
+              <ion-select okText="قبول" cancelText="لغو" formControlName="birthDay"
+                          *ngIf="registerForm.controls['birthMonth'].value" (focus)="setSeen('birthDay')"
+                          (blur)="curFocus = null">
+                <ion-option *ngFor="let day of days" [value]="day">{{day}}</ion-option>
+              </ion-select>
+              <ion-select okText="قبول" cancelText="لغو" formControlName="birthMonth" (ionChange)="monthChanged()"
+                          (focus)="setSeen('birthMonth')"
+                          (blur)="curFocus = null">
+                <ion-option *ngFor="let month of months" [value]="month.value">{{month.name}}</ion-option>
+              </ion-select>
+              <ion-select okText="قبول" cancelText="لغو" formControlName="birthYear" (ionChange)="monthChanged()"
+                          (focus)="setSeen('birthYear')"
+                          (blur)="curFocus = null">
+                <ion-option *ngFor="let year of years" [value]="year.value">{{year.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
         </ion-col>
-        <ion-col col-3>
-          <ion-input type="number">
-          </ion-input>
-        </ion-col>
-        <ion-col col-3>
-          <ion-input type="number">
-          </ion-input>
-        </ion-col>
-        <ion-col col-3>
-          <ion-input type="number">
-          </ion-input>
-        </ion-col>
+      </ion-row>
+      <ion-row style="margin-top: -30px;"
+               *ngIf="(registerForm.controls['birthDay'].hasError('required') && seen['birthDay'] && curFocus !== 'birthDay') ||
+               (registerForm.controls['birthMonth'].hasError('required') && seen['birthMonth'] && curFocus !== 'birthMonth') ||
+               (registerForm.controls['birthYear'].hasError('required') && seen['birthYear'] && curFocus !== 'birthYear')">
+        <ion-label class="field-error">لطفا تاریخ تولد را وارد کنید</ion-label>
       </ion-row>
     </ion-grid>
   </form>
+  <ion-grid style="margin-top: -10px;">
+    <ion-row>
+      <ion-col width-50>
+        <div class="btn-field div-btn gender-choice" (click)="setGender('m')"
+             [class.selected-gender]="gender === 'm'">
+          <label>مرد</label>
+          <i *ngIf="gender === 'm'" class="fa fa-check" aria-hidden="true"></i>
+        </div>
+      </ion-col>
+      <ion-col width-50>
+        <div class="btn-field div-btn gender-choice" (click)="setGender('f')"
+             [class.selected-gender]="gender === 'f'">
+          <label>زن</label>
+          <i *ngIf="gender === 'f'" class="fa fa-check" aria-hidden="true"></i>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <label class="field-error" *ngIf="(gender !== 'f' && gender !== 'm') && seen['gender']">لطفا جنسیت را تعیین
+        کنید</label>
+    </ion-row>
+    <ion-row>
+      <ion-col width-100>
+        <div class="button-area">
+          <div class="div-btn btn-field inform-btn clickable-link" (click)="register()">
+            <label class="clickable-link">ایجاد حساب کاربری</label>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -10,16 +10,17 @@ export class AuthService {
 
   constructor(private httpService: HttpService, private storage: Storage) {
     this.loadUserBasicData()
-      .then(() => {
-        this.httpService.get('validUser').subscribe(
-          (res) => {
-            console.log(res);
-            this.isLoggedIn.next(true);
-          },
-          (er) => {
-            console.error('Cannot check user validation: ', er);
-          }
-        );
+      .then((data) => {
+        if (data)
+          this.httpService.get('validUser').subscribe(
+            (res) => {
+              this.isLoggedIn.next(true);
+            },
+            (er) => {
+              console.error('Cannot check user validation: ', er);
+              this.isLoggedIn.next(false);
+            }
+          );
       })
       .catch(err => {
         console.error('Error: ', err);
@@ -30,10 +31,13 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.storage.get('user')
         .then(data => {
-          this.httpService.userToken = data.token;
-          delete data.token;
-          this.user.next(data);
-          resolve();
+          if (data) {
+            this.httpService.userToken = data.token;
+            delete data.token;
+            this.user.next(data);
+          }
+
+          resolve(data);
         })
         .catch(err => {
           this.user.next(null);
@@ -66,6 +70,7 @@ export class AuthService {
         },
         (err) => {
           console.error('Cannot login. Error: ', err);
+          this.isLoggedIn.next(false);
           reject(err);
         });
     });
@@ -77,6 +82,7 @@ export class AuthService {
         (res) => {
           this.removeUser();
           this.httpService.userToken = null;
+          this.isLoggedIn.next(false);
           resolve();
         },
         (err) => {
