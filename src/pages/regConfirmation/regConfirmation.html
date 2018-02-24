@@ -1,0 +1,27 @@
+<ion-content style="direction: rtl" padding>
+  <div class="center">
+    <div>
+      <h3>تأیید ثبت نام</h3>
+    </div>
+    <div>
+      <ion-label>لطفا کد ارسال شده به شماره همراه وارد شده را در بخش زیر وارد کنید</ion-label>
+    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-input type="number" [(ngModel)]="code"></ion-input>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="div-btn btn-field inform-btn clickable-link" (click)="resendCode()">
+            <ion-label class="clickable-link">ارسال مجدد کد</ion-label>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div class="div-btn btn-field inform-btn clickable-link" (click)="checkCode()">
+            <ion-label class="clickable-link">تأیید کد</ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

@@ -6,6 +6,7 @@ import {HttpService} from '../../services/http.service';
 import {AuthService} from '../../services/auth.service';
 import {NavController, ToastController} from 'ionic-angular';
 import {TabsPage} from '../tabs/tabs';
+import {RegConfirmationPage} from '../regConfirmation/regConfirmation';
 import 'moment/locale/fa';
 
 @Component({
@@ -76,7 +77,7 @@ export class RegisterPage implements OnInit {
       ]],
       mobile_no: [null, [
         Validators.required,
-        Validators.pattern(/^((\+)?(\d{2}[-])?(\d{10}){1})?(\d{11}){0,1}?$/),
+        Validators.pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/),
       ]],
     });
   }
@@ -102,7 +103,7 @@ export class RegisterPage implements OnInit {
         (res) => {
           this.authService.login(this.registerForm.controls['username'].value, this.registerForm.controls['password'].value)
             .then(dt => {
-              this.navCtrl.setRoot(TabsPage);
+              this.navCtrl.setRoot(RegConfirmationPage);
             })
             .catch(err => {
               console.error('Cannot login');
