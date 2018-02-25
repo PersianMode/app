@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class HttpService {
-  serverAddress: string = 'http://192.168.8.148:3000/api/';
+  serverAddress: string = 'http://localhost:3000/api/';
   userToken = null;
 
   constructor(private http: HttpClient) {}

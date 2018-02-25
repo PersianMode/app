@@ -7,6 +7,10 @@ import {Storage} from '@ionic/storage';
 export class AuthService {
   user: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  tempData = {
+    username: null,
+    password: null,
+  };
 
   constructor(private httpService: HttpService, private storage: Storage) {
     this.loadUserBasicData()

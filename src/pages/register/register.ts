@@ -5,7 +5,6 @@ import * as mom from 'moment';
 import {HttpService} from '../../services/http.service';
 import {AuthService} from '../../services/auth.service';
 import {NavController, ToastController} from 'ionic-angular';
-import {TabsPage} from '../tabs/tabs';
 import {RegConfirmationPage} from '../regConfirmation/regConfirmation';
 import 'moment/locale/fa';
 
@@ -44,7 +43,10 @@ export class RegisterPage implements OnInit {
     moment.locale('fa');
     mom.locale('en');
     for (let y = 0; y < 100; y++) {
-      this.years.push({name: moment(new Date()).subtract(y, 'Y').format('jYYYY'), value: mom(new Date()).subtract(y, 'years').format('YYYY')});
+      this.years.push({
+        name: moment(new Date()).subtract(y, 'Y').format('jYYYY'),
+        value: mom(new Date()).subtract(y, 'years').format('YYYY')
+      });
     }
 
     this.initForm();
@@ -92,29 +94,34 @@ export class RegisterPage implements OnInit {
       let data = {};
       Object.keys(this.registerForm.controls).forEach(el => data[el] = this.registerForm.controls[el].value);
       mom.locale('en');
-      data['dob'] = mom({
-        year: this.registerForm.controls['birthYear'].value,
-        month: this.registerForm.controls['birthMonth'].value,
-        day: this.registerForm.controls['birthDay'].value
-      }).format('YYYY-MM-DD');
+      data['dob'] = mom(new Date(
+        this.registerForm.controls['birthYear'].value,
+        this.registerForm.controls['birthMonth'].value - 1,
+        this.registerForm.controls['birthDay'].value
+      )).format('YYYY-MM-DD');
       data['gender'] = this.gender;
 
       this.httpService.put('register', data).subscribe(
         (res) => {
-          this.authService.login(this.registerForm.controls['username'].value, this.registerForm.controls['password'].value)
-            .then(dt => {
-              this.navCtrl.setRoot(RegConfirmationPage);
-            })
-            .catch(err => {
-              console.error('Cannot login');
-            });
+          this.authService.tempData = {
+            username: this.registerForm.controls['username'].value,
+            password: this.registerForm.controls['password'].value,
+          };
+          this.navCtrl.push(RegConfirmationPage);
         },
         (err) => {
           console.error('Cannot register: ', err);
-          this.toastCtrl.create({
-            message: 'در حال حاضر قادر به ثبت نام شما نیستیم. دوباره تلاش کنید',
-            duration: 3000,
-          }).present();
+
+          if (err.error === 'Username or mobile number is exist')
+            this.toastCtrl.create({
+              message: 'نام کاربری و یا موبایل در سیستم موجود می باشد',
+              duration: 3000,
+            }).present();
+          else
+            this.toastCtrl.create({
+              message: 'در حال حاضر قادر به ثبت نام شما نیستیم. دوباره تلاش کنید',
+              duration: 3000,
+            }).present();
         }
       );
     } else {
