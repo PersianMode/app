@@ -26,12 +26,6 @@ export class ProfilePage {
   }
 
   logout() {
-    this.authService.logout()
-      .then(res => {
-        this.navCtrl.setRoot(LoginPage);
-      })
-      .catch(err => {
-        console.error('Cannot logout: ', err);
-      });
+    this.authService.logout();
   }
 }

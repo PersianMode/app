@@ -21,6 +21,7 @@ import {IonicStorageModule} from '@ionic/storage';
 import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
 import {GooglePlus} from '@ionic-native/google-plus';
+import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import {GooglePlus} from '@ionic-native/google-plus';
     CollectionPage,
     LoginPage,
     RegisterPage,
+    RegConfirmationPage,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +55,7 @@ import {GooglePlus} from '@ionic-native/google-plus';
     CollectionPage,
     LoginPage,
     RegisterPage,
+    RegConfirmationPage,
   ],
   providers: [
     StatusBar,

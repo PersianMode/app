@@ -86,6 +86,6 @@
     <plugin name="cordova-plugin-advanced-http" />
     <plugin name="cordova-plugin-nativestorage" spec="^2.2.2" />
     <plugin name="cordova-plugin-googleplus" spec="git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.636231560622-k5rqdq7bm2uh2hojcqnsarlrlmlh72i9" />
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.636231560622-53vui86atg1s9cnijhiovk6uumel3a3r" />
     </plugin>
 </widget>
