@@ -6,29 +6,37 @@
 
 <ion-content class="products-page">
   <ion-segment [(ngModel)]="currentType" color="dark" class="product-segment">
-    <ion-segment-button *ngFor="let type of types" value="{{type.name_en}}">
-      {{type.name_fa}}
+    <ion-segment-button *ngFor="let type of types" value="{{type.href}}" (click)="elementType(type)">
+      {{type.name}}
     </ion-segment-button>
   </ion-segment>
 
 
-  <div *ngFor="let type of types">
-    <ion-list *ngIf="currentType == type.name_en">
-      <ion-card *ngFor="let entry of type.entries" (click)="goToCollection(type, entry)">
+  <div>
+    <ion-list *ngFor="let entry of typeElements" class="accordion-list" no-padding no-lines>
+      <ion-card (click)="showSubMenu(entry)">
         <img src="{{entry.imageUrl}}" alt="" class="card-image">
-        <div class="card-title">{{entry.name}}</div>
+        <div class="card-title">{{entry.text}}</div>
       </ion-card>
     </ion-list>
+    <div *ngIf="subMenu">
+      <ion-list *ngFor="let sub of subList" no-padding no-lines>
+        <button ion-button class="active" >
+          {{sub.text}}
+        </button>
+      </ion-list>
+    </div>
   </div>
 
-  <ion-item>
-    خرید از طریق برند
-  </ion-item>
 
-  <ion-row *ngFor="let r of getSeparatedRowBrands()">
-    <ion-col *ngFor="let c of r" width-33>
-      <img src="{{c.imageUrl}}" alt="" class="brand-image">
-    </ion-col>
-  </ion-row>
+  <!--<ion-item>-->
+  <!--خرید از طریق برند-->
+  <!--</ion-item>-->
+
+  <!--<ion-row *ngFor="let r of getSeparatedRowBrands()">-->
+  <!--<ion-col *ngFor="let c of r" width-33>-->
+  <!--<img src="{{c.imageUrl}}" alt="" class="brand-image">-->
+  <!--</ion-col>-->
+  <!--</ion-row>-->
 </ion-content>
 
