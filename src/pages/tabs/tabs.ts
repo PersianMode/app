@@ -11,7 +11,6 @@ import {ProfilePage} from '../profile/profile';
 })
 export class TabsPage {
 
-
   tabHomeRoot = HomePage;
   tabProductsRoot = ProductsPage;
   tabBagRoot = BagPage;

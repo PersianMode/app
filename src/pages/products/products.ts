@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import {ProductListPage} from '../product-list/product-list';
+import {CollectionPage} from "./collection/collection";
 
 
 export interface Entry {
@@ -79,13 +79,16 @@ export class ProductsPage {
   ];
   currentType: string = this.types[0].name_en;
 
+  // collectionPage: CollectionPage;
+
   constructor(public navCtrl: NavController) {
 
   }
 
-  goToProductList(colName) {
-    this.navCtrl.push(ProductListPage, {
-      collectionName: colName,
+  goToCollection(type: Type, entry: Entry) {
+    this.navCtrl.push(CollectionPage, {
+      type: type,
+      entry: entry
     });
   }
 

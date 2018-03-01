@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class HttpService {
+  public static HOST = 'http://localhost:3000/';
   serverAddress: string = 'http://localhost:3000/api/';
   userToken = null;
 
@@ -15,7 +16,7 @@ export class HttpService {
     if(this.userToken)
       headers = headers.append('token', this.userToken);
 
-    return this.http.get(this.serverAddress + url, {observe: 'response', headers: headers}).map(data => data.body);
+    return this.http.get(this.serverAddress + url, {observe: 'response', headers: headers});
   }
 
   put(url, values): Observable<any> {

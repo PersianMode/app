@@ -19,14 +19,14 @@
 
   <ion-row *ngFor="let product of getSeparatedRowProducts()" class="product-row">
     <ion-col *ngFor="let p of product" class="product-col" width-50>
-      <!--<div>-->
+      <div class="product" (click)="clickedProduct(p._id)">
         <img src="{{p.imageUrl}}" alt=""><br>
         <div id="title">{{p.name}}</div>
         <ion-row *ngFor="let tag of p.tags" id="tags">
           {{tag}}<br>
         </ion-row>
         <div id="cost">{{p.cost}} تومان</div>
-      <!--</div>-->
+      </div>
     </ion-col>
     <ion-col width-50 *ngIf="product.length == 1"></ion-col>
     <br>
