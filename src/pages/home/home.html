@@ -16,9 +16,7 @@
           <div *ngIf="ar.title" class="title" [style.color]="ar.color ? ar.color : null">{{ar.title}}</div>
           <div *ngIf="ar.text" class="text" [style.color]="ar.color ? ar.color : null"><b>{{ar.text}}</b></div>
         </div>
-        <button *ngIf="ar.pos === 'card-button' && !ar.color" ion-button outline color="light" [style.color]="ar.color ? ar.color : null"
-                class="card-button">{{ar.text}}</button>
-        <button *ngIf="ar.pos === 'card-button' && ar.color" ion-button outline color="dark" [style.color]="ar.color ? ar.color : null"
+        <button *ngIf="ar.pos === 'card-button'" ion-button outline [color]="ar.color ? ar.color : 'light'"
                 class="card-button">{{ar.text}}</button>
         <ion-icon *ngIf="ar.pos === 'card-icon'" name="share-alt" [style.color]="ar.color ? ar.color : null"
                   class="card-icon"></ion-icon>
