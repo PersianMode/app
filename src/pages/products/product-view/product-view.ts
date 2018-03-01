@@ -6,6 +6,7 @@ import {
 import {HttpService} from "../../../services/http.service";
 import {ProductDetailPage} from "../product-detail/product-detail";
 import {SelectSizePage} from "../select-size/select-size";
+import {priceFormatter} from "../../../shared/lib/priceFormatter";
 
 @Component({
   selector: 'page-product-view',
@@ -100,6 +101,10 @@ export class ProductViewPage {
     });
 
     pop.present({ev: myEvent});
+  }
+
+  formatPrice(p) {
+    return priceFormatter(p);
   }
 
 }

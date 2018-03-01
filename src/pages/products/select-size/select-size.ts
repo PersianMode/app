@@ -1,5 +1,6 @@
 import {Component} from "@angular/core";
 import {NavController, NavParams, ToastController, ViewController} from "ionic-angular";
+import {priceFormatter} from "../../../shared/lib/priceFormatter";
 
 @Component({
   selector: 'page-select-size',
@@ -55,6 +56,12 @@ export class SelectSizePage {
     }
     total.push(chunk);
     this.rows = total;
+  }
+
+  formatNumber(p) {
+    //HAS BUGS!
+    // return priceFormatter(p);
+    return p;
   }
 
 }

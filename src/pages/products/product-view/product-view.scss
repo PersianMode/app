@@ -40,17 +40,26 @@
   .desc {
     clear: both;
     white-space: pre-wrap;
-    text-align: center;
+    text-align: justify;
+    direction: rtl;
     font-family: iranyekan;
-    font-weight: normal;
+    font-weight: 200;
+    padding: 0px 20px;
     font-size: 1em;
   }
 
   .product-more-detail {
-    margin-top: 30px;
-    padding: 10px 0 10px 0;
+    margin: 30px 0 0 0 !important;
     text-align: right;
     direction: rtl;
+  }
+
+  .product-more-detail div {
+    padding: 4px 20px 4px 20px;
+  }
+
+  .product-more-detail:active {
+    opacity: 0.8;
   }
 
   .left-view {
@@ -69,4 +78,18 @@
 .select-size-popover .popover-content {
   //width: 90%;
   height: auto;
+
+}
+.popover-content {
+  bottom: 0px !important;
+  left: 0px !important;
+}
+
+.swiper-pagination {
+  padding: 3px;
+  bottom:0px;
+  .swiper-pagination-bullet {
+    background: #878787;
+    margin: 0 3px;
+  }
 }

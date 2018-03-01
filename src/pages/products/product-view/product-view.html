@@ -27,11 +27,14 @@
   </div>
   <ion-icon name="share-alt" class="card-icon"></ion-icon>
 
-  <ion-item>
-    <button ion-button class="product-more-detail" block full outline color="dark" pull-0 (click)="goToDetail()">
+  <div class="product-more-detail">
+    <hr>
+    <div (click)="goToDetail()">
       دیدن جزئیات بیشتر محصول
-    </button>
-  </ion-item>
+    </div>
+    <hr>
+  </div>
+  <br><br>
 
 </ion-content>
 
@@ -39,7 +42,7 @@
   <ion-toolbar>
     <button ion-button full color="dark" (click)="presentPopOver($event)" [disabled]="!buyButtonShouldBeActive">
       <div *ngIf="buyButtonShouldBeActive">
-        خرید {{currentProduct?.base_price}} تومان
+        خرید {{formatPrice(currentProduct?.base_price)}} تومان
       </div>
       <div *ngIf="!buyButtonShouldBeActive">
         محصول تمام شده است

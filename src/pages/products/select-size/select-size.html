@@ -12,12 +12,12 @@
       <div *ngIf="selectedSize !== row_index * 6 + col_index">
         <button ion-button full color="light" class="size-buttons" (click)="selectSize(row_index * 6 + col_index)"
                 [disabled]="activeColor?._id != i?.product_color_id">
-          {{i.size}}
+          {{formatNumber(i.size)}}
         </button>
       </div>
       <div *ngIf="selectedSize === row_index * 6 + col_index">
         <button ion-button full color="dark" class="size-buttons" (click)="selectSize(row_index * 6 + col_index)">
-          {{i.size}}
+          {{formatNumber(i.size)}}
         </button>
       </div>
     </ion-col>

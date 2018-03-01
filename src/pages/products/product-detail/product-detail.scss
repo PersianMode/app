@@ -11,9 +11,11 @@
   .product-more-detail {
     clear: both;
     white-space: pre-wrap;
-    text-align: center;
+    text-align: justify;
+    direction: rtl;
     font-family: iranyekan;
-    font-weight: normal;
+    font-weight: 200;
+    padding: 0px 20px;
     font-size: 1em;
   }
 
