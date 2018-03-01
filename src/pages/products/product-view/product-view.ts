@@ -20,8 +20,10 @@ export class ProductViewPage {
   HOST: string;
   currentProduct: {};
   selectedColor: {};
-  activeColorIndex: Number = 0;
+  activeColorIndex: number = 0;
   firstOfEachColor = [];
+
+  buyButtonShouldBeActive: Boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController, private httpService: HttpService,
@@ -35,7 +37,7 @@ export class ProductViewPage {
       data => {
         data = data.body[0];
         this.currentProduct = data;
-        if(this.currentProduct && this.currentProduct['colors']) {
+        if (this.currentProduct && this.currentProduct['colors']) {
           this.selectedColor = this.currentProduct['colors'][0];
 
           //set first of each color to show in the horizontal scroll section
@@ -56,17 +58,29 @@ export class ProductViewPage {
   }
 
   changeColorTo(index) {
-    if(this.currentProduct) {
-      if(this.currentProduct['colors']) {
-        if(this.currentProduct['colors'].length > index) {
+    if (this.currentProduct) {
+      if (this.currentProduct['colors']) {
+        if (this.currentProduct['colors'].length > index) {
           this.selectedColor = this.currentProduct['colors'][index];
           this.topSlider.slideTo(0);
           this.activeColorIndex = index;
+          this.checkBuyButton();
           return;
         }
       }
     }
     this.activeColorIndex = 0;
+  }
+
+  checkBuyButton() {
+    let anyProductExist = false;
+    this.currentProduct['instances'].some(instance => {
+      if (this.currentProduct['colors'][this.activeColorIndex]._id === instance.product_color_id) {
+        anyProductExist = true;
+        return true;
+      }
+    });
+    this.buyButtonShouldBeActive = anyProductExist;
   }
 
   goToDetail() {
@@ -77,7 +91,10 @@ export class ProductViewPage {
 
   presentPopOver(myEvent) {
     let pop = this.popoverCtrl.create(SelectSizePage, {
-      instances: (this.currentProduct && this.currentProduct['instances']) ? this.currentProduct['instances'] : null
+      instances: (this.currentProduct && this.currentProduct['instances']) ?
+        this.currentProduct['instances'] : null,
+      activeColor: (this.currentProduct && this.currentProduct['colors'] && this.currentProduct['colors'].length > this.activeColorIndex) ?
+        this.currentProduct['colors'][this.activeColorIndex] : null
     }, {
       cssClass: 'select-size-popover'
     });

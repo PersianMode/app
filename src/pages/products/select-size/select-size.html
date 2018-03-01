@@ -10,7 +10,8 @@
   <ion-row *ngFor="let r of rows; let row_index = index;" class="size-row">
     <ion-col *ngFor="let i of r; let col_index = index;" class="size-col" col-2>
       <div *ngIf="selectedSize !== row_index * 6 + col_index">
-        <button ion-button full color="light" class="size-buttons" (click)="selectSize(row_index * 6 + col_index)">
+        <button ion-button full color="light" class="size-buttons" (click)="selectSize(row_index * 6 + col_index)"
+                [disabled]="activeColor?._id != i?.product_color_id">
           {{i.size}}
         </button>
       </div>
@@ -22,8 +23,9 @@
     </ion-col>
   </ion-row>
 
-  <button ion-button full color="dark">
-    افزودن به سبد {{instances[selectedSize]?.price}}
+  <button ion-button full color="dark" (click)="addToBag()" [disabled]="!selectedSize">
+    <!--افزودن به سبد {{instances[selectedSize]?.price}} تومان-->
+    افزودن به سبد
   </button>
 
 </ion-content>

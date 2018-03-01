@@ -37,6 +37,13 @@
 
 <ion-footer>
   <ion-toolbar>
-    <button ion-button full color="dark" (click)="presentPopOver($event)">خرید {{currentProduct?.base_price}} تومان</button>
+    <button ion-button full color="dark" (click)="presentPopOver($event)" [disabled]="!buyButtonShouldBeActive">
+      <div *ngIf="buyButtonShouldBeActive">
+        خرید {{currentProduct?.base_price}} تومان
+      </div>
+      <div *ngIf="!buyButtonShouldBeActive">
+        محصول تمام شده است
+      </div>
+    </button>
   </ion-toolbar>
 </ion-footer>
