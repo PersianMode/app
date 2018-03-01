@@ -22,6 +22,9 @@ import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
+import {ProductViewPage} from "../pages/products/product-view/product-view";
+import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
+import {SelectSizePage} from "../pages/products/select-size/select-size";
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
     ProfilePage,
     TabsPage,
     CollectionPage,
+    ProductViewPage,
+    ProductDetailPage,
+    SelectSizePage,
     LoginPage,
     RegisterPage,
     RegConfirmationPage,
@@ -54,6 +60,9 @@ import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
     TabsPage,
     CollectionPage,
     LoginPage,
+    ProductViewPage,
+    ProductDetailPage,
+    SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
   ],

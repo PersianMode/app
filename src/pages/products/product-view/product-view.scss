@@ -1,0 +1,73 @@
+.product-view-page {
+
+  ion-card {
+    position: relative;
+    text-align: center;
+    margin: 2px 0 2px 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+}
+
+ion-scroll {
+  white-space: nowrap;
+  max-width: 100%;
+  max-height: 100%;
+  height: 50%;
+}
+
+ion-scroll img {
+  max-height: 100%;
+  max-width: 100%;
+  height: 80%;
+}
+
+.active-image {
+  opacity: 0.75;
+  background: #c2c2c2;
+}
+
+.desc {
+  clear: both;
+  white-space: pre-wrap;
+  text-align: center;
+  font-family: iranyekan;
+  font-weight: normal;
+  font-size: 1em;
+}
+
+.card-icon {
+  position: relative;
+  font-size: 3em;
+  text-align: center;
+  left: 46%;
+}
+
+.card-icon:active {
+  opacity: 0.2;
+}
+
+.product-more-detail {
+  margin-top: 30px;
+  padding: 10px 0 10px 0;
+  text-align: right;
+  direction: rtl;
+}
+
+.left-view {
+  position: relative;
+  float: left;
+  left: 10%;
+}
+
+.right-view {
+  position: relative;
+  float: right;
+  right: 10%;
+}
+
+.select-size-popover .popover-content {
+  width: 90%;
+  height: auto;
+}

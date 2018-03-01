@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{currentProduct?.name}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="product-view-page">
+  <ion-card>
+    <ion-slides [pager]="true" #topSlider>
+      <ion-slide *ngFor="let image of selectedColor?.images">
+        <!--<img src="{{HOST + image}}" style="width: 100%;">-->
+        <img src="{{tempImageUrl}}" style="width: 100%;">
+      </ion-slide>
+    </ion-slides>
+  </ion-card>
+
+  <ion-scroll scrollX="true">
+    <!--<img src="{{HOST + image.image}}" *ngFor="let image of firstOfEachColor" (click)="changeColorTo(image.index)"-->
+    <img src="{{tempImageUrl}}" *ngFor="let image of firstOfEachColor" (click)="changeColorTo(image.index)"
+         [ngClass]="{'active-image': image.index == activeColorIndex}">
+  </ion-scroll>
+
+  <div class="desc">
+    {{currentProduct?.desc}}
+  </div>
+  <ion-icon name="share-alt" class="card-icon"></ion-icon>
+
+  <ion-item>
+    <button ion-button class="product-more-detail" block full outline color="dark" pull-0 (click)="goToDetail()">
+      دیدن جزئیات بیشتر محصول
+    </button>
+  </ion-item>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button full color="dark" (click)="presentPopOver($event)">خرید {{currentProduct?.base_price}} تومان</button>
+  </ion-toolbar>
+</ion-footer>
