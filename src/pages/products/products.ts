@@ -86,9 +86,10 @@ export class ProductsPage {
     this.typeElements.find(el => el.id !== subMenu.id).showSubMenu = false;
   }
 
-  goToCollection(address) {
+  goToProductList(address) {
     this.navCtrl.push(ProductListPage, {
-
-    })
+      collectionName: address,
+      typeName: 'type'
+    });
   }
 }
