@@ -22,6 +22,10 @@ import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
+import {ProductListPage} from '../pages/product-list/product-list';
+import {ProductItemComponent} from '../components/product-item/product-item';
+import {ProductService} from '../services/productService';
+import {PlacementService} from '../services/placementService';
 
 @NgModule({
   declarations: [
@@ -36,6 +40,8 @@ import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
     LoginPage,
     RegisterPage,
     RegConfirmationPage,
+    ProductListPage,
+    ProductItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +62,7 @@ import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
     LoginPage,
     RegisterPage,
     RegConfirmationPage,
+    ProductListPage,
   ],
   providers: [
     StatusBar,
@@ -65,6 +72,8 @@ import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
     HttpService,
     SocketService,
     GooglePlus,
+    ProductService,
+    PlacementService,
   ]
 })
 export class AppModule {}
