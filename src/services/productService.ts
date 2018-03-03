@@ -226,8 +226,8 @@ export class ProductService {
 
   getProducts(startIndex, boundSize = 10) {
     const tempProducts = this.filterSortProducts(true);
-    if(tempProducts && tempProducts.length > 0 && this.productList.getValue().length > startIndex)
-      this.productList = tempProducts.slice(startIndex, startIndex + boundSize);
+    if(tempProducts && tempProducts.length > 0 && tempProducts.length > startIndex)
+      this.productList.next(tempProducts.slice(0, startIndex + boundSize));
   }
 
   filterSortProducts(returnData = false) {
