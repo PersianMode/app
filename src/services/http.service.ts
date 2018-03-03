@@ -16,7 +16,7 @@ export class HttpService {
     if(this.userToken)
       headers = headers.append('token', this.userToken);
 
-    return this.http.get(this.serverAddress + url, {observe: 'response', headers: headers});
+    return this.http.get(this.serverAddress + url, {observe: 'response', headers: headers}).map(data => data.body);
   }
 
   put(url, values): Observable<any> {
