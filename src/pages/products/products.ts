@@ -86,6 +86,8 @@ export class ProductsPage {
   goToProductList(colName) {
     this.navCtrl.push(ProductListPage, {
       collectionName: colName,
+      typeName: 'type',
+      collectionId: '5a96b7604df3c90a10be4238'
     });
   }
 

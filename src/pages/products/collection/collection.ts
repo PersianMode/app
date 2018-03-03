@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
 import { Type, Entry } from "../products";
+import {ProductViewPage} from "../product-view/product-view";
 
 export interface News {
   title: string;
@@ -10,6 +11,7 @@ export interface News {
 }
 
 export interface Product {
+  _id: string;
   imageUrl: string;
   name: string;
   tags: string[];
@@ -42,18 +44,21 @@ export class CollectionPage {
     }];
 
   products: Product[] = [{
+    _id: '5a967f2dbbcc4a0ac879c7bf',
     imageUrl: '../assets/imgs/shoeSample.png',
-    name: 'علی',
+    name: 'رانر',
     tags: ['مردانه', 'ورزشی'],
     cost: 120
   }, {
+    _id: '5a967f78bbcc4a0ac879c7c2',
     imageUrl: '../assets/imgs/shoeSample.png',
-    name: 'محسن',
+    name: 'رانینگ مستر',
     tags: ['مردانه', 'ورزشی'],
     cost: 150
   }, {
+    _id: '5a968e7aa61fc04dcc60d278',
     imageUrl: '../assets/imgs/shoeSample.png',
-    name: 'ورزشی سوپرخفن',
+    name: 'آآآآآ',
     tags: ['ورزشی', 'سوپرخفن'],
     cost: 350
   }];
@@ -80,6 +85,12 @@ export class CollectionPage {
     }
     total.push(chunk);
     return total;
+  }
+
+  clickedProduct(pid: string = null) {
+    this.navCtrl.push(ProductViewPage, {
+      productId: pid
+    });
   }
 
 }
