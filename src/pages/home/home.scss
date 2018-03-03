@@ -3,15 +3,17 @@
   ion-card {
     position: relative;
     text-align: center;
+    direction: rtl;
     margin: 0 0 2px 0;
     width: 100%;
     //max-height: 256px;
     max-width: 100%;
   }
 
-  ion-card div:active {
+  ion-card .card-back-click:active {
     opacity: 0.8;
   }
+
   .card-button {
     font-family: 'iranyekan';
     position: absolute;
@@ -42,58 +44,58 @@
 /* Bottom left text */
 .left-top {
   position: absolute;
-  bottom: 80%;
-  left: 2%;
+  top: 18%;
+  left: 3%;
   text-align: left;
 }
 /* Bottom left text */
 .left-center {
   position: absolute;
-  bottom: 50%;
-  left: 2%;
+  top: 44%;
+  left: 3%;
   text-align: left;
 }
 .left-bottom {
   position: absolute;
-  bottom: 4%;
-  left: 2%;
+  bottom: 6%;
+  left: 3%;
   text-align: left;
 }
 
 .center-top {
   position: absolute;
-  bottom: 85%;
-  left: 50%;
+  top: 18%;
+  right: 33%;
 }
 .center-center {
   position: absolute;
-  bottom: 50%;
-  left: 50%;
+  top: 44%;
+  right: 33%;
 }
 
 /* Bottom right text */
 .center-bottom {
   position: absolute;
-  bottom: 4%;
-  left: 50%;
+  bottom: 6%;
+  right: 44%;
 }
 
 .right-bottom {
   position: absolute;
-  bottom: 4%;
-  right: 2%;
+  bottom: 6%;
+  right: 5%;
   text-align: right;
 }
 .right-center {
   position: absolute;
-  bottom: 50%;
-  right: 2%;
+  top: 42%;
+  right: 4%;
   text-align: right;
 }
 .right-top {
   position: absolute;
-  bottom: 85%;
-  right: 2%;
+  top: 18%;
+  right: 4%;
   text-align: right;
 }
 
