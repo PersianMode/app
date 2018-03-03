@@ -19,7 +19,7 @@ export class HomePage implements OnInit{
     }).subscribe(
       (res) => {
         // console.log('res => ', res);
-        this.feed_placement = res.placement;
+        this.feed_placement = res['placement'];
       },
       (er) => {
         console.error('Cannot check user validation: ', er);
