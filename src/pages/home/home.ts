@@ -17,7 +17,7 @@ export class HomePage implements OnInit{
     this.http.get('assets/test_input_for_feed.json').subscribe(
       (res) => {
         console.log('res => ', res);
-        this.feed_placement = res.data;
+        this.feed_placement = res['data'];
       },
       (er) => {
         console.error('Cannot check user validation: ', er);
