@@ -1,0 +1,22 @@
+.product-detail-page {
+
+  ion-card {
+    position: relative;
+    text-align: center;
+    margin: 2px 0 2px 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .product-more-detail {
+    clear: both;
+    white-space: pre-wrap;
+    text-align: justify;
+    direction: rtl;
+    font-family: iranyekan;
+    font-weight: 200;
+    padding: 0px 20px;
+    font-size: 1em;
+  }
+
+}

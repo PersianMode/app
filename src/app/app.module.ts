@@ -26,6 +26,9 @@ import {ProductListPage} from '../pages/product-list/product-list';
 import {ProductItemComponent} from '../components/product-item/product-item';
 import {ProductService} from '../services/productService';
 import {PlacementService} from '../services/placementService';
+import {ProductViewPage} from "../pages/products/product-view/product-view";
+import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
+import {SelectSizePage} from "../pages/products/select-size/select-size";
 
 @NgModule({
   declarations: [
@@ -37,6 +40,9 @@ import {PlacementService} from '../services/placementService';
     ProfilePage,
     TabsPage,
     CollectionPage,
+    ProductViewPage,
+    ProductDetailPage,
+    SelectSizePage,
     LoginPage,
     RegisterPage,
     RegConfirmationPage,
@@ -60,6 +66,9 @@ import {PlacementService} from '../services/placementService';
     TabsPage,
     CollectionPage,
     LoginPage,
+    ProductViewPage,
+    ProductDetailPage,
+    SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
     ProductListPage,
