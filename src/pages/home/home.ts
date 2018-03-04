@@ -18,7 +18,6 @@ export class HomePage implements OnInit{
       address: 'feed'
     }).subscribe(
       (res) => {
-        // console.log('res => ', res);
         this.feed_placement = res['placement'];
       },
       (er) => {
