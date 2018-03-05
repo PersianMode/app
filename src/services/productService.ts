@@ -11,7 +11,7 @@ import {SortOptions} from '../enum/sort.options.enum';
 @Injectable()
 export class ProductService {
   // Products array has mock data
-  products = [
+  /*products = [
     {
       name: 'جوردن ایر مدل ‍۱۰ رترو',
       colors: [
@@ -190,7 +190,8 @@ export class ProductService {
       tags: ['کفش', 'مردانه', 'بسکتبال'],
       base_price: 999900,
     },
-  ];
+  ];*/
+  products = [];
   productList : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   private filteringOptions = new Subject<any>();
   filteringOptions$ = this.filteringOptions.asObservable();

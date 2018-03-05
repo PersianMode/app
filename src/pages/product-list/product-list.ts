@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Navbar, NavController, NavParams, ViewController} from 'ionic-angular';
 import {ProductService} from '../../services/productService';
 import {HttpService} from '../../services/http.service';
+import {ProductFilterPage} from './filter/product-filter';
 
 @Component({
   selector: 'page-product-list',
@@ -57,9 +58,9 @@ export class ProductListPage implements OnInit {
 
     this.pageName = this.navParams.get('typeName') + '/' + this.curType;
     this.collectionId = this.navParams.get('collectionId');
-    this.collectionId = '5a96b7604df3c90a10be4238';
+    // this.collectionId = '5a96b7604df3c90a10be4238';
+    this.collectionId = '5a9cffd648186d2a8f1b3284';
     this.productService.loadProducts(this.collectionId);
-
     this.productService.productList.subscribe(
       (data) => {
         this.products = data;
@@ -90,5 +91,9 @@ export class ProductListPage implements OnInit {
     this.curType = data._value;
     this.pageName = 'collection/' + this.curType;
     this.productService.loadProducts(this.pageName);
+  }
+
+  gotToProductFilter() {
+    this.navCtrl.push(ProductFilterPage)
   }
 }

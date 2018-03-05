@@ -29,6 +29,7 @@ import {PlacementService} from '../services/placementService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
 import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
 import {SelectSizePage} from "../pages/products/select-size/select-size";
+import {ProductFilterPage} from '../pages/product-list/filter/product-filter';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {SelectSizePage} from "../pages/products/select-size/select-size";
     RegConfirmationPage,
     ProductListPage,
     ProductItemComponent,
+    ProductFilterPage
   ],
   imports: [
     BrowserModule,
@@ -72,6 +74,7 @@ import {SelectSizePage} from "../pages/products/select-size/select-size";
     RegisterPage,
     RegConfirmationPage,
     ProductListPage,
+    ProductFilterPage
   ],
   providers: [
     StatusBar,
