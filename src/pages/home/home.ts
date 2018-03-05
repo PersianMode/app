@@ -14,7 +14,7 @@ export class HomePage implements OnInit{
   }
 
   ngOnInit() {
-    this.httpService.post('page/placement/list', {
+    this.httpService.post('/page', {
       address: 'feed'
     }).subscribe(
       (res) => {

@@ -43,7 +43,7 @@ export class ProductListPage implements OnInit {
     this.navBar.setBackButtonText('بازگشت');
 
     // Get sub-collection
-    this.httpService.post('page/placement/list', {
+    this.httpService.post('page', {
       address: this.navParams.get('typeName') + '/' + this.curType,
     }).subscribe(
       (data) => {

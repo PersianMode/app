@@ -26,7 +26,7 @@ export class ProductsPage {
 
   ionViewWillEnter() {
     this.types = [];
-    this.httpService.post('page/placement/list', {
+    this.httpService.post('page', {
       address: 'my_shop'
     }).subscribe(data => {
       this.placement = data['placement'];
