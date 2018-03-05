@@ -21,6 +21,14 @@ import {IonicStorageModule} from '@ionic/storage';
 import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
 import {GooglePlus} from '@ionic-native/google-plus';
+import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
+import {ProductListPage} from '../pages/product-list/product-list';
+import {ProductItemComponent} from '../components/product-item/product-item';
+import {ProductService} from '../services/productService';
+import {PlacementService} from '../services/placementService';
+import {ProductViewPage} from "../pages/products/product-view/product-view";
+import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
+import {SelectSizePage} from "../pages/products/select-size/select-size";
 
 @NgModule({
   declarations: [
@@ -32,8 +40,14 @@ import {GooglePlus} from '@ionic-native/google-plus';
     ProfilePage,
     TabsPage,
     CollectionPage,
+    ProductViewPage,
+    ProductDetailPage,
+    SelectSizePage,
     LoginPage,
     RegisterPage,
+    RegConfirmationPage,
+    ProductListPage,
+    ProductItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,7 +66,12 @@ import {GooglePlus} from '@ionic-native/google-plus';
     TabsPage,
     CollectionPage,
     LoginPage,
+    ProductViewPage,
+    ProductDetailPage,
+    SelectSizePage,
     RegisterPage,
+    RegConfirmationPage,
+    ProductListPage,
   ],
   providers: [
     StatusBar,
@@ -62,6 +81,8 @@ import {GooglePlus} from '@ionic-native/google-plus';
     HttpService,
     SocketService,
     GooglePlus,
+    ProductService,
+    PlacementService,
   ]
 })
 export class AppModule {}

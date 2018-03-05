@@ -24,12 +24,12 @@ export class MyApp implements OnInit {
   }
 
   ngOnInit() {
-    if (this.authService.user.getValue() !== null)
+    if (this.authService.isLoggedIn.getValue() !== false)
       this.rootPage = TabsPage;
     else
       this.rootPage = LoginPage;
 
-    this.authService.user.subscribe(
+    this.authService.isLoggedIn.subscribe(
       (data) => {
         if (data)
           this.rootPage = TabsPage;

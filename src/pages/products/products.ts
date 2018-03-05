@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {CollectionPage} from "./collection/collection";
-import {HttpClient} from '@angular/common/http';
-import {tick} from '@angular/core/testing';
-import {noUndefined} from '@angular/compiler/src/util';
+import {HttpService} from '../../services/http.service';
+import {ProductListPage} from '../product-list/product-list';
 
 export interface Type {
 }
@@ -15,82 +13,83 @@ export interface Entry {
 })
 export class ProductsPage {
 
-  subMenu = false;
   types = [];
   placement = [];
   typeElements = [];
   subList = [];
-  selectTab: string;
-  columnSelected: any;
+  selectTab;
 
 
-  constructor(private http: HttpClient, public navCtrl: NavController) {
+  constructor(private httpService: HttpService, public navCtrl: NavController) {
 
   }
 
   ionViewWillEnter() {
     this.types = [];
-    this.http.get('assets/shop.json').subscribe(data => {
+    this.httpService.post('page/placement/list', {
+      address: 'my_shop'
+    }).subscribe(data => {
       this.placement = data['placement'];
       this.placement.forEach(item => {
         if (item.component_name === 'menu' && item.variable_name === 'topMenu') {
-          this.types.push({name: item.info.text, href: item.info.href})
+          this.types.push({
+            name: item.info.text,
+            href: item.info.href,
+            kind: item.info.href.split('/')[item.info.href.split('/').length - 1]
+          })
         }
       });
+
       this.elementType(this.types[0]);
     });
   }
 
   elementType(type) {
-    console.log("@@@@@@@",type);
     this.typeElements = [];
-    type = type.href.split('/')[1];
+    let counter = 0;
+
     this.placement.filter(el => {
-      let section;
-      if (el.info.section) {
-        section = el.info.section.split('/')[0];
-      }
-      if (el.variable_name === 'subMenu' && section === type && el.info.is_header && el.info.column === el.info.row) {
+      let section = el.info.section || null;
+      if (section)
+        section = section.split('/');
+
+      if (el.variable_name === 'subMenu' && (section && section.includes(type.kind)) && el.info.is_header) {
         return el;
       }
     }).forEach(item => {
-      this.typeElements.push({text: item.info.text, imageUrl: item.imageUrl, column: item.info.column})
+      this.typeElements.push({
+        id: ++counter,
+        text: item.info.text,
+        imageUrl: item.info.imgUrl,
+        kind: item.info.href.split('/')[item.info.href.split('/').length - 1],
+        showSubMenu: false,
+      });
     });
     this.selectTab = type;
+
   }
 
-  showSubMenu(entry) {
-    this.columnSelected = entry.column;
+  generateSubMenu(entry) {
     this.subList = [];
-    this.placement.filter(el => el.info.section !== undefined).forEach(item => {
-      if (item.info.section.split('/')[0] === this.selectTab && !item.info.is_header && item.info.column === this.columnSelected) {
+    this.placement.filter(el => el.info.section).forEach(item => {
+      let section = item.info.section ? item.info.section.split('/') : [];
+      if (section.includes(this.selectTab.kind) && item.info.section.includes(entry.kind) && !item.info.is_header)
         this.subList.push({text: item.info.text, href: item.info.href});
-      }
     });
-    this.subMenu = !this.subMenu;
+
+    this.toggleSubMenuDisplayment(entry);
   }
 
-  // goToCollection(type: Type, entry: Entry) {
-  //   this.navCtrl.push(CollectionPage, {
-  //     type: type,
-  //     entry: entry
-  //   });
-  // }
-  //
-  // getSeparatedRowBrands(s = 3) {
-  //   let total = [];
-  //   let chunk = [];
-  //   let i;
-  //   for (i = 0; i < this.brands.length; i++) {
-  //     chunk.push(this.brands[i]);
-  //     if (i % s == s - 1 && i != 0) {
-  //       total.push(chunk);
-  //       chunk = [];
-  //     }
-  //   }
-  //   if (i % s != s - 1)
-  //     total.push(chunk);
-  //   return total;
-  // }
+  toggleSubMenuDisplayment(subMenu) {
+    const tempTypeElement = this.typeElements.find(el => el.id === subMenu.id);
+    tempTypeElement.showSubMenu = !tempTypeElement.showSubMenu;
+    this.typeElements.find(el => el.id !== subMenu.id).showSubMenu = false;
+  }
 
+  goToProductList(address) {
+    this.navCtrl.push(ProductListPage, {
+      collectionName: address,
+      typeName: 'type'
+    });
+  }
 }

@@ -11,32 +11,20 @@
     </ion-segment-button>
   </ion-segment>
 
-
   <div>
-    <ion-list *ngFor="let entry of typeElements" class="accordion-list" no-padding no-lines>
-      <ion-card (click)="showSubMenu(entry)">
+    <div *ngFor="let entry of typeElements">
+      <ion-card (click)="generateSubMenu(entry)">
         <img src="{{entry.imageUrl}}" alt="" class="card-image">
         <div class="card-title">{{entry.text}}</div>
       </ion-card>
-    </ion-list>
-    <div *ngIf="subMenu">
-      <ion-list *ngFor="let sub of subList" no-padding no-lines>
-        <button ion-button class="active" >
-          {{sub.text}}
-        </button>
-      </ion-list>
+      <div *ngIf="entry && entry.showSubMenu">
+        <ion-list *ngFor="let sub of subList" no-padding no-lines>
+          <button ion-item class="active" (click)="goToProductList(sub.href)">
+            {{sub.text}}
+          </button>
+        </ion-list>
+      </div>
     </div>
   </div>
-
-
-  <!--<ion-item>-->
-  <!--خرید از طریق برند-->
-  <!--</ion-item>-->
-
-  <!--<ion-row *ngFor="let r of getSeparatedRowBrands()">-->
-  <!--<ion-col *ngFor="let c of r" width-33>-->
-  <!--<img src="{{c.imageUrl}}" alt="" class="brand-image">-->
-  <!--</ion-col>-->
-  <!--</ion-row>-->
 </ion-content>
 

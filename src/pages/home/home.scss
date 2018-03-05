@@ -3,32 +3,15 @@
   ion-card {
     position: relative;
     text-align: center;
+    direction: rtl;
     margin: 0 0 2px 0;
     width: 100%;
-    max-height: 256px;
+    //max-height: 256px;
+    max-width: 100%;
   }
 
-  ion-card div:active {
+  ion-card .card-back-click:active {
     opacity: 0.8;
-  }
-
-  .card-title {
-    position: absolute;
-    top: 36%;
-    font-family: 'iranyekan';
-    font-size: 1.8em;
-    width: 100%;
-    font-weight: bold;
-    color: #fff;
-  }
-
-  .card-subtitle {
-    font-family: 'iranyekan';
-    font-size: 0.8em;
-    position: absolute;
-    top: 52%;
-    width: 100%;
-    color: #fff;
   }
 
   .card-button {
@@ -46,7 +29,90 @@
   }
 
   .card-icon:active {
-    opacity: 0.2;
+    opacity: 0.4;
   }
+}
 
+/* Top left text */
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+  width: 100%;
+}
+
+/* Bottom left text */
+.left-top {
+  position: absolute;
+  top: 18%;
+  left: 3%;
+  text-align: left;
+}
+/* Bottom left text */
+.left-center {
+  position: absolute;
+  top: 44%;
+  left: 3%;
+  text-align: left;
+}
+.left-bottom {
+  position: absolute;
+  bottom: 6%;
+  left: 3%;
+  text-align: left;
+}
+
+.center-top {
+  position: absolute;
+  top: 18%;
+  right: 33%;
+}
+.center-center {
+  position: absolute;
+  top: 44%;
+  right: 33%;
+}
+
+/* Bottom right text */
+.center-bottom {
+  position: absolute;
+  bottom: 6%;
+  right: 44%;
+}
+
+.right-bottom {
+  position: absolute;
+  bottom: 6%;
+  right: 5%;
+  text-align: right;
+}
+.right-center {
+  position: absolute;
+  top: 42%;
+  right: 4%;
+  text-align: right;
+}
+.right-top {
+  position: absolute;
+  top: 18%;
+  right: 4%;
+  text-align: right;
+}
+
+.top-title {
+  font-family: 'iranyekan';
+  height: 35px;
+  margin-top: 13px;
+  font-weight: bolder;
+}
+
+.title {
+  font-family: 'iranyekan';
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.text{
+  font-family: 'iranyekan';
+  font-size: 0.7em;
 }

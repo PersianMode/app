@@ -20,16 +20,21 @@
   src: url('../assets/fonts/OneNikeGlyphs.woff');
 }
 
-ion-label, label, ion-input, input, a {
+ion-label, label, ion-input, input, a, div {
   font-family: iranyekan,sans-serif;
 }
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
   font-family: irankharazmi;
 }
 
 .center {
   text-align: center;
+}
+
+.box-center {
+  width: 50%;
+  margin: 0 auto;
 }
 
 .persian-mode-center-logo {
@@ -56,14 +61,25 @@ input {
 }
 
 .input-field {
-  padding: 5px 5px 5px 5px;
-  height: 30px;
   width: 98%;
   border-radius: 5px;
+  border-color: #E5E5E5;
+  border-style: solid;
+  outline: none;
+  color: #8D8D8D;
 }
 
 .left-direction {
   direction: ltr;
+}
+
+.right-direction {
+  direction: rtl;
+}
+
+.right-direction input {
+  text-align: right;
+  padding-right: 5px;
 }
 
 .clickable-link {
@@ -109,4 +125,12 @@ input {
   border-radius: 3px;
   text-align: center;
   vertical-align: middle;
+}
+
+.log-reg-main-content {
+  margin-top: 25px;
+}
+
+.alert-radio-group {
+  direction: rtl;
 }
