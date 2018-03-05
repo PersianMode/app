@@ -8,8 +8,9 @@ import {ProductService} from '../../../services/productService';
 })
 export class ProductFilterPage implements OnInit {
   @ViewChild(Navbar) navBar: Navbar;
+  filterOptions: [] = [];
 
-  constructor(public navParams: NavParams,private productService: ProductService) {
+  constructor(public navParams: NavParams, private productService: ProductService) {
 
   }
 
@@ -18,14 +19,17 @@ export class ProductFilterPage implements OnInit {
     this.initialFilter();
   }
 
-  initialFilter(){
-    this.productService.filtering$.subscribe(data=>{
-      console.log("initialFilter",data);
+  initialFilter() {
+    this.productService.filtering$.subscribe(data => {
+      console.log("____data",data);
+      this.filterOptions = data
     })
   }
 
 
+  filteringRun(){
 
+  }
 
 
 }

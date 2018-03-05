@@ -4,15 +4,41 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-list-header>مرتب </ion-list-header>
+<ion-content style="direction: rtl;">
+  <ion-list *ngFor="let filterOption of filterOptions">
+    <ion-list-header>{{filterOption.name}}</ion-list-header>
+    <div [ngSwitch]="filterOption?.name">
+      <ion-grid *ngSwitchCase="'رنگ'">
+        <div *ngFor="let value of filterOption.values;let i = index;">
+          <ion-col>
+            <ion-item>
+              <!--<svg height="50" width="50">-->
+                <!--<circle cx="50" cy="50" r="40" fill="{{value}}"/>-->
+              <!--</svg>-->
+            </ion-item>
+          </ion-col>
+          <br *ngIf="i%5 === 0">
+        </div>
+      </ion-grid>
+      <ion-grid *ngSwitchCase="'سایز'">
+
+      </ion-grid>
+      <ion-grid *ngSwitchCase="'قیمت'">
+
+      </ion-grid>
+      <ion-grid *ngSwitchCase="'نوع'">
+        {{filterOption.values}}
+
+      </ion-grid>
+
+    </div>
+
   </ion-list>
 
 </ion-content>
 
 <ion-footer>
-  <button ion-button block color="dark">
+  <button ion-button block color="dark" (click)="filteringRun()">
     <h5>جستجو</h5>
     <ion-icon name="search" item-left></ion-icon>
   </button>

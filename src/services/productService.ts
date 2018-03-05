@@ -238,7 +238,6 @@ export class ProductService {
     //Get products from server
     this.httpService.get('collection/' + collection_id).subscribe(
       (data) => {
-        console.log('____',data);
         this.originProducts = data;
         this.products = data;
 
