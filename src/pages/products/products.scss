@@ -2,6 +2,10 @@
   padding: 5px;
 }
 
+.active:active{
+  opacity: 0.8;
+}
+
 .segment-ios .segment-button:last-of-type {
   border-left-width: 1px;
 }
