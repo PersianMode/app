@@ -23,9 +23,4 @@ export class ProductFilterPage implements OnInit {
       console.log("initialFilter",data);
     })
   }
-
-
-
-
-
 }
