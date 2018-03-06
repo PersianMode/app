@@ -1,6 +1,6 @@
 export enum SortOptions {
-  newest,
-  highestRated,
-  lowerPrice,
-  highestPrice,
+  newest = 'جدیدترین',
+  highestRated = 'بیشترین امتیاز',
+  lowerPrice = 'کمترین قیمت',
+  highestPrice = 'بیشترین قیمت',
 }

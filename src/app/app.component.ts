@@ -6,6 +6,7 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {TabsPage} from '../pages/tabs/tabs';
 import {AuthService} from '../services/auth.service';
 import {LoginPage} from '../pages/login/login';
+import {ProductFilterPage} from '../pages/product-list/filter/product-filter';
 
 @Component({
   templateUrl: 'app.html'
@@ -32,7 +33,8 @@ export class MyApp implements OnInit {
     this.authService.isLoggedIn.subscribe(
       (data) => {
         if (data)
-          this.rootPage = TabsPage;
+          this.rootPage = ProductFilterPage;
+          // this.rootPage = TabsPage;
         else
           this.rootPage = LoginPage;
       }
