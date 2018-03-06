@@ -2,11 +2,14 @@ import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {HttpService} from '../../services/http.service';
 import {ProductListPage} from '../product-list/product-list';
+import {PageService} from '../../services/page.service';
 
 export interface Type {
 }
+
 export interface Entry {
 }
+
 @Component({
   selector: 'page-products',
   templateUrl: 'products.html',
@@ -20,16 +23,16 @@ export class ProductsPage {
   selectTab;
 
 
-  constructor(private httpService: HttpService, public navCtrl: NavController) {
+  constructor(private pageService: PageService, public navCtrl: NavController) {
 
   }
 
   ionViewWillEnter() {
+    this.pageService.getPage('my_shop');
+
     this.types = [];
-    this.httpService.post('page', {
-      address: 'my_shop'
-    }).subscribe(data => {
-      this.placement = data['placement'];
+    this.pageService.placement$.subscribe(res => {
+      this.placement = res;
       this.placement.forEach(item => {
         if (item.component_name === 'menu' && item.variable_name === 'topMenu') {
           this.types.push({

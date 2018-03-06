@@ -2,28 +2,29 @@ import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {HttpService} from '../../services/http.service';
 import {HttpClient} from '@angular/common/http';
+import {PageService} from '../../services/page.service';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
 })
-export class HomePage implements OnInit{
+export class HomePage{
   feed_placement : any;
 
-  constructor(public navCtrl: NavController, private httpService: HttpService, private http: HttpClient) {
+  constructor(public navCtrl: NavController, private pageService: PageService, private http: HttpClient) {
   }
 
-  ngOnInit() {
-    this.httpService.post('/page', {
-      address: 'feed'
-    }).subscribe(
-      (res) => {
-        this.feed_placement = res['placement'];
-      },
-      (er) => {
-        console.error('Cannot check user validation: ', er);
+  ionViewWillEnter(){
 
-      }
-    );
+    this.pageService.getPage('feed');
+
+    this.pageService.placement$.subscribe(res => {
+      this.feed_placement = res;
+    },err => {
+      console.error(err);
+
+    })
+
+
   }
 }

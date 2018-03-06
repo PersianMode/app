@@ -42,6 +42,7 @@ export class ProductListPage implements OnInit {
   ngOnInit() {
     this.navBar.setBackButtonText('بازگشت');
 
+
     // Get sub-collection
     this.httpService.post('page', {
       address: this.navParams.get('typeName') + '/' + this.curType,
@@ -58,10 +59,8 @@ export class ProductListPage implements OnInit {
 
     this.pageName = this.navParams.get('typeName') + '/' + this.curType;
     this.collectionId = this.navParams.get('collectionId');
-    // this.collectionId = '5a96b7604df3c90a10be4238';
-    this.collectionId = '5a9cffd648186d2a8f1b3284';
     this.productService.loadProducts(this.collectionId);
-    this.productService.productList.subscribe(
+    this.productService.productList$.subscribe(
       (data) => {
         this.products = data;
         this.productsCount = this.products ? this.products.length : 0;
@@ -73,7 +72,7 @@ export class ProductListPage implements OnInit {
   }
 
   loadOtherProducts(infiniteScroll) {
-    this.productService.getProducts(this.productsCount, 10);
+    //this.productService.getProducts(this.productsCount, 10);
 
     if (this.productsCount === this.products.length)
       infiniteScroll.enable(false);
