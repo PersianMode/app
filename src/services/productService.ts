@@ -31,7 +31,7 @@ export class ProductService {
     colors = Array.from(new Set(colors));
 
 
-    let sizes: string[] = this.filteredProducts.map(x => x['size']);
+    let sizes = this.filteredProducts.map(x => x['size']);
     sizes = Array.from(new Set([].concat.apply([], sizes)));
 
 
@@ -47,7 +47,7 @@ export class ProductService {
 
   loadProducts(collection_id) {
 
-    console.log('--> ',collection_id);
+    console.log('--> ', collection_id);
     this.httpService.get('collection/' + collection_id).subscribe(
       (data) => {
 
@@ -104,15 +104,15 @@ export class ProductService {
             this.filteredProducts = this.filteredProducts.concat(this.products.filter(product => item.values.includes(product.product_type.name)));
             break;
           case 'رنگ':
-            this.filteredProducts =  this.filteredProducts.concat(this.products.filter(product => {
-              const colors = [].concat.apply([], product.colors.map(color => color.name.split('/')));
-              const duplicated: string[] = Array.from(new Set(colors));
+            this.filteredProducts = this.filteredProducts.concat(this.products.filter(product => {
+              const colors: string[] = [].concat.apply([], product.colors.map(color => color.name.split('/')));
+              const duplicated = Array.from(new Set(colors));
               return duplicated.some(r => item.values.includes(r));
             }));
             break;
           case 'سایز':
-            this.filteredProducts =  this.filteredProducts.concat(this.products.filter(product => {
-              const productSizes: string[] = Array.from(new Set(product.sizes));
+            this.filteredProducts = this.filteredProducts.concat(this.products.filter(product => {
+              const productSizes: any[] = Array.from(new Set(product.sizes));
               return productSizes.some(r => item.values.includes(r));
             }));
 

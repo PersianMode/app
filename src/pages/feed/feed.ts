@@ -5,10 +5,10 @@ import {HttpClient} from '@angular/common/http';
 import {PageService} from '../../services/page.service';
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html',
+  selector: 'page-feed',
+  templateUrl: 'feed.html',
 })
-export class HomePage{
+export class FeedPage{
   feed_placement : any;
 
   constructor(public navCtrl: NavController, private pageService: PageService, private http: HttpClient) {
