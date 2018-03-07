@@ -33,8 +33,7 @@ export class MyApp implements OnInit {
     this.authService.isLoggedIn.subscribe(
       (data) => {
         if (data)
-          this.rootPage = FilterPage;
-          // this.rootPage = TabsPage;
+          this.rootPage = TabsPage;
         else
           this.rootPage = LoginPage;
       }
