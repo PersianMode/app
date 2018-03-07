@@ -1,17 +1,84 @@
-<!--
-  Generated template for the FilterPage page.
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>filter</ion-title>
+    <ion-title>فیلترها</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
-<ion-content padding>
-
+<ion-content padding dir="rtl">
+  <ion-list>
+    <ion-list-header class="filter-option-title">مرتب سازی بر اساس</ion-list-header>
+    <ion-item *ngFor="let so of sortOptionList" (click)="sort(so.value)" [ngClass]="selectedSort === so.value ? 'selected-sort' : null">
+      <ion-label class="sort-item">{{so.name}}</ion-label>
+    </ion-item>
+  </ion-list>
+  <div *ngFor="let option of filterOptions">
+    <div *ngIf="option.name !== 'سایز' && option.name !== 'رنگ'">
+      <ion-list>
+        <ion-list-header class="filter-option-title">{{option.name}}</ion-list-header>
+        <ion-item class="filter-item" *ngFor="let value of option.values">
+          <ion-label>{{value}}</ion-label>
+          <ion-checkbox color="dark" (ionChange)="updateFilter(option.name, value)" [(ngModel)]="bindingFilters[option.name][value]"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div *ngIf="option.name === 'سایز'">
+      <ion-label class="filter-option-title">{{option.name}}</ion-label>
+      <ion-grid>
+        <ion-row class="size-area">
+          <ion-col class="size-col" *ngFor="let size of option.values"
+                   col-3 col-lg-3 col-md-3 col-sm-4>
+            <div class="size-box" [ngClass]="bindingFilters['سایز'][size] ? 'selected-size' : 'null'" (click)="setSize(size)">
+              {{size.toLocaleString('fa')}}
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div *ngIf="option.name === 'رنگ'">
+      <ion-label class="filter-option-title">{{option.name}}</ion-label>
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let color of option.values"
+                   col-3 col-lg-3 col-md-3 col-sm-4>
+            <div *ngIf="colorMapper[color]" class="color-box">
+              <div class="color-circle color-box" [style.background-color]="colorMapper[color]"
+                   [style.border-width]="(color.toLowerCase() === 'white' ? '1' : '0') + 'px'" (click)="setColor(color)">
+                <i class="fa fa-check color-checked" *ngIf="bindingFilters['رنگ'][color]"
+                   [style.color]="color.toLowerCase() === 'black' ? 'white' : 'black'"></i>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <div style="width: ;">
+        <svg height="6px" width="100%">
+          <line x1="0" y1="0" x2="100%" y2="0" style="stroke: rgba(197,203,201,0.68);stroke-width:2"/>
+        </svg>
+      </div>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button color="dark" block clear (click)="filter()">
+          <h6>اعمال</h6>
+        </button>
+      </ion-col>
+      <div style="padding-top: 10px;">
+        <svg height="50px" width="6px">
+          <line x1="3" y1="0" x2="3" y2="50" style="stroke: rgba(197,203,201,0.68);stroke-width:2"/>
+        </svg>
+      </div>
+      <ion-col>
+        <button ion-button color="dark" block clear (click)="clearFilterData()" [disabled]="clearShouldDisabled">
+          <h6>پاک کردن</h6>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

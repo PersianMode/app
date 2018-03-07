@@ -1,3 +1,79 @@
-page-filter {
+.size-box {
+  border: rgba(197,203,201,0.68) solid thin;
+  text-align: center;
+  padding: 10px;
+  margin: 0;
+}
 
+.selected-sort {
+  background-color: rgba(197,203,201,0.68);
+}
+
+.selected-size {
+  border-color: black;
+}
+
+.size-col {
+  padding: unset !important;
+}
+
+.size-area {
+  margin: 20px;
+}
+
+.item-ios.item-block .item-inner {
+  border-bottom: 0px !important;
+}
+
+.list-header-ios {
+  border-bottom: 0px !important;
+}
+
+.filter-option-title {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.color-box {
+  width: 50%;
+  margin: auto;
+}
+
+.color-checked {
+  text-align: center;
+  margin-right: 7px;
+}
+
+.color-circle {
+  width: 30px;
+  height: 30px;
+  border-style: solid;
+  border-color: rgba(197,203,201,0.68);
+  border-radius: 50%;
+  line-height: 30px;
+}
+
+.sort-item {
+  font-size: 0.8em;
+}
+
+.filter-item {
+  font-size: 0.9em;
+}
+
+.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+  border-bottom: none;
+}
+
+.list-header-md {
+  border-top: none;
+}
+
+.list-md .item-block .item-inner {
+  border-bottom: none;
+}
+
+
+.item-md.item-block .item-inner {
+  border-bottom: none;
 }

@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {HttpService} from '../../services/http.service';
-import {ProductListPage} from '../product-list/product-list';
 import {PageService} from '../../services/page.service';
+import {CollectionPage} from '../collection/collection';
 
 export interface Type {
 }
@@ -11,10 +10,10 @@ export interface Entry {
 }
 
 @Component({
-  selector: 'page-products',
-  templateUrl: 'products.html',
+  selector: 'page-my-shop',
+  templateUrl: 'my-shop.html',
 })
-export class ProductsPage {
+export class MyShopPage {
 
   types = [];
   placement = [];
@@ -90,7 +89,7 @@ export class ProductsPage {
   }
 
   goToProductList(address) {
-    this.navCtrl.push(ProductListPage, {
+    this.navCtrl.push(CollectionPage, {
       collectionName: address,
       typeName: 'type'
     });

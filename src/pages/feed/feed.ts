@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {PageService} from '../../services/page.service';
 
 @Component({
-  selector: 'page-home',
+  selector: 'page-feed',
   templateUrl: 'feed.html',
 })
 export class FeedPage{
