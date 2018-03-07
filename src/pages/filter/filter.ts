@@ -13,24 +13,7 @@ export class FilterPage implements OnInit {
   sortOptions = SortOptions;
   sortOptionList = [];
   selectedSort = null;
-  filterOptions = [
-    {
-      name: 'برند',
-      values: ['آدیداس', 'پلیس', 'نایک', 'گپ'],
-    },
-    {
-      name: 'نوع',
-      values: ['کفش', 'لباس', 'عینک', 'کوله ورزشی'],
-    },
-    {
-      name: 'سایز',
-      values: ['6', '6.5', '7', '8', '8.5', '9', '10', '10.5', '11', '12', '12.5', '13', '13.5', '5', '14'],
-    },
-    {
-      name: 'رنگ',
-      values: ['Black', 'White', 'Yellow', 'Red', 'Brown', 'Blue', 'Green']
-    }
-  ];
+  filterOptions = [];
   filterData = [];
   bindingFilters = {};
   screenWidth = 100;
