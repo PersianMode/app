@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="inbox-page">
-  <ion-card *ngFor="let message of messages">
+  <ion-card *ngFor="let message of messages" (click)="goToProductView()">
     <img class="inbox-image" src="{{message.imageUrl}}" alt="">
     <div class="card-title">{{message.title}}</div>
     <div class="card-subtitle">{{message.subtitle}}</div>
