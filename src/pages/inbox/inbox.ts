@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import {ProductViewPage} from "../products/product-view/product-view";
 
 interface Message {
   imageUrl: string;
@@ -30,6 +31,13 @@ export class InboxPage {
 
   constructor(public navCtrl: NavController) {
 
+  }
+
+  //this is just a temp entry for product-view
+  goToProductView() {
+    this.navCtrl.push(ProductViewPage, {
+      productId: '5a9f9a79bcf5d7654e79df35'
+    });
   }
 
 }

@@ -26,6 +26,8 @@ export class SelectSizePage {
   }
 
   addToBag() {
+    //should go to basket page or do something, but API and other things are not written yet.
+    //so I just log the information needed
     console.log("product information: ", this.activeColor, this.instances[this.selectedSize]);
   }
 
