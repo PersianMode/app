@@ -25,11 +25,11 @@ import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
 import {ProductListPage} from '../pages/product-list/product-list';
 import {ProductItemComponent} from '../components/product-item/product-item';
 import {ProductService} from '../services/productService';
-import {PlacementService} from '../services/placementService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
 import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
 import {SelectSizePage} from "../pages/products/select-size/select-size";
 import {ProductFilterPage} from '../pages/product-list/filter/product-filter';
+import {PageService} from '../services/page.service';
 
 @NgModule({
   declarations: [
@@ -85,7 +85,7 @@ import {ProductFilterPage} from '../pages/product-list/filter/product-filter';
     SocketService,
     GooglePlus,
     ProductService,
-    PlacementService,
+    PageService
   ]
 })
 export class AppModule {}
