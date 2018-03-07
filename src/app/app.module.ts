@@ -27,16 +27,17 @@ import {SelectSizePage} from "../pages/products/select-size/select-size";
 import {PageService} from '../services/page.service';
 import {ColorService} from '../services/colorService';
 import {FeedPage} from '../pages/feed/feed';
-import {CollectionPage} from '../pages/collection/collection';
+import {CollectionsPage} from '../pages/collections/collections';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
+import {CollectionViewerComponent} from '../pages/collections/components/collection-viewer';
 
 @NgModule({
   declarations: [
     MyApp,
     FeedPage,
     MyShopPage,
-    CollectionPage,
+    CollectionsPage,
     BagPage,
     InboxPage,
     ProfilePage,
@@ -48,7 +49,8 @@ import {MyShopPage} from '../pages/my-shop/my-shop';
     RegisterPage,
     RegConfirmationPage,
     ProductItemComponent,
-    FilterPage
+    FilterPage,
+    CollectionViewerComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,7 @@ import {MyShopPage} from '../pages/my-shop/my-shop';
     MyApp,
     FeedPage,
     MyShopPage,
-    CollectionPage,
+    CollectionsPage,
     BagPage,
     InboxPage,
     ProfilePage,

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{pageName}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="gotToProductFilter(target)">
+        <ion-icon name="options"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding dir="rtl">
+  <ion-segment color="dark" class="collection-segment" >
+    <ion-segment-button *ngFor="let item of menuItems" value="{{item['href']}}" (click)="menuItemChanged(item)">
+      {{item['text']}}
+    </ion-segment-button>
+  </ion-segment>
+
+  <page-collection-viewer [address]="target"></page-collection-viewer>
+
+
+</ion-content>
+
+
+
+

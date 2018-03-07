@@ -3,6 +3,7 @@ import {HttpService} from './http.service';
 import {SortOptions} from '../enum/sort.options.enum';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {IFilter} from '../interfaces/ifilter.interface';
+import {ToastController} from 'ionic-angular';
 
 @Injectable()
 export class ProductService {
@@ -16,7 +17,7 @@ export class ProductService {
   private filterInput: IFilter[];
   private sortInput: SortOptions;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private toastCtrl: ToastController) {
   }
 
   extractFilters() {
@@ -45,10 +46,9 @@ export class ProductService {
 
   }
 
-  loadProducts(collection_id) {
+  loadProducts(address) {
 
-    console.log('--> ', collection_id);
-    this.httpService.get('collection/' + collection_id).subscribe(
+    this.httpService.post('collection/app', {address}).subscribe(
       (data) => {
 
         if (data.name) {
@@ -59,8 +59,6 @@ export class ProductService {
         if (data.products) {
           this.products = data.products;
 
-          console.log('-> ', this.products);
-
           this.filteredProducts = this.products.slice();
 
           this.extractFilters();
@@ -70,6 +68,10 @@ export class ProductService {
       },
       (err) => {
         console.error('Cannot get products of collection: ', err);
+        this.toastCtrl.create({
+          message: 'خطا در دریافت لیست محصولات',
+          duration: 3200,
+        }).present();
       }
     );
   }
