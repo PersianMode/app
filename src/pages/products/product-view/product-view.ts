@@ -22,7 +22,7 @@ export class ProductViewPage {
   currentProduct: {};
   selectedColor: {};
   activeColorIndex: number = 0;
-  firstOfEachColor = [];
+  thumbnails = [];
 
   buyButtonShouldBeActive: Boolean = true;
 
@@ -30,23 +30,24 @@ export class ProductViewPage {
               public viewCtrl: ViewController, private httpService: HttpService,
               private popoverCtrl: PopoverController) {
     this.HOST = HttpService.HOST;
+    //TODO: TEST ONLY -> REMOVE FOLLOWING LINE TO WORK WITH THE SERVER!
+    this.HOST = '';
   }
 
   ionViewDidLoad() {
     this.productId = this.navParams.get('productId');
     this.httpService.get(`product/${this.productId}`).subscribe(
       data => {
-        data = data[0];
-        this.currentProduct = data;
+        this.currentProduct = data[0];
         if (this.currentProduct && this.currentProduct['colors']) {
           this.selectedColor = this.currentProduct['colors'][0];
 
           //set first of each color to show in the horizontal scroll section
-          this.firstOfEachColor = [];
+          this.thumbnails = [];
           this.currentProduct['colors'].forEach((elem, idx) => {
-            this.firstOfEachColor.push({
+            this.thumbnails.push({
               index: idx,
-              image: elem.images[0],
+              image: elem.image.thumbnail,
             });
           });
         }
