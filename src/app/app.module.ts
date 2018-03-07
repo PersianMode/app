@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { HomePage } from '../pages/home/home';
+import { FeedPage } from '../pages/feed/feed';
 import { TabsPage } from '../pages/tabs/tabs';
 import {ProductsPage} from "../pages/products/products";
 import {BagPage} from "../pages/bag/bag";
@@ -34,7 +34,7 @@ import {PageService} from '../services/page.service';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
+    FeedPage,
     ProductsPage,
     BagPage,
     InboxPage,
@@ -60,7 +60,7 @@ import {PageService} from '../services/page.service';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
+    FeedPage,
     ProductsPage,
     BagPage,
     InboxPage,

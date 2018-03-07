@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { HomePage } from '../home/home';
+import { FeedPage } from '../feed/feed';
 import { ProductsPage } from '../products/products';
 import { BagPage } from "../bag/bag";
 import { InboxPage } from '../inbox/inbox';
@@ -11,7 +11,7 @@ import {ProfilePage} from '../profile/profile';
 })
 export class TabsPage {
 
-  tabHomeRoot = HomePage;
+  tabHomeRoot = FeedPage;
   tabProductsRoot = ProductsPage;
   tabBagRoot = BagPage;
   tabInboxRoot = InboxPage;
