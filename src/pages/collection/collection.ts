@@ -2,13 +2,13 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Navbar, NavController, NavParams, ViewController} from 'ionic-angular';
 import {ProductService} from '../../services/productService';
 import {HttpService} from '../../services/http.service';
-import {ProductFilterPage} from './filter/product-filter';
+import {FilterPage} from '../filter/filter';
 
 @Component({
-  selector: 'page-product-list',
-  templateUrl: 'product-list.html',
+  selector: 'page-collection',
+  templateUrl: 'collection.html',
 })
-export class ProductListPage implements OnInit {
+export class CollectionPage implements OnInit {
   @ViewChild(Navbar) navBar: Navbar;
   collectionDetails = {
     nameFa: 'تازه های مردانه',
@@ -93,6 +93,6 @@ export class ProductListPage implements OnInit {
   }
 
   gotToProductFilter() {
-    this.navCtrl.push(ProductFilterPage)
+    this.navCtrl.push(FilterPage)
   }
 }

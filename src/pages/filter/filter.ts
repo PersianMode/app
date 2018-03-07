@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Navbar, NavParams, Platform} from 'ionic-angular';
 
-import {ProductService} from '../../../services/productService';
-import {SortOptions} from '../../../enum/sort.options.enum';
-import {ColorService} from '../../../services/colorService';
+import {ProductService} from '../../services/productService';
+import {SortOptions} from '../../enum/sort.options.enum';
+import {ColorService} from '../../services/colorService';
 
 @Component({
-  templateUrl: 'product-filter.html'
+  templateUrl: 'filter.html'
 })
-export class ProductFilterPage implements OnInit {
+export class FilterPage implements OnInit {
   @ViewChild(Navbar) navBar: Navbar;
   sortOptions = SortOptions;
   sortOptionList = [];
@@ -38,7 +38,7 @@ export class ProductFilterPage implements OnInit {
   colorMapper = {};
 
   constructor(public navParams: NavParams, private productService: ProductService,
-              public colorService: ColorService) {
+              private colorService: ColorService) {
 
   }
 
@@ -48,9 +48,13 @@ export class ProductFilterPage implements OnInit {
         this.sortOptionList.push({name: this.sortOptions[el], value: el});
     });
 
+    this.navBar.setBackButtonText('بازگشت');
+    this.initialFilter();
+  }
+
+  initialFilter() {
     this.productService.filtering$.subscribe(
       (data) => {
-        console.log(data);
         this.filterOptions = data;
         this.filterOptions.forEach(el => {
           this.bindingFilters[el.name] = {};
@@ -59,44 +63,22 @@ export class ProductFilterPage implements OnInit {
           });
         });
 
-        if(this.bindingFilters['رنگ']) {
-          Object.keys(this.bindingFilters['رنگ']).forEach(el => {
-            this.colorMapper[el] = this.colorService.getColorHexCode(el);
-          });
-        }
+        this.colorService.colorIsReady.subscribe(
+          (data) => {
+            if(data && !this.colorMapper) {
+              if(this.bindingFilters['رنگ']) {
+                Object.keys(this.bindingFilters['رنگ']).forEach(el => {
+                  this.colorMapper[el] = this.colorService.getColorHexCode(el);
+                });
+              }
+            }
+          }
+        );
       },
       (err) => {
         console.error('Cannot subscribe on filtering$ in productService: ', err);
       }
     );
-
-    // Use mock data
-    this.filterOptions.forEach(el => {
-      this.bindingFilters[el.name] = {};
-      el.values.forEach(value => {
-        this.bindingFilters[el.name][value] = false;
-      });
-    });
-
-    if(this.bindingFilters['رنگ']) {
-      Object.keys(this.bindingFilters['رنگ']).forEach(el => {
-        this.colorMapper[el] = this.colorService.getColorHexCode(el);
-      });
-    }
-
-    console.log(this.colorMapper);
-
-    console.log(this.bindingFilters);
-
-
-    this.navBar.setBackButtonText('بازگشت');
-    this.initialFilter();
-  }
-
-  initialFilter() {
-    this.productService.filtering$.subscribe(data => {
-      console.log("initialFilter", data);
-    })
   }
 
   sort(option) {
@@ -148,9 +130,6 @@ export class ProductFilterPage implements OnInit {
         }
       });
     });
-
-    console.log(this.filterData);
-    console.log(this.selectedSort);
 
     this.productService.setFilter(this.filterData);
     if(this.selectedSort)

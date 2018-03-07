@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
-import {IPageInfo} from '../../admin/page/interfaces/IPageInfo.interface';
+// import {IPageInfo} from '../../admin/page/interfaces/IPageInfo.interface';
 
 
 @Injectable()
 export class PageService {
   private cache: any = {};
   placement$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  pageInfo$: ReplaySubject<IPageInfo> = new ReplaySubject<IPageInfo>(1);
+  // pageInfo$: ReplaySubject<IPageInfo> = new ReplaySubject<IPageInfo>(1);
 
   constructor(private httpService: HttpService) {
 
@@ -18,8 +18,8 @@ export class PageService {
     this.placement$.next(placements);
   }
 
-  private emitPageInfo(info: IPageInfo) {
-    this.pageInfo$.next(info);
+  private emitPageInfo(info/*: IPageInfo*/) {
+    // this.pageInfo$.next(info);
   }
 
   getPage(pageName) {
