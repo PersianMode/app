@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
-import {IPageInfo} from '../../admin/page/interfaces/IPageInfo.interface';
+import {IPageInfo} from '../interfaces/ipageInfo.interface';
 
 
 @Injectable()
