@@ -69,7 +69,7 @@ export class SelectSizePage {
     })
   }
 
-  presentToast(message, position = 'bottom') {
+  presentToast(message = 'خطا در انجام عملیات', position = 'bottom') {
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000,
