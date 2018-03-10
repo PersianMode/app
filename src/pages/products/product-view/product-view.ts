@@ -38,7 +38,6 @@ export class ProductViewPage {
     this.productId = this.navParams.get('productId');
     this.httpService.get(`product/${this.productId}`).subscribe(
       data => {
-        console.log(data);
         this.currentProduct = data[0];
         if (this.currentProduct && this.currentProduct['colors']) {
           this.selectedColor = this.currentProduct['colors'][0];
