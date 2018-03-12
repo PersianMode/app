@@ -17,7 +17,33 @@ export class CollectionPage implements OnInit {
   productsCount = 0;
   pageName = null;
   collectionId = null;
-  products = [];
+  products = [{
+    name: 'product 001',
+    desc: 'description product 001',
+    base_price: 1000,
+    colors: [{
+      color_id: '123',
+      image:{
+        thumbnail: 'assets/product-pic/thumbnail/09.jpg',
+        angles: [{
+          url: '',
+        }]
+      }
+    }]
+  },{
+    name: 'product 002',
+    desc: 'description product 002',
+    base_price: 2000,
+    colors: [{
+      color_id: '321',
+      image:{
+        thumbnail: 'assets/product-pic/thumbnail/08.jpg',
+        angles: [{
+          url: '',
+        }]
+      }
+    }]
+  }];
   types = [{
     name_en: 'men',
     name_fa: 'مردانه',
@@ -31,6 +57,7 @@ export class CollectionPage implements OnInit {
     name_en: 'girls',
     name_fa: 'دخترانه',
   }];
+
   curType = 'All';
 
 
