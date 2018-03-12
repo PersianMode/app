@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {Storage} from '@ionic/storage';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class CartService {
-  cnt = 0;
+  dataArray : any = [];
+  cartItems: ReplaySubject<number> = new ReplaySubject<number>();
 
   constructor(private httpService: HttpService,
               private storage: Storage) {
@@ -20,8 +22,10 @@ export class CartService {
         let customer_id = user['id'] || null;
         let data = {customer_id, product_instance_id, number};
         this.httpService.post(`order`, data).subscribe(
-          data => {
-            if (!(data.n > 0 || data.nModified > 0))
+          res => {
+            this.dataArray.push(data);
+            this.cartItems.next(this.dataArray.length);
+            if (!(res.n > 0 || res.nModified > 0))
               return cb('nothing is changed');
 
             if (cb) cb(null);
@@ -33,15 +37,4 @@ export class CartService {
       });
   }
 
-  // getCartItems() {
-  //   if (!this.authService.isLoggedIn.getValue()) {
-  //     this.getCartFromStorage();
-  //   }
-
-  // Get order-line details or all order details
-// }
-
-  getCartFromStorage() {
-    return JSON.parse(localStorage.getItem('cart')) === null ? [] : JSON.parse(localStorage.getItem('cart'));
-  }
 }

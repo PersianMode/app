@@ -16,7 +16,7 @@ export class SelectSizePage {
   activeColor = null;
 
   loading;
-
+  cartNum = null;
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private toastCtrl: ToastController, private cartService: CartService,
               private loadingCtrl: LoadingController) {
@@ -67,6 +67,7 @@ export class SelectSizePage {
       if(!isLoading)
         this.navCtrl.pop();
     })
+    this.cartService.cartItems.subscribe(res => this.cartNum = res);
   }
 
   presentToast(message = 'خطا در انجام عملیات', position = 'bottom') {
