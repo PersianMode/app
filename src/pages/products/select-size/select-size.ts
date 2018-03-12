@@ -1,6 +1,5 @@
 import {Component} from "@angular/core";
 import {LoadingController, NavController, NavParams, ToastController} from "ionic-angular";
-// import {priceFormatter} from "../../../shared/lib/priceFormatter";
 import {CartService} from "../../../services/cart.service";
 
 @Component({
@@ -11,12 +10,9 @@ export class SelectSizePage {
 
   instances = [];
   rows = [];
-
   selectedSize = null;
   activeColor = null;
-
   loading;
-  cartNum = null;
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private toastCtrl: ToastController, private cartService: CartService,
               private loadingCtrl: LoadingController) {
@@ -67,7 +63,6 @@ export class SelectSizePage {
       if(!isLoading)
         this.navCtrl.pop();
     })
-    this.cartService.cartItems.subscribe(res => this.cartNum = res);
   }
 
   presentToast(message = 'خطا در انجام عملیات', position = 'bottom') {

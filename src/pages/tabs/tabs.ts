@@ -29,8 +29,7 @@ export class TabsPage {
       this.cartNum = res;
     });
   }
-
   ngOnDestroy() {
-    this.itemSubs.unsubscribe();
+    this.itemSubs.unsubscribe(); //???
   }
 }
