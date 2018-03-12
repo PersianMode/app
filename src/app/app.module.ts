@@ -3,16 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
-import {ProductsPage} from "../pages/products/products";
 import {BagPage} from "../pages/bag/bag";
 import {InboxPage} from "../pages/inbox/inbox";
 import {ProfilePage} from "../pages/profile/profile";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import {CollectionPage} from "../pages/products/collection/collection";
 import {LoginPage} from '../pages/login/login';
 import {AuthService} from '../services/auth.service';
 import {HttpService} from '../services/http.service';
@@ -22,32 +19,37 @@ import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
-import {ProductListPage} from '../pages/product-list/product-list';
 import {ProductItemComponent} from '../components/product-item/product-item';
 import {ProductService} from '../services/productService';
-import {PlacementService} from '../services/placementService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
 import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
 import {SelectSizePage} from "../pages/products/select-size/select-size";
+import {PageService} from '../services/page.service';
+import {ColorService} from '../services/colorService';
+import {FeedPage} from '../pages/feed/feed';
+import {CollectionPage} from '../pages/collection/collection';
+import {FilterPage} from '../pages/filter/filter';
+import {MyShopPage} from '../pages/my-shop/my-shop';
+import {CartService} from "../services/cart.service";
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    ProductsPage,
+    FeedPage,
+    MyShopPage,
+    CollectionPage,
     BagPage,
     InboxPage,
     ProfilePage,
     TabsPage,
-    CollectionPage,
     ProductViewPage,
     ProductDetailPage,
     SelectSizePage,
     LoginPage,
     RegisterPage,
     RegConfirmationPage,
-    ProductListPage,
     ProductItemComponent,
+    FilterPage
   ],
   imports: [
     BrowserModule,
@@ -58,20 +60,20 @@ import {SelectSizePage} from "../pages/products/select-size/select-size";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    ProductsPage,
+    FeedPage,
+    MyShopPage,
+    CollectionPage,
     BagPage,
     InboxPage,
     ProfilePage,
     TabsPage,
-    CollectionPage,
     LoginPage,
     ProductViewPage,
     ProductDetailPage,
     SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
-    ProductListPage,
+    FilterPage
   ],
   providers: [
     StatusBar,
@@ -82,7 +84,9 @@ import {SelectSizePage} from "../pages/products/select-size/select-size";
     SocketService,
     GooglePlus,
     ProductService,
-    PlacementService,
+    PageService,
+    ColorService,
+    CartService,
   ]
 })
 export class AppModule {}

@@ -9,17 +9,17 @@
 <ion-content class="product-view-page">
   <ion-card>
     <ion-slides [pager]="true" #topSlider>
-      <ion-slide *ngFor="let image of selectedColor?.images">
-        <!--<img src="{{HOST + image}}" style="width: 100%;">-->
-        <img src="{{tempImageUrl}}" style="width: 100%;">
+      <ion-slide *ngFor="let image of selectedColor?.image?.angles">
+        <img src="{{HOST + image}}" style="width: 100%;">
+        <!--<img src="{{tempImageUrl}}" style="width: 100%;">-->
       </ion-slide>
     </ion-slides>
   </ion-card>
 
   <ion-scroll scrollX="true">
-    <!--<img src="{{HOST + image.image}}" *ngFor="let image of firstOfEachColor" (click)="changeColorTo(image.index)"-->
-    <img src="{{tempImageUrl}}" *ngFor="let image of firstOfEachColor" (click)="changeColorTo(image.index)"
+    <img src="{{HOST + image.image}}" *ngFor="let image of thumbnails" (click)="changeColorTo(image.index)"
          [ngClass]="{'active-image': image.index == activeColorIndex}">
+    <!--<img src="{{tempImageUrl}}" *ngFor="let image of thumbnails" (click)="changeColorTo(image.index)"-->
   </ion-scroll>
 
   <div class="desc">
