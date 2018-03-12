@@ -30,6 +30,7 @@ import {FeedPage} from '../pages/feed/feed';
 import {CollectionPage} from '../pages/collection/collection';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
+import {CartService} from "../services/cart.service";
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import {MyShopPage} from '../pages/my-shop/my-shop';
     ProductService,
     PageService,
     ColorService,
+    CartService,
   ]
 })
 export class AppModule {}
