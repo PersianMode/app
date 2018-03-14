@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
-import {NavController, NavParams, ToastController, ViewController} from "ionic-angular";
-import {priceFormatter} from "../../../shared/lib/priceFormatter";
+import {LoadingController, NavController, NavParams, ToastController} from "ionic-angular";
+import {CartService} from "../../../services/cart.service";
 
 @Component({
   selector: 'page-select-size',
@@ -10,14 +10,14 @@ export class SelectSizePage {
 
   instances = [];
   rows = [];
-
   selectedSize = null;
   activeColor = null;
-
+  loading;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController, private cartService: CartService,
+              private loadingCtrl: LoadingController) {
     if(this.navParams.get('instances') == null) {
-      this.presentToast();
+      this.presentToast('خطای وجود محصول');
       return;
     }
     this.instances = this.navParams.get('instances');
@@ -26,21 +26,55 @@ export class SelectSizePage {
   }
 
   addToBag() {
-    //should go to basket page or do something, but API and other things are not written yet.
-    //so I just log the information needed
-    console.log("product information: ", this.activeColor, this.instances[this.selectedSize]);
+    this.presentLoading(true);
+    //this setTimeout is TEST-PURPOSE ONLY! to let us see the loading bar before adding the orderline
+    setTimeout(() => {
+      this.cartService.addOrderline(this.instances[this.selectedSize]._id, 1, (err) => {
+        if (err) {
+          return this.presentToast("لطفا مجددا تلاش کنید");
+        }
+
+        this.loading.dismiss();
+        this.presentLoading(false);
+      });
+    }, 1000);
   }
 
   selectSize(index = null) {
     this.selectedSize = index;
   }
 
-  presentToast() {
+  presentLoading(isLoading = true) {
+    if(isLoading) {
+      this.loading = this.loadingCtrl.create({});
+    }
+    else {
+      this.loading = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: 'محصول به سبد خرید اضافه شد!',
+        duration: 2000,
+        cssClass: 'select-size-page-header',
+      });
+    }
+
+    this.loading.present();
+
+    this.loading.onDidDismiss(() => {
+      if(!isLoading)
+        this.navCtrl.pop();
+    })
+  }
+
+  presentToast(message = 'خطا در انجام عملیات', position = 'bottom') {
     let toast = this.toastCtrl.create({
-      message: 'An error occurred',
+      message: message,
       duration: 3000,
-      position: 'bottom'
+      position: position,
+      cssClass: 'select-size-page-header',
     });
+
+    if(this.loading)
+      this.loading.dismiss();
 
     toast.present();
   }

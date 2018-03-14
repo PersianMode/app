@@ -31,6 +31,7 @@ import {CollectionsPage} from '../pages/collections/collections';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
 import {CollectionViewerComponent} from '../pages/collections/components/collection-viewer';
+import {CartService} from "../services/cart.service";
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import {CollectionViewerComponent} from '../pages/collections/components/collect
     ProductService,
     PageService,
     ColorService,
+    CartService,
   ]
 })
 export class AppModule {}
