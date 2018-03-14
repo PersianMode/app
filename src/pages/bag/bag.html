@@ -5,20 +5,7 @@
 </ion-header>
 
 <ion-content padding class="bag-page">
-  <ion-list>
-    <ion-item-sliding *ngFor="let product of products">
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="{{product.thumbnail}}" >
-        </ion-thumbnail>
-        <h1>{{product.name}}</h1>
-        <h5>{{product.cost}}</h5>
-      </ion-item>
-      <ion-item-options side="right">
-        <button ion-button color="danger" (click)="removeThisProduct(product)">حذف<ion-icon  name="trash"></ion-icon></button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
+  <page-product-sliding [products]="products"></page-product-sliding>
   <!--<div class="list card">-->
   <ion-item>
     {{products.length}} عدد
