@@ -37,7 +37,7 @@ export class SelectSizePage {
         this.loading.dismiss();
         this.presentLoading(false);
       });
-    }, 1000);
+    }, 200);
   }
 
   selectSize(index = null) {

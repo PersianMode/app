@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {LoadingController, NavController} from 'ionic-angular';
+import {CartService} from "../../services/cart.service";
 
 interface Product {
   //for now, only name and cost
@@ -41,17 +42,20 @@ export class BagPage {
   shippingCost: number = 0;
   estimatedTax: number = 0;
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
+              private cartService: CartService) {
 
   }
 
   ngOnInit() {
+    this.cartService.loadOrderlines();
   }
 
 
 
   onClickedOnPromoCode() {
     this.isPromoCodeShown = !this.isPromoCodeShown;
+    this.cartService.loadOrderlines();
   }
 
   getSubtotalCost() {
