@@ -5,7 +5,7 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class CartService {
-  dataArray : any = [];
+  dataArray: any = [];
   cartItems: ReplaySubject<number> = new ReplaySubject<number>();
 
   constructor(private httpService: HttpService,
@@ -36,5 +36,7 @@ export class CartService {
         );
       });
   }
+
+
 
 }
