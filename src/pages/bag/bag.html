@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content padding class="bag-page">
+  <page-product-sliding [products]="products"></page-product-sliding>
   <!--<div class="list card">-->
   <ion-item>
     {{products.length}} عدد
@@ -25,7 +26,7 @@
         جمع
       </ion-col>
       <ion-col text-left>
-{{getSubtotalCost()}} تومان
+        {{getSubtotalCost()}} تومان
       </ion-col>
     </ion-row>
     <ion-row>
@@ -33,7 +34,7 @@
         هزینه ارسال
       </ion-col>
       <ion-col text-left>
-{{shippingCost}} تومان
+        {{shippingCost}} تومان
       </ion-col>
     </ion-row>
     <ion-row>
@@ -41,7 +42,7 @@
         مالیات
       </ion-col>
       <ion-col text-left>
-{{estimatedTax}} تومان
+        {{estimatedTax}} تومان
       </ion-col>
     </ion-row>
   </ion-item>
