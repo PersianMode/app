@@ -36,7 +36,7 @@ export class InboxPage {
   //this is just a temp entry for product-view
   goToProductView() {
     this.navCtrl.push(ProductViewPage, {
-      productId: '5a9fc897bcf5d7654e7a410e'
+      productId: '5a9cf71d2cc256bd21576eb0'
     });
   }
 
