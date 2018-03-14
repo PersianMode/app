@@ -93,6 +93,7 @@ export class ProductViewPage {
 
   presentPopOver(myEvent) {
     let pop = this.popoverCtrl.create(SelectSizePage, {
+      productId: this.productId,
       instances: (this.currentProduct && this.currentProduct['instances']) ?
         this.currentProduct['instances'] : null,
       // activeColor: {_id:'5a9cf71a68b68c2897d1924f'}

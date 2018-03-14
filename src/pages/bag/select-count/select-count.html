@@ -1,0 +1,17 @@
+<ion-header class="select-count-page-header">
+  <ion-navbar>
+    <ion-title>
+      انتخاب تعداد
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="select-count-page">
+  <button class="done-button" color="primary" clear ion-button>
+    <ion-icon name="ios-arrow-forward"></ion-icon>
+    انتخاب
+  </button>
+  <ion-list inset class="quantity-list">
+    <button ion-item text-center *ngFor="let c of count">{{c.value}}</button>
+  </ion-list>
+</ion-content>

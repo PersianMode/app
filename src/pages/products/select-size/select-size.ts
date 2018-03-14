@@ -8,6 +8,7 @@ import {CartService} from "../../../services/cart.service";
 })
 export class SelectSizePage {
 
+  productId;
   instances = [];
   rows = [];
   selectedSize = null;
@@ -20,6 +21,7 @@ export class SelectSizePage {
       this.presentToast('خطای وجود محصول');
       return;
     }
+    this.productId = this.navParams.get('productId');
     this.instances = this.navParams.get('instances');
     this.activeColor = this.navParams.get('activeColor');
     this.getSeparatedRowProducts(6);
@@ -29,7 +31,7 @@ export class SelectSizePage {
     this.presentLoading(true);
     //this setTimeout is TEST-PURPOSE ONLY! to let us see the loading bar before adding the orderline
     setTimeout(() => {
-      this.cartService.addOrderline(this.instances[this.selectedSize]._id, 1, (err) => {
+      this.cartService.addOrderline(this.productId, this.instances[this.selectedSize]._id, 1, (err) => {
         if (err) {
           return this.presentToast("لطفا مجددا تلاش کنید");
         }
@@ -52,7 +54,7 @@ export class SelectSizePage {
       this.loading = this.loadingCtrl.create({
         spinner: 'hide',
         content: 'محصول به سبد خرید اضافه شد!',
-        duration: 2000,
+        duration: 1500,
         cssClass: 'select-size-page-header',
       });
     }

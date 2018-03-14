@@ -31,6 +31,8 @@ import {CollectionPage} from '../pages/collection/collection';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
 import {CartService} from "../services/cart.service";
+import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
+import {SelectCount} from "../pages/bag/select-count/select-count";
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import {CartService} from "../services/cart.service";
     RegisterPage,
     RegConfirmationPage,
     ProductItemComponent,
-    FilterPage
+    FilterPage,
+    ProductSliding,
+    SelectCount,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,9 @@ import {CartService} from "../services/cart.service";
     SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
-    FilterPage
+    FilterPage,
+    ProductSliding,
+    SelectCount,
   ],
   providers: [
     StatusBar,

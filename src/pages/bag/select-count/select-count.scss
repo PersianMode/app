@@ -1,0 +1,19 @@
+.select-size-page-header {
+
+}
+
+.select-size-page {
+  .done-button {
+    position: fixed;
+    z-index: 999;
+  }
+
+  .quantity-list {
+    width: 50%;
+    margin: 0 auto;
+  }
+}
+
+.popover-content {
+  top: 500px;
+}
