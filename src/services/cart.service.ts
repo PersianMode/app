@@ -72,10 +72,11 @@ export class CartService {
   getReformedOrderlines() {
     return this.dataArray.map(el => {
       return {
-        instance_id: el._id,
-        name: el.name,
-        cost: el.base_price, // TODO: discounts should be considered here
-        product_color_id: el.color.id,
+        product_id: el.product_id ? el.product_id : null,
+        instance_id: el._id ? el._id : null,
+        name: el.name ? el.name : null,
+        cost: el.base_price ? el.base_price : null, // TODO: discounts should be considered here
+        product_color_id: el.color ? el.color.id : null,
         thumbnail: el.thumbnail,
         color: 'temp', // TODO: no such color element is received from server
         size: el.size,
