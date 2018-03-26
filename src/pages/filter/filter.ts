@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Navbar, NavParams, Platform} from 'ionic-angular';
+import {Navbar, NavParams} from 'ionic-angular';
 
 import {ProductService} from '../../services/productService';
 import {SortOptions} from '../../enum/sort.options.enum';
-import {ColorService} from '../../services/colorService';
+import {DictionaryService} from '../../services/dictionary.service';
 
 @Component({
   templateUrl: 'filter.html'
@@ -20,8 +20,7 @@ export class FilterPage implements OnInit {
   clearShouldDisabled = true;
   colorMapper = {};
 
-  constructor(public navParams: NavParams, private productService: ProductService,
-              private colorService: ColorService) {
+  constructor(public navParams: NavParams, private productService: ProductService, private dict: DictionaryService) {
 
   }
 
@@ -36,32 +35,21 @@ export class FilterPage implements OnInit {
   }
 
   initialFilter() {
-    this.productService.filtering$.subscribe(
-      (data) => {
-        this.filterOptions = data;
-        this.filterOptions.forEach(el => {
-          this.bindingFilters[el.name] = {};
-          el.values.forEach(value => {
-            this.bindingFilters[el.name][value] = false;
-          });
+    this.productService.filtering$.subscribe((data) => {
+      this.filterOptions = data;
+      this.filterOptions.forEach(el => {
+        this.bindingFilters[el.name] = {};
+        el.values.forEach(value => {
+          this.bindingFilters[el.name][value] = false;
         });
+      });
 
-        this.colorService.colorIsReady.subscribe(
-          (data) => {
-            if(data && !this.colorMapper) {
-              if(this.bindingFilters['رنگ']) {
-                Object.keys(this.bindingFilters['رنگ']).forEach(el => {
-                  this.colorMapper[el] = this.colorService.getColorHexCode(el);
-                });
-              }
-            }
-          }
-        );
-      },
-      (err) => {
-        console.error('Cannot subscribe on filtering$ in productService: ', err);
+      if (this.bindingFilters['رنگ']) {
+        Object.keys(this.bindingFilters['رنگ']).forEach(el => {
+          this.colorMapper[el] = this.dict.convertColor(el);
+        });
       }
-    );
+    });
   }
 
   sort(option) {
@@ -71,8 +59,8 @@ export class FilterPage implements OnInit {
 
   updateFilter(name, value) {
     let option = this.filterData.find(el => el.name === name);
-    if(option) {
-      if(option.values.includes(value))
+    if (option) {
+      if (option.values.includes(value))
         option.values = option.values.filter(el => el !== value);
       else
         option.values.push(value);
@@ -99,10 +87,10 @@ export class FilterPage implements OnInit {
   filter() {
     Object.keys(this.bindingFilters).forEach(el => {
       Object.keys(this.bindingFilters[el]).forEach(value => {
-        if(this.bindingFilters[el][value]){
+        if (this.bindingFilters[el][value]) {
           let option = this.filterData.find(item => item.name === el);
-          if(option){
-            if(!option.values.includes(value))
+          if (option) {
+            if (!option.values.includes(value))
               option.values.push(value);
           } else {
             this.filterData.push({
@@ -114,8 +102,8 @@ export class FilterPage implements OnInit {
       });
     });
 
-    this.productService.setFilter(this.filterData);
-    if(this.selectedSort)
+    // this.productService.setFilter(this.filterData);
+    if (this.selectedSort)
       this.productService.setSort(this.selectedSort);
   }
 
@@ -136,14 +124,14 @@ export class FilterPage implements OnInit {
 
     Object.keys(this.bindingFilters).forEach(el => {
       Object.keys(this.bindingFilters[el]).forEach(value => {
-        if(this.bindingFilters[el][value]) {
+        if (this.bindingFilters[el][value]) {
           this.clearShouldDisabled = false;
           return;
         }
       });
     });
 
-    if(this.selectedSort)
+    if (this.selectedSort)
       this.clearShouldDisabled = false;
   }
 }

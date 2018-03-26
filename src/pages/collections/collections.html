@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>{{pageName}}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="gotToProductFilter(target)">
+      <button ion-button icon-only (click)="gotToProductFilter(address)">
         <ion-icon name="options"></ion-icon>
       </button>
     </ion-buttons>
@@ -10,14 +10,17 @@
 </ion-header>
 
 <ion-content padding dir="rtl">
-  <ion-segment color="dark" class="collection-segment" >
-    <ion-segment-button *ngFor="let item of menuItems" value="{{item['href']}}" (click)="menuItemChanged(item)">
-      {{item['text']}}
-    </ion-segment-button>
-  </ion-segment>
 
-  <page-collection-viewer [address]="target"></page-collection-viewer>
-
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let product of products" col-6>
+        <product-item [product]="product"></product-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-infinite-scroll (ionInfinite)="loadOtherProducts($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
 

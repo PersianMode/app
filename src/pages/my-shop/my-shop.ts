@@ -17,6 +17,7 @@ export class MyShopPage {
   selectTab;
 
   placements$: any;
+  currentType: string;
 
 
   constructor(private pageService: PageService, public navCtrl: NavController) {
@@ -90,7 +91,7 @@ export class MyShopPage {
     this.typeElements.find(el => el.id !== subMenu.id).showSubMenu = false;
   }
 
-  goToProductList(address) {
+  goToCollection(address) {
     this.navCtrl.push(CollectionsPage, {address});
   }
 

@@ -1,7 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
-import {Navbar, NavController, NavParams} from 'ionic-angular';
+import {Navbar, NavController, NavParams, ToastController} from 'ionic-angular';
 import {FilterPage} from '../filter/filter';
 import {PageService} from '../../services/page.service';
+import {ProductService} from '../../services/productService';
 
 
 @Component({
@@ -12,42 +13,45 @@ export class CollectionsPage {
   @ViewChild(Navbar) navBar: Navbar;
   productsCount = 0;
   pageName = null;
-  target;
-  menuItems: IMenu[];
-  activeMenu: string;
-  placements$: any;
+  address;
+  products$: any;
+  products: any[];
+  collectionName;
+  totalProducts = [];
+  countPerScroll = 20;
+  cScrollIndex = 0;
+  scrollCounter = 0;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              private pageService: PageService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private  productService: ProductService, private toastCtrl: ToastController) {
   }
 
 
   ionViewWillEnter() {
 
     this.navBar.setBackButtonText('بازگشت');
-    let address = this.navParams.get('address');
-
-    if (address) {
-      this.placements$ = this.pageService.placement$.subscribe(res => {
-
-        console.log('-> ', res);
-
-        this.menuItems = res.map(x => {
-          if (x.component_name === 'menu')
-            return x.info;
-        });
-
-        this.activeMenu = this.menuItems[0].href;
-
-
-
-      }, err => {
-        console.error('Error when subscribing on page placements: ', err);
+    this.address = this.navParams.get('address');
+    this.products$ = this.productService.productList$.subscribe(
+      (data) => {
+        this.totalProducts = data;
+        this.products = this.totalProducts.slice(0, this.countPerScroll)
       });
-      this.pageService.getPage(address);
 
+    this.productService.collectionNameFa$.subscribe(res => {
+      this.collectionName = res;
+    });
+    this.productService.loadProducts(this.address);
 
+  }
+
+  loadOtherProducts(infiniteScroll) {
+    this.scrollCounter++;
+
+    this.cScrollIndex = this.countPerScroll * this.scrollCounter;
+
+    if (this.products.length !== this.totalProducts.length) {
+      this.products = this.products.concat(this.totalProducts.slice(this.cScrollIndex - 1, this.cScrollIndex - 1 + this.countPerScroll));
+      infiniteScroll.complete();
     }
   }
 
@@ -59,15 +63,9 @@ export class CollectionsPage {
     this.navCtrl.push(FilterPage)
   }
 
-  menuItemChanged(item: IMenu) {
-
-    this.target = item.href;
-
-  }
-
   ionViewWillLeave() {
 
-    this.placements$.unsubscribe();
+    this.products$.unsubscribe();
 
   }
 

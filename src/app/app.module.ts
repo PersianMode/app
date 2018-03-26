@@ -25,13 +25,12 @@ import {ProductViewPage} from "../pages/products/product-view/product-view";
 import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
 import {SelectSizePage} from "../pages/products/select-size/select-size";
 import {PageService} from '../services/page.service';
-import {ColorService} from '../services/colorService';
 import {FeedPage} from '../pages/feed/feed';
 import {CollectionsPage} from '../pages/collections/collections';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
-import {CollectionViewerComponent} from '../pages/collections/components/collection-viewer';
 import {CartService} from "../services/cart.service";
+import {DictionaryService} from '../services/dictionary.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +50,6 @@ import {CartService} from "../services/cart.service";
     RegConfirmationPage,
     ProductItemComponent,
     FilterPage,
-    CollectionViewerComponent
   ],
   imports: [
     BrowserModule,
@@ -87,8 +85,8 @@ import {CartService} from "../services/cart.service";
     GooglePlus,
     ProductService,
     PageService,
-    ColorService,
     CartService,
+    DictionaryService
   ]
 })
 export class AppModule {}
