@@ -6,6 +6,7 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 export class CartService {
   dataArray: any = [];
   cartItems: ReplaySubject<number> = new ReplaySubject<number>();
+  coupon_discount = 0;
 
   constructor(private httpService: HttpService) {
     this.loadOrderlines();
@@ -86,7 +87,7 @@ export class CartService {
     return this.dataArray.map(el => {
       let final_cost = el.instance_price || el.base_price || 0;
       el.discount.forEach(disc => final_cost *= disc);
-      return Object.assign({}, el,{
+      return Object.assign({}, el, {
         cost: el.instance_price ? el.instance_price : (el.base_price ? el.base_price : 0),
         final_cost: final_cost,
         product_color_id: el.color ? el.color.id : null,
@@ -95,4 +96,29 @@ export class CartService {
     });
   }
 
+  addCoupon(coupon_code = '') {
+    if (coupon_code.length <= 0)
+      return Promise.resolve(this.coupon_discount * -1);
+
+    return new Promise((resolve, reject) => {
+      if (this.dataArray && this.dataArray.length() > 0)
+        this.httpService.post('coupon/code/valid', {
+          product_id: Array.from(new Set(this.dataArray.map(el => el.product_id.toString()))),
+          coupon_code: coupon_code,
+        }).subscribe(
+          (data) => {
+            data = data[0];
+            const someItems = this.dataArray.filter(el => el.product_id.toString() === data.product_id.toString());
+            if (someItems && someItems.length() > 0) {
+              const semiTotalPrice = someItems.map(el => el.price).reduce((a, b) => a + b);
+              this.coupon_discount = semiTotalPrice - (semiTotalPrice * data.discount);
+              resolve(this.coupon_discount);
+            } else
+              reject({});
+          },
+          (err) => {
+            reject(err);
+          });
+    });
+  }
 }

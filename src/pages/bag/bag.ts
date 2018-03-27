@@ -15,7 +15,6 @@ export class BagPage {
     thumbnail: 'assets/product-pic/13.jpg',
     color: "سفید زرد آبی",
     size: 'M 14 / W 15.5',
-
   }, {
     name: 'محصول ۱',
     cost: 1500,
@@ -41,6 +40,7 @@ export class BagPage {
   isPromoCodeShown: Boolean = false;
   shippingCost: number = 0;
   estimatedTax: number = 0;
+  coupon_code = '';
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
               private cartService: CartService) {
@@ -87,4 +87,13 @@ export class BagPage {
     return priceFormatter(p);
   }
 
+  applyCoupon() {
+    this.cartService.addCoupon(this.coupon_code)
+      .then(res => {
+
+      })
+      .catch(err => {
+
+      });
+  }
 }

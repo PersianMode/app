@@ -29,16 +29,23 @@
   </ion-list>
   <!--<div class="list card">-->
 
-  <ion-item>
-    <ion-row (click)="onClickedOnPromoCode()">
+  <ion-grid>
+    <ion-row>
       <ion-col>
-        اگر کد تخفیف دارید، اینجا وارد کنید (اختیاری)
-      </ion-col>
-      <ion-col text-left>
-        <ion-icon name="{{isPromoCodeShown? 'arrow-dropdown': 'arrow-dropup'}}"></ion-icon>
+        <span>اگر کد تخفیف دارید، اینجا وارد کنید (اختیاری)</span>
+        <ion-icon (click)="onClickedOnPromoCode()" name="{{isPromoCodeShown? 'arrow-dropdown': 'arrow-dropup'}}"></ion-icon>
       </ion-col>
     </ion-row>
-  </ion-item>
+    <ion-row *ngIf="isPromoCodeShown">
+      <ion-col col-9>
+        <ion-input dir="rtl" placeholder="کد تخفیف" [(ngModel)]="coupon_code"></ion-input>
+      </ion-col>
+      <ion-col col-3>
+        <button large ion-button float-left color="dark" (click)="applyCoupon()">اعمال</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <ion-item>
     <ion-row>
       <ion-col text-right>
