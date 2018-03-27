@@ -31,7 +31,7 @@ export class ProductViewPage {
               private popoverCtrl: PopoverController) {
     this.HOST = HttpService.HOST;
     //TODO: TEST ONLY -> REMOVE FOLLOWING LINE TO WORK WITH THE SERVER!
-    this.HOST = '';
+    // this.HOST = '';
   }
 
   ionViewDidLoad() {

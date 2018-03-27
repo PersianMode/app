@@ -78,7 +78,6 @@ import {SelectCount} from "../pages/bag/select-count/select-count";
     RegisterPage,
     RegConfirmationPage,
     FilterPage,
-    ProductSliding,
     SelectCount,
   ],
   providers: [

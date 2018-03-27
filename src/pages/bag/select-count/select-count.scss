@@ -12,8 +12,21 @@
     width: 50%;
     margin: 0 auto;
   }
+
+}
+
+.highlight-q {
+  background-color: #DDD;
+  opacity: 0.6;
 }
 
 .popover-content {
-  top: 500px;
+  //top: 600px;
+  top: 80%;
+  bottom: 30%;
+}
+
+.quantity-label {
+  text-align: center;
+  color: black;
 }

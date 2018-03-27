@@ -1,24 +1,43 @@
-<ion-list inset style="margin: 0px !important;">
-  <ion-item-sliding *ngFor="let product of products">
-    <ion-item>
-      <ion-thumbnail item-start>
-        <img src="{{product.thumbnail}}" alt="">
-      </ion-thumbnail>
-      <div>
-        <p style="color:#000;">{{product.name}}</p>
-        <p style="color:#000;">{{product.product}}</p>
-        <p style="color: #808080;">{{product.color}}</p>
-        <p style="color: #808080;">{{product.size}}</p>
-        <p style="color:#000;">{{product.cost}} <span>تومان</span></p>
-        <p (click)="actionCount()"><span>تعداد</span> 1
-          <ion-icon name="ios-arrow-down"></ion-icon>
-        </p>
-      </div>
-    </ion-item>
-    <ion-item-options side="right">
-      <button ion-button large color="danger" (click)="removeThisProduct(product)">
-        <ion-icon name="trash"></ion-icon>
-      </button>
-    </ion-item-options>
-  </ion-item-sliding>
-</ion-list>
+<!--<ion-list inset style="margin: 0px !important;">-->
+<ion-item-sliding>
+  <ion-item>
+    <ion-thumbnail item-start>
+      <img src="{{product.thumbnail}}" alt="">
+    </ion-thumbnail>
+    <!--<div>-->
+    <ion-label>
+
+      <p style="color: black; font-weight: 200; margin-bottom: 15px;">{{product.name}}</p>
+      <p style="color: #000;">{{formatPrice(product.cost)}} <span>تومان</span></p>
+      <p (click)="actionCount()">
+        <span>          تعداد          {{formatPrice(product.quantity)}}</span>
+        <ion-icon name="ios-arrow-down"></ion-icon>
+      </p>
+      <!--<p style="color:#000;">{{product.product}}</p>-->
+      <p style="color: black;">اندازه: {{product.size}}</p>
+      <p style="color: black;">رنگ: {{product.color}}</p>
+      <p class="semi-color pointer-click" style="margin-top: 10px !important;" (click)="removeThisProduct()">حذف</p>
+    </ion-label>
+
+    <!--</div>-->
+  </ion-item>
+
+  <!--<ion-row>-->
+  <!--<ion-col>-->
+  <!--<ion-item style="border-top: 0">-->
+  <!--<ion-label>-->
+  <!---->
+  <!--</ion-label>-->
+  <!--<ion-datetime displayFormat="YY" min="2001" max="2010" [(ngModel)]="_quantity">-->
+  <!--</ion-datetime>-->
+  <!--</ion-item>-->
+  <!--</ion-col>-->
+  <!--</ion-row>-->
+
+  <ion-item-options side="right">
+    <button ion-button large color="danger" (click)="removeThisProduct()">
+      <ion-icon name="trash" style="font-size: 2em"></ion-icon>
+    </button>
+  </ion-item-options>
+</ion-item-sliding>
+<!--</ion-list>-->

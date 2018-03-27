@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="bag-page">
+<ion-content class="bag-page">
   <!--<ion-list>-->
     <!--<ion-item-sliding *ngFor="let product of products">-->
       <!--<ion-item>-->
@@ -19,11 +19,16 @@
       <!--</ion-item-options>-->
     <!--</ion-item-sliding>-->
   <!--</ion-list>-->
-  <page-product-sliding [products]="products"></page-product-sliding>
+  <ion-list inset>
+    <ion-item style="border-bottom: 1px solid #878787;">
+      {{formatPrice(products.length)}} عدد
+    </ion-item>
+  </ion-list>
+  <ion-list inset style="margin: 0 !important;" *ngIf="products && products.length > 0">
+    <page-product-sliding *ngFor="let product of products" [product]="product" (getList)="updateOrderlines($event)"></page-product-sliding>
+  </ion-list>
   <!--<div class="list card">-->
-  <ion-item>
-    {{products.length}} عدد
-  </ion-item>
+
   <ion-item>
     <ion-row (click)="onClickedOnPromoCode()">
       <ion-col>
@@ -40,7 +45,7 @@
         جمع
       </ion-col>
       <ion-col text-left>
-        {{getSubtotalCost()}} تومان
+        {{formatPrice(getSubtotalCost())}} تومان
       </ion-col>
     </ion-row>
     <ion-row>
@@ -48,7 +53,7 @@
         هزینه ارسال
       </ion-col>
       <ion-col text-left>
-        {{shippingCost}} تومان
+        {{formatPrice(shippingCost)}} تومان
       </ion-col>
     </ion-row>
     <ion-row>
@@ -56,7 +61,7 @@
         مالیات
       </ion-col>
       <ion-col text-left>
-        {{estimatedTax}} تومان
+        {{formatPrice(estimatedTax)}} تومان
       </ion-col>
     </ion-row>
   </ion-item>
@@ -66,12 +71,12 @@
         جمع کل
       </ion-col>
       <ion-col text-left>
-        {{getTotalCost()}}
+        {{formatPrice(getTotalCost())}}
       </ion-col>
     </ion-row>
   </ion-item>
   <ion-item>
-    <button ion-button full color="dark" large>تسویه حساب</button>
+    <button ion-button full color="dark" large>پرداخت</button>
   </ion-item>
   <!--</div>-->
 </ion-content>

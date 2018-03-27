@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {LoadingController, NavController} from 'ionic-angular';
 import {CartService} from "../../services/cart.service";
-
+import {priceFormatter} from "../../shared/lib/priceFormatter";
 
 @Component({
   selector: 'page-bag',
@@ -47,10 +47,10 @@ export class BagPage {
   }
 
   ionViewWillEnter() {
-    this.cartService.loadOrderlines();
-    this.products = this.cartService.getReformedOrderlines();
+    console.log("hey!");
+    this.updateOrderlines();
+    // console.log("are you here?!");
   }
-
 
   onClickedOnPromoCode() {
     this.isPromoCodeShown = !this.isPromoCodeShown;
@@ -59,7 +59,7 @@ export class BagPage {
   getSubtotalCost() {
     let cost = 0;
     for (let p in this.products) {
-      cost += this.products[p].cost;
+      cost += this.products[p].final_cost ? this.products[p].final_cost : this.products[p].cost;
     }
     return cost;
   }
@@ -68,6 +68,23 @@ export class BagPage {
     let cost = this.getSubtotalCost();
     cost += this.shippingCost + this.estimatedTax;
     return cost;
+  }
+
+  updateOrderlines($event = null) {
+    // console.log("came here!");
+    this.cartService.loadOrderlines(() => {
+      let t = this.cartService.getReformedOrderlines();
+      // if (!t)
+      //   this.products = null;
+      // else
+        this.products = t || [];
+      console.log("products have become:", this.products);
+    });
+    // console.log("products afterwards", this.products);
+  }
+
+  formatPrice(p) {
+    return priceFormatter(p);
   }
 
 }

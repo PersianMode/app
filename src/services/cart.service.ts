@@ -11,27 +11,35 @@ export class CartService {
     this.loadOrderlines();
   }
 
-  loadOrderlines() {
+  loadOrderlines(cb = null) {
+    console.log("loadOrderlines");
     this.httpService.post(`cart/items`, {data: {}}).subscribe(
       data => {
-        console.log(data);
+        console.log("received data from loadOrderlines:", data);
+        this.updateInfo(data);
         this.dataArray = data;
-        this.cartItems.next(this.getTotalNumber());
+        if (cb) cb();
       }, err => {
         console.log("err", err);
       }
     );
   }
 
+  updateInfo(data) {
+    this.dataArray = data;
+    this.cartItems.next(this.getTotalNumber());
+  }
+
   addOrderline(product_id, product_instance_id, number, cb) {
     let data = {product_id, product_instance_id, number};
     this.httpService.post(`order`, data).subscribe(
       res => {
-        this.dataArray.push({
-          instance_id: product_instance_id,
-          quantity: number,
-        });
-        this.cartItems.next(this.getTotalNumber());
+        // this.dataArray.push({
+        //   instance_id: product_instance_id,
+        //   quantity: number,
+        // });
+        // this.cartItems.next(this.getTotalNumber());
+        this.loadOrderlines();
         if (!(res.n > 0 || res.nModified > 0))
           return cb('nothing is changed');
 
@@ -48,9 +56,11 @@ export class CartService {
     let data = {product_instance_id, number};
     this.httpService.post(`order/delete`, data).subscribe(
       res => {
-        this.dataArray = this.dataArray.filter(data => data['instance_id'] === product_instance_id && number-- > 0);
-        this.cartItems.next(this.dataArray.length);
-        if (!(res.n > 0 || res.nModified > 0))
+        // console.log("response from deletion:", res);
+        // this.dataArray = this.dataArray.filter(data => data['instance_id'] === product_instance_id && number-- > 0);
+        // this.cartItems.next(this.dataArray.length);
+        this.loadOrderlines();
+        if (res.n <= 0 && res.nModified <= 0)
           return cb ? cb('nothing is changed') : null;
 
         if (cb) cb(null);
@@ -63,25 +73,25 @@ export class CartService {
 
   getTotalNumber() {
     let counter = 0;
-    this.dataArray.forEach(elem => {
-      counter += elem['quantity'];
-    });
+    this.dataArray.forEach(elem => counter += elem['quantity'] || 0);
     return counter;
   }
 
   getReformedOrderlines() {
+    console.log("data array:", this.dataArray);
+    if (this.dataArray.length <= 0 ||
+      (this.dataArray && this.dataArray.length === 1 && !this.dataArray[0]['product_id']))
+      return null;
+
     return this.dataArray.map(el => {
-      return {
-        product_id: el.product_id ? el.product_id : null,
-        instance_id: el._id ? el._id : null,
-        name: el.name ? el.name : null,
-        cost: el.base_price ? el.base_price : null, // TODO: discounts should be considered here
+      let final_cost = el.instance_price || el.base_price || 0;
+      el.discount.forEach(disc => final_cost *= disc);
+      return Object.assign({}, el,{
+        cost: el.instance_price ? el.instance_price : (el.base_price ? el.base_price : 0),
+        final_cost: final_cost,
         product_color_id: el.color ? el.color.id : null,
-        thumbnail: el.thumbnail,
-        color: 'temp', // TODO: no such color element is received from server
-        size: el.size,
-        quantity: el.quantity
-      }
+        color: (el.color && el.color.name) || 'defaultColor',
+      })
     });
   }
 
