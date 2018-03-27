@@ -9,20 +9,14 @@ import {priceFormatter} from "../../../shared/lib/priceFormatter";
   templateUrl: 'product-sliding.html'
 })
 export class ProductSliding {
-  // TODO: this whole product-slide must be for one product and should be '*ngFor'ed in 'bag.ts'. this way we don't need to have two-way data-binding or something
   @Input() product;
   @Output() getList = new EventEmitter<any>();
-
-  // @Output() changeQuantity = new EventEmitter<any>();
 
   constructor(public loadingCtrl: LoadingController, public popoverCtrl: PopoverController,
               private cartService: CartService) {
   }
 
-  ionViewWillEnter() {
-  }
-
-  removeThisProduct(product) {
+  removeThisProduct() {
     let loading = this.loadingCtrl.create({
       duration: 1000,
     });
@@ -33,10 +27,7 @@ export class ProductSliding {
           return;
         }
 
-        // TODO: working on it
         this.getList.emit();
-        // this.products = this.products.filter(el => el.product_color_id !== product.product_color_id);
-
       });
     }, 200);
     loading.present();
@@ -57,6 +48,9 @@ export class ProductSliding {
       product_instance_id: this.product.instance_id,
     });
     overCtrl.present();
+    overCtrl.onDidDismiss(() => {
+      this.getList.emit();
+    })
   }
 
   onNotHavingMoreThanOneQuantity() {
