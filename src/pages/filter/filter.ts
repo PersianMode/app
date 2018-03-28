@@ -57,6 +57,7 @@ export class FilterPage implements OnInit {
       this.filter_options = r;
 
       this.isChecked = this.productService.getSavedChecked();
+      this.sortedBy = this.productService.getSavedSort();
 
       this.filter_options.forEach(el => {
         const found = this.current_filter_state.find(cfs => cfs.name === el.name);
@@ -151,6 +152,9 @@ export class FilterPage implements OnInit {
     } else {
       this.sortedBy = this.sortOptions[index];
     }
+    this.productService.saveSort(this.sortedBy);
+    this.productService.setSort(this.sortedBy.value);
+
   }
 
   ionViewWillLeave(){
