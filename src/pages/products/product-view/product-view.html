@@ -1,52 +1,52 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      {{currentProduct?.name}}
+      {{product?.name}}
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content class="product-view-page">
-  <ion-card>
-    <ion-slides [pager]="true" #topSlider>
-      <ion-slide *ngFor="let image of selectedColor?.image?.angles">
-        <img src="{{HOST + image}}" style="width: 100%;">
-        <!--<img src="{{tempImageUrl}}" style="width: 100%;">-->
-      </ion-slide>
-    </ion-slides>
-  </ion-card>
+<!--<ion-content class="product-view-page">-->
+  <!--<ion-card>-->
+    <!--<ion-slides [pager]="true" #topSlider>-->
+      <!--<ion-slide *ngFor="let image of selectedColor?.image?.angles">-->
+        <!--<img src="{{HOST + image}}" style="width: 100%;">-->
+        <!--&lt;!&ndash;<img src="{{tempImageUrl}}" style="width: 100%;">&ndash;&gt;-->
+      <!--</ion-slide>-->
+    <!--</ion-slides>-->
+  <!--</ion-card>-->
 
-  <ion-scroll scrollX="true">
-    <img src="{{HOST + image.image}}" *ngFor="let image of thumbnails" (click)="changeColorTo(image.index)"
-         [ngClass]="{'active-image': image.index == activeColorIndex}">
-    <!--<img src="{{tempImageUrl}}" *ngFor="let image of thumbnails" (click)="changeColorTo(image.index)"-->
-  </ion-scroll>
+  <!--<ion-scroll scrollX="true">-->
+    <!--<img src="{{HOST + image.image}}" *ngFor="let image of thumbnails" (click)="changeColorTo(image.index)"-->
+         <!--[ngClass]="{'active-image': image.index == activeColorIndex}">-->
+    <!--&lt;!&ndash;<img src="{{tempImageUrl}}" *ngFor="let image of thumbnails" (click)="changeColorTo(image.index)"&ndash;&gt;-->
+  <!--</ion-scroll>-->
 
-  <div class="desc">
-    {{currentProduct?.desc}}
-  </div>
-  <ion-icon name="share-alt" class="card-icon"></ion-icon>
+  <!--<div class="desc">-->
+    <!--{{currentProduct?.desc}}-->
+  <!--</div>-->
+  <!--<ion-icon name="share-alt" class="card-icon"></ion-icon>-->
 
-  <div class="product-more-detail">
-    <hr>
-    <div (click)="goToDetail()">
-      دیدن جزئیات بیشتر محصول
-    </div>
-    <hr>
-  </div>
-  <br><br>
+  <!--<div class="product-more-detail">-->
+    <!--<hr>-->
+    <!--<div (click)="goToDetail()">-->
+      <!--دیدن جزئیات بیشتر محصول-->
+    <!--</div>-->
+    <!--<hr>-->
+  <!--</div>-->
+  <!--<br><br>-->
 
-</ion-content>
+<!--</ion-content>-->
 
-<ion-footer>
-  <ion-toolbar>
-    <button ion-button full color="dark" (click)="presentPopOver($event)" [disabled]="!buyButtonShouldBeActive">
-      <div *ngIf="buyButtonShouldBeActive">
-        خرید {{formatPrice(currentProduct?.base_price)}} تومان
-      </div>
-      <div *ngIf="!buyButtonShouldBeActive">
-        محصول تمام شده است
-      </div>
-    </button>
-  </ion-toolbar>
-</ion-footer>
+<!--<ion-footer>-->
+  <!--<ion-toolbar>-->
+    <!--<button ion-button full color="dark" (click)="presentPopOver($event)" [disabled]="!buyButtonShouldBeActive">-->
+      <!--<div *ngIf="buyButtonShouldBeActive">-->
+        <!--خرید {{formatPrice(currentProduct?.base_price)}} تومان-->
+      <!--</div>-->
+      <!--<div *ngIf="!buyButtonShouldBeActive">-->
+        <!--محصول تمام شده است-->
+      <!--</div>-->
+    <!--</button>-->
+  <!--</ion-toolbar>-->
+<!--</ion-footer>-->
