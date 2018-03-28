@@ -14,9 +14,8 @@
     <page-product-sliding *ngFor="let product of products" [product]="product"
                           (getList)="updateOrderlines($event)"></page-product-sliding>
   </ion-list>
-  <!--<div class="list card">-->
 
-  <ion-grid>
+  <ion-grid *ngIf="cartItemsLength.length > 0">
     <ion-row>
       <ion-col>
         <span>اگر کد تخفیف دارید، اینجا وارد کنید (اختیاری)</span>
