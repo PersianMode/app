@@ -30,7 +30,6 @@ export class CollectionsPage {
   ionViewWillEnter() {
 
     this.navBar.setBackButtonText('بازگشت');
-    this.address = this.navParams.get('address');
     this.products$ = this.productService.productList$.subscribe(
       (data) => {
         this.totalProducts = data;
@@ -40,8 +39,11 @@ export class CollectionsPage {
     this.productService.collectionNameFa$.subscribe(res => {
       this.collectionName = res;
     });
-    this.productService.loadProducts(this.address);
 
+  }
+  ionViewDidLoad(){
+    this.address = this.navParams.get('address');
+    this.productService.loadProducts(this.address);
   }
 
   loadOtherProducts(infiniteScroll) {

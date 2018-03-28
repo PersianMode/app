@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
+import * as convert from 'color-convert';
 
 @Injectable()
 export class DictionaryService {
@@ -37,14 +38,25 @@ export class DictionaryService {
       convertedColor = color;
     }
 
-    // try {
-    //   convertedColor = DictionaryService.colorConverter(convertedColor);
-    // } catch (e) {
-    //   return null;
-    // }
+    try {
+      convertedColor = this.colorConverter(convertedColor);
+    } catch (e) {
+      return null;
+    }
 
     return convertedColor;
   }
+
+  colorConverter(col) {
+
+    if(col.charAt(0) !== '#')
+    {
+      let arr = convert.keyword.rgb(col.toLowerCase());
+      return '#' + convert.rgb.hex(arr);
+    }
+    else
+      return col;
+  };
 
 
 

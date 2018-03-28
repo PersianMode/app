@@ -5,48 +5,94 @@ import {IFilter} from '../interfaces/ifilter.interface';
 import {ToastController} from 'ionic-angular';
 import {DictionaryService} from './dictionary.service';
 
+const productColorMap = function (r) {
+  return r.colors.map(c => c.name ? c.name.split('/')
+      .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color name
+    : []);
+};
+
+const addHost = function (r) {
+  return r.includes(HttpService.Host) ? r : HttpService.Host + r;
+};
+
+const newestSort = function (a, b) {
+  if (a.year && b.year && a.season && b.season && ((a.year * 8 + a.season) - (b.year * 8 + b.season))) {
+    return (a.year * 8 + a.season) - (b.year * 8 + b.season);
+  } else if (a.date > b.date)
+    return 1;
+  else if (a.date < b.date)
+    return -1;
+  else {
+    return 0;
+  }
+};
+
+const reviewSort = function (a, b) {
+  return 0;
+};
+
+const priceSort = function (a, b, lowToHigh = true) {
+  const dir = lowToHigh ? 1 : -1;
+  return (a.price - b.price) * dir;
+};
+
+const priceSortReverse = (a, b) => priceSort(a, b, false);
+
+const nameSort = function (a, b) {
+  if (a.name > b.name)
+    return 1;
+  else if (a.name < b.name)
+    return -1;
+  else
+    return 0;
+};
+
 @Injectable()
 export class ProductService {
   private collectionName: string;
   private products = [];
   private filteredProducts = [];
-
-  collectionNameFa$: ReplaySubject<any> = new ReplaySubject<any>(1);
-  productList$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  filtering$: ReplaySubject<IFilter[]> = new ReplaySubject<IFilter[]>(1);
-
-  product$: ReplaySubject<any> = new ReplaySubject<any>();
+  collectionNameFa$: ReplaySubject<any> = new ReplaySubject<any>(0);
+  productList$: ReplaySubject<any[]> = new ReplaySubject<any[]>(0);
+  filtering$: ReplaySubject<IFilter[]> = new ReplaySubject<IFilter[]>(0);
+  product$: ReplaySubject<any> = new ReplaySubject<any>(0);
   collectionTags: any = {};
   collectionTagsAfterFilter: any = {};
 
-  private filterInput: IFilter[];
-  private sortInput = '';
+  private sortInput;
 
   constructor(private httpService: HttpService, private toastCtrl: ToastController, private  dict : DictionaryService) {
   }
 
-  extractFilters(trigger = '') {
-    let products = this.products, tags = this.collectionTags;
-    if (trigger) {
-      products = this.filteredProducts;
-      tags = this.collectionTagsAfterFilter;
-    }
+  extractFilters(filters = [], trigger = '') {
+    const products = trigger ? this.filteredProducts : this.products;
+    let tags: any = {};
+
     const brand = Array.from(new Set([... products.map(r => r.brand)]));
     const type = Array.from(new Set([... products.map(r => r.product_type)]));
-    let price =  products.map(r => r.base_price);
-    const minPrice = Math.min(...price);
-    const maxPrice = Math.max(...price);
-    price = [minPrice, maxPrice];
-    const size = Array.from(new Set(...products.map(r => Object.keys(r.sizesInventory)).reduce((x, y) => x.concat(y), []).sort()));
-    const color = Array.from(new Set(...products.map(r => r.colors.map(c => c.name ? c.name.split('/') : []).reduce((x, y) => x.concat(y), []))));
+
+    const size = Array.from(new Set([...products.map(r => Object.keys(r.sizesInventory))
+      .reduce((x, y) => x.concat(y), []).sort()]));
+    const color = Array.from(new Set([...products.map(productColorMap)
+      .reduce((x, y) => x.concat(y), []).reduce((x, y) => x.concat(y), [])]));
+
+    let price;
+    if (trigger === 'price') {
+      price = [];
+    } else {
+      price = products.map(r => r.base_price);
+      const minPrice = Math.min(...price);
+      const maxPrice = Math.max(...price);
+      price = [minPrice, maxPrice];
+    }
 
     tags = {brand, type, price, size, color};
 
-    if (trigger) {
+    if (trigger && trigger !== 'price') {
       tags[trigger] = this.collectionTags[trigger] ? this.collectionTags[trigger] : [];
     }
 
-    products.forEach(p => p.tags.forEach( tag => {
+    products.forEach(p => p.tags.forEach(tag => {
       const tagGroupName = tag.tg_name;
       if (!tags[tagGroupName]) {
         tags[tagGroupName] = new Set();
@@ -54,16 +100,23 @@ export class ProductService {
       tags[tagGroupName].add(tag.name);
     }));
 
+    if (trigger) {
+      this.collectionTagsAfterFilter = tags;
+    } else {
+      this.collectionTags = tags;
+    }
+
     const emittedValue = [];
     for (const name in tags) {
       if (tags.hasOwnProperty(name)) {
         const values = Array.from(tags[name]);
-        if (values.length > 1) {
+        const found = filters.find(r => r.name === name);
+        if (values.length > 1 || (found && found.values.length)) {
           emittedValue.push({
             name: name,
             name_fa: this.dict.translateWord(name),
             values,
-            values_fa: values.map((r: string | number) => this.dict.translateWord(r))
+            values_fa: values.map((r: string | number) => name !== 'color' ? this.dict.translateWord(r) : this.dict.convertColor(r + ''))
           });
         }
       }
@@ -74,9 +127,40 @@ export class ProductService {
   emptyFilters() {
     this.filtering$.next([]);
   }
+  applyFilters(filters, trigger) {
+    this.filteredProducts = JSON.parse(JSON.stringify(this.products));
+
+    filters.forEach(f => {
+      if (f.values.length) {
+        if (['brand', 'type'].includes(f.name)) {
+          this.filteredProducts = this.filteredProducts.filter(r => Array.from(f.values).includes(r[f.name]));
+        } else if (f.name === 'color') {
+          this.filteredProducts
+            .forEach((p, pi) => this.filteredProducts[pi].colors = p.colors
+              .filter(c => Array.from(f.values).filter(v => c.name ? c.name.split('/').includes(v) : false).length));
+          this.filteredProducts.forEach((p, pi) => this.enrichProductData(this.filteredProducts[pi]));
+        } else if (f.name === 'size') {
+          this.filteredProducts.forEach((p, pi) => this.filteredProducts[pi].instances = p.instances
+            .filter(i => Array.from(f.values).includes(i.size)));
+          this.filteredProducts.forEach((p, pi) => this.filteredProducts[pi].colors = p.colors
+            .filter(c => p.instances.map(i => i.product_color_id).includes(c._id)));
+          this.filteredProducts.forEach((p, pi) => this.enrichProductData(this.filteredProducts[pi]));
+        } else if (f.name === 'price') {
+          this.filteredProducts = this.filteredProducts.filter(p => p.base_price >= f.values[0] && p.base_price <= f.values[1]);
+        } else {
+          this.filteredProducts = this.filteredProducts
+            .filter(p => p.tags.filter(t => Array.from(f.values).includes(t.name)).length);
+        }
+      }
+
+      this.filteredProducts = this.cleanProductsList(this.filteredProducts);
+    });
+    this.sortProductsAndEmit();
+    this.extractFilters(filters, trigger);
+  }
 
   getProduct(productId) {
-    let found = this.products.findIndex(r => r._id === productId);
+    const found = this.products.findIndex(r => r._id === productId);
     if (found >= 0 && this.products[found].detailed) {
       this.product$.next(this.products[found]);
     } else {
@@ -90,16 +174,25 @@ export class ProductService {
     }
   }
 
+  private cleanProductsList(data: any[]) {
+    return data.filter(p => p.instances.length && p.colors.length);
+  }
+
   private enrichProductData(data) {
     data.id = data._id;
+    data.type = data.product_type;
     data.price = data.base_price;
+    const year = data.tags.find(r => r.tg_name === 'Season Year');
+    const season = data.tags.find(r => r.tg_name === 'Season');
+    data.year = year ? +year.name : NaN;
+    data.season = season ? ['HOLI', 'CORE', 'WINTER', 'SPRING', 'SUMMER', 'FALL'].indexOf(season.name) : NaN;
     data.sizesByColor = {};
     data.sizesInventory = {};
     data.colors.forEach(item => {
       const angles = [];
       item.image.angles.forEach(r => {
         if (!r.url) {
-          const temp = {url: HttpService.HOST + r, type: r.split('.').pop(-1) === 'webm' ? 'video' : 'photo'};
+          const temp = {url: addHost(r), type: r.split('.').pop(-1) === 'webm' ? 'video' : 'photo'};
           angles.push(temp);
         } else {
           angles.push(r);
@@ -107,7 +200,7 @@ export class ProductService {
       });
       item.image.angles = angles;
       if (item.image.thumbnail) {
-        item.image.thumbnail = HttpService.HOST + item.image.thumbnail;
+        item.image.thumbnail = addHost(item.image.thumbnail);
       }
       if (data.instances) {
         data.detailed = true;
@@ -120,7 +213,7 @@ export class ProductService {
         data.sizesByColor[item._id] = data.instances
           .filter(r => r.product_color_id === item._id)
           .map(r => {
-            const inventory = r.inventory.reduce((x, y) => x.count + y.count, 0);
+            const inventory = r.inventory.map(e => e.count ? e.count : 0).reduce((x, y) => x + y, 0);
             if (inventory) {
               if (!data.sizesInventory[r.size]) {
                 data.sizesInventory[r.size] = {};
@@ -169,100 +262,39 @@ export class ProductService {
     );
   }
 
-  setFilter(name, value) {
-
-  }
-
-  setSort(data) {
-    this.sortInput = data;
-    this.filterSortProducts();
-  }
-
-
-  private filterSortProducts() {
-    this.filterProducts();
-    this.sortProducts();
-    this.extractFilters();
-
-  }
-
-  private filterProducts() {
-    if (this.filterInput) {
-      this.filteredProducts = [];
-      this.filterInput.forEach(item => {
-
-        switch (item.name) {
-          case 'نوع' :
-            this.filteredProducts = this.filteredProducts.concat(this.products.filter(product => item.values.includes(product.product_type.name)));
-            break;
-          case 'رنگ':
-            this.filteredProducts = this.filteredProducts.concat(this.products.filter(product => {
-              const colors : string[] = [].concat.apply([], product.colors.map((color: any) => color.name.split('/')));
-              const duplicated: string[] = Array.from(new Set(colors));
-              return duplicated.some(r => item.values.includes(r));
-            }));
-            break;
-          case 'سایز':
-            this.filteredProducts = this.filteredProducts.concat(this.products.filter(product => {
-              const productSizes: string[] = Array.from( new Set(<string>product.sizes));
-              return productSizes.some(r => item.values.includes(r));
-            }));
-
-            break;
-        }
-      });
+  setSort(sortInput) {
+    if (this.sortInput !== sortInput) {
+      this.sortInput = sortInput;
+      this.sortProductsAndEmit();
     }
   }
 
-  private sortProducts() {
-    if (this.sortInput) {
-      switch (this.sortInput) {
-        case 'newest': {
-          return this.filteredProducts.sort(this.newestSort);
-        }
-        case 'highest': {
-          return this.filteredProducts.sort((a, b) => this.reviewSort(a, b));
-        }
-        case 'cheapest': {
-          return this.filteredProducts.sort((a, b) => this.priceSort(a, b, true));
-        }
-        case 'most': {
-          return this.filteredProducts.sort((a, b) => this.priceSort(a, b, false));
-        }
+  private sortProductsAndEmit() {
+    let sortedProducts = [];
+    switch (this.sortInput) {
+      case 'newest': {
+        sortedProducts = this.filteredProducts.slice().sort(newestSort);
+        break;
+      }
+      case 'highest': {
+        sortedProducts = this.filteredProducts.slice().sort(reviewSort);
+        break;
+      }
+      case 'cheapest': {
+        sortedProducts = this.filteredProducts.slice().sort(priceSort);
+        break;
+      }
+      case 'most': {
+        sortedProducts = this.filteredProducts.slice().sort(priceSortReverse);
+        break;
+      }
+      case 'alphabetical': {
+        sortedProducts = this.filteredProducts.slice().sort(nameSort);
+        break;
+      }
+      default: {
+        sortedProducts = this.filteredProducts;
       }
     }
-    return this.filteredProducts;
-  }
-
-  private newestSort(a, b) {
-    if (a.date > b.date)
-      return 1;
-    else if (a.date < b.date)
-      return -1;
-    else
-      return this.nameSort(a, b);
-  }
-
-  private reviewSort(a, b) {
-    return 0;
-  }
-
-  private priceSort(a, b, lowToHigh = true) {
-    const dir = lowToHigh ? 1 : -1;
-    if (a.base_price < b.base_price)
-      return dir;
-    else if (a.base_price > b.base_price)
-      return dir * -1;
-    else
-      return this.nameSort(a, b);
-  }
-
-  private nameSort(a, b) {
-    if (a.name > b.name)
-      return 1;
-    else if (a.name < b.name)
-      return -1;
-    else
-      return 0;
-  }
-}
+    this.productList$.next(sortedProducts);
+  }}

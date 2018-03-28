@@ -29,7 +29,7 @@ export class ProductViewPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController, private httpService: HttpService,
               private popoverCtrl: PopoverController) {
-    this.HOST = HttpService.HOST;
+    this.HOST = HttpService.Host;
     //TODO: TEST ONLY -> REMOVE FOLLOWING LINE TO WORK WITH THE SERVER!
     this.HOST = '';
   }
