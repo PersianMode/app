@@ -10,15 +10,18 @@ import {PageService} from '../../services/page.service';
 })
 export class FeedPage{
   feed_placement : any;
+  placements$: any;
 
   constructor(public navCtrl: NavController, private pageService: PageService, private http: HttpClient) {
   }
 
   ionViewWillEnter(){
 
+    this.placements$ = this.pageService.placement$;
+
     this.pageService.getPage('feed');
 
-    this.pageService.placement$.subscribe(res => {
+    this.placements$.subscribe(res => {
       this.feed_placement = res;
     },err => {
       console.error(err);

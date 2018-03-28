@@ -19,7 +19,7 @@
       </ion-card>
       <div *ngIf="entry && entry.showSubMenu">
         <ion-list *ngFor="let sub of subList" no-padding no-lines>
-          <button ion-item class="active" (click)="goToProductList(sub.href)">
+          <button ion-item class="active" (click)="goToCollection(sub.href)">
             {{sub.text}}
           </button>
         </ion-list>

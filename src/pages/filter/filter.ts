@@ -1,149 +1,163 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Navbar, NavParams, Platform} from 'ionic-angular';
+import {Navbar, NavParams, ViewController} from 'ionic-angular';
 
 import {ProductService} from '../../services/productService';
-import {SortOptions} from '../../enum/sort.options.enum';
-import {ColorService} from '../../services/colorService';
+import {DictionaryService} from '../../services/dictionary.service';
+import {priceFormatter} from '../../shared/lib/priceFormatter';
 
 @Component({
   templateUrl: 'filter.html'
 })
 export class FilterPage implements OnInit {
   @ViewChild(Navbar) navBar: Navbar;
-  sortOptions = SortOptions;
-  sortOptionList = [];
-  selectedSort = null;
-  filterOptions = [];
-  filterData = [];
-  bindingFilters = {};
-  screenWidth = 100;
-  clearShouldDisabled = true;
-  colorMapper = {};
+  sortOptions = [
+    {
+      value: 'newest',
+      fa: 'تازه‌ترین‌ها',
+    },
+    {
+      value: 'highest',
+      fa: 'بالاترین امتیازها',
+    },
+    {
+      value: 'cheapest',
+      fa: 'ارزان‌ترین‌ها',
+    },
+    {
+      value: 'most',
+      fa: 'گران‌ترین‌ها',
+    }
+  ];
+  filter_options: any;
+  current_filter_state = [];
+  sortedBy: any = {value: null};
+  isChecked: any = {};
+  oppositeColor: any = {};
+  needsBorder: any = {};
+  minPrice;
+  maxPrice;
+  selectedMinPriceFormatted = '';
+  selectedMaxPriceFormatted = '';
 
-  constructor(public navParams: NavParams, private productService: ProductService,
-              private colorService: ColorService) {
+  filter_options$: any;
+
+  rangeValues: any  = {lower: 0 , upper: 0};
+
+
+
+  constructor(public navParams: NavParams,public viewCtrl: ViewController,
+              private productService: ProductService, private dict: DictionaryService) {
+
+  }
+  ionViewWillEnter() {
+    this.viewCtrl.setBackButtonText('بازگشت');
+  }
+  ngOnInit() {
+    this.filter_options$ = this.productService.filtering$.subscribe(r => {
+      this.filter_options = r;
+
+      this.isChecked = this.productService.getSavedChecked();
+      this.sortedBy = this.productService.getSavedSort();
+
+      this.filter_options.forEach(el => {
+        const found = this.current_filter_state.find(cfs => cfs.name === el.name);
+        if (!found) {
+          this.current_filter_state.push({name: el.name, values: []});
+        }
+        if (!this.isChecked[el.name]) {
+          this.isChecked[el.name] = {};
+          for (const key of el.values) {
+            this.isChecked[el.name][key] = false;
+          }
+        }
+      });
+      const prices = r.find(fo => fo.name === 'price');
+      if (prices && prices.values.length) {
+        if (!this.minPrice)
+          this.minPrice = prices.values[0];
+        if (!this.maxPrice)
+          this.maxPrice = prices.values[1];
+
+        this.rangeValues['lower'] = prices.values[0];
+        this.rangeValues['upper'] = prices.values[1];
+        this.formatPrices();
+      }
+
+      for (const col in this.isChecked.color) {
+        let color;
+        color = this.dict.convertColor(col);
+        if (color) {
+          this.oppositeColor[col] = parseInt(color.substring(1), 16) < parseInt('888888', 16) ? 'white' : 'black';
+          const red = color.substring(1, 3);
+          const green = color.substring(3, 5);
+          const blue = color.substring(5, 7);
+          const colors = [red, green, blue];
+          this.needsBorder[col] = colors.map(c => parseInt('ff', 16) - parseInt(c, 16) < 16).reduce((x, y) => x && y);
+        } else {
+          this.oppositeColor[col] = 'white';
+        }
+      }
+    });
+  }
+
+  formatPrices() {
+    [this.selectedMinPriceFormatted, this.selectedMaxPriceFormatted] = Object.values(this.rangeValues).map(priceFormatter);
+  }
+
+  getValue(name, value) {
+    this.isChecked[name][value] = !this.isChecked[name][value];
+
+    this.current_filter_state.forEach(el => {
+      if (el.name === name) {
+        if (this.isChecked[name][value]  && (el.values.length === 0 || el.values.findIndex(i => i === value) === -1 ))
+          el.values.push(value);
+        else {
+          const ind = el.values.indexOf(value);
+          if (ind > -1)
+            el.values.splice(ind, 1);
+        }
+      }
+    });
+    this.productService.saveChecked(this.isChecked);
+    this.productService.applyFilters(this.current_filter_state, name);
+  }
+  priceRangeChange() {
+    Object.values(this.rangeValues).map(r => Math.round(r / 1000) * 1000);
+    this.current_filter_state.find(r => r.name === 'price').values = Object.values(this.rangeValues);
+    this.formatPrices();
+    this.productService.saveChecked(this.isChecked);
+    this.productService.applyFilters(this.current_filter_state, 'price');
 
   }
 
-  ngOnInit() {
-    Object.keys(this.sortOptions).forEach(el => {
-      if (el.toLowerCase().charCodeAt(0) >= 97 && el.toLowerCase().charCodeAt(0) <= 122)
-        this.sortOptionList.push({name: this.sortOptions[el], value: el});
+  clearFilters() {
+    this.current_filter_state.forEach(el => {
+      el.values = [];
     });
 
-    this.navBar.setBackButtonText('بازگشت');
-    this.initialFilter();
-  }
-
-  initialFilter() {
-    this.productService.filtering$.subscribe(
-      (data) => {
-        this.filterOptions = data;
-        this.filterOptions.forEach(el => {
-          this.bindingFilters[el.name] = {};
-          el.values.forEach(value => {
-            this.bindingFilters[el.name][value] = false;
-          });
-        });
-
-        this.colorService.colorIsReady.subscribe(
-          (data) => {
-            if(data && !this.colorMapper) {
-              if(this.bindingFilters['رنگ']) {
-                Object.keys(this.bindingFilters['رنگ']).forEach(el => {
-                  this.colorMapper[el] = this.colorService.getColorHexCode(el);
-                });
-              }
-            }
-          }
-        );
-      },
-      (err) => {
-        console.error('Cannot subscribe on filtering$ in productService: ', err);
+    for (const name in this.isChecked) {
+      for (const value in this.isChecked[name]) {
+        this.isChecked[name][value] = false;
       }
-    );
-  }
-
-  sort(option) {
-    this.selectedSort = option;
-    this.clearShouldDisabled = false;
-  }
-
-  updateFilter(name, value) {
-    let option = this.filterData.find(el => el.name === name);
-    if(option) {
-      if(option.values.includes(value))
-        option.values = option.values.filter(el => el !== value);
-      else
-        option.values.push(value);
-    } else {
-      this.filterData.push({
-        name: name,
-        values: [value],
-      });
     }
 
-    this.checkClearDisability();
+    this.sortedBy = null;
+    this.productService.saveChecked(this.isChecked);
+    this.productService.applyFilters(this.current_filter_state, '');
   }
 
-  setSize(value) {
-    this.bindingFilters['سایز'][value] = !this.bindingFilters['سایز'][value];
-    this.checkClearDisability();
+  selectSortOption(index) {
+    if (this.sortedBy && this.sortedBy.value === this.sortOptions[index].value) {
+      this.sortedBy = {value: null};
+    } else {
+      this.sortedBy = this.sortOptions[index];
+    }
+    this.productService.saveSort(this.sortedBy);
+    this.productService.setSort(this.sortedBy.value);
+
   }
 
-  setColor(value) {
-    this.bindingFilters['رنگ'][value] = !this.bindingFilters['رنگ'][value];
-    this.checkClearDisability();
-  }
-
-  filter() {
-    Object.keys(this.bindingFilters).forEach(el => {
-      Object.keys(this.bindingFilters[el]).forEach(value => {
-        if(this.bindingFilters[el][value]){
-          let option = this.filterData.find(item => item.name === el);
-          if(option){
-            if(!option.values.includes(value))
-              option.values.push(value);
-          } else {
-            this.filterData.push({
-              name: el,
-              values: [value],
-            });
-          }
-        }
-      });
-    });
-
-    this.productService.setFilter(this.filterData);
-    if(this.selectedSort)
-      this.productService.setSort(this.selectedSort);
-  }
-
-  clearFilterData() {
-    Object.keys(this.bindingFilters).forEach(el => {
-      Object.keys(this.bindingFilters[el]).forEach(value => {
-        this.bindingFilters[el][value] = false;
-      });
-    });
-
-    this.selectedSort = null;
-
-    this.clearShouldDisabled = true;
-  }
-
-  checkClearDisability() {
-    this.clearShouldDisabled = true;
-
-    Object.keys(this.bindingFilters).forEach(el => {
-      Object.keys(this.bindingFilters[el]).forEach(value => {
-        if(this.bindingFilters[el][value]) {
-          this.clearShouldDisabled = false;
-          return;
-        }
-      });
-    });
-
-    if(this.selectedSort)
-      this.clearShouldDisabled = false;
+  ionViewWillLeave(){
+    this.filter_options$.unsubscribe();
   }
 }

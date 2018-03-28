@@ -25,12 +25,12 @@ import {ProductViewPage} from "../pages/products/product-view/product-view";
 import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
 import {SelectSizePage} from "../pages/products/select-size/select-size";
 import {PageService} from '../services/page.service';
-import {ColorService} from '../services/colorService';
 import {FeedPage} from '../pages/feed/feed';
-import {CollectionPage} from '../pages/collection/collection';
+import {CollectionsPage} from '../pages/collections/collections';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
 import {CartService} from "../services/cart.service";
+import {DictionaryService} from '../services/dictionary.service';
 import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
 import {SelectCount} from "../pages/bag/select-count/select-count";
 
@@ -39,7 +39,7 @@ import {SelectCount} from "../pages/bag/select-count/select-count";
     MyApp,
     FeedPage,
     MyShopPage,
-    CollectionPage,
+    CollectionsPage,
     BagPage,
     InboxPage,
     ProfilePage,
@@ -66,7 +66,7 @@ import {SelectCount} from "../pages/bag/select-count/select-count";
     MyApp,
     FeedPage,
     MyShopPage,
-    CollectionPage,
+    CollectionsPage,
     BagPage,
     InboxPage,
     ProfilePage,
@@ -90,8 +90,8 @@ import {SelectCount} from "../pages/bag/select-count/select-count";
     GooglePlus,
     ProductService,
     PageService,
-    ColorService,
     CartService,
+    DictionaryService
   ]
 })
 export class AppModule {}

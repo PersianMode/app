@@ -1,16 +1,17 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {IPageInfo} from '../interfaces/ipageInfo.interface';
+import {Subject} from 'rxjs/Subject';
+import {ToastController} from 'ionic-angular';
 
 
 @Injectable()
 export class PageService {
   private cache: any = {};
-  placement$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  pageInfo$: ReplaySubject<IPageInfo> = new ReplaySubject<IPageInfo>(1);
+  placement$: Subject<any[]> = new Subject<any[]>();
+  pageInfo$: Subject<IPageInfo> = new Subject<IPageInfo>();
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private toastCtrl: ToastController) {
 
   }
 
@@ -36,12 +37,16 @@ export class PageService {
             this.emitPageInfo(this.cache[pageName].page_info);
           }
         }, err => {
-          console.error('err: ', err);
+          console.log('err: ', err);
+          this.toastCtrl.create({
+            message: 'این صفحه در حال حاضر موجود نمی باشد',
+            duration: 3200,
+          }).present();
         }
       );
     } else {
-      this.emitPlacements(this.cache[pageName].placement);
-      this.emitPageInfo(this.cache[pageName].page_info);
+      if (this.cache[pageName].placement) this.emitPlacements(this.cache[pageName].placement);
+      if (this.cache[pageName].page_info) this.emitPageInfo(this.cache[pageName].page_info);
     }
   }
 
