@@ -81,28 +81,28 @@ export class CartService {
       return null;
 
     return this.dataArray.map(el => {
-      return Object.assign({}, el, {
+      return Object.assign({
         cost: el.instance_price ? el.instance_price : el.base_price,
         product_color_id: el.color ? el.color.id : null,
         color: (el.color && el.color.name) || 'defaultColor',
-      })
+      }, el);
     });
   }
 
   getBalanceAndLoyalty(cb = null) {
     this.httpService.get(`customer/balance`).subscribe(
       data => {
-        if(cb) cb(data['balance'], data['loyalty_points']);
+        if (cb) cb(data['balance'], data['loyalty_points']);
       },
       err => {
-        if(cb) cb(0, 0);
+        if (cb) cb(0, 0);
       }
     );
   }
 
   addCoupon(coupon_code = '') {
     if (coupon_code.length <= 0)
-      return Promise.resolve(this.coupon_discount * -1);
+      return Promise.resolve(false);
 
     return new Promise((resolve, reject) => {
       if (this.dataArray && this.dataArray.length > 0)
@@ -114,11 +114,15 @@ export class CartService {
             data = data[0];
             const someItems = this.dataArray.filter(el => el.product_id.toString() === data.product_id.toString());
             if (someItems && someItems.length > 0) {
-              let semiTotalPrice = someItems.map(el => el.instance_price || el.base_price);
-              if(semiTotalPrice)
-                semiTotalPrice = semiTotalPrice.reduce((a, b) => a + b);
-              this.coupon_discount = semiTotalPrice - (semiTotalPrice * data.discount);
-              resolve(this.coupon_discount);
+              someItems.forEach(el => {
+                el['coupon_discount'] = 1 - data.discount;
+              });
+
+              // let semiTotalPrice = someItems.map(el => (el.instance_price || el.base_price) * el.quantity);
+              // if(semiTotalPrice)
+              //   semiTotalPrice = semiTotalPrice.reduce((a, b) => a + b);
+              // this.coupon_discount = semiTotalPrice - (semiTotalPrice * data.discount);
+              resolve(true);
             } else
               reject({});
           },

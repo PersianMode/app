@@ -37,7 +37,7 @@ export class BagPage implements OnInit {
     this.isPromoCodeShown = !this.isPromoCodeShown;
   }
 
-  computeTotalCost() {
+  computeTotalCost(addCoupon = false) {
     this.totalCost = 0;
     this.discount = 0;
 
@@ -48,7 +48,18 @@ export class BagPage implements OnInit {
       this.totalCost += price * (e.quantity ? e.quantity : 1);
 
       // Compute total discount
-      this.discount += (price - ((e.discount && e.discount.length > 0 ? e.discount.reduce((a, b) => a * b) : 0) * price)) * e.quantity;
+      let tempTotalDiscount = e.discount && e.discount.length > 0 ? e.discount.reduce((a, b) => a * b) : 0;
+      if (e.coupon_discount) {
+        if (addCoupon)
+          tempTotalDiscount *= e.coupon_discount;
+        else
+          tempTotalDiscount *= (1 / e.coupon_discount);
+      }
+
+      // Round the discount
+      tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
+
+      this.discount += (price - (tempTotalDiscount * price)) * e.quantity;
     });
 
     this.finalTotal = this.totalCost - this.discount;
@@ -56,13 +67,17 @@ export class BagPage implements OnInit {
 
   updateOrderlines($event = null) {
     this.cartService.loadOrderlines(() => {
-      let t = this.cartService.getReformedOrderlines();
-      this.products = t || [];
-      const quantityList = this.products.map(el => el.quantity);
-      this.cartItemsLength = (quantityList && quantityList.length > 0) ? quantityList.reduce((a, b) => a + b) : 0;
-
-      this.computeTotalCost();
+      this.updateData();
     });
+  }
+
+  updateData(addCoupon?) {
+    let t = this.cartService.getReformedOrderlines();
+    this.products = t || [];
+    const quantityList = this.products.map(el => el.quantity);
+    this.cartItemsLength = (quantityList && quantityList.length > 0) ? quantityList.reduce((a, b) => a + b) : 0;
+
+    this.computeTotalCost(addCoupon);
   }
 
   formatPrice(p) {
@@ -71,11 +86,8 @@ export class BagPage implements OnInit {
 
   applyCoupon() {
     this.cartService.addCoupon(this.coupon_code)
-      .then((res: number) => {
-        if (res) {
-          this.discount += res;
-          this.finalTotal = this.totalCost - this.discount;
-        }
+      .then((res) => {
+        this.updateData(res);
       })
       .catch(err => {
         this.alertCtrl.create({
