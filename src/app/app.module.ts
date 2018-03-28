@@ -31,6 +31,7 @@ import {CollectionPage} from '../pages/collection/collection';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
 import {CartService} from "../services/cart.service";
+import {FilterProductSize} from "../components/filter-product-size/filter-product-size";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {CartService} from "../services/cart.service";
     RegisterPage,
     RegConfirmationPage,
     ProductItemComponent,
-    FilterPage
+    FilterPage,
+    FilterProductSize
   ],
   imports: [
     BrowserModule,
@@ -73,7 +75,8 @@ import {CartService} from "../services/cart.service";
     SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
-    FilterPage
+    FilterPage,
+    FilterProductSize
   ],
   providers: [
     StatusBar,

@@ -1,0 +1,13 @@
+<ion-content>
+  <ion-row *ngFor="let chunkSize of sizes;let rowIndex = index">
+    <ion-col *ngFor="let size of chunkSize;let colIndex = index" col-3>
+      <button ion-button full
+              [color]="items.indexOf(rowIndex*4+colIndex) === -1? 'light':'dark'"
+              (click)="sizeSelected(rowIndex,colIndex)">{{size}}
+      </button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <button ion-button block color="dark" (click)="returnSizeSelected()">Size Selected!</button>
+  </ion-row>
+</ion-content>
