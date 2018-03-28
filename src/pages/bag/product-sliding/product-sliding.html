@@ -1,12 +1,8 @@
-<!--<ion-list inset style="margin: 0px !important;">-->
 <ion-item-sliding>
   <ion-item>
     <ion-thumbnail item-start>
-      <!--TODO: TEST PURPOSE ONLY! TO SEE HOW IMAGE LOOKS IN REALITY!-->
-      <img src="assets/product-pic/13.jpg" alt="">
-      <!--<img src="{{product.thumbnail}}" alt="">-->
+      <img src="{{product.thumbnail}}" alt="">
     </ion-thumbnail>
-    <!--<div>-->
     <ion-label>
 
       <p style="color: black; font-weight: 200; margin-bottom: 15px;">{{product.name}}</p>
@@ -20,21 +16,7 @@
       <p style="color: black;">رنگ: {{product.color}}</p>
       <p class="semi-color pointer-click" style="margin-top: 10px !important;" (click)="removeThisProduct()">حذف</p>
     </ion-label>
-
-    <!--</div>-->
   </ion-item>
-
-  <!--<ion-row>-->
-  <!--<ion-col>-->
-  <!--<ion-item style="border-top: 0">-->
-  <!--<ion-label>-->
-  <!---->
-  <!--</ion-label>-->
-  <!--<ion-datetime displayFormat="YY" min="2001" max="2010" [(ngModel)]="_quantity">-->
-  <!--</ion-datetime>-->
-  <!--</ion-item>-->
-  <!--</ion-col>-->
-  <!--</ion-row>-->
 
   <ion-item-options side="right">
     <button ion-button large color="danger" (click)="removeThisProduct()">
@@ -42,4 +24,3 @@
     </button>
   </ion-item-options>
 </ion-item-sliding>
-<!--</ion-list>-->
