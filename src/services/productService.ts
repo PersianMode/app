@@ -61,7 +61,18 @@ export class ProductService {
 
   private sortInput;
 
-  constructor(private httpService: HttpService, private toastCtrl: ToastController, private  dict : DictionaryService) {
+  private _savedChecked: any = {};
+
+
+  constructor(private httpService: HttpService, private toastCtrl: ToastController, private  dict: DictionaryService) {
+  }
+
+  getSavedChecked(): any {
+    return this._savedChecked;
+  }
+
+  saveChecked(value: any) {
+    this._savedChecked = value;
   }
 
   extractFilters(filters = [], trigger = '') {
@@ -127,6 +138,7 @@ export class ProductService {
   emptyFilters() {
     this.filtering$.next([]);
   }
+
   applyFilters(filters, trigger) {
     this.filteredProducts = JSON.parse(JSON.stringify(this.products));
 
@@ -297,4 +309,5 @@ export class ProductService {
       }
     }
     this.productList$.next(sortedProducts);
-  }}
+  }
+}

@@ -55,6 +55,9 @@ export class FilterPage implements OnInit {
   ngOnInit() {
     this.filter_options$ = this.productService.filtering$.subscribe(r => {
       this.filter_options = r;
+
+      this.isChecked = this.productService.getSavedChecked();
+
       this.filter_options.forEach(el => {
         const found = this.current_filter_state.find(cfs => cfs.name === el.name);
         if (!found) {
@@ -105,7 +108,7 @@ export class FilterPage implements OnInit {
 
     this.current_filter_state.forEach(el => {
       if (el.name === name) {
-        if (el.values.length === 0 || el.values.findIndex(i => i === value) === -1)
+        if (this.isChecked[name][value]  && (el.values.length === 0 || el.values.findIndex(i => i === value) === -1 ))
           el.values.push(value);
         else {
           const ind = el.values.indexOf(value);
@@ -114,12 +117,14 @@ export class FilterPage implements OnInit {
         }
       }
     });
+    this.productService.saveChecked(this.isChecked);
     this.productService.applyFilters(this.current_filter_state, name);
   }
   priceRangeChange() {
     Object.values(this.rangeValues).map(r => Math.round(r / 1000) * 1000);
     this.current_filter_state.find(r => r.name === 'price').values = this.rangeValues;
     this.formatPrices();
+    this.productService.saveChecked(this.isChecked);
     this.productService.applyFilters(this.current_filter_state, 'price');
 
   }
@@ -136,6 +141,7 @@ export class FilterPage implements OnInit {
     }
 
     this.sortedBy = null;
+    this.productService.saveChecked(this.isChecked);
     this.productService.applyFilters(this.current_filter_state, '');
   }
 

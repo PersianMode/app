@@ -29,8 +29,8 @@
     <div *ngIf="fo.name === 'price'" style="direction: ltr">
         <ion-range [min]="minPrice" [max]="maxPrice" [(ngModel)]="rangeValues" (ionChange)="priceRangeChange()" color="secondary" dualKnobs="true" pin="true"
                    step="5000" debounce="500" >
-          <ion-label range-left>{{selectedMinPriceFormatted}} تومان</ion-label>
-          <ion-label range-right>{{selectedMaxPriceFormatted}} تومان</ion-label>
+          <ion-label range-left style="margin-right: 20px">{{selectedMinPriceFormatted}}</ion-label>
+          <ion-label range-right style="margin-left: 20px">{{selectedMaxPriceFormatted}}</ion-label>
         </ion-range>
     </div>
 
