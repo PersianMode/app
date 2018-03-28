@@ -117,11 +117,6 @@ export class CartService {
               someItems.forEach(el => {
                 el['coupon_discount'] = 1 - data.discount;
               });
-
-              // let semiTotalPrice = someItems.map(el => (el.instance_price || el.base_price) * el.quantity);
-              // if(semiTotalPrice)
-              //   semiTotalPrice = semiTotalPrice.reduce((a, b) => a + b);
-              // this.coupon_discount = semiTotalPrice - (semiTotalPrice * data.discount);
               resolve(true);
             } else
               reject({});
