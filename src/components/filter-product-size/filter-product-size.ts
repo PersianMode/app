@@ -43,16 +43,12 @@ export class FilterProductSize {
     if (!this.items.includes(this.sizes[rowIndex][colIndex])) {
       this.items.push(this.sizes[rowIndex][colIndex]);
     } else {
-      let itemIndex = this.items.indexOf(this.sizes[rowIndex][colIndex]);
-      this.items.splice(itemIndex, 1);
+      this.items = this.items.filter(el => el !== this.sizes[rowIndex][colIndex]);
     }
   }
 
   itemSelected(size) {
-    if (this.items.includes(size)) {
-      return true;
-    }
-    return false;
+    return this.items.includes(size);
   }
 
   returnSizeSelected() {
