@@ -75,6 +75,7 @@ export class ProductService {
   saveChecked(value: any) {
     this._savedChecked = value;
   }
+
   getSavedSort(): any {
     return this._savedSort;
   }
@@ -100,9 +101,14 @@ export class ProductService {
       price = [];
     } else {
       price = products.map(r => r.base_price);
-      const minPrice = Math.min(...price);
-      const maxPrice = Math.max(...price);
-      price = [minPrice, maxPrice];
+
+      if (price && price.length > 1 && price[0] !== price[1]) {
+        const minPrice = Math.min(...price);
+        const maxPrice = Math.max(...price);
+        price = [minPrice, maxPrice];
+      } else {
+        price = [];
+      }
     }
 
     tags = {brand, type, price, size, color};

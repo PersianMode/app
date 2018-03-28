@@ -33,7 +33,7 @@
 
           <ion-range [min]="minPrice" [max]="maxPrice" [(ngModel)]="rangeValues" (ionBlur)="priceRangeChange()"
                      color="secondary" dualKnobs="true" pin="true"
-                     step="5000" debounce="500">
+                     step="5000" debounce="500" style="direction: ltr">
             <ion-label range-left style="margin-right: 20px">{{selectedMinPriceFormatted}}</ion-label>
             <ion-label range-right style="margin-left: 20px">{{selectedMaxPriceFormatted}}</ion-label>
           </ion-range>
@@ -41,23 +41,21 @@
       </ion-list>
     </div>
 
-    <div *ngIf="fo.name === 'color'">
+    <span *ngIf="fo.name === 'color'">
       <ion-list>
         <ion-list-header class="filter-option-title">{{fo.name}}</ion-list-header>
-        <ion-item class="filter-item">
+      </ion-list>
 
-      <span *ngFor="let v of fo.values; let j = index" class="color-span" (click)="getValue(fo.name, v)"
-            style="cursor: pointer;">
+    <span *ngFor="let v of fo.values; let j = index" class="color-span" (click)="getValue(fo.name, v)"
+          style="cursor: pointer;">
         <svg height="26" width="26">
          <circle cx="13" cy="13" r="12" [attr.stroke]="needsBorder[v] ? '#ccc' : 'transparent'" stroke-width="1"
                  attr.fill="{{fo.values_fa[j]}}"></circle>
         </svg>
         <i *ngIf="isChecked[fo.name][v]" class="fa fa-check circle" [style.color]="oppositeColor[v]"></i>
       </span>
-        </ion-item>
-      </ion-list>
-    </div>
 
+    </span>
 
   </div>
 
@@ -65,13 +63,6 @@
 
 <ion-footer>
   <ion-grid>
-    <ion-row>
-      <div style="width: ;">
-        <svg height="6px" width="100%">
-          <line x1="0" y1="0" x2="100%" y2="0" style="stroke: rgba(197,203,201,0.68);stroke-width:2"/>
-        </svg>
-      </div>
-    </ion-row>
     <ion-row>
       <ion-col>
         <button ion-button color="dark" block clear (click)="clearFilters()">
