@@ -52,8 +52,6 @@ export class BagPage implements OnInit {
       if (e.coupon_discount) {
         if (addCoupon)
           tempTotalDiscount *= e.coupon_discount;
-        else
-          tempTotalDiscount *= (1 / e.coupon_discount);
       }
 
       // Round the discount
