@@ -7,7 +7,7 @@
 <ion-content padding dir="rtl">
   <ion-list>
     <ion-list-header class="filter-option-title">مرتب سازی بر اساس</ion-list-header>
-    <ion-item *ngFor="let so of sortOptions" (click)="sort(so.value)"
+    <ion-item *ngFor="let so of sortOptions;let i=index" (click)="selectSortOption(i)"
               [ngClass]="sortedBy?.value === so.value ? 'selected-sort' : null">
       <ion-label class="sort-item">{{so.fa}}</ion-label>
     </ion-item>
