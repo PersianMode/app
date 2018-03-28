@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {BagPage} from '../bag/bag';
 import {InboxPage} from '../inbox/inbox';
@@ -11,7 +11,7 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 @Component({
   templateUrl: 'tabs.html',
 })
-export class TabsPage {
+export class TabsPage implements OnInit {
 
   tabFeedRoot = FeedPage;
   tabMyShopRoot = MyShopPage;

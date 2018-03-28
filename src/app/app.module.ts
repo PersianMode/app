@@ -31,6 +31,8 @@ import {CollectionPage} from '../pages/collection/collection';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
 import {CartService} from "../services/cart.service";
+import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
+import {SelectCount} from "../pages/bag/select-count/select-count";
 import {FilterProductSize} from "../components/filter-product-size/filter-product-size";
 
 @NgModule({
@@ -51,7 +53,9 @@ import {FilterProductSize} from "../components/filter-product-size/filter-produc
     RegConfirmationPage,
     ProductItemComponent,
     FilterPage,
-    FilterProductSize
+    FilterProductSize,
+    ProductSliding,
+    SelectCount,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +79,7 @@ import {FilterProductSize} from "../components/filter-product-size/filter-produc
     SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
+    SelectCount,
     FilterPage,
     FilterProductSize
   ],
