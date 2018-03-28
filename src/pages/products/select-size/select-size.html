@@ -14,6 +14,7 @@
                 [disabled]="activeColor?._id != i?.product_color_id">
           {{formatNumber(i.size)}}
         </button>
+        <!--<h1>{{i.product_color_id}}</h1>-->
       </div>
       <div *ngIf="selectedSize === row_index * 6 + col_index">
         <button ion-button full color="dark" class="size-buttons" (click)="selectSize(row_index * 6 + col_index)">
