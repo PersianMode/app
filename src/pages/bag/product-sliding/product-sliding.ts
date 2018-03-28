@@ -26,7 +26,6 @@ export class ProductSliding {
           console.log("error in removing orderline", err);
           return;
         }
-
         this.getList.emit();
       });
     }, 200);

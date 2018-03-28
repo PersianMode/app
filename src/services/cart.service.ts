@@ -114,7 +114,9 @@ export class CartService {
             data = data[0];
             const someItems = this.dataArray.filter(el => el.product_id.toString() === data.product_id.toString());
             if (someItems && someItems.length > 0) {
-              const semiTotalPrice = someItems.map(el => el.instance_price || el.base_price).reduce((a, b) => a + b);
+              let semiTotalPrice = someItems.map(el => el.instance_price || el.base_price);
+              if(semiTotalPrice)
+                semiTotalPrice = semiTotalPrice.reduce((a, b) => a + b);
               this.coupon_discount = semiTotalPrice - (semiTotalPrice * data.discount);
               resolve(this.coupon_discount);
             } else

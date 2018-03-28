@@ -11,7 +11,6 @@ export class BagPage implements OnInit {
   products: any[] = [];
   cartItemsLength: number = 0;
   isPromoCodeShown: Boolean = false;
-  totalInstanceNumber: number = 0;
   loyalty_point: number = 0;
   balance: number = 0;
   totalCost: number = 0;
@@ -32,10 +31,6 @@ export class BagPage implements OnInit {
       this.balance = b;
       this.loyalty_point = l;
     });
-
-    this.cartService.cartItems.subscribe(
-      () => this.updateOrderlines()
-    );
   }
 
   onClickedOnPromoCode() {
@@ -45,7 +40,6 @@ export class BagPage implements OnInit {
   computeTotalCost() {
     this.totalCost = 0;
     this.discount = 0;
-    this.totalInstanceNumber = 0;
 
     this.products.forEach(e => {
       const price = e.final_cost ? e.final_cost : e.cost;
@@ -54,20 +48,21 @@ export class BagPage implements OnInit {
       this.totalCost += price * (e.quantity ? e.quantity : 1);
 
       // Compute total discount
-      this.discount += (price - (e.discount.reduce((a, b) => a * b) * price)) * e.quantity;
+      this.discount += (price - ((e.discount && e.discount.length > 0 ? e.discount.reduce((a, b) => a * b) : 0) * price)) * e.quantity;
     });
 
     this.finalTotal = this.totalCost - this.discount;
   }
 
   updateOrderlines($event = null) {
-    // this.cartService.loadOrderlines(() => {
+    this.cartService.loadOrderlines(() => {
       let t = this.cartService.getReformedOrderlines();
       this.products = t || [];
-      this.cartItemsLength = this.products.map(el => el.quantity).reduce((a, b) => a + b);
+      const quantityList = this.products.map(el => el.quantity);
+      this.cartItemsLength = (quantityList && quantityList.length > 0) ? quantityList.reduce((a, b) => a + b) : 0;
 
       this.computeTotalCost();
-    // });
+    });
   }
 
   formatPrice(p) {

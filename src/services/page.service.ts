@@ -36,7 +36,7 @@ export class PageService {
             this.emitPageInfo(this.cache[pageName].page_info);
           }
         }, err => {
-          console.log('err: ', err);
+          console.error('err: ', err);
         }
       );
     } else {

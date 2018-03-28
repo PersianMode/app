@@ -29,12 +29,7 @@ export class SelectCount {
 
     this.product_id = this.navParams.get('product_id');
     this.product_instance_id = this.navParams.get('product_instance_id');
-    console.log(this.quantity, this.countArray);
   }
-
-  // TODO: problems:
-  // not instantly updating the product-sliding quantity
-  // The top button should be fixed, not floated
 
   applyChangedQuantity() {
     let diff = this.selectedQuantity - this.quantity;
