@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {LoadingController, NavController} from 'ionic-angular';
+import {AlertController, NavController} from 'ionic-angular';
 import {CartService} from "../../services/cart.service";
 import {priceFormatter} from "../../shared/lib/priceFormatter";
 
@@ -9,17 +9,18 @@ import {priceFormatter} from "../../shared/lib/priceFormatter";
 })
 export class BagPage implements OnInit {
   products: any[] = [];
+  cartItemsLength: number = 0;
   isPromoCodeShown: Boolean = false;
   totalInstanceNumber: number = 0;
   loyalty_point: number = 0;
   balance: number = 0;
   totalCost: number = 0;
-  discount: number = 0
+  discount: number = 0;
   coupon_code = '';
   finalTotal = 0;
 
-  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
-              private cartService: CartService) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController,
+              private cartService: CartService,) {
   }
 
   ionViewWillEnter() {
@@ -31,6 +32,10 @@ export class BagPage implements OnInit {
       this.balance = b;
       this.loyalty_point = l;
     });
+
+    this.cartService.cartItems.subscribe(
+      () => this.updateOrderlines()
+    );
   }
 
   onClickedOnPromoCode() {
@@ -56,11 +61,13 @@ export class BagPage implements OnInit {
   }
 
   updateOrderlines($event = null) {
-    this.cartService.loadOrderlines(() => {
+    // this.cartService.loadOrderlines(() => {
       let t = this.cartService.getReformedOrderlines();
       this.products = t || [];
+      this.cartItemsLength = this.products.map(el => el.quantity).reduce((a, b) => a + b);
+
       this.computeTotalCost();
-    });
+    // });
   }
 
   formatPrice(p) {
@@ -76,6 +83,16 @@ export class BagPage implements OnInit {
         }
       })
       .catch(err => {
+        this.alertCtrl.create({
+          title: 'خطا',
+          message: 'کد تخفیف وارد شده نامعتبر یا استفاده شده می باشد',
+          buttons: [
+            {
+              text: 'بستن',
+              role: 'cancel',
+            }
+          ]
+        }).present();
         console.error('rejected: ', err);
       });
   }

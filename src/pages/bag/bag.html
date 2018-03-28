@@ -5,23 +5,9 @@
 </ion-header>
 
 <ion-content class="bag-page">
-  <!--<ion-list>-->
-  <!--<ion-item-sliding *ngFor="let product of products">-->
-  <!--<ion-item>-->
-  <!--<ion-thumbnail item-start>-->
-  <!--<img src="{{product.thumbnail}}" >-->
-  <!--</ion-thumbnail>-->
-  <!--<h1>{{product.name}}</h1>-->
-  <!--<h5>{{product.cost}}</h5>-->
-  <!--</ion-item>-->
-  <!--<ion-item-options side="right">-->
-  <!--<button ion-button color="danger" (click)="removeThisProduct(product)">حذف<ion-icon  name="trash"></ion-icon></button>-->
-  <!--</ion-item-options>-->
-  <!--</ion-item-sliding>-->
-  <!--</ion-list>-->
   <ion-list inset>
     <ion-item style="border-bottom: 1px solid #878787;">
-      {{formatPrice(products.length)}} عدد
+      {{formatPrice(cartItemsLength)}} عدد
     </ion-item>
   </ion-list>
   <ion-list inset style="margin: 0 !important;" *ngIf="products && products.length > 0">

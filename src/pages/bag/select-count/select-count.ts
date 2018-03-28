@@ -37,19 +37,16 @@ export class SelectCount {
   // The top button should be fixed, not floated
 
   applyChangedQuantity() {
-    console.log(this.selectedQuantity);
     let diff = this.selectedQuantity - this.quantity;
     this.presentLoading(true);
     if(diff > 0) {
       this.cartService.addOrderline(this.product_id, this.product_instance_id, diff, () => {
-        console.log("added!");
         this.loading.dismiss();
         this.presentLoading(false);
       });
     }
     else {
       this.cartService.removeOrderline(this.product_instance_id, -diff, () => {
-        console.log("removed!");
         this.loading.dismiss();
         this.presentLoading(false);
       });
