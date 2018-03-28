@@ -31,7 +31,7 @@ export class ProfilePage {
   }
 
   demoFilterProductSize() {
-    let _popover = this.popoverCtrl.create(FilterProductSize,{selected:['S','XL','9XL']});
+    let _popover = this.popoverCtrl.create(FilterProductSize, {selected: ['S', 'XL', '9XL', '2XL', '3XL', '4XL']});
     _popover.present();
   }
 

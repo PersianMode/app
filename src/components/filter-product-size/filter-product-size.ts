@@ -23,68 +23,41 @@ export class FilterProductSize {
     '10XL',
   ];
   items: any = [];
-  selectedSized: any;
-  defaultColor: string;
 
   constructor(public navParams: NavParams) {
-    this.selectedSized = this.navParams.get('selected');
-
-
-    this.selectedSized.forEach((el,index) => {
-      this.sizes.forEach(inner_el => {
-        console.log(el);
-        if (el === inner_el) {
-          this.items.push(index)
-        }
-      });
-    });
-
-    //default color set
-    this.defaultColor = 'light';
-
+    this.items = this.navParams.get('selected');
 
     // chunk sizes 4
     let _chunkArr = [];
-    let _sizes = this.sizes;
     const chunkSize = 4;
-    let sizeLength = this.sizes.length;
 
     // loop for chunk chunk array
-    for (let i = 0; i < sizeLength; i += chunkSize) {
-      _chunkArr.push(_sizes.slice(i, i + chunkSize));
+    for (let i = 0; i < this.sizes.length; i += chunkSize) {
+      _chunkArr.push(this.sizes.slice(i, i + chunkSize));
     }
     this.sizes = _chunkArr;
   }
 
   sizeSelected(rowIndex, colIndex) {
-    // find itemIndex
-    let itemIndex = rowIndex * 4 + colIndex;
-    let _items = this.items;
-    // check if not exist then push
-    if (!_items.includes(itemIndex)) {
-      _items.push(itemIndex);
+
+    if (!this.items.includes(this.sizes[rowIndex][colIndex])) {
+      this.items.push(this.sizes[rowIndex][colIndex]);
     } else {
-      _items.pop(itemIndex);
+      let itemIndex = this.items.indexOf(this.sizes[rowIndex][colIndex]);
+      this.items.splice(itemIndex, 1);
     }
   }
 
-  returnSizeSelected() {
-    //return size selected
-    let _sizeArr = [];
-    let _items = this.items;
-    let _sizes = this.sizes;
-    _items.forEach(el => {
-      _sizes.forEach((sizeChunk, index) => {
-        let inner_index;
-        for (inner_index in Array.from(sizeChunk)) {
-          inner_index = parseInt(inner_index);
-          if (el === index * 4 + inner_index) {
-            _sizeArr.push(_sizes[index][inner_index]);
-          }
-        }
-      });
-    });
-    console.log(_sizeArr);
+  itemSelected(size) {
+    if (this.items.includes(size)) {
+      return true;
+    }
+    return false;
   }
+
+  returnSizeSelected() {
+    console.log(this.items);
+  }
+
 
 }

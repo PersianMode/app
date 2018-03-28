@@ -2,7 +2,7 @@
   <ion-row *ngFor="let chunkSize of sizes;let rowIndex = index">
     <ion-col *ngFor="let size of chunkSize;let colIndex = index" col-3>
       <button ion-button full
-              [color]="items.indexOf(rowIndex*4+colIndex) === -1? 'light':'dark'"
+              [color]= "itemSelected(size)? 'dark': 'light'"
               (click)="sizeSelected(rowIndex,colIndex)">{{size}}
       </button>
     </ion-col>
