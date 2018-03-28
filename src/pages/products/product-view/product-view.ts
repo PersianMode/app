@@ -31,14 +31,14 @@ export class ProductViewPage {
               private popoverCtrl: PopoverController) {
     this.HOST = HttpService.Host;
     //TODO: TEST ONLY -> REMOVE FOLLOWING LINE TO WORK WITH THE SERVER!
-    this.HOST = '';
+    // this.HOST = '';
   }
 
   ionViewDidLoad() {
     this.productId = this.navParams.get('productId');
     this.httpService.get(`product/${this.productId}`).subscribe(
       data => {
-        this.currentProduct = data[0];
+        this.currentProduct = data;
         if (this.currentProduct && this.currentProduct['colors']) {
           this.selectedColor = this.currentProduct['colors'][0];
 
@@ -93,8 +93,10 @@ export class ProductViewPage {
 
   presentPopOver(myEvent) {
     let pop = this.popoverCtrl.create(SelectSizePage, {
+      productId: this.productId,
       instances: (this.currentProduct && this.currentProduct['instances']) ?
         this.currentProduct['instances'] : null,
+      // activeColor: {_id:'5a9cf71a68b68c2897d1924f'}
       activeColor: (this.currentProduct && this.currentProduct['colors'] && this.currentProduct['colors'].length > this.activeColorIndex) ?
         this.currentProduct['colors'][this.activeColorIndex] : null
     }, {
