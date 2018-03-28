@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController, PopoverController} from 'ionic-angular';
 import {AuthService} from '../../services/auth.service';
 import {LoginPage} from '../login/login';
+import {FilterProductSize} from "../../components/filter-product-size/filter-product-size";
 
 interface User {
   fullName: string;
@@ -21,11 +22,18 @@ export class ProfilePage {
     imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Vodafone_Logo_Speechmark.png/240px-Vodafone_Logo_Speechmark.png'
   };
 
-  constructor(public navCtrl: NavController, private authService: AuthService) {
+  constructor(public navCtrl: NavController, private authService: AuthService, public popoverCtrl: PopoverController) {
 
   }
 
   logout() {
     this.authService.logout();
   }
+
+  demoFilterProductSize() {
+    let _popover = this.popoverCtrl.create(FilterProductSize, {selected: ['S', 'XL', '9XL', '2XL', '3XL', '4XL']});
+    _popover.present();
+  }
+
+
 }
