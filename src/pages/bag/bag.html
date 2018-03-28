@@ -48,26 +48,14 @@
   </ion-grid>
 
   <ion-item>
-    <!--<ion-row>-->
-    <!--<ion-col text-right>-->
-    <!--جمع-->
-    <!--</ion-col>-->
-    <!--<ion-col text-left>-->
-    <!--{{formatPrice(getSubtotalCost())}} تومان-->
-    <!--</ion-col>-->
-    <!--</ion-row>-->
     <ion-row>
-      <ion-col text-right>
-        امتیاز وفاداری
-      </ion-col>
+      <ion-col text-right>امتیاز</ion-col>
       <ion-col text-left>
-        {{formatPrice(loyalty_point)}} امتیاز
+        {{formatPrice(loyalty_point)}}
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col text-right>
-        بالانس
-      </ion-col>
+      <ion-col text-right>موجودی</ion-col>
       <ion-col text-left>
         {{formatPrice(balance)}} تومان
       </ion-col>
@@ -75,16 +63,29 @@
   </ion-item>
   <ion-item>
     <ion-row>
-      <ion-col text-right>
-        جمع کل
-      </ion-col>
+      <ion-col text-right>جمع قیمت</ion-col>
       <ion-col text-left>
-        {{formatPrice(totalCost)}}
+        {{formatPrice(totalCost)}} تومان
+      </ion-col>
+    </ion-row>
+  </ion-item>
+  <ion-item>
+    <ion-row>
+      <ion-col text-right>تخفیف</ion-col>
+      <ion-col text-left>
+        {{formatPrice(discount)}} تومان
+      </ion-col>
+    </ion-row>
+  </ion-item>
+  <ion-item>
+    <ion-row>
+      <ion-col text-right>قیمت نهایی</ion-col>
+      <ion-col text-left>
+        {{formatPrice(finalTotal)}} تومان
       </ion-col>
     </ion-row>
   </ion-item>
   <ion-item>
     <button ion-button full color="dark" large>پرداخت</button>
   </ion-item>
-  <!--</div>-->
 </ion-content>

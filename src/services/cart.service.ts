@@ -13,15 +13,13 @@ export class CartService {
   }
 
   loadOrderlines(cb = null) {
-    console.log("loadOrderlines");
     this.httpService.post(`cart/items`, {data: {}}).subscribe(
       data => {
-        console.log("received data from loadOrderlines:", data);
         this.updateInfo(data);
         this.dataArray = data;
         if (cb) cb();
       }, err => {
-        console.log("err", err);
+        console.error("err", err);
       }
     );
   }
@@ -46,7 +44,7 @@ export class CartService {
 
         if (cb) cb(null);
       }, err => {
-        console.log('error in adding orderline', err);
+        console.error('error in adding orderline', err);
         if (cb) cb(err);
       }
     );
@@ -57,7 +55,6 @@ export class CartService {
     let data = {product_instance_id, number};
     this.httpService.post(`order/delete`, data).subscribe(
       res => {
-        // console.log("response from deletion:", res);
         // this.dataArray = this.dataArray.filter(data => data['instance_id'] === product_instance_id && number-- > 0);
         // this.cartItems.next(this.dataArray.length);
         this.loadOrderlines();
@@ -66,7 +63,7 @@ export class CartService {
 
         if (cb) cb(null);
       }, err => {
-        console.log("error in removing orderline", err);
+        console.error("error in removing orderline", err);
         if (cb) cb(err);
       }
     );
@@ -79,17 +76,13 @@ export class CartService {
   }
 
   getReformedOrderlines() {
-    console.log("data array:", this.dataArray);
     if (this.dataArray.length <= 0 ||
       (this.dataArray && this.dataArray.length === 1 && !this.dataArray[0]['product_id']))
       return null;
 
     return this.dataArray.map(el => {
-      let final_cost = el.instance_price || el.base_price || 0;
-      el.discount.forEach(disc => final_cost *= disc);
       return Object.assign({}, el, {
-        cost: el.instance_price ? el.instance_price : (el.base_price ? el.base_price : 0),
-        final_cost: final_cost,
+        cost: el.instance_price ? el.instance_price : el.base_price,
         product_color_id: el.color ? el.color.id : null,
         color: (el.color && el.color.name) || 'defaultColor',
       })
@@ -99,11 +92,9 @@ export class CartService {
   getBalanceAndLoyalty(cb = null) {
     this.httpService.get(`customer/balance`).subscribe(
       data => {
-        console.log("b-l received successfully!");
         if(cb) cb(data['balance'], data['loyalty_points']);
       },
       err => {
-        console.log("couldn't get data from server", err);
         if(cb) cb(0, 0);
       }
     );
@@ -114,16 +105,16 @@ export class CartService {
       return Promise.resolve(this.coupon_discount * -1);
 
     return new Promise((resolve, reject) => {
-      if (this.dataArray && this.dataArray.length() > 0)
+      if (this.dataArray && this.dataArray.length > 0)
         this.httpService.post('coupon/code/valid', {
-          product_id: Array.from(new Set(this.dataArray.map(el => el.product_id.toString()))),
+          product_ids: Array.from(new Set(this.dataArray.map(el => el.product_id.toString()))),
           coupon_code: coupon_code,
         }).subscribe(
           (data) => {
             data = data[0];
             const someItems = this.dataArray.filter(el => el.product_id.toString() === data.product_id.toString());
-            if (someItems && someItems.length() > 0) {
-              const semiTotalPrice = someItems.map(el => el.price).reduce((a, b) => a + b);
+            if (someItems && someItems.length > 0) {
+              const semiTotalPrice = someItems.map(el => el.instance_price || el.base_price).reduce((a, b) => a + b);
               this.coupon_discount = semiTotalPrice - (semiTotalPrice * data.discount);
               resolve(this.coupon_discount);
             } else
