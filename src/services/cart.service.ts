@@ -96,6 +96,19 @@ export class CartService {
     });
   }
 
+  getBalanceAndLoyalty(cb = null) {
+    this.httpService.get(`customer/balance`).subscribe(
+      data => {
+        console.log("b-l received successfully!");
+        if(cb) cb(data['balance'], data['loyalty_points']);
+      },
+      err => {
+        console.log("couldn't get data from server", err);
+        if(cb) cb(0, 0);
+      }
+    );
+  }
+
   addCoupon(coupon_code = '') {
     if (coupon_code.length <= 0)
       return Promise.resolve(this.coupon_discount * -1);

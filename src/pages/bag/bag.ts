@@ -38,8 +38,12 @@ export class BagPage {
     size: 'M 14 / W 15.5',
   }];
   isPromoCodeShown: Boolean = false;
-  shippingCost: number = 0;
-  estimatedTax: number = 0;
+
+  totalInstanceNumber: number = 0;
+
+  loyalty_point: number = 0;
+  balance: number = 0;
+  totalCost: number = 0;
   coupon_code = '';
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController,
@@ -56,18 +60,16 @@ export class BagPage {
     this.isPromoCodeShown = !this.isPromoCodeShown;
   }
 
-  getSubtotalCost() {
-    let cost = 0;
-    for (let p in this.products) {
-      cost += this.products[p].final_cost ? this.products[p].final_cost : this.products[p].cost;
-    }
-    return cost;
-  }
+  computeTotalCost() {
+    this.totalCost = 0;
+    this.totalInstanceNumber = 0;
+    this.products.forEach(e => this.totalCost += (e.final_cost ? e.final_cost : e.cost) * (e.quantity ? e.quantity : 1));
 
-  getTotalCost() {
-    let cost = this.getSubtotalCost();
-    cost += this.shippingCost + this.estimatedTax;
-    return cost;
+    //wondering if this should be here or another function
+    this.cartService.getBalanceAndLoyalty((b, l) => {
+      this.balance = b;
+      this.loyalty_point = l;
+    });
   }
 
   updateOrderlines($event = null) {
@@ -77,7 +79,8 @@ export class BagPage {
       // if (!t)
       //   this.products = null;
       // else
-        this.products = t || [];
+      this.products = t || [];
+      this.computeTotalCost();
       console.log("products have become:", this.products);
     });
     // console.log("products afterwards", this.products);

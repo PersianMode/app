@@ -6,18 +6,18 @@
 
 <ion-content class="bag-page">
   <!--<ion-list>-->
-    <!--<ion-item-sliding *ngFor="let product of products">-->
-      <!--<ion-item>-->
-        <!--<ion-thumbnail item-start>-->
-          <!--<img src="{{product.thumbnail}}" >-->
-        <!--</ion-thumbnail>-->
-        <!--<h1>{{product.name}}</h1>-->
-        <!--<h5>{{product.cost}}</h5>-->
-      <!--</ion-item>-->
-      <!--<ion-item-options side="right">-->
-        <!--<button ion-button color="danger" (click)="removeThisProduct(product)">حذف<ion-icon  name="trash"></ion-icon></button>-->
-      <!--</ion-item-options>-->
-    <!--</ion-item-sliding>-->
+  <!--<ion-item-sliding *ngFor="let product of products">-->
+  <!--<ion-item>-->
+  <!--<ion-thumbnail item-start>-->
+  <!--<img src="{{product.thumbnail}}" >-->
+  <!--</ion-thumbnail>-->
+  <!--<h1>{{product.name}}</h1>-->
+  <!--<h5>{{product.cost}}</h5>-->
+  <!--</ion-item>-->
+  <!--<ion-item-options side="right">-->
+  <!--<button ion-button color="danger" (click)="removeThisProduct(product)">حذف<ion-icon  name="trash"></ion-icon></button>-->
+  <!--</ion-item-options>-->
+  <!--</ion-item-sliding>-->
   <!--</ion-list>-->
   <ion-list inset>
     <ion-item style="border-bottom: 1px solid #878787;">
@@ -25,7 +25,8 @@
     </ion-item>
   </ion-list>
   <ion-list inset style="margin: 0 !important;" *ngIf="products && products.length > 0">
-    <page-product-sliding *ngFor="let product of products" [product]="product" (getList)="updateOrderlines($event)"></page-product-sliding>
+    <page-product-sliding *ngFor="let product of products" [product]="product"
+                          (getList)="updateOrderlines($event)"></page-product-sliding>
   </ion-list>
   <!--<div class="list card">-->
 
@@ -47,28 +48,28 @@
   </ion-grid>
 
   <ion-item>
+    <!--<ion-row>-->
+    <!--<ion-col text-right>-->
+    <!--جمع-->
+    <!--</ion-col>-->
+    <!--<ion-col text-left>-->
+    <!--{{formatPrice(getSubtotalCost())}} تومان-->
+    <!--</ion-col>-->
+    <!--</ion-row>-->
     <ion-row>
       <ion-col text-right>
-        جمع
+        امتیاز وفاداری
       </ion-col>
       <ion-col text-left>
-        {{formatPrice(getSubtotalCost())}} تومان
+        {{formatPrice(loyalty_point)}} امتیاز
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-right>
-        هزینه ارسال
+        بالانس
       </ion-col>
       <ion-col text-left>
-        {{formatPrice(shippingCost)}} تومان
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col text-right>
-        مالیات
-      </ion-col>
-      <ion-col text-left>
-        {{formatPrice(estimatedTax)}} تومان
+        {{formatPrice(balance)}} تومان
       </ion-col>
     </ion-row>
   </ion-item>
@@ -78,7 +79,7 @@
         جمع کل
       </ion-col>
       <ion-col text-left>
-        {{formatPrice(getTotalCost())}}
+        {{formatPrice(totalCost)}}
       </ion-col>
     </ion-row>
   </ion-item>
