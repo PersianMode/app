@@ -14,7 +14,7 @@
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let product of products" col-6>
-        <product-item [product]="product"></product-item>
+        <product-item [product]="product" (productIsSelected)="toProductDetails($event)" ></product-item>
       </ion-col>
     </ion-row>
   </ion-grid>

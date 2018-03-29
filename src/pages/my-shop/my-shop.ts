@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {PageService} from '../../services/page.service';
 import {CollectionsPage} from '../collections/collections';
+import {HttpService} from '../../services/http.service';
 
 
 @Component({
@@ -29,7 +30,9 @@ export class MyShopPage {
     this.types = [];
 
     this.placements$ = this.pageService.placement$.subscribe(res => {
+
       this.placement = res;
+
       this.placement.forEach(item => {
         if (item.component_name === 'menu' && item.variable_name === 'topMenu') {
           this.types.push({
@@ -100,4 +103,9 @@ export class MyShopPage {
 
     this.placements$.unsubscribe();
   }
+
+  loadImage(imgUrl: string) {
+    return HttpService.addHost(imgUrl);
+  }
+
 }
