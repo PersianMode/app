@@ -40,12 +40,12 @@ export class CartService {
         res => {
           this.loadOrderlines();
           if(res.n <= 0 && res.nModified <= 0)
-            return reject();
-          return resolve();
+            return Promise.reject("nothing's changed");
+          resolve();
         },
         err => {
           console.error("error in adding orderline", err);
-          return reject();
+          reject();
         }
       );
     })
@@ -59,12 +59,12 @@ export class CartService {
         res => {
           this.loadOrderlines();
           if(res.n <= 0 && res.nModified <= 0)
-            return reject();
-          return resolve();
+            return Promise.reject("nothing's changed");
+          resolve();
         },
         err => {
           console.error("error in removing orderline", err);
-          return reject();
+          reject();
         }
       );
     })
