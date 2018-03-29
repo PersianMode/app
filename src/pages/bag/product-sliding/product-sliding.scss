@@ -1,0 +1,37 @@
+.title-boldness {
+  color: black;
+  font-weight: 200;
+  margin-bottom: 100px;
+}
+
+.full-color {
+  color: black;
+}
+
+.semi-color {
+  color: #808080;
+  margin-top: 10px;
+}
+
+.pointer-click {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.pointer-click:active {
+  opacity: 0.8;
+}
+
+.item ion-thumbnail {
+  max-width: 30%;
+  padding: 5px;
+}
+
+.item ion-thumbnail ion-img,
+.item ion-thumbnail img {
+  //width: auto !important;
+  //min-width: 30%;
+  //max-width: 30%;
+  width: 100%;
+  height: 100%;
+}
