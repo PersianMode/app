@@ -9,7 +9,7 @@
       <h2 *ngIf="feed.info.topTitle"
           [style.color]="feed.info.topTitle.color ? feed.info.topTitle.color : null" class="top-title">
         {{feed.info.topTitle.title}}</h2>
-      <img src="{{feed.info.imgUrl}}"/>
+      <img src="{{loadImage(feed.info.imgUrl)}}"/>
     </div>
       <div *ngFor="let ar of feed.info.areas">
         <div *ngIf="ar.pos !== 'card-button'"

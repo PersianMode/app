@@ -14,7 +14,7 @@
   <div>
     <div *ngFor="let entry of typeElements">
       <ion-card (click)="generateSubMenu(entry)">
-        <img src="{{entry.imageUrl}}" alt="" class="card-image">
+        <img src="{{loadImage(entry.imageUrl)}}" alt="" class="card-image">
         <div class="card-title">{{entry.text}}</div>
       </ion-card>
       <div *ngIf="entry && entry.showSubMenu">

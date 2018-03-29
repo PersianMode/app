@@ -3,6 +3,7 @@ import {Navbar, NavController, NavParams, ToastController} from 'ionic-angular';
 import {FilterPage} from '../filter/filter';
 import {PageService} from '../../services/page.service';
 import {ProductService} from '../../services/productService';
+import {ProductViewPage} from '../products/product-view/product-view';
 
 
 @Component({
@@ -58,7 +59,7 @@ export class CollectionsPage {
   }
 
   toProductDetails(id) {
-    console.log(id);
+    this.navCtrl.push(ProductViewPage, {productId: id})
   }
 
   gotToProductFilter() {
