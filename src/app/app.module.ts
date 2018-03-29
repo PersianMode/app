@@ -33,6 +33,7 @@ import {CartService} from "../services/cart.service";
 import {DictionaryService} from '../services/dictionary.service';
 import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
 import {SelectCount} from "../pages/bag/select-count/select-count";
+import {FilterProductSize} from "../components/filter-product-size/filter-product-size";
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {SelectCount} from "../pages/bag/select-count/select-count";
     RegConfirmationPage,
     ProductItemComponent,
     FilterPage,
+    FilterProductSize,
     ProductSliding,
     SelectCount,
   ],
@@ -77,8 +79,9 @@ import {SelectCount} from "../pages/bag/select-count/select-count";
     SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
-    FilterPage,
     SelectCount,
+    FilterPage,
+    FilterProductSize
   ],
   providers: [
     StatusBar,
