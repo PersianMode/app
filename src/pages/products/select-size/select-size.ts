@@ -31,14 +31,16 @@ export class SelectSizePage {
     this.presentLoading(true);
     //this setTimeout is TEST-PURPOSE ONLY! to let us see the loading bar before adding the orderline
     setTimeout(() => {
-      this.cartService.addOrderline(this.productId, this.instances[this.selectedSize]._id, 1, (err) => {
-        if (err) {
-          return this.presentToast("لطفا مجددا تلاش کنید");
-        }
 
-        this.loading.dismiss();
-        this.presentLoading(false);
-      });
+      this.cartService.addOrderline(this.productId, this.instances[this.selectedSize]._id, 1)
+        .then(res => {
+          this.loading.dismiss();
+          this.presentLoading(false);
+        })
+        .catch(err => {
+          this.loading.dismiss();
+          this.presentToast("لطفا مجدداً تلاش کنید!");
+        })
     }, 200);
   }
 
