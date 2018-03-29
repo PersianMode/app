@@ -21,13 +21,13 @@ export class ProductSliding {
       duration: 1000,
     });
     setTimeout(() => {
-      this.cartService.removeOrderline(this.product.instance_id, this.product.quantity, (err) => {
-        if (err) {
-          console.log("error in removing orderline", err);
-          return;
-        }
-        this.getList.emit();
-      });
+      this.cartService.removeOrderline(this.product.instance_id, this.product.quantity)
+        .then(res => {
+          this.getList.emit();
+        })
+        .catch(err => {
+          console.error("error in removing orderling", err);
+        })
     }, 200);
     loading.present();
   }
