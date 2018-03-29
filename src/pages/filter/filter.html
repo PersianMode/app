@@ -30,12 +30,11 @@
       <ion-list>
         <ion-list-header class="filter-option-title">{{fo.name}}</ion-list-header>
         <ion-item class="filter-item" style="direction: ltr">
-
           <ion-range [min]="minPrice" [max]="maxPrice" [(ngModel)]="rangeValues" (ionBlur)="priceRangeChange()"
                      color="secondary" dualKnobs="true" pin="true"
-                     step="5000" debounce="500" style="direction: ltr">
-            <ion-label range-left style="margin-right: 20px">{{selectedMinPriceFormatted}}</ion-label>
-            <ion-label range-right style="margin-left: 20px">{{selectedMaxPriceFormatted}}</ion-label>
+                     step="5000" debounce="500">
+            <ion-label range-left>{{selectedMinPriceFormatted}}</ion-label>
+            <ion-label range-right style="margin-left: 40px">{{selectedMaxPriceFormatted}}</ion-label>
           </ion-range>
         </ion-item>
       </ion-list>
