@@ -9,11 +9,12 @@ export class HttpService {
   serverAddress: string = 'http://localhost:3000/api/';
   userToken = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   get(url): Observable<any> {
     let headers = new HttpHeaders();
-    if(this.userToken)
+    if (this.userToken)
       headers = headers.append('token', this.userToken);
 
     return this.http.get(this.serverAddress + url, {observe: 'response', headers: headers}).map(data => data.body);
@@ -21,25 +22,35 @@ export class HttpService {
 
   put(url, values): Observable<any> {
     let headers = new HttpHeaders();
-    if(this.userToken)
+    if (this.userToken)
       headers = headers.append('token', this.userToken);
 
-    return this.http.put(this.serverAddress + url, values, {observe: 'response', headers: headers}).map(data => data.body);
+    return this.http.put(this.serverAddress + url, values, {
+      observe: 'response',
+      headers: headers
+    }).map(data => data.body);
   }
 
   post(url, values): Observable<any> {
     let headers = new HttpHeaders();
-    if(this.userToken)
+    if (this.userToken)
       headers = headers.append('token', this.userToken);
 
-    return this.http.post(this.serverAddress + url, values, {observe: 'response', headers: headers}).map(data => data.body);
+    return this.http.post(this.serverAddress + url, values, {
+      observe: 'response',
+      headers: headers
+    }).map(data => data.body);
   }
 
   delete(url): Observable<any> {
     let headers = new HttpHeaders();
-    if(this.userToken)
+    if (this.userToken)
       headers = headers.append('token', this.userToken);
 
     return this.http.delete(this.serverAddress + url, {observe: 'response', headers: headers});
+  }
+
+  static addHost(url) {
+    return url.includes(HttpService.Host) ? url : HttpService.Host + url;
   }
 }

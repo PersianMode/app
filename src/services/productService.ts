@@ -11,9 +11,6 @@ const productColorMap = function (r) {
     : []);
 };
 
-const addHost = function (r) {
-  return r.includes(HttpService.Host) ? r : HttpService.Host + r;
-};
 
 const newestSort = function (a, b) {
   if (a.year && b.year && a.season && b.season && ((a.year * 8 + a.season) - (b.year * 8 + b.season))) {
@@ -149,10 +146,6 @@ export class ProductService {
     this.filtering$.next(emittedValue);
   }
 
-  emptyFilters() {
-    this.filtering$.next([]);
-  }
-
   applyFilters(filters, trigger) {
     this.filteredProducts = JSON.parse(JSON.stringify(this.products));
 
@@ -190,13 +183,13 @@ export class ProductService {
     if (found >= 0 && this.products[found].detailed) {
       this.product$.next(this.products[found]);
     } else {
-      this.httpService.get(`product/${productId}`).subscribe(data => {
-        this.enrichProductData(data);
-        if (found >= 0) {
-          this.products[found] = data;
-        }
-        this.product$.next(data);
-      });
+    this.httpService.get(`product/${productId}`).subscribe(data => {
+      this.enrichProductData(data);
+      if (found >= 0) {
+        this.products[found] = data;
+      }
+      this.product$.next(data);
+    });
     }
   }
 
@@ -218,7 +211,7 @@ export class ProductService {
       const angles = [];
       item.image.angles.forEach(r => {
         if (!r.url) {
-          const temp = {url: addHost(r), type: r.split('.').pop(-1) === 'webm' ? 'video' : 'photo'};
+          const temp = {url: HttpService.addHost(r), type: r.split('.').pop(-1) === 'webm' ? 'video' : 'photo'};
           angles.push(temp);
         } else {
           angles.push(r);
@@ -226,10 +219,9 @@ export class ProductService {
       });
       item.image.angles = angles;
       if (item.image.thumbnail) {
-        item.image.thumbnail = addHost(item.image.thumbnail);
+        item.image.thumbnail = HttpService.addHost(item.image.thumbnail);
       }
       if (data.instances) {
-        data.detailed = true;
         item.soldOut = data.instances
           .filter(r => r.product_color_id === item._id)
           .map(r => r.inventory)
@@ -251,9 +243,8 @@ export class ProductService {
               disabled: inventory <= 0,
             };
           });
-      } else {
-        data.detailed = false;
       }
+      data.detailed = data.hasOwnProperty('reviews') || data.hasOwnProperty('details') || data.hasOwnProperty('desc');
     });
   }
 
