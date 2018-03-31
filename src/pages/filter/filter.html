@@ -13,7 +13,7 @@
     </ion-item>
   </ion-list>
   <div *ngFor="let fo of filter_options;let i=index">
-    <div *ngIf="fo.name !== 'color'  && fo.name !== 'price'">
+    <div *ngIf="fo.name !== 'color'  && fo.name !== 'price' && fo.name !== 'size'">
       <ion-list>
         <ion-list-header class="filter-option-title">{{fo.name}}</ion-list-header>
         <ion-item class="filter-item" *ngFor="let value of fo.values;let j=index">
@@ -26,6 +26,11 @@
   </div>
 
   <div *ngFor="let fo of filter_options;let j = index">
+
+    <div *ngIf="fo.name === 'size'">
+      <app-size-viewer [multi]="true" [sizes]="sizes" [selected]="checkedSizes" (onSizeSelected)="getValue('size' , $event)"></app-size-viewer>
+
+    </div>
     <div *ngIf="fo.name === 'price'">
       <ion-list>
         <ion-list-header class="filter-option-title">{{fo.name}}</ion-list-header>
@@ -56,6 +61,7 @@
       </span>
 
     </span>
+
 
   </div>
 

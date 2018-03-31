@@ -14,10 +14,11 @@ export class SelectSizePage {
   selectedSize = null;
   activeColor = null;
   loading;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private toastCtrl: ToastController, private cartService: CartService,
               private loadingCtrl: LoadingController) {
-    if(this.navParams.get('instances') == null) {
+    if (this.navParams.get('instances') == null) {
       this.presentToast('خطای وجود محصول');
       return;
     }
@@ -29,17 +30,15 @@ export class SelectSizePage {
 
   addToBag() {
     this.presentLoading(true);
-    //this setTimeout is TEST-PURPOSE ONLY! to let us see the loading bar before adding the orderline
-    setTimeout(() => {
-      this.cartService.addOrderline(this.productId, this.instances[this.selectedSize]._id, 1, (err) => {
-        if (err) {
-          return this.presentToast("لطفا مجددا تلاش کنید");
-        }
-
-        this.loading.dismiss();
+    this.cartService.addOrderline(this.productId, this.instances[this.selectedSize]._id, 1, (err) => {
+      if (err) {
         this.presentLoading(false);
-      });
-    }, 200);
+        return this.presentToast("لطفا مجددا تلاش کنید");
+      }
+
+      this.loading.dismiss();
+      this.presentLoading(false);
+    });
   }
 
   selectSize(index = null) {
@@ -47,7 +46,7 @@ export class SelectSizePage {
   }
 
   presentLoading(isLoading = true) {
-    if(isLoading) {
+    if (isLoading) {
       this.loading = this.loadingCtrl.create({});
     }
     else {
@@ -62,7 +61,7 @@ export class SelectSizePage {
     this.loading.present();
 
     this.loading.onDidDismiss(() => {
-      if(!isLoading)
+      if (!isLoading)
         this.navCtrl.pop();
     })
   }
@@ -75,7 +74,7 @@ export class SelectSizePage {
       cssClass: 'select-size-page-header',
     });
 
-    if(this.loading)
+    if (this.loading)
       this.loading.dismiss();
 
     toast.present();
@@ -85,9 +84,9 @@ export class SelectSizePage {
     let total = [];
     let chunk = [];
     let i;
-    for(i = 0; i < this.instances.length; i++) {
+    for (i = 0; i < this.instances.length; i++) {
       chunk.push(this.instances[i]);
-      if(i % s == s-1 && i != 0) {
+      if (i % s == s - 1 && i != 0) {
         total.push(chunk);
         chunk = [];
       }

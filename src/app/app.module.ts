@@ -19,7 +19,6 @@ import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
-import {ProductItemComponent} from '../components/product-item/product-item';
 import {ProductService} from '../services/productService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
 import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
@@ -33,7 +32,8 @@ import {CartService} from "../services/cart.service";
 import {DictionaryService} from '../services/dictionary.service';
 import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
 import {SelectCount} from "../pages/bag/select-count/select-count";
-import {FilterProductSize} from "../components/filter-product-size/filter-product-size";
+import {ProductItemComponent} from '../components/product-item/product-item';
+import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
 
 @NgModule({
   declarations: [
@@ -51,11 +51,11 @@ import {FilterProductSize} from "../components/filter-product-size/filter-produc
     LoginPage,
     RegisterPage,
     RegConfirmationPage,
-    ProductItemComponent,
     FilterPage,
-    FilterProductSize,
     ProductSliding,
     SelectCount,
+    ProductItemComponent,
+    SizeViewerComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +81,6 @@ import {FilterProductSize} from "../components/filter-product-size/filter-produc
     RegConfirmationPage,
     SelectCount,
     FilterPage,
-    FilterProductSize
   ],
   providers: [
     StatusBar,
