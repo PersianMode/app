@@ -35,16 +35,24 @@ export class SelectCount {
     let diff = this.selectedQuantity - this.quantity;
     this.presentLoading(true);
     if(diff > 0) {
-      this.cartService.addOrderline(this.product_id, this.product_instance_id, diff, () => {
-        this.loading.dismiss();
-        this.presentLoading(false);
-      });
+      this.cartService.addOrderline(this.product_id, this.product_instance_id, diff)
+        .then(res => {
+          this.loading.dismiss();
+          this.presentLoading(false);
+        })
+        .catch(res => {
+          this.loading.dismiss();
+        })
     }
     else {
-      this.cartService.removeOrderline(this.product_instance_id, -diff, () => {
-        this.loading.dismiss();
-        this.presentLoading(false);
-      });
+      this.cartService.removeOrderline(this.product_instance_id, -diff)
+        .then(res => {
+          this.loading.dismiss();
+          this.presentLoading(false);
+        })
+        .catch(res => {
+          this.loading.dismiss();
+        })
     }
   }
 

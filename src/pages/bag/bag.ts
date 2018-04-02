@@ -27,10 +27,15 @@ export class BagPage implements OnInit {
   }
 
   ngOnInit() {
-    this.cartService.getBalanceAndLoyalty((b, l) => {
-      this.balance = b;
-      this.loyalty_point = l;
-    });
+    this.cartService.getBalanceAndLoyalty()
+      .then(res => {
+        this.balance = res['balance'];
+        this.loyalty_point = res['loyalty_points'];
+      })
+      .catch(res => {
+        this.balance = 0;
+        this.loyalty_point = 0;
+      })
   }
 
   onClickedOnPromoCode() {
@@ -64,9 +69,10 @@ export class BagPage implements OnInit {
   }
 
   updateOrderlines($event = null) {
-    this.cartService.loadOrderlines(() => {
-      this.updateData();
-    });
+    this.cartService.loadOrderlines()
+      .then(res => {
+        this.updateData();
+      });
   }
 
   updateData(addCoupon?) {

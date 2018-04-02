@@ -12,16 +12,20 @@ export class CartService {
     this.loadOrderlines();
   }
 
-  loadOrderlines(cb = null) {
-    this.httpService.post(`cart/items`, {data: {}}).subscribe(
-      data => {
-        this.updateInfo(data);
-        this.dataArray = data;
-        if (cb) cb();
-      }, err => {
-        console.error("err", err);
-      }
-    );
+  loadOrderlines() {
+    return new Promise((resolve, reject) => {
+      this.httpService.post(`cart/items`, {data: {}}).subscribe(
+        data => {
+          this.updateInfo(data);
+          this.dataArray = data;
+          resolve();
+        },
+        err => {
+          console.error("error in loading orderlines:", err);
+          reject();
+        }
+      );
+    });
   }
 
   updateInfo(data) {
@@ -29,44 +33,41 @@ export class CartService {
     this.cartItems.next(this.getTotalNumber());
   }
 
-  addOrderline(product_id, product_instance_id, number, cb) {
-    let data = {product_id, product_instance_id, number};
-    this.httpService.post(`order`, data).subscribe(
-      res => {
-        // this.dataArray.push({
-        //   instance_id: product_instance_id,
-        //   quantity: number,
-        // });
-        // this.cartItems.next(this.getTotalNumber());
-        this.loadOrderlines();
-        if (!(res.n > 0 || res.nModified > 0))
-          return cb('nothing is changed');
-
-        if (cb) cb(null);
-      }, err => {
-        console.error('error in adding orderline', err);
-        if (cb) cb(err);
-      }
-    );
+  addOrderline(product_id, product_instance_id, number) {
+    return new Promise((resolve, reject) => {
+      let data = {product_id, product_instance_id, number};
+      this.httpService.post(`order`, data).subscribe(
+        res => {
+          this.loadOrderlines();
+          if(res.n <= 0 && res.nModified <= 0)
+            return Promise.reject("nothing's changed");
+          resolve();
+        },
+        err => {
+          console.error("error in adding orderline", err);
+          reject();
+        }
+      );
+    })
   }
 
-  removeOrderline(product_instance_id, number, cb) {
-    number = number || -1;
-    let data = {product_instance_id, number};
-    this.httpService.post(`order/delete`, data).subscribe(
-      res => {
-        // this.dataArray = this.dataArray.filter(data => data['instance_id'] === product_instance_id && number-- > 0);
-        // this.cartItems.next(this.dataArray.length);
-        this.loadOrderlines();
-        if (res.n <= 0 && res.nModified <= 0)
-          return cb ? cb('nothing is changed') : null;
-
-        if (cb) cb(null);
-      }, err => {
-        console.error("error in removing orderline", err);
-        if (cb) cb(err);
-      }
-    );
+  removeOrderline(product_instance_id, number) {
+    return new Promise((resolve, reject) => {
+      number = number || -1;
+      let data = {product_instance_id, number};
+      this.httpService.post(`order/delete`, data).subscribe(
+        res => {
+          this.loadOrderlines();
+          if(res.n <= 0 && res.nModified <= 0)
+            return Promise.reject("nothing's changed");
+          resolve();
+        },
+        err => {
+          console.error("error in removing orderline", err);
+          reject();
+        }
+      );
+    })
   }
 
   getTotalNumber() {
@@ -89,15 +90,18 @@ export class CartService {
     });
   }
 
-  getBalanceAndLoyalty(cb = null) {
-    this.httpService.get(`customer/balance`).subscribe(
-      data => {
-        if (cb) cb(data['balance'], data['loyalty_points']);
-      },
-      err => {
-        if (cb) cb(0, 0);
-      }
-    );
+  getBalanceAndLoyalty() {
+    return new Promise((resolve, reject) => {
+      this.httpService.get(`customer/balance`).subscribe(
+        data => {
+          resolve({balance: data['balance'], loyalty_points: data['loyalty_points']});
+        },
+        err => {
+          console.error("couldn't get balance and loyalty points");
+          reject(0);
+        }
+      );
+    })
   }
 
   addCoupon(coupon_code = '') {

@@ -30,15 +30,19 @@ export class SelectSizePage {
 
   addToBag() {
     this.presentLoading(true);
-    this.cartService.addOrderline(this.productId, this.instances[this.selectedSize]._id, 1, (err) => {
-      if (err) {
-        this.presentLoading(false);
-        return this.presentToast("لطفا مجددا تلاش کنید");
-      }
+    //this setTimeout is TEST-PURPOSE ONLY! to let us see the loading bar before adding the orderline
+    setTimeout(() => {
 
-      this.loading.dismiss();
-      this.presentLoading(false);
-    });
+      this.cartService.addOrderline(this.productId, this.instances[this.selectedSize]._id, 1)
+        .then(res => {
+          this.loading.dismiss();
+          this.presentLoading(false);
+        })
+        .catch(err => {
+          this.loading.dismiss();
+          this.presentToast("لطفا مجدداً تلاش کنید!");
+        })
+    }, 200);
   }
 
   selectSize(index = null) {
@@ -46,7 +50,7 @@ export class SelectSizePage {
   }
 
   presentLoading(isLoading = true) {
-    if (isLoading) {
+    if(isLoading) {
       this.loading = this.loadingCtrl.create({});
     }
     else {
@@ -61,7 +65,7 @@ export class SelectSizePage {
     this.loading.present();
 
     this.loading.onDidDismiss(() => {
-      if (!isLoading)
+      if(!isLoading)
         this.navCtrl.pop();
     })
   }
@@ -74,7 +78,7 @@ export class SelectSizePage {
       cssClass: 'select-size-page-header',
     });
 
-    if (this.loading)
+    if(this.loading)
       this.loading.dismiss();
 
     toast.present();
@@ -84,9 +88,9 @@ export class SelectSizePage {
     let total = [];
     let chunk = [];
     let i;
-    for (i = 0; i < this.instances.length; i++) {
+    for(i = 0; i < this.instances.length; i++) {
       chunk.push(this.instances[i]);
-      if (i % s == s - 1 && i != 0) {
+      if(i % s == s-1 && i != 0) {
         total.push(chunk);
         chunk = [];
       }
