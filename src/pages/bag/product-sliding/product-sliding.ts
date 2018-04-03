@@ -38,11 +38,17 @@ export class ProductSliding implements OnInit{
   }
 
   actionCount() {
+    if(this.product.count <= 1 && this.product.quantity <= 1) {
+      return this.onNotHavingMoreThanOneQuantity();
+    }
+
     let overCtrl = this.popoverCtrl.create(SelectCount, {
-      count: this.product.count >= 10 ? 10 : this.product.count,
+      count: this.getMaxCount() || 1,
       quantity: this.product.quantity || 1,
       product_id: this.product.product_id,
       product_instance_id: this.product.instance_id,
+    }, {
+      cssClass: 'select-count-popover'
     });
     overCtrl.present();
     overCtrl.onDidDismiss(() => {

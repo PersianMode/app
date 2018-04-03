@@ -113,6 +113,8 @@ export class BagPage implements OnInit {
     let checkoutPage = this.popoverCtrl.create(CheckoutPage, {
       finalTotal: this.finalTotal,
       headerData: this.cartService.computeCheckoutTitlePage()
+    }, {
+      cssClass: 'checkout-popover'
     });
     checkoutPage.present();
   }
