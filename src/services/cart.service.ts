@@ -179,4 +179,22 @@ export class CartService {
         });
     });
   }
+
+  computeCheckoutTitlePage() {
+    let data = {
+      title: 'پرداخت',
+      subtitle: '',
+    };
+
+    console.log("data array:", this.dataArray);
+
+    if (this.dataArray.length === 1) {
+      data['title'] = this.dataArray[0]['name'];
+      data['subtitle'] = this.dataArray[0]['color']['name'];
+    } else {
+      data['subtitle'] += this.getTotalNumber() + ' عدد'
+    }
+
+    return data;
+  }
 }

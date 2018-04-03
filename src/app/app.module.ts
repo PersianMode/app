@@ -35,6 +35,7 @@ import {SelectCount} from "../pages/bag/select-count/select-count";
 import {ProductItemComponent} from '../components/product-item/product-item';
 import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
 import {CheckoutService} from '../services/checkout.service';
+import {CheckoutPage} from "../pages/checkout/checkout";
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import {CheckoutService} from '../services/checkout.service';
     FilterPage,
     ProductSliding,
     SelectCount,
+    CheckoutPage,
     ProductItemComponent,
     SizeViewerComponent
   ],
@@ -81,6 +83,7 @@ import {CheckoutService} from '../services/checkout.service';
     RegisterPage,
     RegConfirmationPage,
     SelectCount,
+    CheckoutPage,
     FilterPage,
   ],
   providers: [

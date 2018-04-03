@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertController, NavController} from 'ionic-angular';
+import {AlertController, NavController, PopoverController} from 'ionic-angular';
 import {CartService} from "../../services/cart.service";
 import {priceFormatter} from "../../shared/lib/priceFormatter";
-import {addDeepLinkArgumentToAppNgModule} from '@ionic/app-scripts/dist/deep-linking/util';
+import {CheckoutPage} from "../checkout/checkout";
 
 @Component({
   selector: 'page-bag',
@@ -20,7 +20,7 @@ export class BagPage implements OnInit {
   finalTotal = 0;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
-              private cartService: CartService,) {
+              private cartService: CartService, private popoverCtrl: PopoverController) {
   }
 
   ionViewWillEnter() {
@@ -87,5 +87,13 @@ export class BagPage implements OnInit {
         }).present();
         console.error('rejected: ', err);
       });
+  }
+
+  goToCheckoutPage() {
+    let checkoutPage = this.popoverCtrl.create(CheckoutPage, {
+      finalTotal: this.finalTotal,
+      headerData: this.cartService.computeCheckoutTitlePage()
+    });
+    checkoutPage.present();
   }
 }
