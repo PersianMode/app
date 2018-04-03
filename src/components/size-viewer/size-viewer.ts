@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "@angular/core";
+import {ISize} from '../../interfaces/isize.interface';
 
 @Component({
   selector: 'app-size-viewer',
@@ -7,7 +8,7 @@ import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "
 
 export class SizeViewerComponent implements OnChanges {
 
-  @Input() sizes: { name: string; active: boolean }[] = [];
+  @Input() sizes: ISize[] = [];
   @Input() selected = [];
   @Input() multi = false;
 
@@ -21,8 +22,8 @@ export class SizeViewerComponent implements OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.multi)
-      this.items = this.selected;
+    
+    this.items = this.selected;
 
     // chunk sizes 4
     let _chunkArr = [];
