@@ -1,5 +1,5 @@
 <div class="select-size">
-  <ion-row *ngFor="let chunkSize of sizes">
+  <ion-row *ngFor="let chunkSize of chunkSizes">
     <ion-col *ngFor="let size of chunkSize" col-3 >
       <button ion-button full color="light" class="size-buttons"
               [color]= "itemSelected(size)? 'dark': 'light'"

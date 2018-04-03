@@ -15,6 +15,8 @@ export class SizeViewerComponent implements OnChanges {
   @Output() onSizeSelected = new EventEmitter();
   items: any = [];
 
+  chunkSizes: any = [];
+
   constructor() {
 
 
@@ -25,15 +27,15 @@ export class SizeViewerComponent implements OnChanges {
 
     this.items = this.selected;
 
+    this.chunkSizes = [];
     // chunk sizes 4
-    let _chunkArr = [];
-    const chunkSize = 4;
+    const chunkLength = 4;
 
     // loop for chunk chunk array
-    for (let i = 0; i < this.sizes.length; i += chunkSize) {
-      _chunkArr.push(this.sizes.slice(i, i + chunkSize));
+    for (let i = 0; i < this.sizes.length; i += chunkLength) {
+      this.chunkSizes.push(this.sizes.slice(i, i + chunkLength));
     }
-    this.sizes = _chunkArr;
+    this.sizes = this.chunkSizes;
   }
 
 
