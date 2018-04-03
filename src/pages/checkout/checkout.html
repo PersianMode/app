@@ -7,16 +7,26 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="checkout-page">
-  <!--<ion-list inset>-->
-    <ion-item>
-      <ion-icon name="add" item-end></ion-icon>
-    </ion-item>
-    <ion-item>
-      2
-    </ion-item>
-  <!--</ion-list>-->
-  <button ion-button full color="dark" (click)="placeOrder()" [disabled]="false">
+<ion-content class="checkout-page" dir="rtl">
+  <ion-item (click)="popAddress()">
+    <div class="black-text" item-start>آدرس</div>
+    <div class="red-text" item-end>افزودن آدرس</div>
+    <ion-icon name="add" item-end dir="rtl"></ion-icon>
+  </ion-item>
+  <ion-item (click)="popPayment()">
+    <div class="black-text" item-start>پرداخت</div>
+    <div class="red-text" item-end>نحوه پرداخت</div>
+    <ion-icon name="add" item-end></ion-icon>
+  </ion-item>
+  <ion-item (click)="popSummary()">
+    <div class="black-text" item-start>خلاصه سفارش</div>
+    <div class="grey-text" item-end>{{formatPrice(finalTotal)}} تومان</div>
+    <ion-icon name="add" item-end></ion-icon>
+  </ion-item>
+  <ion-item class="last-item">
+    با انتخاب گزینه زیر، شما با قوانین فروش موافقت کردید
+  </ion-item>
+  <button ion-button full color="dark" (click)="placeOrder()" [disabled]="isPlaceOrderDisable">
     ثبت سفارش
   </button>
 </ion-content>

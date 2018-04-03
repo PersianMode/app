@@ -19,9 +19,46 @@ ion-navbar {
 .checkout-page {
   text-align: center;
   padding: 10px;
-}
 
-ion-item:active {
-  background-color: #878787;
-  opacity: 0.8;
+  ion-item {
+    border-bottom: 1px solid gray !important;
+    padding: 10px;
+  }
+
+  ion-icon {
+    font-size: 1.4em;
+    font-weight: bold;
+  }
+
+  .last-item {
+    border: 0 !important;
+    padding-top: 5px;
+    padding-bottom: 2px;
+    margin: 0 !important;
+    color: #878787;
+    font-size: 0.8em;
+    direction: rtl;
+    text-align: center;
+  }
+
+  ion-item:active {
+    background-color: #878787;
+    opacity: 0.8;
+  }
+
+  .black-text {
+    color: black;
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+  .grey-text {
+    color: grey;
+    font-size: 1em;
+  }
+
+  .red-text {
+    color: red;
+    font-size: 1em;
+  }
 }
