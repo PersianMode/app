@@ -33,6 +33,7 @@ import {MyShopPage} from '../pages/my-shop/my-shop';
 import {CartService} from "../services/cart.service";
 import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
 import {SelectCount} from "../pages/bag/select-count/select-count";
+import {CheckoutPage} from "../pages/checkout/checkout";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import {SelectCount} from "../pages/bag/select-count/select-count";
     FilterPage,
     ProductSliding,
     SelectCount,
+    CheckoutPage,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +81,7 @@ import {SelectCount} from "../pages/bag/select-count/select-count";
     RegConfirmationPage,
     FilterPage,
     SelectCount,
+    CheckoutPage,
   ],
   providers: [
     StatusBar,
