@@ -1,0 +1,27 @@
+ion-navbar {
+  text-align: center;
+}
+
+.header-title {
+  font-weight: bold;
+  padding-bottom: 4px;
+  padding-top: 10px;
+}
+
+.header-subtitle {
+  //padding-top: 10px;
+  padding-bottom: 10px;
+  //font-weight: lighter;
+  font-size: 0.6em;
+  color: #878787;
+}
+
+.checkout-page {
+  text-align: center;
+  padding: 10px;
+}
+
+ion-item:active {
+  background-color: #878787;
+  opacity: 0.8;
+}

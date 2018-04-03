@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <div class="header-title">{{headerData.title}}</div>
+      <div class="header-subtitle">{{headerData.subtitle}}</div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="checkout-page">
+  <!--<ion-list inset>-->
+    <ion-item>
+      <ion-icon name="add" item-end></ion-icon>
+    </ion-item>
+    <ion-item>
+      2
+    </ion-item>
+  <!--</ion-list>-->
+  <button ion-button full color="dark" (click)="placeOrder()" [disabled]="false">
+    ثبت سفارش
+  </button>
+</ion-content>

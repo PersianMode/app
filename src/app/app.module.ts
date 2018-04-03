@@ -34,6 +34,7 @@ import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
 import {SelectCount} from "../pages/bag/select-count/select-count";
 import {ProductItemComponent} from '../components/product-item/product-item';
 import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
+import {CheckoutPage} from "../pages/checkout/checkout";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
     FilterPage,
     ProductSliding,
     SelectCount,
+    CheckoutPage,
     ProductItemComponent,
     SizeViewerComponent
   ],
@@ -80,6 +82,7 @@ import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
     RegisterPage,
     RegConfirmationPage,
     SelectCount,
+    CheckoutPage,
     FilterPage,
   ],
   providers: [
