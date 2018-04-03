@@ -19,20 +19,21 @@ import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
-import {ProductItemComponent} from '../components/product-item/product-item';
 import {ProductService} from '../services/productService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
 import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
 import {SelectSizePage} from "../pages/products/select-size/select-size";
 import {PageService} from '../services/page.service';
-import {ColorService} from '../services/colorService';
 import {FeedPage} from '../pages/feed/feed';
-import {CollectionPage} from '../pages/collection/collection';
+import {CollectionsPage} from '../pages/collections/collections';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
 import {CartService} from "../services/cart.service";
+import {DictionaryService} from '../services/dictionary.service';
 import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
 import {SelectCount} from "../pages/bag/select-count/select-count";
+import {ProductItemComponent} from '../components/product-item/product-item';
+import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
 import {CheckoutPage} from "../pages/checkout/checkout";
 
 @NgModule({
@@ -40,7 +41,7 @@ import {CheckoutPage} from "../pages/checkout/checkout";
     MyApp,
     FeedPage,
     MyShopPage,
-    CollectionPage,
+    CollectionsPage,
     BagPage,
     InboxPage,
     ProfilePage,
@@ -51,11 +52,12 @@ import {CheckoutPage} from "../pages/checkout/checkout";
     LoginPage,
     RegisterPage,
     RegConfirmationPage,
-    ProductItemComponent,
     FilterPage,
     ProductSliding,
     SelectCount,
     CheckoutPage,
+    ProductItemComponent,
+    SizeViewerComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +70,7 @@ import {CheckoutPage} from "../pages/checkout/checkout";
     MyApp,
     FeedPage,
     MyShopPage,
-    CollectionPage,
+    CollectionsPage,
     BagPage,
     InboxPage,
     ProfilePage,
@@ -79,9 +81,9 @@ import {CheckoutPage} from "../pages/checkout/checkout";
     SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
-    FilterPage,
     SelectCount,
     CheckoutPage,
+    FilterPage,
   ],
   providers: [
     StatusBar,
@@ -93,8 +95,8 @@ import {CheckoutPage} from "../pages/checkout/checkout";
     GooglePlus,
     ProductService,
     PageService,
-    ColorService,
     CartService,
+    DictionaryService
   ]
 })
 export class AppModule {}

@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController} from 'ionic-angular';
 import {AuthService} from '../../services/auth.service';
-import {LoginPage} from '../login/login';
 
 interface User {
   fullName: string;
@@ -28,4 +27,6 @@ export class ProfilePage {
   logout() {
     this.authService.logout();
   }
+
+
 }
