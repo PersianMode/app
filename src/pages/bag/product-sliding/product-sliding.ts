@@ -1,19 +1,24 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {LoadingController, PopoverController} from "ionic-angular";
 import {SelectCount} from "../select-count/select-count";
 import {CartService} from "../../../services/cart.service";
 import {priceFormatter} from "../../../shared/lib/priceFormatter";
+import {HttpService} from '../../../services/http.service';
 
 @Component({
   selector: 'page-product-sliding',
   templateUrl: 'product-sliding.html'
 })
-export class ProductSliding {
+export class ProductSliding implements OnInit{
   @Input() product;
   @Output() getList = new EventEmitter<any>();
 
   constructor(public loadingCtrl: LoadingController, public popoverCtrl: PopoverController,
               private cartService: CartService) {
+  }
+
+  ngOnInit() {
+    this.product.thumbnail = HttpService.addHost(this.product.thumbnail);
   }
 
   removeThisProduct() {
@@ -33,15 +38,8 @@ export class ProductSliding {
   }
 
   actionCount() {
-    console.log("from here", this.product.quantity, this.product.count);
-
-    // TODO: for test purposes, these following lines have been commented
-    // if(this.product.count <= 1 && this.product.quantity <= 1) {
-    //   return this.onNotHavingMoreThanOneQuantity();
-    // }
     let overCtrl = this.popoverCtrl.create(SelectCount, {
-      // TODO: because 'count' is always '0' at the moment, I hardcoded it to 10 for test purposes
-      count: 10,//this.getMaxCount() || 1,
+      count: this.product.count >= 10 ? 10 : this.product.count,
       quantity: this.product.quantity || 1,
       product_id: this.product.product_id,
       product_instance_id: this.product.instance_id,
