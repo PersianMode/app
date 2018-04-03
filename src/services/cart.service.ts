@@ -39,7 +39,7 @@ export class CartService {
       this.httpService.post(`order`, data).subscribe(
         res => {
           this.loadOrderlines();
-          if(res.n <= 0 && res.nModified <= 0)
+          if (res.n <= 0 && res.nModified <= 0)
             return Promise.reject("nothing's changed");
           resolve();
         },
@@ -58,7 +58,7 @@ export class CartService {
       this.httpService.post(`order/delete`, data).subscribe(
         res => {
           this.loadOrderlines();
-          if(res.n <= 0 && res.nModified <= 0)
+          if (res.n <= 0 && res.nModified <= 0)
             return Promise.reject("nothing's changed");
           resolve();
         },
@@ -104,6 +104,38 @@ export class CartService {
     })
   }
 
+  calculateTotal() {
+    if(this.dataArray && this.dataArray.length > 0) {
+      return this.dataArray
+        .filter(el => el.count && el.quantity <= el.count)
+        .map(el => (el.instance_price ? el.instance_price : el.base_price) * el.quantity)
+        .reduce((a, b) => a + b);
+    }
+
+    return 0;
+  }
+
+  calculateDiscount(addCoupon = true) {
+    let discountValue = 0;
+
+    if(this.dataArray.length > 0) {
+      this.dataArray.forEach(el => {
+        let tempTotalDiscount = el.discount && el.discount.length > 0 ? el.discount.reduce((a, b) => a * b) : 0;
+        if(el.coupon_discount) {
+          if(addCoupon)
+            tempTotalDiscount *= el.coupon_discount;
+        }
+
+        tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
+
+        const price = el.instance_price ? el.instance_price : el.base_price;
+        discountValue += (price - (tempTotalDiscount * price)) * el.quantity;
+      });
+    }
+
+    return discountValue;
+  }
+
   addCoupon(coupon_code = '') {
     if (coupon_code.length <= 0)
       return Promise.resolve(false);
@@ -128,6 +160,23 @@ export class CartService {
           (err) => {
             reject(err);
           });
+    });
+  }
+
+  applyCoupon(coupon_code): any {
+    if (!coupon_code)
+      return Promise.resolve();
+
+    return new Promise((resolve, reject) => {
+      this.httpService.post('coupon/code/apply', {
+        coupon_code: coupon_code,
+      }).subscribe(
+        (data) => {
+          resolve();
+        },
+        (err) => {
+          reject(err);
+        });
     });
   }
 }
