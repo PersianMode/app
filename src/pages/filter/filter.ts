@@ -4,6 +4,7 @@ import {Navbar, NavParams, ViewController} from 'ionic-angular';
 import {ProductService} from '../../services/productService';
 import {DictionaryService} from '../../services/dictionary.service';
 import {priceFormatter} from '../../shared/lib/priceFormatter';
+import {ISize} from '../../interfaces/isize.interface';
 
 @Component({
   templateUrl: 'filter.html'
@@ -41,17 +42,21 @@ export class FilterPage implements OnInit {
 
   filter_options$: any;
 
-  rangeValues: any  = {lower: 0 , upper: 0};
+  rangeValues: any = {lower: 0, upper: 0};
+
+  sizes: ISize[];
+  checkedSizes: ISize[];
 
 
-
-  constructor(public navParams: NavParams,public viewCtrl: ViewController,
+  constructor(public navParams: NavParams, public viewCtrl: ViewController,
               private productService: ProductService, private dict: DictionaryService) {
 
   }
+
   ionViewWillEnter() {
     this.viewCtrl.setBackButtonText('بازگشت');
   }
+
   ngOnInit() {
     this.filter_options$ = this.productService.filtering$.subscribe(r => {
       this.filter_options = r;
@@ -71,6 +76,21 @@ export class FilterPage implements OnInit {
           }
         }
       });
+
+
+      const foundSizes = r.find(fo => fo.name === 'size');
+      this.sizes = foundSizes ? foundSizes.values.map(x => {
+        return {value: x, disabled: false}
+      }) : [];
+      // this.checkedSizes = Object.keys(this.isChecked['size']).filter(x => this.isChecked['size'].x);
+      this.checkedSizes = [];
+      for (let key in this.isChecked['size']) {
+        if (this.isChecked['size'].hasOwnProperty(key)) {
+          if (this.isChecked['size'][key])
+            this.checkedSizes.push({value: key, disabled: false})
+        }
+      }
+
       const prices = r.find(fo => fo.name === 'price');
       if (prices && prices.values.length) {
         if (!this.minPrice)
@@ -109,7 +129,7 @@ export class FilterPage implements OnInit {
 
     this.current_filter_state.forEach(el => {
       if (el.name === name) {
-        if (this.isChecked[name][value]  && (el.values.length === 0 || el.values.findIndex(i => i === value) === -1 ))
+        if (this.isChecked[name][value] && (el.values.length === 0 || el.values.findIndex(i => i === value) === -1 ))
           el.values.push(value);
         else {
           const ind = el.values.indexOf(value);
@@ -121,6 +141,7 @@ export class FilterPage implements OnInit {
     this.productService.saveChecked(this.isChecked);
     this.productService.applyFilters(this.current_filter_state, name);
   }
+
   priceRangeChange() {
     Object.values(this.rangeValues).map(r => Math.round(r / 1000) * 1000);
     this.current_filter_state.find(r => r.name === 'price').values = Object.values(this.rangeValues);
@@ -157,7 +178,9 @@ export class FilterPage implements OnInit {
 
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.filter_options$.unsubscribe();
   }
+
+
 }

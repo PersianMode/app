@@ -37,10 +37,12 @@ export class ProductViewPage {
 
     this.productService.getProduct(this.productId);
 
+
     this.product$ = this.productService.product$.subscribe(data => {
 
+      this.thumbnails = [];
       this.product = data;
-      console.log('-> ',this.product);
+      console.log('-> ', this.product);
       this.selectedColor = this.product.colors[0];
       this.product.colors.forEach(color => {
         this.thumbnails.push(color.image.thumbnail);
@@ -59,17 +61,17 @@ export class ProductViewPage {
   }
 
 
-checkBuyButton() {
-  let anyProductExist = false;
+  checkBuyButton() {
+    let anyProductExist = false;
 
-  this.product['instances'].some(instance => {
-    if (this.product['colors'][this.activeColorIndex]._id === instance.product_color_id) {
-      anyProductExist = true;
-      return true;
-    }
-  });
-  this.buyButtonShouldBeActive = anyProductExist;
-}
+    this.product['instances'].some(instance => {
+      if (this.product['colors'][this.activeColorIndex]._id === instance.product_color_id) {
+        anyProductExist = true;
+        return true;
+      }
+    });
+    this.buyButtonShouldBeActive = anyProductExist;
+  }
 
   goToDetail() {
     this.navCtrl.push(ProductDetailPage, {
@@ -78,22 +80,21 @@ checkBuyButton() {
   }
 
 
-presentPopOver(myEvent) {
-  let pop = this.popoverCtrl.create(SelectSizePage, {
-    instances: (this.product && this.product['instances']) ?
-      this.product['instances'] : null,
-    activeColor: (this.product && this.product['colors'] && this.product['colors'].length > this.activeColorIndex) ?
-      this.product['colors'][this.activeColorIndex] : null
-  }, {
-    cssClass: 'select-size-popover'
-  });
+  presentPopOver(myEvent) {
+    let pop = this.popoverCtrl.create(SelectSizePage, {
+      productId: this.product ? this.product._id : null,
+      activeColor: (this.product && this.product['colors'] && this.product['colors'].length > this.activeColorIndex) ?
+        this.product['colors'][this.activeColorIndex]._id : null
+    }, {
+      cssClass: 'select-size-popover'
+    });
 
-  pop.present({ev: myEvent});
-}
+    pop.present({ev: myEvent});
+  }
 
-formatPrice(p) {
-  return priceFormatter(p);
-}
+  formatPrice(p) {
+    return priceFormatter(p);
+  }
 
   ionViewWillLeave() {
     this.product$.unsubscribe();
