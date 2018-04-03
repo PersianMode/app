@@ -34,6 +34,7 @@ import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
 import {SelectCount} from "../pages/bag/select-count/select-count";
 import {ProductItemComponent} from '../components/product-item/product-item';
 import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
+import {CheckoutService} from '../services/checkout.service';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
     ProductService,
     PageService,
     CartService,
-    DictionaryService
+    DictionaryService,
+    CheckoutService,
   ]
 })
 export class AppModule {}
