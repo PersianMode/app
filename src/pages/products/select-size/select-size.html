@@ -7,24 +7,10 @@
 </ion-header>
 
 <ion-content class="select-size-page">
-  <ion-row *ngFor="let r of rows; let row_index = index;" class="size-row">
-    <ion-col *ngFor="let i of r; let col_index = index;" class="size-col" col-2>
-      <div *ngIf="selectedSize !== row_index * 6 + col_index">
-        <button ion-button full color="light" class="size-buttons" (click)="selectSize(row_index * 6 + col_index)"
-                [disabled]="activeColor?._id != i?.product_color_id">
-          {{formatNumber(i.size)}}
-        </button>
-        <!--<h1>{{i.product_color_id}}</h1>-->
-      </div>
-      <div *ngIf="selectedSize === row_index * 6 + col_index">
-        <button ion-button full color="dark" class="size-buttons" (click)="selectSize(row_index * 6 + col_index)">
-          {{formatNumber(i.size)}}
-        </button>
-      </div>
-    </ion-col>
-  </ion-row>
+
+  <app-size-viewer [multi]="false" [sizes]="sizes" (onSizeSelected)="selectSize($event)"></app-size-viewer>
+
   <button ion-button full color="dark" (click)="addToBag()" [disabled]="!selectedSize && (selectedSize != 0)">
-    <!--افزودن به سبد {{instances[selectedSize]?.price}} تومان-->
     افزودن به سبد
   </button>
 

@@ -5,17 +5,16 @@ import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "
   templateUrl: 'size-viewer.html'
 })
 
-export class SizeViewerComponent implements OnChanges{
+export class SizeViewerComponent implements OnChanges {
 
-  @Input() sizes = [];
+  @Input() sizes: { name: string; active: boolean }[] = [];
   @Input() selected = [];
   @Input() multi = false;
 
-  @Output()  onSizeSelected = new EventEmitter();
+  @Output() onSizeSelected = new EventEmitter();
   items: any = [];
 
   constructor() {
-
 
 
   }
@@ -37,28 +36,27 @@ export class SizeViewerComponent implements OnChanges{
   }
 
 
-
   sizeSelected(size) {
 
     if (this.multi) {
 
-      if (!this.items.includes(size)) {
+      let index = this.items.findIndex(x => x.value === size.value);
+      if (index === -1) {
         this.items.push(size);
       } else {
-        this.items = this.items.filter(el => el !== size);
+        this.items.splice(index, 1);
       }
     } else {
       this.items = [];
       this.items.push(size);
     }
-    this.onSizeSelected.emit(size);
+    this.onSizeSelected.emit(size.value);
 
   }
 
   itemSelected(size) {
-    return this.items.includes(size);
+    return this.items.findIndex(x => x.value === size.value) !== -1;
   }
-
 
 
 }

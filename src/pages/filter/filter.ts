@@ -4,6 +4,7 @@ import {Navbar, NavParams, ViewController} from 'ionic-angular';
 import {ProductService} from '../../services/productService';
 import {DictionaryService} from '../../services/dictionary.service';
 import {priceFormatter} from '../../shared/lib/priceFormatter';
+import {ISize} from '../../interfaces/isize.interface';
 
 @Component({
   templateUrl: 'filter.html'
@@ -43,8 +44,8 @@ export class FilterPage implements OnInit {
 
   rangeValues: any = {lower: 0, upper: 0};
 
-  sizes: string[];
-  checkedSizes: string[];
+  sizes: ISize[];
+  checkedSizes: ISize[];
 
 
   constructor(public navParams: NavParams, public viewCtrl: ViewController,
@@ -78,13 +79,15 @@ export class FilterPage implements OnInit {
 
 
       const foundSizes = r.find(fo => fo.name === 'size');
-      this.sizes = foundSizes ? foundSizes.values : [];
+      this.sizes = foundSizes ? foundSizes.values.map(x => {
+        return {value: x, disabled: false}
+      }) : [];
       // this.checkedSizes = Object.keys(this.isChecked['size']).filter(x => this.isChecked['size'].x);
       this.checkedSizes = [];
       for (let key in this.isChecked['size']) {
         if (this.isChecked['size'].hasOwnProperty(key)) {
           if (this.isChecked['size'][key])
-            this.checkedSizes.push(key)
+            this.checkedSizes.push({value: key, disabled: false})
         }
       }
 

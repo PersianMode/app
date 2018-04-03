@@ -7,7 +7,7 @@ import {DictionaryService} from './dictionary.service';
 
 const productColorMap = function (r) {
   return r.colors.map(c => c.name ? c.name.split('/')
-      .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color name
+      .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color value
     : []);
 };
 
