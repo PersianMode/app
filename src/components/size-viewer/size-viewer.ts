@@ -22,7 +22,7 @@ export class SizeViewerComponent implements OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    
+
     this.items = this.selected;
 
     // chunk sizes 4
