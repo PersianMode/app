@@ -1,0 +1,24 @@
+<ion-header dir="rtl" class="checkout-header">
+  <ion-navbar class="checkout-item">
+    <ion-title class="checkout-inner-page-title-label">نوع پرداخت</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="remove"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content dir="rtl">
+  <ion-list>
+    <ion-item *ngFor="let type of pType" (click)="setType(type.value)">
+      <p item-left class="type-field">
+        <span>{{type.name}}</span>
+        <span class="amount-field" *ngIf="type.amount">({{priceFormatter(type.amount)}})</span>
+      </p>
+      <p item-end *ngIf="selectedType === type.value">
+        <ion-icon name="checkmark" color="dark"></ion-icon>
+      </p>
+    </ion-item>
+  </ion-list>
+</ion-content>

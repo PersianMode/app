@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {priceFormatter} from '../shared/lib/priceFormatter';
 
 @Injectable()
 export class CartService {
@@ -186,13 +187,11 @@ export class CartService {
       subtitle: '',
     };
 
-    console.log("data array:", this.dataArray);
-
     if (this.dataArray.length === 1) {
       data['title'] = this.dataArray[0]['name'];
       data['subtitle'] = this.dataArray[0]['color']['name'];
     } else {
-      data['subtitle'] += this.getTotalNumber() + ' عدد'
+      data['subtitle'] += priceFormatter(this.getTotalNumber()) + ' عدد'
     }
 
     return data;

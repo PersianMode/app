@@ -25,3 +25,22 @@ ion-item:active {
   background-color: #878787;
   opacity: 0.8;
 }
+
+.checkout-item {
+  direction: rtl;
+  margin-bottom: 10px;
+}
+
+.checkout-item-label {
+  text-align: right;
+  margin-top: -2px;
+}
+
+.bottom-border-item {
+  border-bottom: solid #8c8c8c thin;
+}
+
+.warn-label {
+  text-align: left !important;
+  color: rgba(203,3,11,0.68);
+}

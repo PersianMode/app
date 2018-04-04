@@ -36,6 +36,8 @@ import {ProductItemComponent} from '../components/product-item/product-item';
 import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
 import {CheckoutService} from '../services/checkout.service';
 import {CheckoutPage} from "../pages/checkout/checkout";
+import {CheckoutSummaryPage} from '../pages/checkout-summary/checkout-summary';
+import {CheckoutPaymentTypePage} from '../pages/checkout-payment-type/checkout-payment-type';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import {CheckoutPage} from "../pages/checkout/checkout";
     ProductSliding,
     SelectCount,
     CheckoutPage,
+    CheckoutSummaryPage,
+    CheckoutPaymentTypePage,
     ProductItemComponent,
     SizeViewerComponent
   ],
@@ -84,6 +88,8 @@ import {CheckoutPage} from "../pages/checkout/checkout";
     RegConfirmationPage,
     SelectCount,
     CheckoutPage,
+    CheckoutSummaryPage,
+    CheckoutPaymentTypePage,
     FilterPage,
   ],
   providers: [
