@@ -38,6 +38,10 @@ import {CheckoutService} from '../services/checkout.service';
 import {CheckoutPage} from "../pages/checkout/checkout";
 import {CheckoutSummaryPage} from '../pages/checkout-summary/checkout-summary';
 import {CheckoutPaymentTypePage} from '../pages/checkout-payment-type/checkout-payment-type';
+import {CheckoutAddressPage} from '../pages/checkout-address/checkout-address';
+import {AddressPage} from '../pages/address/address';
+import {ReactiveFormsModule} from '@angular/forms';
+import {GoogleMaps} from '@ionic-native/google-maps';
 
 @NgModule({
   declarations: [
@@ -61,12 +65,15 @@ import {CheckoutPaymentTypePage} from '../pages/checkout-payment-type/checkout-p
     CheckoutPage,
     CheckoutSummaryPage,
     CheckoutPaymentTypePage,
+    CheckoutAddressPage,
+    AddressPage,
     ProductItemComponent,
     SizeViewerComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
   ],
@@ -90,6 +97,8 @@ import {CheckoutPaymentTypePage} from '../pages/checkout-payment-type/checkout-p
     CheckoutPage,
     CheckoutSummaryPage,
     CheckoutPaymentTypePage,
+    CheckoutAddressPage,
+    AddressPage,
     FilterPage,
   ],
   providers: [
@@ -105,6 +114,7 @@ import {CheckoutPaymentTypePage} from '../pages/checkout-payment-type/checkout-p
     CartService,
     DictionaryService,
     CheckoutService,
+    GoogleMaps,
   ]
 })
 export class AppModule {}

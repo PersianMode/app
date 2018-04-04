@@ -170,3 +170,13 @@ input {
   height: 0px;
   position: unset;
 }
+
+.checkout-address .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
+}
+
+.address-details .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
+}
