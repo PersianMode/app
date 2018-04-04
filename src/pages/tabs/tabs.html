@@ -1,7 +1,7 @@
 <ion-tabs>
     <ion-tab [root]="tabFeedRoot" tabIcon="my-home"></ion-tab>
     <ion-tab [root]="tabMyShopRoot" tabIcon="my-shoe"></ion-tab>
-    <ion-tab [root]="tabBagRoot" tabIcon="my-bag" tabBadge="{{cartNum ? cartNum : null}}" tabBadgeStyle="secondary"></ion-tab>
+    <ion-tab [root]="tabBagRoot" tabIcon="my-bag" tabBadge="{{cartNum ? priceFormatter(cartNum) : null}}" tabBadgeStyle="secondary"></ion-tab>
     <ion-tab [root]="tabInboxRoot" tabIcon="my-inbox"></ion-tab>
     <ion-tab [root]="tabProfileRoot" tabIcon="my-profile"></ion-tab>
 </ion-tabs>
