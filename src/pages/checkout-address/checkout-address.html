@@ -1,0 +1,52 @@
+<ion-header dir="rtl" class="checkout-header">
+  <ion-navbar class="checkout-item">
+    <ion-title class="checkout-inner-page-title-label">آدرس</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="remove"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content dir="rtl">
+  <ion-list>
+    <ion-item>
+      <ion-label *ngIf="isClickAndCollect">تحویل در فروشگاه</ion-label>
+      <ion-label *ngIf="!isClickAndCollect">ارسال به آدرس</ion-label>
+      <ion-toggle [(ngModel)]="isClickAndCollect"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="!isClickAndCollect">
+    <ion-item *ngFor="let c_adr of customerAddressList" (click)="setAddress(c_adr)">
+      <ion-label item-left class="address-semi-details">
+        <span>
+          <ion-icon name="add" (click)="addressDetailForm($event, c_adr, false)"></ion-icon>
+        </span>
+        <span>{{c_adr.province}} - {{c_adr.city}} - {{c_adr.street}}</span>
+        <span> ({{c_adr.recipient_name}} {{c_adr.recipient_surname}})</span>
+      </ion-label>
+      <ion-label item-right class="checkmark">
+        <ion-icon name="checkmark" color="dark" *ngIf="compareAddress(c_adr) && !isClickAndCollect"></ion-icon>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <button ion-button full color="dark" (click)="addressDetailForm($event, null, false)">افزودن آدرس جدید</button>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="isClickAndCollect">
+    <ion-item *ngFor="let i_adr of inventoryAddressList" (click)="setAddress(i_adr)">
+      <ion-label item-left class="address-semi-details">
+        <span>
+          <ion-icon name="add" (click)="addressDetailForm($event, i_adr, true)"></ion-icon>
+        </span>
+        <span>{{i_adr.name}}</span>
+      </ion-label>
+      <ion-label item-right class="checkmark">
+        <ion-icon name="checkmark" color="dark" *ngIf="compareAddress(i_adr) && isClickAndCollect"></ion-icon>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

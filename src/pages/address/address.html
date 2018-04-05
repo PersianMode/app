@@ -1,0 +1,79 @@
+<ion-header dir="rtl" class="checkout-header">
+  <ion-navbar class="checkout-item">
+    <ion-title class="checkout-inner-page-title-label">جزئیات آدرس</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="remove"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content dir="rtl">
+  <form (ngSubmit)="submitAddress()" [formGroup]="addressForm">
+    <ion-list>
+      <ion-item-divider *ngIf="!isInventoryAddress">مشخصات گیرنده</ion-item-divider>
+      <ion-item *ngIf="!isInventoryAddress">
+        <ion-label fixed>نام</ion-label>
+        <ion-input formControlName="recipient_name" (ionChange)="fieldChanged()"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!isInventoryAddress">
+        <ion-label fixed>نام خانوادگی</ion-label>
+        <ion-input formControlName="recipient_surname" (ionChange)="fieldChanged()"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!isInventoryAddress">
+        <ion-label fixed>کد ملی</ion-label>
+        <ion-input formControlName="recipient_national_id" (ionChange)="fieldChanged()"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!isInventoryAddress">
+        <ion-label fixed>شماره تماس</ion-label>
+        <ion-input formControlName="recipient_mobile_no" (ionChange)="fieldChanged()"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="!isInventoryAddress">
+        <ion-label>جنسیت</ion-label>
+        <ion-select formControlName="recipient_title" okText="قبول" cancelText="لغو" (ionChange)="fieldChanged()">
+          <ion-option value="f">زن</ion-option>
+          <ion-option value="m">مرد</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item-divider>آدرس</ion-item-divider>
+      <ion-item>
+        <ion-label>استان</ion-label>
+        <ion-select formControlName="province" okText="قبول" cancelText="لغو" (ionChange)="changeProvince()">
+          <ion-option *ngFor="let pr of provinceCityList">{{pr.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>شهر</ion-label>
+        <ion-select formControlName="city" okText="قبول" cancelText="لغو" (ionChange)="fieldChanged()">
+          <ion-option *ngFor="let city of cityList">{{city}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>خیابان اصلی</ion-label>
+        <ion-input formControlName="street" (ionChange)="fieldChanged()"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>ناحیه (آدرس)</ion-label>
+        <ion-textarea formControlName="district" (ionChange)="fieldChanged()"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>پلاک</ion-label>
+        <ion-input formControlName="no" type="number" (ionChange)="fieldChanged()"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>واحد</ion-label>
+        <ion-input formControlName="unit" type="number" (ionChange)="fieldChanged()"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>کد پستی</ion-label>
+        <ion-input formControlName="postal_code" (ionChange)="fieldChanged()"></ion-input>
+      </ion-item>
+      <ion-item>
+        <div #map id="map" style="height: 100px;"></div>
+      </ion-item>
+    </ion-list>
+    <button ion-button full color="dark" type="submit" [disabled]="!addressForm.valid || !anyChanges">اعمال
+    </button>
+  </form>
+</ion-content>

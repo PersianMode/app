@@ -1,15 +1,16 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavParams, PopoverController} from "ionic-angular";
 import {CheckoutPaymentTypePage} from '../checkout-payment-type/checkout-payment-type';
 import {CheckoutSummaryPage} from '../checkout-summary/checkout-summary';
 import {CheckoutService} from '../../services/checkout.service';
 import {PaymentType} from '../../enum/payment.type.enum';
+import {CheckoutAddressPage} from '../checkout-address/checkout-address';
 
 @Component({
   selector: 'page-checkout',
   templateUrl: 'checkout.html',
 })
-export class CheckoutPage {
+export class CheckoutPage implements OnInit{
   total = 0;
   discount = 0;
   usedBalance = 0;
@@ -20,8 +21,10 @@ export class CheckoutPage {
 
   constructor(private navParams: NavParams, private popoverCtrl: PopoverController,
               private checkoutService: CheckoutService) {
-    this.headerData = this.navParams.get('headerData') || {};
+  }
 
+  ngOnInit() {
+    this.headerData = this.navParams.get('headerData') || {};
     this.checkoutService.dataIsReady.subscribe(
       (data) => {
         if(data) {
@@ -43,6 +46,7 @@ export class CheckoutPage {
         }, {
           enableBackdropDismiss: false
         });
+
         paymentPage.onDidDismiss((data) => {
           this.usedLoyaltyPoint = 0;
           this.usedBalance = 0;
@@ -62,7 +66,29 @@ export class CheckoutPage {
   }
 
   goToAddress(myEvent) {
+    this.checkoutService.getAddresses()
+      .then((res: any) => {
+        const addressPage = this.popoverCtrl.create(CheckoutAddressPage, {
+          currentSelectedAddress: this.checkoutService.selectedAddress,
+          customer_address: res.customer,
+          inventory_address: res.inventories,
+          isCC: this.checkoutService.isClickAndCollect,
+        }, {
+          enableBackdropDismiss: false,
+          cssClass: 'checkout-address',
+        });
 
+        addressPage.onDidDismiss(
+          (data) => {
+            this.checkoutService.setAddress(data.selectedAddress, data.isCC);
+            this.addressIsSet = data.selectedAddress;
+          }
+        );
+
+        addressPage.present({
+          ev: myEvent
+        });
+      })
   }
 
   goToSummary(myEvent) {
