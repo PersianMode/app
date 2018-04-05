@@ -5,6 +5,7 @@ import {CheckoutSummaryPage} from '../checkout-summary/checkout-summary';
 import {CheckoutService} from '../../services/checkout.service';
 import {PaymentType} from '../../enum/payment.type.enum';
 import {CheckoutAddressPage} from '../checkout-address/checkout-address';
+import {priceFormatter} from "../../shared/lib/priceFormatter";
 
 @Component({
   selector: 'page-checkout',
@@ -18,9 +19,15 @@ export class CheckoutPage implements OnInit{
   headerData;
   addressIsSet = false;
   paymentType = PaymentType;
+  isPlaceOrderDisable;
 
   constructor(private navParams: NavParams, private popoverCtrl: PopoverController,
               private checkoutService: CheckoutService) {
+    this.isPlaceOrderDisable = true;
+  }
+
+  formatPrice(p) {
+    return priceFormatter(p);
   }
 
   ngOnInit() {

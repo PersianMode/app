@@ -94,6 +94,8 @@ export class BagPage implements OnInit {
       .then(res => {
         this.popoverCtrl.create(CheckoutPage, {
           headerData: this.cartService.computeCheckoutTitlePage()
+        }, {
+          cssClass: 'checkout-popover',
         }).present();
       })
       .catch(err => {
