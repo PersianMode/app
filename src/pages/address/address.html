@@ -69,11 +69,11 @@
         <ion-label fixed>کد پستی</ion-label>
         <ion-input formControlName="postal_code" (ionChange)="fieldChanged()"></ion-input>
       </ion-item>
-      <ion-item>
-        <div #map id="map" style="height: 100px;"></div>
-      </ion-item>
     </ion-list>
     <button ion-button full color="dark" type="submit" [disabled]="!addressForm.valid || !anyChanges">اعمال
     </button>
   </form>
+  <div>
+    <div #map id="map" style="height: 100px;"></div>
+  </div>
 </ion-content>

@@ -1,16 +1,24 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AlertController, NavParams, ViewController} from 'ionic-angular';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
-import {GoogleMaps, GoogleMap, Marker, MarkerOptions} from '@ionic-native/google-maps';
+import {
+  GoogleMaps,
+  GoogleMap,
+  Marker,
+  MarkerOptions,
+  CameraPosition,
+  LatLng,
+  GoogleMapsEvent, GoogleMapOptions
+} from '@ionic-native/google-maps';
 import {CheckoutService} from '../../services/checkout.service';
 
 @Component({
   selector: 'page-address',
   templateUrl: 'address.html',
 })
-export class AddressPage implements OnInit {
+export class AddressPage implements OnInit, AfterViewInit {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
 
@@ -45,32 +53,67 @@ export class AddressPage implements OnInit {
       }
     );
 
-    this.initMap();
     this.initForm();
   }
 
-  initMap() {
+  ngAfterViewInit() {
     let element = this.mapElement.nativeElement;
     this.map = this.googleMaps.create(element);
   }
 
+  loadMap() {
+    const mapOptions: GoogleMapOptions = {
+      camera: {
+        target: {
+          lat: this.addressForm.controls['lat'].value,
+          lng: this.addressForm.controls['long'].value,
+        },
+        zoom: 18,
+        tilt: 30,
+      }
+    };
+
+    let element = this.mapElement.nativeElement;
+    this.map = this.googleMaps.create(element, mapOptions);
+
+    this.map.one(GoogleMapsEvent.MAP_READY)
+      .then(() => {
+        console.log('Map is ready');
+
+        this.map.addMarker({
+          title: 'مکان دریافت',
+          icon: 'blue',
+          animation: 'DROP',
+          position: {
+            lat: this.addressForm.controls['lat'].value,
+            lng: this.addressForm.controls['long'].value,
+          }
+        })
+          .then((marker: any) => {
+            marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+              console.log('Marker is clicked');
+            })
+          })
+      })
+  }
+
   initForm() {
     this.addressForm = this.formBuilder.group({
-      recipient_name: [this.isNew ? this.authService.userData.name : this.address.recipient_name, [
+      recipient_name: [this.isNew || this.isInventoryAddress ? this.authService.userData.name : this.address.recipient_name, [
         Validators.required,
       ]],
-      recipient_surname : [this.isNew ? this.authService.userData.surname : this.address.recipient_surname, [
+      recipient_surname: [this.isNew || this.isInventoryAddress ? this.authService.userData.surname : this.address.recipient_surname, [
         Validators.required
       ]],
-      recipient_national_id: [this.isNew ? null : this.address.recipient_national_id, [
+      recipient_national_id: [this.isNew || this.isInventoryAddress ? null : this.address.recipient_national_id, [
         Validators.required,
         Validators.maxLength(10),
         Validators.pattern(/^\d+$/)
       ]],
-      recipient_title: [this.isNew ? null : this.address.recipient_title, [
+      recipient_title: [this.isNew || this.isInventoryAddress ? null : this.address.recipient_title, [
         Validators.required,
       ]],
-      recipient_mobile_no: [this.isNew ? null : this.address.recipient_mobile_no, [
+      recipient_mobile_no: [this.isNew || this.isInventoryAddress ? null : this.address.recipient_mobile_no, [
         Validators.required,
         Validators.pattern(/^\d+$/)
       ]],
@@ -93,8 +136,8 @@ export class AddressPage implements OnInit {
         Validators.required,
         Validators.maxLength(100),
       ]],
-      lat: [{value: this.isNew ? 35.696491 : this.address.loc.lat, disabled: !this.isNew}],
-      long: [{value: this.isNew ? 51.379926 : this.address.loc.long, disabled: !this.isNew}],
+      lat: [{value: this.isNew || !this.address.loc ? 35.696491 : this.address.loc.lat, disabled: !this.isNew}],
+      long: [{value: this.isNew || !this.address.loc ? 51.379926 : this.address.loc.long, disabled: !this.isNew}],
       street: [{value: this.isNew ? null : this.address.street, disabled: !this.isNew}, [
         Validators.required,
       ]],
@@ -161,10 +204,10 @@ export class AddressPage implements OnInit {
   }
 
   submitAddress(): Promise<any> {
-    if(!this.addressForm.valid)
+    if (!this.addressForm.valid)
       return Promise.reject('The form is not valid');
 
-    if(!this.anyChanges)
+    if (!this.anyChanges)
       return Promise.resolve();
 
     return new Promise((resolve, reject) => {
@@ -173,7 +216,7 @@ export class AddressPage implements OnInit {
       };
 
       Object.keys(this.addressForm.controls).forEach(el => {
-        if(el === 'lat' || el === 'long')
+        if (el === 'lat' || el === 'long')
           data['loc'][el] = this.addressForm.controls[el].value;
         else
           data[el] = this.addressForm.controls[el].value;

@@ -17,7 +17,7 @@ import {SocketService} from '../services/socket.service';
 import {IonicStorageModule} from '@ionic/storage';
 import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
-import {GooglePlus} from '@ionic-native/google-plus';
+// import {GooglePlus} from '@ionic-native/google-plus';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
 import {ProductService} from '../services/productService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
@@ -42,6 +42,7 @@ import {CheckoutAddressPage} from '../pages/checkout-address/checkout-address';
 import {AddressPage} from '../pages/address/address';
 import {ReactiveFormsModule} from '@angular/forms';
 import {GoogleMaps} from '@ionic-native/google-maps';
+import {Geolocation} from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
@@ -108,13 +109,14 @@ import {GoogleMaps} from '@ionic-native/google-maps';
     AuthService,
     HttpService,
     SocketService,
-    GooglePlus,
+    // GooglePlus,
     ProductService,
     PageService,
     CartService,
     DictionaryService,
     CheckoutService,
     GoogleMaps,
+    Geolocation,
   ]
 })
 export class AppModule {}

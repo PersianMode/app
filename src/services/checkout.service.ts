@@ -58,18 +58,6 @@ export class CheckoutService {
     };
   }
 
-  submitAddress(data) {
-    if (!data)
-      return Promise.reject(false);
-
-    return new Promise((resolve, reject) => {
-      this.httpService.post('user/address', data).subscribe(
-        res => resolve(),
-        err => reject(err)
-      );
-    });
-  }
-
   getAddresses() {
     return new Promise((resolve, reject) => {
       let customerAddress = [];
