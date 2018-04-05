@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-
 import {BagPage} from '../bag/bag';
 import {InboxPage} from '../inbox/inbox';
 import {ProfilePage} from '../profile/profile';
 import {MyShopPage} from '../my-shop/my-shop';
 import {FeedPage} from '../feed/feed';
 import {CartService} from '../../services/cart.service';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {priceFormatter} from '../../shared/lib/priceFormatter';
 
 @Component({
   templateUrl: 'tabs.html',
@@ -31,5 +30,9 @@ export class TabsPage implements OnInit {
   }
   ngOnDestroy() {
     this.itemSubs.unsubscribe(); //???
+  }
+
+  priceFormatter(p) {
+    return priceFormatter(p);
   }
 }

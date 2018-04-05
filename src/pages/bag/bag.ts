@@ -44,28 +44,8 @@ export class BagPage implements OnInit {
   }
 
   computeTotalCost(addCoupon = false) {
-    this.totalCost = 0;
-    this.discount = 0;
-
-    this.products.forEach(e => {
-      const price = e.final_cost ? e.final_cost : e.cost;
-
-      // Compute total cost
-      this.totalCost += price * (e.quantity ? e.quantity : 1);
-
-      // Compute total discount
-      let tempTotalDiscount = e.discount && e.discount.length > 0 ? e.discount.reduce((a, b) => a * b) : 0;
-      if (e.coupon_discount) {
-        if (addCoupon)
-          tempTotalDiscount *= e.coupon_discount;
-      }
-
-      // Round the discount
-      tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
-
-      this.discount += (price - (tempTotalDiscount * price)) * e.quantity;
-    });
-
+    this.totalCost = this.cartService.calculateTotal();
+    this.discount = this.cartService.calculateDiscount(addCoupon);
     this.finalTotal = this.totalCost - this.discount;
   }
 
@@ -110,12 +90,16 @@ export class BagPage implements OnInit {
   }
 
   goToCheckoutPage() {
-    let checkoutPage = this.popoverCtrl.create(CheckoutPage, {
-      finalTotal: this.finalTotal,
-      headerData: this.cartService.computeCheckoutTitlePage()
-    }, {
-      cssClass: 'checkout-popover'
-    });
-    checkoutPage.present();
+    this.cartService.applyCoupon(this.coupon_code)
+      .then(res => {
+        this.popoverCtrl.create(CheckoutPage, {
+          headerData: this.cartService.computeCheckoutTitlePage()
+        }, {
+          cssClass: 'checkout-popover',
+        }).present();
+      })
+      .catch(err => {
+        console.error('Cannot apply coupon code: ', err);
+      })
   }
 }

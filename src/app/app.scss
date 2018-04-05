@@ -139,11 +139,6 @@ input {
   display: none !important;
 }
 
-//.item-cover {
-//  background-color: grey;
-//  opacity: 0.4;
-//}
-
 .range-bar {
   left: 23px;
 }
@@ -151,4 +146,37 @@ input {
 .range-bar-active {
   left: 23px;
   display: none !important;
+}
+
+.checkout-inner-page-title-label {
+  text-align: right;
+  padding-right: 10px !important;
+}
+
+.checkout-inner-page-title-label .toolbar-title {
+  text-align: right !important;
+}
+
+.checkout-inner-page-title-icon {
+  text-align: left;
+}
+
+.checkout-item .toolbar-background  {
+  border-style: none !important;
+}
+
+.checkout-header::after {
+  background-image: none !important;
+  height: 0px;
+  position: unset;
+}
+
+.checkout-address .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
+}
+
+.address-details .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
 }

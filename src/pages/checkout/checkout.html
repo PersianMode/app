@@ -7,7 +7,26 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="checkout-page" dir="rtl">
+<ion-content class="checkout-page">
+  <ion-grid>
+    <ion-row class="checkout-item bottom-border-item">
+      <ion-label class="checkout-item-label">نوع پرداخت</ion-label>
+      <ion-icon name="add" (click)="goToPaymentType($event)"></ion-icon>
+    </ion-row>
+    <ion-row class="checkout-item bottom-border-item">
+      <ion-label class="checkout-item-label">آدرس</ion-label>
+      <ion-label class="warn-label checkout-item-label" *ngIf="!addressIsSet">افزودن آدرس</ion-label>
+      <ion-icon name="add" (click)="goToAddress($event)"></ion-icon>
+    </ion-row>
+    <ion-row class="checkout-item bottom-border-item">
+      <ion-label class="checkout-item-label">خلاصه سفارش</ion-label>
+      <ion-icon name="add" (click)="goToSummary($event)"></ion-icon>
+    </ion-row>
+  </ion-grid>
+  <button ion-button full color="dark" (click)="placeOrder()" [disabled]="isPlaceOrderDisable">
+    ثبت سفارش
+  </button>
+  <hr>
   <ion-item (click)="popAddress()">
     <div class="black-text" item-start>آدرس</div>
     <div class="red-text" item-end>افزودن آدرس</div>

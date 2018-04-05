@@ -1,0 +1,43 @@
+<ion-header dir="rtl" class="checkout-header">
+  <ion-navbar class="checkout-item">
+    <ion-title class="checkout-inner-page-title-label">خلاصه سفارش</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="remove"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content dir="rtl">
+  <ion-list>
+    <ion-item>
+      <p item-left class="title">جمع قیمت</p>
+      <p item-right>{{priceFormatter(total)}} تومان</p>
+    </ion-item>
+    <ion-item *ngIf="discount">
+      <p item-left class="title">تخفیف</p>
+      <p item-right>{{priceFormatter(discount)}}- تومان</p>
+    </ion-item>
+    <ion-item *ngIf="usedBalance">
+      <p item-left class="title">موجودی</p>
+      <p item-right>{{priceFormatter(usedBalance)}}- تومان</p>
+    </ion-item>
+    <ion-item *ngIf="usedLoyaltyPoint">
+      <p item-left class="title">امتیاز وفاداری</p>
+      <p item-right>{{priceFormatter(usedLoyaltyPoint)}}- تومان</p>
+    </ion-item>
+    <ion-item>
+      <hr/>
+    </ion-item>
+    <ion-item class="final-total-area">
+      <p item-left class="title final-total">قیمت قابل پرداخت</p>
+      <p item-right>{{priceFormatter(finalTotal)}} تومان</p>
+    </ion-item>
+  </ion-list>
+  <div class="place-order-btn">
+    <button ion-button full color="dark" (click)="placeOrder()" [disabled]="false">
+      ثبت سفارش
+    </button>
+  </div>
+</ion-content>
