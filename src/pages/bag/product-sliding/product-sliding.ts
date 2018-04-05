@@ -43,7 +43,7 @@ export class ProductSliding implements OnInit{
     }
 
     let overCtrl = this.popoverCtrl.create(SelectCount, {
-      count: this.getMaxCount() || 1,
+      count: this.getMaxCount(),
       quantity: this.product.quantity || 1,
       product_id: this.product.product_id,
       product_instance_id: this.product.instance_id,
