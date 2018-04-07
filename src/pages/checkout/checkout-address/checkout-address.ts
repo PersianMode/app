@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {NavParams, PopoverController, ViewController} from 'ionic-angular';
+import {LoadingController, NavParams, PopoverController, ViewController} from 'ionic-angular';
 import {AddressPage} from '../../address/address';
 import {CheckoutService} from '../../../services/checkout.service';
 
@@ -15,20 +15,29 @@ export class CheckoutAddress implements OnInit {
   inventoryAddressList = [];
   selectedAddress = null;
 
-  constructor(private checkoutService: CheckoutService) {
+  constructor(private checkoutService: CheckoutService, private loadingCtrl: LoadingController) {
   }
 
   ngOnInit() {
     this.selectedAddress = this.checkoutService.selectedAddress;
     this.isClickAndCollect = this.checkoutService.isClickAndCollect;
 
+    const addressLoading = this.loadingCtrl.create({
+      content: 'در حال دریافت آدرس های شما ...',
+    });
+
+    addressLoading.present();
+
     this.checkoutService.getAddresses()
       .then((res: any) => {
         this.customerAddressList = res.customer;
         this.inventoryAddressList = res.inventories;
+
+        addressLoading.dismiss();
       })
       .catch(err => {
         console.error('Cannot fetch addresses of customer and inventories: ', err);
+        addressLoading.dismiss();
       });
 
     this.checkoutService.upsertAddress.subscribe(

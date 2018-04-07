@@ -10,4 +10,9 @@ checkout-address {
   .list {
     margin: unset !important;
   }
+
+  .details-button, .details-button:active {
+    background-color: transparent;
+    color: black;
+  }
 }
