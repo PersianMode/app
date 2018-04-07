@@ -36,9 +36,9 @@ import {ProductItemComponent} from '../components/product-item/product-item';
 import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
 import {CheckoutService} from '../services/checkout.service';
 import {CheckoutPage} from "../pages/checkout/checkout";
-import {CheckoutSummaryPage} from '../pages/checkout-summary/checkout-summary';
-import {CheckoutPaymentTypePage} from '../pages/checkout-payment-type/checkout-payment-type';
-import {CheckoutAddressPage} from '../pages/checkout-address/checkout-address';
+import {CheckoutSummary} from '../pages/checkout/checkout-summary/checkout-summary';
+import {CheckoutPaymentType} from '../pages/checkout/checkout-payment-type/checkout-payment-type';
+import {CheckoutAddress} from '../pages/checkout/checkout-address/checkout-address';
 import {AddressPage} from '../pages/address/address';
 import {ReactiveFormsModule} from '@angular/forms';
 import {GoogleMaps} from '@ionic-native/google-maps';
@@ -64,9 +64,9 @@ import {Geolocation} from '@ionic-native/geolocation';
     ProductSliding,
     SelectCount,
     CheckoutPage,
-    CheckoutSummaryPage,
-    CheckoutPaymentTypePage,
-    CheckoutAddressPage,
+    CheckoutSummary,
+    CheckoutPaymentType,
+    CheckoutAddress,
     AddressPage,
     ProductItemComponent,
     SizeViewerComponent
@@ -96,9 +96,6 @@ import {Geolocation} from '@ionic-native/geolocation';
     RegConfirmationPage,
     SelectCount,
     CheckoutPage,
-    CheckoutSummaryPage,
-    CheckoutPaymentTypePage,
-    CheckoutAddressPage,
     AddressPage,
     FilterPage,
   ],

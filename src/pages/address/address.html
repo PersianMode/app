@@ -1,16 +1,11 @@
-<ion-header dir="rtl" class="checkout-header">
-  <ion-navbar class="checkout-item">
-    <ion-title class="checkout-inner-page-title-label">جزئیات آدرس</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="close()">
-        <ion-icon name="remove"></ion-icon>
-      </button>
-    </ion-buttons>
+<ion-header dir="rtl">
+  <ion-navbar>
+    <ion-title>جزئیات آدرس</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content dir="rtl">
-  <form (ngSubmit)="submitAddress()" [formGroup]="addressForm">
+  <form [formGroup]="addressForm">
     <ion-list>
       <ion-item-divider *ngIf="!isInventoryAddress">مشخصات گیرنده</ion-item-divider>
       <ion-item *ngIf="!isInventoryAddress">
@@ -70,10 +65,8 @@
         <ion-input formControlName="postal_code" (ionChange)="fieldChanged()"></ion-input>
       </ion-item>
     </ion-list>
-    <button ion-button full color="dark" type="submit" [disabled]="!addressForm.valid || !anyChanges">اعمال
-    </button>
   </form>
-  <div>
-    <div #map id="map" style="height: 100px;"></div>
-  </div>
+  <div #map id="map" style="height: 400px;"></div>
+  <button ion-button full color="dark" (click)="submitAddress()" [disabled]="!addressForm.valid || !anyChanges">اعمال
+  </button>
 </ion-content>

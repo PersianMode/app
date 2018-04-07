@@ -8,7 +8,8 @@ import {HttpService} from './http.service';
 export class CheckoutService {
   dataIsReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private paymentType = PaymentType;
-  private selectedPaymentType = this.paymentType.cash;
+  upsertAddress: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  selectedPaymentType = this.paymentType.cash;
   selectedAddress = null;
   isClickAndCollect = false;
   private readonly loyaltyValue = 1000;
@@ -21,10 +22,6 @@ export class CheckoutService {
     this.cartService.cartItems.subscribe(
       (data) => this.dataIsReady.next(data ? true : false)
     );
-  }
-
-  setPaymentType(pt) {
-    this.selectedPaymentType = pt;
   }
 
   setAddress(address, isCC = false) {
@@ -78,76 +75,58 @@ export class CheckoutService {
   }
 
   private getCustomerAddress() {
-    return Promise.resolve([{
-      _id: '5bb78610727eb0fbaaccb572',
-      province: 'البرز',
-      city: 'کرج',
-      street: 'دربند',
-      no: 14,
-      unit: 1,
-      postal_code: 1044940912,
-      loc: {
-        long: 50.817191,
-        lat: 51.427251,
-      },
-      recipient_name: 'علی',
-      recipient_surname: 'علوی',
-      recipient_mobile_no: '09121212121',
-      recipient_national_id: '06423442',
-      recipient_title: 'm',
-      district: 'خیابان سوم'
-    }]);
-
-    // return new Promise((resolve, reject) => {
-    //   this.httpService.get('customer/address').subscribe(
-    //     (data) => {
-    //       resolve(data.address);
-    //     },
-    //     (err) => {
-    //       console.error('Cannot fetch customer address: ', err);
-    //       reject(err);
-    //     }
-    //   );
-    // });
+    return new Promise((resolve, reject) => {
+      this.httpService.get('customer/address').subscribe(
+        (data) => {
+          resolve(data.addresses);
+        },
+        (err) => {
+          console.error('Cannot fetch customer address: ', err);
+          reject(err);
+        }
+      );
+    });
   }
 
   private getInventoryAddress() {
-    return Promise.resolve({address: [
-      {
-        '_id': '5bb78610727eb0fbaaccb573',
-        'province': 'تهران',
-        'city': 'تهران',
-        'street': ' کوچه شهریور ',
-        'district': 'میدان فاطمی خیابان فاطمی خیابان هشت بهشت',
-        'no': '۵',
-        'unit': '۱',
-        'name': 'پالادیوم'
-      },
-      {
-        '_id': '5bb78610727eb0fbaaccb574',
-        'province': 'تهران',
-        'city': 'تهران',
-        'street': ' کوچه شهریور ',
-        'district': 'میدان فاطمی خیابان فاطمی خیابان هشت بهشت',
-        'no': '۵',
-        'unit': '۱',
-        'name': 'سانا'
-      },
-      {
-        '_id': '5bb78610727eb0fbaaccb575',
-        'province': 'تهران',
-        'city': 'تهران',
-        'street': ' کوچه شهریور ',
-        'district': 'میدان فاطمی خیابان فاطمی خیابان هشت بهشت',
-        'no': '۵',
-        'unit': '۱',
-        'name': 'ایران مال'
-      }]});
+    return Promise.resolve({
+      address: [
+        {
+          '_id': '5bb78610727eb0fbaaccb573',
+          'province': 'تهران',
+          'city': 'تهران',
+          'street': ' کوچه شهریور ',
+          'district': 'میدان فاطمی خیابان فاطمی خیابان هشت بهشت',
+          'no': '۵',
+          'unit': '۱',
+          'name': 'پالادیوم'
+        },
+        {
+          '_id': '5bb78610727eb0fbaaccb574',
+          'province': 'تهران',
+          'city': 'تهران',
+          'street': ' کوچه شهریور ',
+          'district': 'میدان فاطمی خیابان فاطمی خیابان هشت بهشت',
+          'no': '۵',
+          'unit': '۱',
+          'name': 'سانا'
+        },
+        {
+          '_id': '5bb78610727eb0fbaaccb575',
+          'province': 'تهران',
+          'city': 'تهران',
+          'street': ' کوچه شهریور ',
+          'district': 'میدان فاطمی خیابان فاطمی خیابان هشت بهشت',
+          'no': '۵',
+          'unit': '۱',
+          'name': 'ایران مال'
+        }]
+    });
 
     // return new Promise((resolve, reject) => {
     //   this.httpService.get('inventory/address').subscribe(
     //     (data) => {
-    //       resolve(data.address);
+    //       resolve(data.addresses);
     //     },
     //     (err) => {
     //       console.error('Cannot fetch customer address: ', err);
@@ -160,7 +139,12 @@ export class CheckoutService {
   saveAddress(addressData) {
     return new Promise((resolve, reject) => {
       this.httpService.post('user/address', addressData).subscribe(
-        (data) => resolve(data),
+        (data) => {
+          resolve(data);
+          if (!addressData._id)
+            Object.assign(addressData, {_id: data.addresses[data.addresses.length - 1]._id});
+          this.upsertAddress.next(addressData);
+        },
         (err) => reject(err)
       );
     });
