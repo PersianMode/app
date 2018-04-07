@@ -10,7 +10,7 @@
   <ion-list *ngIf="!isClickAndCollect">
     <ion-item *ngFor="let c_adr of customerAddressList"
               [ngClass]="{'selected-address': compareAddress(c_adr) && !isClickAndCollect}">
-      <button item-start ion-button icon-only (click)="addressDetailForm(c_adr, false)" class="details-button">
+      <button item-start ion-button clear icon-only (click)="addressDetailForm(c_adr, false)" class="details-button">
         <ion-icon ios="md-create" md="md-create"></ion-icon>
       </button>
       <ion-label item-end class="address-semi-details" (click)="setAddress(c_adr)">
@@ -24,7 +24,7 @@
   <ion-list *ngIf="isClickAndCollect">
     <ion-item *ngFor="let i_adr of inventoryAddressList"
               [ngClass]="{'selected-address': compareAddress(i_adr) && isClickAndCollect}">
-      <button item-start ion-button (click)="addressDetailForm(i_adr, true)" class="details-button">
+      <button item-start ion-button clear icon-only (click)="addressDetailForm(i_adr, true)" class="details-button">
         <ion-icon name="information-circle"></ion-icon>
       </button>
       <ion-label item-start class="address-semi-details" (click)="setAddress(i_adr)">

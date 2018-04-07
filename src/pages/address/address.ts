@@ -14,6 +14,7 @@ import {
 } from '@ionic-native/google-maps';
 import {Geolocation} from '@ionic-native/geolocation';
 import {CheckoutService} from '../../services/checkout.service';
+import {HttpService} from '../../services/http.service';
 
 @Component({
   selector: 'page-address',
@@ -40,7 +41,8 @@ export class AddressPage implements OnInit, AfterViewInit {
               private alertCtrl: AlertController, private http: HttpClient,
               private authService: AuthService, private formBuilder: FormBuilder,
               private googleMaps: GoogleMaps, private checkoutService: CheckoutService,
-              private loadingCtrl: LoadingController, private geolocation: Geolocation) {
+              private loadingCtrl: LoadingController, private geolocation: Geolocation,
+              private httpService: HttpService) {
   }
 
   ionViewWillEnter() {
@@ -123,7 +125,7 @@ export class AddressPage implements OnInit, AfterViewInit {
 
     // Add marker
     this.map.addMarker({
-      title: this.isInventoryAddress ? null : 'مکان ارسال سفارش',
+      title: this.isInventoryAddress ? 'محل فروشگاه' : 'محل ارسال سفارش',
       icon: 'red',
       animation: 'DROP',
       position: {
@@ -258,7 +260,7 @@ export class AddressPage implements OnInit, AfterViewInit {
         loc: {}
       };
 
-      if(!this.isNew)
+      if (!this.isNew)
         data['_id'] = this.address._id;
 
       Object.keys(this.addressForm.controls).forEach(el => {
@@ -287,7 +289,7 @@ export class AddressPage implements OnInit, AfterViewInit {
   }
 
   private setLoading(isShow) {
-    if(isShow)
+    if (isShow)
       this.loading.present();
     else
       this.loading.dismiss();
