@@ -15,11 +15,6 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-@font-face {
-  font-family: "nikeglyph";
-  src: url('../assets/fonts/OneNikeGlyphs.woff');
-}
-
 ion-label, label, ion-input, input, a, div {
   font-family: iranyekan,sans-serif;
 }
@@ -179,4 +174,8 @@ input {
 .address-details .popover-content {
   top: 0px !important;
   max-height: 100% !important;
+}
+
+.selected-address, .selected-payment {
+  background-color: rgba(193,199,197,0.68);
 }

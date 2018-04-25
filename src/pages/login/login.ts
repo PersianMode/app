@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RegisterPage} from '../register/register';
 import {AuthService} from '../../services/auth.service';
 import {TabsPage} from '../tabs/tabs';
-import {GooglePlus} from '@ionic-native/google-plus';
+// import {GooglePlus} from '@ionic-native/google-plus';
 import {HttpService} from '../../services/http.service';
 
 declare var window: any;
@@ -19,8 +19,7 @@ export class LoginPage implements OnInit{
   curFocus = null;
 
   constructor(private navCtrl: NavController, private authService: AuthService,
-              private toastCtrl: ToastController, private googlePlus: GooglePlus,
-              private httpService: HttpService) {}
+              private toastCtrl: ToastController, private httpService: HttpService) {}
 
   ngOnInit() {
     this.initForm();
@@ -65,36 +64,36 @@ export class LoginPage implements OnInit{
   }
 
   googleLogin() {
-    this.googlePlus.login({
-      'webClientId': '636231560622-vgtb9141tlgtls9d6t9j0lu9d5h9hbp4.apps.googleusercontent.com',
-    })
-      .then(res => {
-        this.httpService.post('login/google/app', {
-          data: res,
-        }).subscribe(
-          (data) => {
-            this.navCtrl.setRoot(TabsPage);
-          },
-          (err) => {
-            this.toastCtrl.create({
-              message: 'قادر به ورود شما به سیستم نیستیم. دوباره تلاش کنید' + err,
-            }).present();
-          }
-        )
-      })
-      .catch(err => {
-        this.httpService.post('login/google/app', {err: err}).subscribe(
-          (data) => {
-            this.toastCtrl.create({
-              message: 'resolve',
-            }).present();
-          },
-          (err) => {
-            this.toastCtrl.create({
-              message: 'reject',
-            }).present();
-          }
-        )
-      });
+    // this.googlePlus.login({
+    //   'webClientId': '636231560622-vgtb9141tlgtls9d6t9j0lu9d5h9hbp4.apps.googleusercontent.com',
+    // })
+    //   .then(res => {
+    //     this.httpService.post('login/google/app', {
+    //       data: res,
+    //     }).subscribe(
+    //       (data) => {
+    //         this.navCtrl.setRoot(TabsPage);
+    //       },
+    //       (err) => {
+    //         this.toastCtrl.create({
+    //           message: 'قادر به ورود شما به سیستم نیستیم. دوباره تلاش کنید' + err,
+    //         }).present();
+    //       }
+    //     )
+    //   })
+    //   .catch(err => {
+    //     this.httpService.post('login/google/app', {err: err}).subscribe(
+    //       (data) => {
+    //         this.toastCtrl.create({
+    //           message: 'resolve',
+    //         }).present();
+    //       },
+    //       (err) => {
+    //         this.toastCtrl.create({
+    //           message: 'reject',
+    //         }).present();
+    //       }
+    //     )
+    //   });
   }
 }
