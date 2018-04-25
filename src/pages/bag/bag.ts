@@ -92,9 +92,9 @@ export class BagPage implements OnInit {
   goToCheckoutPage() {
     this.cartService.applyCoupon(this.coupon_code)
       .then(res => {
-        this.popoverCtrl.create(CheckoutPage, {
-          headerData: this.cartService.computeCheckoutTitlePage()
-        }).present();
+        this.navCtrl.push(CheckoutPage, {
+            headerData: this.cartService.computeCheckoutTitlePage()
+        });
       })
       .catch(err => {
         console.error('Cannot apply coupon code: ', err);

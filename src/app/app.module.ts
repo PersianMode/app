@@ -17,7 +17,7 @@ import {SocketService} from '../services/socket.service';
 import {IonicStorageModule} from '@ionic/storage';
 import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
-import {GooglePlus} from '@ionic-native/google-plus';
+// import {GooglePlus} from '@ionic-native/google-plus';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
 import {ProductService} from '../services/productService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
@@ -36,12 +36,13 @@ import {ProductItemComponent} from '../components/product-item/product-item';
 import {SizeViewerComponent} from "../components/size-viewer/size-viewer";
 import {CheckoutService} from '../services/checkout.service';
 import {CheckoutPage} from "../pages/checkout/checkout";
-import {CheckoutSummaryPage} from '../pages/checkout-summary/checkout-summary';
-import {CheckoutPaymentTypePage} from '../pages/checkout-payment-type/checkout-payment-type';
-import {CheckoutAddressPage} from '../pages/checkout-address/checkout-address';
+import {CheckoutSummary} from '../pages/checkout/checkout-summary/checkout-summary';
+import {CheckoutPaymentType} from '../pages/checkout/checkout-payment-type/checkout-payment-type';
+import {CheckoutAddress} from '../pages/checkout/checkout-address/checkout-address';
 import {AddressPage} from '../pages/address/address';
 import {ReactiveFormsModule} from '@angular/forms';
 import {GoogleMaps} from '@ionic-native/google-maps';
+import {Geolocation} from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
@@ -63,9 +64,9 @@ import {GoogleMaps} from '@ionic-native/google-maps';
     ProductSliding,
     SelectCount,
     CheckoutPage,
-    CheckoutSummaryPage,
-    CheckoutPaymentTypePage,
-    CheckoutAddressPage,
+    CheckoutSummary,
+    CheckoutPaymentType,
+    CheckoutAddress,
     AddressPage,
     ProductItemComponent,
     SizeViewerComponent
@@ -95,9 +96,6 @@ import {GoogleMaps} from '@ionic-native/google-maps';
     RegConfirmationPage,
     SelectCount,
     CheckoutPage,
-    CheckoutSummaryPage,
-    CheckoutPaymentTypePage,
-    CheckoutAddressPage,
     AddressPage,
     FilterPage,
   ],
@@ -108,13 +106,14 @@ import {GoogleMaps} from '@ionic-native/google-maps';
     AuthService,
     HttpService,
     SocketService,
-    GooglePlus,
+    // GooglePlus,
     ProductService,
     PageService,
     CartService,
     DictionaryService,
     CheckoutService,
     GoogleMaps,
+    Geolocation,
   ]
 })
 export class AppModule {}
