@@ -6,6 +6,14 @@
 <ion-content class="card-background-page">
   <ion-card *ngFor="let feed of feed_placement" class="ion-card container">
     <div class="card-back-click">
+      <img src="{{loadImage(feed.info.imgUrl)}}"/>
+      <div class="center-center">
+        <label>{{feed.info.text}}</label>
+      </div>
+    </div>
+  </ion-card>
+  <!-- <ion-card *ngFor="let feed of feed_placement" class="ion-card container">
+    <div class="card-back-click">
       <h2 *ngIf="feed.info.topTitle"
           [style.color]="feed.info.topTitle.color ? feed.info.topTitle.color : null" class="top-title">
         {{feed.info.topTitle.title}}</h2>
@@ -23,5 +31,5 @@
       <ion-icon *ngIf="ar.pos === 'card-icon'" name="share-alt" [style.color]="ar.color ? ar.color : null"
                 class="card-icon"></ion-icon>
     </div>
-  </ion-card>
+  </ion-card> -->
 </ion-content>

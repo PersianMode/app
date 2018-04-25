@@ -7,7 +7,7 @@ import {HttpService} from '../../services/http.service';
   selector: 'page-feed',
   templateUrl: 'feed.html',
 })
-export class FeedPage{
+export class FeedPage {
   feed_placement: any;
   placements$: any;
 
@@ -22,6 +22,13 @@ export class FeedPage{
 
     this.placements$.subscribe(res => {
       this.feed_placement = res;
+      this.feed_placement.sort((a, b) => {
+        if (a.info.row > b.info.row)
+          return 1;
+        else if (a.info.row < b.info.row)
+          return -1;
+        return 0;
+      });
     }, err => {
       console.error(err);
 
