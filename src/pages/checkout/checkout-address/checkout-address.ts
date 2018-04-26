@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {LoadingController, NavParams, PopoverController, ViewController} from 'ionic-angular';
-import {AddressPage} from '../../address/address';
+import {LoadingController} from 'ionic-angular';
 import {CheckoutService} from '../../../services/checkout.service';
 
 @Component({

@@ -1,15 +1,13 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
-
-import { TabsPage } from '../pages/tabs/tabs';
+import {NgModule, ErrorHandler} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
+import {MyApp} from './app.component';
+import {TabsPage} from '../pages/tabs/tabs';
 import {BagPage} from "../pages/bag/bag";
 import {InboxPage} from "../pages/inbox/inbox";
 import {ProfilePage} from "../pages/profile/profile";
-
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
 import {LoginPage} from '../pages/login/login';
 import {AuthService} from '../services/auth.service';
 import {HttpService} from '../services/http.service';
@@ -17,7 +15,6 @@ import {SocketService} from '../services/socket.service';
 import {IonicStorageModule} from '@ionic/storage';
 import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
-// import {GooglePlus} from '@ionic-native/google-plus';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
 import {ProductService} from '../services/productService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
@@ -43,6 +40,7 @@ import {AddressPage} from '../pages/address/address';
 import {ReactiveFormsModule} from '@angular/forms';
 import {GoogleMaps} from '@ionic-native/google-maps';
 import {Geolocation} from '@ionic-native/geolocation';
+import {GooglePlus} from '@ionic-native/google-plus';
 
 @NgModule({
   declarations: [
@@ -106,7 +104,7 @@ import {Geolocation} from '@ionic-native/geolocation';
     AuthService,
     HttpService,
     SocketService,
-    // GooglePlus,
+    GooglePlus,
     ProductService,
     PageService,
     CartService,
@@ -116,4 +114,5 @@ import {Geolocation} from '@ionic-native/geolocation';
     Geolocation,
   ]
 })
-export class AppModule {}
+export class AppModule {
+}

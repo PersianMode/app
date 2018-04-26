@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NavParams, ViewController} from 'ionic-angular';
 import {priceFormatter} from '../../../shared/lib/priceFormatter';
 
 @Component({
