@@ -32,8 +32,7 @@ export class MyShopPage {
     this.placements$ = this.pageService.placement$.subscribe(res => {
 
       this.placement = res;
-      console.log('placement: ', this.placement);
-
+      
       this.placement
         .filter(el => el.component_name === 'menu' && el.variable_name === 'topMenu')
         .sort((a, b) => {
@@ -64,17 +63,6 @@ export class MyShopPage {
     this.typeElements = [];
     let counter = 0;
 
-    console.log('filtered list: ', this.placement.filter(el => {
-      let section = el.info.section || null;
-      if (section)
-        section = section.split('/');
-
-      if (el.variable_name === 'subMenu' && (section && section.includes(type.kind)) && el.info.is_header) {
-        return el;
-      }
-    }));
-
-
     this.placement.filter(el => {
       let section = el.info.section || null;
       if (section)
@@ -99,11 +87,7 @@ export class MyShopPage {
       });
     });
 
-    console.log('TypeElements: ', this.typeElements);
-    
-
     this.selectTab = type;
-
   }
 
   generateSubMenu(entry) {
@@ -134,7 +118,10 @@ export class MyShopPage {
   }
 
   loadImage(imgUrl: string) {
-    return HttpService.addHost(imgUrl);
+    if (imgUrl) {
+      imgUrl = imgUrl[0] === '/' ? imgUrl : '/' + imgUrl;
+      return HttpService.addHost(imgUrl);
+    }
   }
 
 }
