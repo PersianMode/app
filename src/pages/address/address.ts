@@ -6,15 +6,11 @@ import {AuthService} from '../../services/auth.service';
 import {
   GoogleMaps,
   GoogleMap,
-  Marker,
-  MarkerOptions,
-  CameraPosition,
   LatLng,
   GoogleMapsEvent, GoogleMapOptions
 } from '@ionic-native/google-maps';
 import {Geolocation} from '@ionic-native/geolocation';
 import {CheckoutService} from '../../services/checkout.service';
-import {HttpService} from '../../services/http.service';
 
 @Component({
   selector: 'page-address',
@@ -41,8 +37,7 @@ export class AddressPage implements OnInit, AfterViewInit {
               private alertCtrl: AlertController, private http: HttpClient,
               private authService: AuthService, private formBuilder: FormBuilder,
               private googleMaps: GoogleMaps, private checkoutService: CheckoutService,
-              private loadingCtrl: LoadingController, private geolocation: Geolocation,
-              private httpService: HttpService) {
+              private loadingCtrl: LoadingController, private geolocation: Geolocation) {
   }
 
   ionViewWillEnter() {
@@ -193,7 +188,7 @@ export class AddressPage implements OnInit, AfterViewInit {
 
   close() {
     if (this.anyChanges) {
-      const alert = this.alertCtrl.create({
+      this.alertCtrl.create({
         title: 'خروج از ویرایش',
         message: 'تغییراتی ذخیره نشده اند. آیا می خواهید تغییرات را ذخیره کنید؟',
         buttons: [

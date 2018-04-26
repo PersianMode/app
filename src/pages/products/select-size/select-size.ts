@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component} from "@angular/core";
 import {LoadingController, NavController, NavParams, ToastController} from "ionic-angular";
 import {CartService} from "../../../services/cart.service";
 import {ProductService} from '../../../services/productService';

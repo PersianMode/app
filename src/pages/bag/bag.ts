@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertController, NavController, PopoverController} from 'ionic-angular';
+import {AlertController, NavController} from 'ionic-angular';
 import {CartService} from "../../services/cart.service";
 import {priceFormatter} from "../../shared/lib/priceFormatter";
 import {CheckoutPage} from "../checkout/checkout";
@@ -20,7 +20,7 @@ export class BagPage implements OnInit {
   finalTotal = 0;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
-              private cartService: CartService, private popoverCtrl: PopoverController) {
+              private cartService: CartService) {
   }
 
   ionViewWillEnter() {
