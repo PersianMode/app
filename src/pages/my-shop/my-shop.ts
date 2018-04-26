@@ -32,6 +32,7 @@ export class MyShopPage {
     this.placements$ = this.pageService.placement$.subscribe(res => {
 
       this.placement = res;
+      console.log('placement: ', this.placement);
 
       this.placement
         .filter(el => el.component_name === 'menu' && el.variable_name === 'topMenu')
@@ -63,6 +64,17 @@ export class MyShopPage {
     this.typeElements = [];
     let counter = 0;
 
+    console.log('filtered list: ', this.placement.filter(el => {
+      let section = el.info.section || null;
+      if (section)
+        section = section.split('/');
+
+      if (el.variable_name === 'subMenu' && (section && section.includes(type.kind)) && el.info.is_header) {
+        return el;
+      }
+    }));
+
+
     this.placement.filter(el => {
       let section = el.info.section || null;
       if (section)
@@ -71,6 +83,12 @@ export class MyShopPage {
       if (el.variable_name === 'subMenu' && (section && section.includes(type.kind)) && el.info.is_header) {
         return el;
       }
+    }).sort((a, b) => {
+      if (a.info.row > b.info.row)
+        return 1;
+      else if (a.info.row < b.info.row)
+        return -1;
+      return 0;
     }).forEach(item => {
       this.typeElements.push({
         id: ++counter,
@@ -80,6 +98,10 @@ export class MyShopPage {
         showSubMenu: false,
       });
     });
+
+    console.log('TypeElements: ', this.typeElements);
+    
+
     this.selectTab = type;
 
   }
