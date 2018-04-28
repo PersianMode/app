@@ -75,8 +75,8 @@
       },
       "cordova-plugin-geolocation": {},
       "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.855842568245-15155fb0fep4v2gpdjg0nd1gaas2n7nv",
-        "WEB_APPLICATION_CLIENT_ID": "855842568245-c0q8sm090cpd377em1k0hgrtphdgdvc9.apps.googleusercontent.com"
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.636231560622-auoujpccp3dei1bsqj42a4i5gpepvs29",
+        "WEB_APPLICATION_CLIENT_ID": "636231560622-auoujpccp3dei1bsqj42a4i5gpepvs29.apps.googleusercontent.com"
       },
       "cordova-android-play-services-gradle-release": {
         "PLAY_SERVICES_VERSION": "12.+"

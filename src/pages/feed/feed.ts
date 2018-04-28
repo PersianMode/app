@@ -38,6 +38,9 @@ export class FeedPage {
   }
 
   loadImage(imgUrl: string) {
-    return HttpService.addHost(imgUrl);
+    if (imgUrl) {
+      imgUrl = imgUrl[0] === '/' ? imgUrl : '/' + imgUrl;
+      return HttpService.addHost(imgUrl);
+    }
   }
 }
