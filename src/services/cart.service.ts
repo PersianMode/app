@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpService} from './http.service';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
-import {priceFormatter} from '../shared/lib/priceFormatter';
+import {Injectable} from "@angular/core";
+import {HttpService} from "./http.service";
+import {ReplaySubject} from "rxjs/ReplaySubject";
+import {priceFormatter} from "../shared/lib/priceFormatter";
 
 @Injectable()
 export class CartService {
@@ -10,7 +10,9 @@ export class CartService {
   coupon_discount = 0;
 
   constructor(private httpService: HttpService) {
-    this.loadOrderlines();
+    this.loadOrderlines().catch(err => {
+      console.log('-> ', err);
+    });
   }
 
   loadOrderlines() {
@@ -23,7 +25,7 @@ export class CartService {
         },
         err => {
           console.error("error in loading orderlines:", err);
-          reject();
+          reject(err);
         }
       );
     });
@@ -39,10 +41,14 @@ export class CartService {
       let data = {product_id, product_instance_id, number};
       this.httpService.post(`order`, data).subscribe(
         res => {
-          this.loadOrderlines();
           if (res.n <= 0 && res.nModified <= 0)
             return Promise.reject("nothing's changed");
+
+          this.loadOrderlines().catch(err => {
+            reject(err);
+          });
           resolve();
+
         },
         err => {
           console.error("error in adding orderline", err);
@@ -58,9 +64,12 @@ export class CartService {
       let data = {product_instance_id, number};
       this.httpService.post(`order/delete`, data).subscribe(
         res => {
-          this.loadOrderlines();
           if (res.n <= 0 && res.nModified <= 0)
             return Promise.reject("nothing's changed");
+
+          this.loadOrderlines().catch(err => {
+            console.log('-> ', err);
+          });
           resolve();
         },
         err => {
@@ -73,20 +82,20 @@ export class CartService {
 
   getTotalNumber() {
     let counter = 0;
-    this.dataArray.forEach(elem => counter += elem['quantity'] || 0);
+    this.dataArray.forEach(elem => counter += elem["quantity"] || 0);
     return counter;
   }
 
   getReformedOrderlines() {
     if (this.dataArray.length <= 0 ||
-      (this.dataArray && this.dataArray.length === 1 && !this.dataArray[0]['product_id']))
+      (this.dataArray && this.dataArray.length === 1 && !this.dataArray[0]["product_id"]))
       return null;
 
     return this.dataArray.map(el => {
       return Object.assign({
         cost: el.instance_price ? el.instance_price : el.base_price,
-        product_color_id: el.color ? el.color.id : null,
-        color: (el.color && el.color.name) || 'defaultColor',
+        product_color_id: el.color ? el.color.color_id : null,
+        color: (el.color && el.color.name) || "defaultColor",
       }, el);
     });
   }
@@ -95,7 +104,7 @@ export class CartService {
     return new Promise((resolve, reject) => {
       this.httpService.get(`customer/balance`).subscribe(
         data => {
-          resolve({balance: data['balance'], loyalty_points: data['loyalty_points']});
+          resolve({balance: data["balance"], loyalty_points: data["loyalty_points"]});
         },
         err => {
           console.error("couldn't get balance and loyalty points");
@@ -106,7 +115,7 @@ export class CartService {
   }
 
   calculateTotal() {
-    if(this.dataArray && this.dataArray.length > 0) {
+    if (this.dataArray && this.dataArray.length > 0) {
       return this.dataArray
         .filter(el => el.count && el.quantity <= el.count)
         .map(el => (el.instance_price ? el.instance_price : el.base_price) * el.quantity)
@@ -119,11 +128,11 @@ export class CartService {
   calculateDiscount(addCoupon = true) {
     let discountValue = 0;
 
-    if(this.dataArray.length > 0) {
+    if (this.dataArray.length > 0) {
       this.dataArray.forEach(el => {
         let tempTotalDiscount = el.discount && el.discount.length > 0 ? el.discount.reduce((a, b) => a * b) : 0;
-        if(el.coupon_discount) {
-          if(addCoupon)
+        if (el.coupon_discount) {
+          if (addCoupon)
             tempTotalDiscount *= el.coupon_discount;
         }
 
@@ -137,13 +146,13 @@ export class CartService {
     return discountValue;
   }
 
-  addCoupon(coupon_code = '') {
+  addCoupon(coupon_code = "") {
     if (coupon_code.length <= 0)
       return Promise.resolve(false);
 
     return new Promise((resolve, reject) => {
       if (this.dataArray && this.dataArray.length > 0)
-        this.httpService.post('coupon/code/valid', {
+        this.httpService.post("coupon/code/valid", {
           product_ids: Array.from(new Set(this.dataArray.map(el => el.product_id.toString()))),
           coupon_code: coupon_code,
         }).subscribe(
@@ -152,7 +161,7 @@ export class CartService {
             const someItems = this.dataArray.filter(el => el.product_id.toString() === data.product_id.toString());
             if (someItems && someItems.length > 0) {
               someItems.forEach(el => {
-                el['coupon_discount'] = 1 - data.discount;
+                el["coupon_discount"] = 1 - data.discount;
               });
               resolve(true);
             } else
@@ -169,7 +178,7 @@ export class CartService {
       return Promise.resolve();
 
     return new Promise((resolve, reject) => {
-      this.httpService.post('coupon/code/apply', {
+      this.httpService.post("coupon/code/apply", {
         coupon_code: coupon_code,
       }).subscribe(
         (data) => {
@@ -183,15 +192,15 @@ export class CartService {
 
   computeCheckoutTitlePage() {
     let data = {
-      title: 'پرداخت',
-      subtitle: '',
+      title: "پرداخت",
+      subtitle: "",
     };
 
     if (this.dataArray.length === 1) {
-      data['title'] = this.dataArray[0]['name'];
-      data['subtitle'] = this.dataArray[0]['color']['name'];
+      data["title"] = this.dataArray[0]["name"];
+      data["subtitle"] = this.dataArray[0]["color"]["name"];
     } else {
-      data['subtitle'] += priceFormatter(this.getTotalNumber()) + ' عدد'
+      data["subtitle"] += priceFormatter(this.getTotalNumber()) + " عدد"
     }
 
     return data;
