@@ -63,23 +63,32 @@ export class MyShopPage {
     this.typeElements = [];
     let counter = 0;
 
-    this.placement.filter(el => {
-      let section = el.info.section || null;
-      if (section)
-        section = section.split('/');
+    this.placement
+      .filter(el => {
+        let section = el.info.section || null;
+        if (section)
+          section = section.split('/');
 
-      if (el.variable_name === 'subMenu' && (section && section.includes(type.kind)) && el.info.is_header) {
-        return el;
-      }
-    }).forEach(item => {
-      this.typeElements.push({
-        id: ++counter,
-        text: item.info.text,
-        imageUrl: item.info.imgUrl,
-        kind: item.info.href.split('/')[item.info.href.split('/').length - 1],
-        showSubMenu: false,
+        if (el.variable_name === 'subMenu' && (section && section.includes(type.kind)) && el.info.is_header) {
+          return el;
+        }
+      })
+      .sort((a, b) => {
+        if (a.info.row > b.info.row)
+          return 1;
+        else if (a.info.row < b.info.row)
+          return -1;
+        return 0;
+      })
+      .forEach(item => {
+        this.typeElements.push({
+          id: ++counter,
+          text: item.info.text,
+          imageUrl: item.info.imgUrl,
+          kind: item.info.href.split('/')[item.info.href.split('/').length - 1],
+          showSubMenu: false,
+        });
       });
-    });
     this.selectTab = type;
 
   }
@@ -112,7 +121,10 @@ export class MyShopPage {
   }
 
   loadImage(imgUrl: string) {
-    return HttpService.addHost(imgUrl);
+    if (imgUrl) {
+      imgUrl = imgUrl[0] === '/' ? imgUrl : '/' + imgUrl;
+      return HttpService.addHost(imgUrl);
+    }
   }
 
 }
