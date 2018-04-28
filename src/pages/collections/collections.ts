@@ -44,7 +44,6 @@ export class CollectionsPage {
         this.loading.dismiss();
       }, err => {
         this.loading.dismiss();
-
       });
 
     this.productService.collectionNameFa$.subscribe(res => {
