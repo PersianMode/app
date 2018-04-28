@@ -15,11 +15,6 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-@font-face {
-  font-family: "nikeglyph";
-  src: url('../assets/fonts/OneNikeGlyphs.woff');
-}
-
 ion-label, label, ion-input, input, a, div {
   font-family: iranyekan,sans-serif;
 }
@@ -139,11 +134,6 @@ input {
   display: none !important;
 }
 
-//.item-cover {
-//  background-color: grey;
-//  opacity: 0.4;
-//}
-
 .range-bar {
   left: 23px;
 }
@@ -151,4 +141,41 @@ input {
 .range-bar-active {
   left: 23px;
   display: none !important;
+}
+
+.checkout-inner-page-title-label {
+  text-align: right;
+  padding-right: 10px !important;
+}
+
+.checkout-inner-page-title-label .toolbar-title {
+  text-align: right !important;
+}
+
+.checkout-inner-page-title-icon {
+  text-align: left;
+}
+
+.checkout-item .toolbar-background  {
+  border-style: none !important;
+}
+
+.checkout-header::after {
+  background-image: none !important;
+  height: 0px;
+  position: unset;
+}
+
+.checkout-address .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
+}
+
+.address-details .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
+}
+
+.selected-address, .selected-payment {
+  background-color: rgba(193,199,197,0.68);
 }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AlertController, NavController} from 'ionic-angular';
 import {CartService} from "../../services/cart.service";
 import {priceFormatter} from "../../shared/lib/priceFormatter";
+import {CheckoutPage} from "../checkout/checkout";
 
 @Component({
   selector: 'page-bag',
@@ -19,7 +20,7 @@ export class BagPage implements OnInit {
   finalTotal = 0;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
-              private cartService: CartService,) {
+              private cartService: CartService) {
   }
 
   ionViewWillEnter() {
@@ -43,28 +44,8 @@ export class BagPage implements OnInit {
   }
 
   computeTotalCost(addCoupon = false) {
-    this.totalCost = 0;
-    this.discount = 0;
-
-    this.products.forEach(e => {
-      const price = e.final_cost ? e.final_cost : e.cost;
-
-      // Compute total cost
-      this.totalCost += price * (e.quantity ? e.quantity : 1);
-
-      // Compute total discount
-      let tempTotalDiscount = e.discount && e.discount.length > 0 ? e.discount.reduce((a, b) => a * b) : 0;
-      if (e.coupon_discount) {
-        if (addCoupon)
-          tempTotalDiscount *= e.coupon_discount;
-      }
-
-      // Round the discount
-      tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
-
-      this.discount += (price - (tempTotalDiscount * price)) * e.quantity;
-    });
-
+    this.totalCost = this.cartService.calculateTotal();
+    this.discount = this.cartService.calculateDiscount(addCoupon);
     this.finalTotal = this.totalCost - this.discount;
   }
 
@@ -106,5 +87,17 @@ export class BagPage implements OnInit {
         }).present();
         console.error('rejected: ', err);
       });
+  }
+
+  goToCheckoutPage() {
+    this.cartService.applyCoupon(this.coupon_code)
+      .then(res => {
+        this.navCtrl.push(CheckoutPage, {
+            headerData: this.cartService.computeCheckoutTitlePage()
+        });
+      })
+      .catch(err => {
+        console.error('Cannot apply coupon code: ', err);
+      })
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {PageService} from '../../services/page.service';
 import {HttpService} from '../../services/http.service';
@@ -22,6 +22,13 @@ export class FeedPage {
 
     this.placements$.subscribe(res => {
       this.feed_placement = res;
+      this.feed_placement.sort((a, b) => {
+        if (a.info.row > b.info.row)
+          return 1;
+        else if (a.info.row < b.info.row)
+          return -1;
+        return 0;
+      });
     }, err => {
       console.error(err);
 

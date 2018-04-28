@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
-import {LoadingController, Navbar, NavController, NavParams, ToastController} from 'ionic-angular';
+import {LoadingController, Navbar, NavController, NavParams} from 'ionic-angular';
 import {FilterPage} from '../filter/filter';
-import {PageService} from '../../services/page.service';
 import {ProductService} from '../../services/productService';
 import {ProductViewPage} from '../products/product-view/product-view';
 
@@ -26,7 +25,6 @@ export class CollectionsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private  productService: ProductService,
-              private toastCtrl: ToastController,
               private loadingCtrl: LoadingController) {
 
    }

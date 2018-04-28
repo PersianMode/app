@@ -4,23 +4,27 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RegisterPage} from '../register/register';
 import {AuthService} from '../../services/auth.service';
 import {TabsPage} from '../tabs/tabs';
-import {GooglePlus} from '@ionic-native/google-plus';
 import {HttpService} from '../../services/http.service';
+import {GooglePlus} from '@ionic-native/google-plus';
 
-declare var window: any;
+// declare var window: any;
 
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class LoginPage implements OnInit{
+export class LoginPage implements OnInit {
   loginForm: FormGroup;
   seen = {};
   curFocus = null;
+  dR = '';
+  mess = '';
 
   constructor(private navCtrl: NavController, private authService: AuthService,
-              private toastCtrl: ToastController, private googlePlus: GooglePlus,
-              private httpService: HttpService) {}
+              private toastCtrl: ToastController, private httpService: HttpService,
+              private googlePlus: GooglePlus) {
+
+  }
 
   ngOnInit() {
     this.initForm();
@@ -43,8 +47,9 @@ export class LoginPage implements OnInit{
     this.curFocus = item;
   }
 
-  login(){
-    if(!this.loginForm.valid)
+  login() {
+    this.dR = 'pressed';
+    if (!this.loginForm.valid)
       return;
 
     this.authService.login(this.loginForm.controls['email'].value, this.loginForm.controls['password'].value)
@@ -66,35 +71,61 @@ export class LoginPage implements OnInit{
 
   googleLogin() {
     this.googlePlus.login({
-      'webClientId': '636231560622-vgtb9141tlgtls9d6t9j0lu9d5h9hbp4.apps.googleusercontent.com',
+      'webClientId': '855842568245-c0q8sm090cpd377em1k0hgrtphdgdvc9.apps.googleusercontent.com',
+      'offline': true
+    }).then(res => {
+      this.dR = 'googling :D';
+      this.httpService.post('login/google/app', {'res': res}).subscribe(
+        data => {
+          this.dR = 'done';
+          this.mess = JSON.stringify(data);
+        }, err => {
+          this.dR = 'res but not done!';
+          this.mess = JSON.stringify(err);
+        }
+      );
     })
-      .then(res => {
-        this.httpService.post('login/google/app', {
-          data: res,
-        }).subscribe(
-          (data) => {
-            this.navCtrl.setRoot(TabsPage);
-          },
-          (err) => {
-            this.toastCtrl.create({
-              message: 'قادر به ورود شما به سیستم نیستیم. دوباره تلاش کنید' + err,
-            }).present();
+      .catch(rej => {
+        this.httpService.post('login/google/app', {'err': rej}).subscribe(
+          data => {
+            this.dR = 'not done';
+            this.mess = JSON.stringify(data);
+          }, err => {
+            this.dR = 'neither res nor done!';
+            this.mess = JSON.stringify(err);
           }
-        )
-      })
-      .catch(err => {
-        this.httpService.post('login/google/app', {err: err}).subscribe(
-          (data) => {
-            this.toastCtrl.create({
-              message: 'resolve',
-            }).present();
-          },
-          (err) => {
-            this.toastCtrl.create({
-              message: 'reject',
-            }).present();
-          }
-        )
+        );
       });
+    // this.googlePlus.login({
+    //   'webClientId': '636231560622-vgtb9141tlgtls9d6t9j0lu9d5h9hbp4.apps.googleusercontent.com',
+    // })
+    //   .then(res => {
+    //     this.httpService.post('login/google/app', {
+    //       data: res,
+    //     }).subscribe(
+    //       (data) => {
+    //         this.navCtrl.setRoot(TabsPage);
+    //       },
+    //       (err) => {
+    //         this.toastCtrl.create({
+    //           message: 'قادر به ورود شما به سیستم نیستیم. دوباره تلاش کنید' + err,
+    //         }).present();
+    //       }
+    //     )
+    //   })
+    //   .catch(err => {
+    //     this.httpService.post('login/google/app', {err: err}).subscribe(
+    //       (data) => {
+    //         this.toastCtrl.create({
+    //           message: 'resolve',
+    //         }).present();
+    //       },
+    //       (err) => {
+    //         this.toastCtrl.create({
+    //           message: 'reject',
+    //         }).present();
+    //       }
+    //     )
+    //   });
   }
 }
