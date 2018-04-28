@@ -26,8 +26,8 @@ export class ProductViewPage {
   buyButtonShouldBeActive: Boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public viewCtrl: ViewController, private productService: ProductService,
-              private popoverCtrl: PopoverController) {
+    public viewCtrl: ViewController, private productService: ProductService,
+    private popoverCtrl: PopoverController) {
 
   }
 
@@ -42,12 +42,13 @@ export class ProductViewPage {
 
       this.thumbnails = [];
       this.product = data;
-      console.log('-> ', this.product);
       this.selectedColor = this.product.colors[0];
       this.product.colors.forEach(color => {
         this.thumbnails.push(color.image.thumbnail);
       })
 
+      console.log('-> ', this.product);
+      this.checkBuyButton();
     });
 
 
@@ -86,8 +87,8 @@ export class ProductViewPage {
       activeColor: (this.product && this.product['colors'] && this.product['colors'].length > this.activeColorIndex) ?
         this.product['colors'][this.activeColorIndex]._id : null
     }, {
-      cssClass: 'select-size-popover'
-    });
+        cssClass: 'select-size-popover'
+      });
 
     pop.present({ev: myEvent});
   }

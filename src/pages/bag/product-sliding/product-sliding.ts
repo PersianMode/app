@@ -3,22 +3,22 @@ import {LoadingController, PopoverController} from "ionic-angular";
 import {SelectCount} from "../select-count/select-count";
 import {CartService} from "../../../services/cart.service";
 import {priceFormatter} from "../../../shared/lib/priceFormatter";
-import {HttpService} from '../../../services/http.service';
+import {HttpService} from "../../../services/http.service";
+import {imagePathFixer} from "../../../shared/lib/imagePathFixer";
 
 @Component({
-  selector: 'page-product-sliding',
-  templateUrl: 'product-sliding.html'
+  selector: "page-product-sliding",
+  templateUrl: "product-sliding.html"
 })
-export class ProductSliding implements OnInit{
+export class ProductSliding implements OnInit {
   @Input() product;
   @Output() getList = new EventEmitter<any>();
 
   constructor(public loadingCtrl: LoadingController, public popoverCtrl: PopoverController,
-              private cartService: CartService) {
+    private cartService: CartService) {
   }
 
   ngOnInit() {
-    this.product.thumbnail = HttpService.addHost(this.product.thumbnail);
   }
 
   removeThisProduct() {
@@ -52,10 +52,10 @@ export class ProductSliding implements OnInit{
 
   onNotHavingMoreThanOneQuantity() {
     let loading = this.loadingCtrl.create({
-      spinner: 'hide',
-      content: 'تعداد این محصول قابل تغییر نیست.',
+      spinner: "hide",
+      content: "تعداد این محصول قابل تغییر نیست.",
       duration: 1000,
-      cssClass: 'select-size-page-header',
+      cssClass: "select-size-page-header",
     });
     loading.present();
   }
@@ -66,6 +66,12 @@ export class ProductSliding implements OnInit{
 
   formatPrice(p) {
     return priceFormatter(p);
+  }
+
+  getThumbnailURL(): string {
+    
+    return imagePathFixer(this.product.thumbnail, this.product.product_id, this.product.product_color_id);
+
   }
 
 }
