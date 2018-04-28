@@ -216,7 +216,7 @@ export class ProductService {
       const angles = [];
       item.image.angles.forEach(r => {
         if (!r.url) {
-          const temp = {url: imagePathFixer(r, data.id, item.color_id), type: r.split(".").pop(-1) === "webm" ? "video" : "photo"};
+          const temp = {url: imagePathFixer(r, data.id, item._id), type: r.split(".").pop(-1) === "webm" ? "video" : "photo"};
           angles.push(temp);
         } else {
           angles.push(r);
@@ -224,7 +224,7 @@ export class ProductService {
       });
       item.image.angles = angles;
       if (item.image.thumbnail) {
-        item.image.thumbnail = imagePathFixer(item.image.thumbnail, data.id, item.color_id);
+        item.image.thumbnail = imagePathFixer(item.image.thumbnail, data.id, item._id);
       }
       if (data.instances) {
         item.soldOut = data.instances

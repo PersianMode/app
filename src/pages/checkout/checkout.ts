@@ -63,6 +63,8 @@ export class CheckoutPage implements OnInit {
             this.usedLoyaltyPoint = this.userLoyaltyPointValue;
             break;
         }
+      }).catch(err =>{
+        console.log('-> ', err);
       });
 
     this.addressIsSet = this.checkoutService.selectedAddress ? true : false;

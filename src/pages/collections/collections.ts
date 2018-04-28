@@ -41,9 +41,13 @@ export class CollectionsPage {
         (data) => {
           this.totalProducts = data;
           this.products = this.totalProducts.slice(0, this.countPerScroll);
-          this.loading.dismiss();
+          this.loading.dismiss().catch(err => {
+            console.log('-> ', err);
+          });
         }, err => {
-          this.loading.dismiss();
+          this.loading.dismiss().catch(err => {
+            console.log('-> ', err);
+          });
         });
     });
 
@@ -61,16 +65,15 @@ export class CollectionsPage {
   }
 
   loadOtherProducts(infiniteScroll) {
-      this.scrollCounter++;
+    this.scrollCounter++;
 
-      this.cScrollIndex = this.countPerScroll * this.scrollCounter;
+    this.cScrollIndex = this.countPerScroll * this.scrollCounter;
 
-      if (this.products.length !== this.totalProducts.length) {\
-        this.products = this.products.concat(this.totalProducts.slice(this.cScrollIndex - 1, this.cScrollIndex - 1 + this.countPerScroll));
-        infiniteScroll.complete();
+    if (this.products.length !== this.totalProducts.length) {
+      this.products = this.products.concat(this.totalProducts.slice(this.cScrollIndex - 1, this.cScrollIndex - 1 + this.countPerScroll));
+      infiniteScroll.complete();
 
-      }
-      this.loading.dismiss();
+    }
 
   }
 

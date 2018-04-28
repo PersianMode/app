@@ -78,7 +78,7 @@ export class MyShopPage {
           return 1;
         else if (a.info.row < b.info.row)
           return -1;
-        return 0;
+        return 0; 
       })
       .forEach(item => {
         this.typeElements.push({

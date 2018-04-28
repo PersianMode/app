@@ -92,9 +92,10 @@ export class CartService {
       return null;
 
     return this.dataArray.map(el => {
+
       return Object.assign({
         cost: el.instance_price ? el.instance_price : el.base_price,
-        product_color_id: el.color ? el.color.color_id : null,
+        product_color_id: el.color ? el.color.id : null,
         color: (el.color && el.color.name) || "defaultColor",
       }, el);
     });
