@@ -19,7 +19,9 @@
                  (focus)="setSeen('email')"
                  (blur)="curFocus = null"
                  [ngClass]="(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email' ? 'input-error' : null"/>
-          <label *ngIf="(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email'" class="field-error">
+          <label
+            *ngIf="(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email'"
+            class="field-error">
             لطفا آدرس ایمیل معتبری وارد کنید
           </label>
         </ion-row>
@@ -29,7 +31,9 @@
                  (focus)="setSeen('password')"
                  (blur)="curFocus = null"
                  [ngClass]="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password' ? 'input-error' : null"/>
-          <label *ngIf="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password'" class="field-error">لطفا رمز عبور را وارد کنید</label>
+          <label
+            *ngIf="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password'"
+            class="field-error">لطفا رمز عبور را وارد کنید</label>
         </ion-row>
         <ion-row>
           <ion-col>
@@ -55,6 +59,10 @@
           <div class="btn-field login-btn div-btn inform-btn clickable-link" (click)="login()">
             <label>ورود</label>
           </div>
+        </ion-row>
+        <ion-row>
+          <label>{{dR}}</label>
+          <label dir="ltr">Message: {{mess}}</label>
         </ion-row>
         <ion-row class="input-container">
           <a (click)="googleLogin()" class="google-btn-login clickable-link">

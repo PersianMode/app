@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NavParams, ViewController} from 'ionic-angular';
 import {PaymentType} from '../../../enum/payment.type.enum';
 import {priceFormatter} from '../../../shared/lib/priceFormatter';
 

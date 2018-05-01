@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Navbar, NavController, NavParams, PopoverController} from "ionic-angular";
+import {Navbar, NavController, NavParams} from "ionic-angular";
 import {CheckoutService} from '../../services/checkout.service';
 import {PaymentType} from '../../enum/payment.type.enum';
 import {AddressPage} from '../address/address';
@@ -30,7 +30,7 @@ export class CheckoutPage implements OnInit {
     }
   ];
 
-  constructor(private navParams: NavParams, private popoverCtrl: PopoverController,
+  constructor(private navParams: NavParams,
               private checkoutService: CheckoutService, private navCtrl: NavController) {
   }
 
