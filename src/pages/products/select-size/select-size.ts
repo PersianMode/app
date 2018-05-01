@@ -19,8 +19,8 @@ export class SelectSizePage {
   loading;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private toastCtrl: ToastController, private cartService: CartService,
-              private loadingCtrl: LoadingController, private  productService: ProductService) {
+    private toastCtrl: ToastController, private cartService: CartService,
+    private loadingCtrl: LoadingController, private productService: ProductService) {
   }
 
   ionViewWillEnter() {
@@ -48,11 +48,11 @@ export class SelectSizePage {
     if (instanceId) {
       this.cartService.addOrderline(this.productId, instanceId, 1)
         .then(res => {
-          this.loading.dismiss();
+          this.loading.dismiss().catch(err => console.log('-> ', err));
           this.presentLoading(false);
         })
         .catch(err => {
-          this.loading.dismiss();
+          this.loading.dismiss().catch(err => console.log('-> ', err));
           this.presentToast("لطفا مجدداً تلاش کنید!");
         })
     } else
@@ -94,7 +94,7 @@ export class SelectSizePage {
     });
 
     if (this.loading)
-      this.loading.dismiss();
+      this.loading.dismiss().catch(err => console.log('-> ', err));
 
     toast.present();
   }
