@@ -15,19 +15,20 @@ interface Message {
   templateUrl: 'inbox.html',
 })
 export class InboxPage {
-  messages: Message[] = [{
-    imageUrl: 'https://cdn1.iconfinder.com/data/icons/hawcons/32/698925-icon-92-inbox-download-512.png',
-    title: 'به برنامه پرشین مود خوش آمدید',
-    subtitle: 'تمام آنچه که نیاز دارید برای اینکه بهترین باشید',
-    description: 'متن توضیحات',
-    date: new Date()
-  }, {
-    imageUrl: 'https://vignette.wikia.nocookie.net/batman/images/f/f0/Bane_TDKR3.jpg',
-    title: 'تام هاردی در نقش ونوم!',
-    subtitle: 'شایعات بیانگر تمام شدن فیلمبرداری ونوم هستند',
-    description: 'توضیحات',
-    date: new Date()
-  }];
+  messages: Message[] = [];
+  // messages: Message[] = [{
+  //   imageUrl: 'https://cdn1.iconfinder.com/data/icons/hawcons/32/698925-icon-92-inbox-download-512.png',
+  //   title: 'به برنامه پرشین مود خوش آمدید',
+  //   subtitle: 'تمام آنچه که نیاز دارید برای اینکه بهترین باشید',
+  //   description: 'متن توضیحات',
+  //   date: new Date()
+  // }, {
+  //   imageUrl: 'https://vignette.wikia.nocookie.net/batman/images/f/f0/Bane_TDKR3.jpg',
+  //   title: 'تام هاردی در نقش ونوم!',
+  //   subtitle: 'شایعات بیانگر تمام شدن فیلمبرداری ونوم هستند',
+  //   description: 'توضیحات',
+  //   date: new Date()
+  // }];
 
   constructor(public navCtrl: NavController) {
 

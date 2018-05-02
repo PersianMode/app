@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {priceFormatter} from '../shared/lib/priceFormatter';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class CartService {
@@ -9,24 +10,27 @@ export class CartService {
   cartItems: ReplaySubject<number> = new ReplaySubject<number>();
   coupon_discount = 0;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private authService: AuthService) {
     this.loadOrderlines();
   }
 
   loadOrderlines() {
-    return new Promise((resolve, reject) => {
-      this.httpService.post(`cart/items`, {data: {}}).subscribe(
-        data => {
-          this.updateInfo(data);
-          this.dataArray = data;
-          resolve();
-        },
-        err => {
-          console.error("error in loading orderlines:", err);
-          reject();
-        }
-      );
-    });
+    if (this.authService.isFullAuthenticated.getValue())
+      return new Promise((resolve, reject) => {
+        this.httpService.post(`cart/items`, {data: {}}).subscribe(
+          data => {
+            this.updateInfo(data);
+            this.dataArray = data;
+            resolve();
+          },
+          err => {
+            console.error("error in loading orderlines:", err);
+            reject();
+          }
+        );
+      });
+    
+    return Promise.resolve();
   }
 
   updateInfo(data) {
@@ -106,7 +110,7 @@ export class CartService {
   }
 
   calculateTotal() {
-    if(this.dataArray && this.dataArray.length > 0) {
+    if (this.dataArray && this.dataArray.length > 0) {
       return this.dataArray
         .filter(el => el.count && el.quantity <= el.count)
         .map(el => (el.instance_price ? el.instance_price : el.base_price) * el.quantity)
@@ -119,11 +123,11 @@ export class CartService {
   calculateDiscount(addCoupon = true) {
     let discountValue = 0;
 
-    if(this.dataArray.length > 0) {
+    if (this.dataArray.length > 0) {
       this.dataArray.forEach(el => {
         let tempTotalDiscount = el.discount && el.discount.length > 0 ? el.discount.reduce((a, b) => a * b) : 0;
-        if(el.coupon_discount) {
-          if(addCoupon)
+        if (el.coupon_discount) {
+          if (addCoupon)
             tempTotalDiscount *= el.coupon_discount;
         }
 

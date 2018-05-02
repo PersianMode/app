@@ -79,8 +79,8 @@
         "PLAY_SERVICES_VERSION": "12.+"
       },
       "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "apps.googleusercontent.com.636231560622-auoujpccp3dei1bsqj42a4i5gpepvs29",
-        "WEB_APPLICATION_CLIENT_ID": "636231560622-k29avsd6knviv7bu7ni9sf6r6okac3bt.apps.googleusercontent.com"
+        "REVERSED_CLIENT_ID": "apps.googleusercontent.com.636231560622-e085gm2i3na18td2c2e3kiohue4kmqj9",
+        "WEB_APPLICATION_CLIENT_ID": "636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com"
       }
     },
     "platforms": [

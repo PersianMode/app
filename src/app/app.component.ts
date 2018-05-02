@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Platform} from 'ionic-angular';
+import {Platform, NavController} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
@@ -7,6 +7,7 @@ import {TabsPage} from '../pages/tabs/tabs';
 import {AuthService} from '../services/auth.service';
 import {LoginPage} from '../pages/login/login';
 import {DictionaryService} from '../services/dictionary.service';
+import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,7 +17,7 @@ export class MyApp implements OnInit {
 
 
   constructor(platform: Platform, statusBar: StatusBar,
-              splashScreen: SplashScreen, private authService: AuthService, dict: DictionaryService) {
+    splashScreen: SplashScreen, private authService: AuthService, dict: DictionaryService) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -26,12 +27,7 @@ export class MyApp implements OnInit {
   }
 
   ngOnInit() {
-    if (this.authService.isLoggedIn.getValue() !== false)
-      this.rootPage = TabsPage;
-    else
-      this.rootPage = LoginPage;
-
-    this.authService.isLoggedIn.subscribe(
+    this.authService.isFullAuthenticated.subscribe(
       (data) => {
         if (data)
           this.rootPage = TabsPage;
