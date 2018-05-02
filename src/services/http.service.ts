@@ -1,55 +1,60 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/map";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable()
 export class HttpService {
-  public static Host = 'http://localhost:3000';
-  serverAddress: string = 'http://localhost:3000/api/';
+  public static Host = "http://localhost:3000";
+  serverAddress: string = "http://localhost:3000/api/";
+  public static PRODUCT_IMAGE_PATH = "images/product-image";
+  
   userToken = null;
 
   constructor(private http: HttpClient) {
   }
 
-  get(url): Observable<any> {
-    let headers = new HttpHeaders();
-    if (this.userToken)
-      headers = headers.append('token', this.userToken);
+  get(url: any): Observable<any> {
+    let headers: any = new HttpHeaders();
+    if (this.userToken) {
+      headers = headers.append("token", this.userToken);
+    }
 
-    return this.http.get(this.serverAddress + url, {observe: 'response', headers: headers}).map(data => data.body);
+    return this.http.get(this.serverAddress + url, {observe: "response", headers: headers}).map(data => data.body);
   }
 
-  put(url, values): Observable<any> {
-    let headers = new HttpHeaders();
-    if (this.userToken)
-      headers = headers.append('token', this.userToken);
+  put(url: any, values: any): Observable<any> {
+    let headers: any = new HttpHeaders();
+    if (this.userToken) {
+      headers = headers.append("token", this.userToken);
+    }
 
     return this.http.put(this.serverAddress + url, values, {
-      observe: 'response',
+      observe: "response",
       headers: headers
     }).map(data => data.body);
   }
 
-  post(url, values): Observable<any> {
-    let headers = new HttpHeaders();
-    if (this.userToken)
-      headers = headers.append('token', this.userToken);
+  post(url: any, values: any): Observable<any> {
+    let headers: any = new HttpHeaders();
+    if (this.userToken) {
+      headers = headers.append("token", this.userToken);
+    }
 
     return this.http.post(this.serverAddress + url, values, {
-      observe: 'response',
+      observe: "response",
       headers: headers
     }).map(data => data.body);
   }
 
-  delete(url): Observable<any> {
-    let headers = new HttpHeaders();
-    if (this.userToken)
-      headers = headers.append('token', this.userToken);
+  delete(url: any): Observable<any> {
+    let headers:any = new HttpHeaders();
+    if (this.userToken) {
+      headers = headers.append("token", this.userToken);
+    }
 
-    return this.http.delete(this.serverAddress + url, {observe: 'response', headers: headers});
+    return this.http.delete(this.serverAddress + url, {observe: "response", headers: headers});
   }
-
   static addHost(url) {
     return url.includes(HttpService.Host) ? url : HttpService.Host + url;
   }

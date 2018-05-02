@@ -1,6 +1,6 @@
 <div (click)="select()" dir="rtl">
   <div >
-    <img src="{{thumbnail}}" class="product-image"/>
+    <img src="{{getThumbnailURL()}}" class="product-image"/>
   </div>
   <div>
     <ion-label class="product-label product-name">{{product.name}}</ion-label>
@@ -12,3 +12,4 @@
     <ion-label class="product-label">{{product.base_price.toLocaleString('fa')}} تومان</ion-label>
   </div>
 </div>
+ 

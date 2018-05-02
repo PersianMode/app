@@ -4,10 +4,11 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {IFilter} from '../interfaces/ifilter.interface';
 import {ToastController} from 'ionic-angular';
 import {DictionaryService} from './dictionary.service';
+import {imagePathFixer} from '../shared/lib/imagePathFixer';
 
 const productColorMap = function (r) {
-  return r.colors.map(c => c.name ? c.name.split('/')
-      .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color value
+  return r.colors.map(c => c.name ? c.name.split("/")
+    .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color value
     : []);
 };
 
@@ -15,8 +16,9 @@ const productColorMap = function (r) {
 const newestSort = function (a, b) {
   if (a.year && b.year && a.season && b.season && ((a.year * 8 + a.season) - (b.year * 8 + b.season))) {
     return (a.year * 8 + a.season) - (b.year * 8 + b.season);
-  } else if (a.date > b.date)
+  } else if (a.date > b.date) {
     return 1;
+  }
   else if (a.date < b.date)
     return -1;
   else {
@@ -36,12 +38,15 @@ const priceSort = function (a, b, lowToHigh = true) {
 const priceSortReverse = (a, b) => priceSort(a, b, false);
 
 const nameSort = function (a, b) {
-  if (a.name > b.name)
+  if (a.name > b.name) {
     return 1;
-  else if (a.name < b.name)
+  }
+  else if (a.name < b.name) {
     return -1;
-  else
+  }
+  else {
     return 0;
+  }
 };
 
 @Injectable()
@@ -62,7 +67,7 @@ export class ProductService {
   private _savedSort: any = {};
 
 
-  constructor(private httpService: HttpService, private toastCtrl: ToastController, private  dict: DictionaryService) {
+  constructor(private httpService: HttpService, private toastCtrl: ToastController, private dict: DictionaryService) {
   }
 
   getSavedChecked(): any {
@@ -81,12 +86,12 @@ export class ProductService {
     this._savedSort = value;
   }
 
-  extractFilters(filters = [], trigger = '') {
+  extractFilters(filters = [], trigger = "") {
     const products = trigger ? this.filteredProducts : this.products;
     let tags: any = {};
 
-    const brand = Array.from(new Set([... products.map(r => r.brand)]));
-    const type = Array.from(new Set([... products.map(r => r.product_type)]));
+    const brand = Array.from(new Set([...products.map(r => r.brand)]));
+    const type = Array.from(new Set([...products.map(r => r.product_type)]));
 
     const size = Array.from(new Set([...products.map(r => Object.keys(r.sizesInventory))
       .reduce((x, y) => x.concat(y), []).sort()]));
@@ -94,7 +99,7 @@ export class ProductService {
       .reduce((x, y) => x.concat(y), []).reduce((x, y) => x.concat(y), [])]));
 
     let price;
-    if (trigger === 'price') {
+    if (trigger === "price") {
       price = [];
     } else {
       price = products.map(r => r.base_price);
@@ -110,7 +115,7 @@ export class ProductService {
 
     tags = {brand, type, price, size, color};
 
-    if (trigger && trigger !== 'price') {
+    if (trigger && trigger !== "price") {
       tags[trigger] = this.collectionTags[trigger] ? this.collectionTags[trigger] : [];
     }
 
@@ -138,7 +143,7 @@ export class ProductService {
             name: name,
             name_fa: this.dict.translateWord(name),
             values,
-            values_fa: values.map((r: string | number) => name !== 'color' ? this.dict.translateWord(r) : this.dict.convertColor(r + ''))
+            values_fa: values.map((r: string | number) => name !== "color" ? this.dict.translateWord(r) : this.dict.convertColor(r + ""))
           });
         }
       }
@@ -151,20 +156,20 @@ export class ProductService {
 
     filters.forEach(f => {
       if (f.values.length) {
-        if (['brand', 'type'].includes(f.name)) {
+        if (["brand", "type"].includes(f.name)) {
           this.filteredProducts = this.filteredProducts.filter(r => Array.from(f.values).includes(r[f.name]));
-        } else if (f.name === 'color') {
+        } else if (f.name === "color") {
           this.filteredProducts
             .forEach((p, pi) => this.filteredProducts[pi].colors = p.colors
-              .filter(c => Array.from(f.values).filter(v => c.name ? c.name.split('/').includes(v) : false).length));
+              .filter(c => Array.from(f.values).filter(v => c.name ? c.name.split("/").includes(v) : false).length));
           this.filteredProducts.forEach((p, pi) => this.enrichProductData(this.filteredProducts[pi]));
-        } else if (f.name === 'size') {
+        } else if (f.name === "size") {
           this.filteredProducts.forEach((p, pi) => this.filteredProducts[pi].instances = p.instances
             .filter(i => Array.from(f.values).includes(i.size)));
           this.filteredProducts.forEach((p, pi) => this.filteredProducts[pi].colors = p.colors
             .filter(c => p.instances.map(i => i.product_color_id).includes(c._id)));
           this.filteredProducts.forEach((p, pi) => this.enrichProductData(this.filteredProducts[pi]));
-        } else if (f.name === 'price') {
+        } else if (f.name === "price") {
           this.filteredProducts = this.filteredProducts.filter(p => p.base_price >= f.values[0] && p.base_price <= f.values[1]);
         } else {
           this.filteredProducts = this.filteredProducts
@@ -183,13 +188,13 @@ export class ProductService {
     if (found >= 0 && this.products[found].detailed) {
       this.product$.next(this.products[found]);
     } else {
-    this.httpService.get(`product/${productId}`).subscribe(data => {
-      this.enrichProductData(data);
-      if (found >= 0) {
-        this.products[found] = data;
-      }
-      this.product$.next(data);
-    });
+      this.httpService.get(`product/${productId}`).subscribe(data => {
+        this.enrichProductData(data);
+        if (found >= 0) {
+          this.products[found] = data;
+        }
+        this.product$.next(data);
+      });
     }
   }
 
@@ -201,17 +206,17 @@ export class ProductService {
     data.id = data._id;
     data.type = data.product_type;
     data.price = data.base_price;
-    const year = data.tags.find(r => r.tg_name === 'Season Year');
-    const season = data.tags.find(r => r.tg_name === 'Season');
+    const year = data.tags.find(r => r.tg_name === "Season Year");
+    const season = data.tags.find(r => r.tg_name === "Season");
     data.year = year ? +year.name : NaN;
-    data.season = season ? ['HOLI', 'CORE', 'WINTER', 'SPRING', 'SUMMER', 'FALL'].indexOf(season.name) : NaN;
+    data.season = season ? ["HOLI", "CORE", "WINTER", "SPRING", "SUMMER", "FALL"].indexOf(season.name) : NaN;
     data.sizesByColor = {};
     data.sizesInventory = {};
     data.colors.forEach(item => {
       const angles = [];
       item.image.angles.forEach(r => {
         if (!r.url) {
-          const temp = {url: HttpService.addHost(r), type: r.split('.').pop(-1) === 'webm' ? 'video' : 'photo'};
+          const temp = {url: imagePathFixer(r, data.id, item._id), type: r.split(".").pop(-1) === "webm" ? "video" : "photo"};
           angles.push(temp);
         } else {
           angles.push(r);
@@ -219,7 +224,7 @@ export class ProductService {
       });
       item.image.angles = angles;
       if (item.image.thumbnail) {
-        item.image.thumbnail = HttpService.addHost(item.image.thumbnail);
+        item.image.thumbnail = imagePathFixer(item.image.thumbnail, data.id, item._id);
       }
       if (data.instances) {
         item.soldOut = data.instances
@@ -244,13 +249,13 @@ export class ProductService {
             };
           });
       }
-      data.detailed = data.hasOwnProperty('reviews') || data.hasOwnProperty('details') || data.hasOwnProperty('desc');
+      data.detailed = data.hasOwnProperty("reviews") || data.hasOwnProperty("details") || data.hasOwnProperty("desc");
     });
   }
 
   loadProducts(address) {
 
-    this.httpService.post('collection/app/products', {address}).subscribe(
+    this.httpService.post("collection/app/products", {address}).subscribe(
       (data) => {
 
         if (data.name_fa) {
@@ -272,11 +277,12 @@ export class ProductService {
         }
       },
       (err) => {
-        console.error('Cannot get products of collection: ', err);
+        console.error("Cannot get products of collection: ", err);
         this.toastCtrl.create({
-          message: 'خطا در دریافت لیست محصولات',
+          message: "خطا در دریافت لیست محصولات",
           duration: 3200,
         }).present();
+        this.productList$.error(err);
       }
     );
   }
@@ -291,23 +297,23 @@ export class ProductService {
   private sortProductsAndEmit() {
     let sortedProducts = [];
     switch (this.sortInput) {
-      case 'newest': {
+      case "newest": {
         sortedProducts = this.filteredProducts.slice().sort(newestSort);
         break;
       }
-      case 'highest': {
+      case "highest": {
         sortedProducts = this.filteredProducts.slice().sort(reviewSort);
         break;
       }
-      case 'cheapest': {
+      case "cheapest": {
         sortedProducts = this.filteredProducts.slice().sort(priceSort);
         break;
       }
-      case 'most': {
+      case "most": {
         sortedProducts = this.filteredProducts.slice().sort(priceSortReverse);
         break;
       }
-      case 'alphabetical': {
+      case "alphabetical": {
         sortedProducts = this.filteredProducts.slice().sort(nameSort);
         break;
       }

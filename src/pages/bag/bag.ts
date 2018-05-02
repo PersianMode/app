@@ -20,7 +20,7 @@ export class BagPage implements OnInit {
   finalTotal = 0;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
-              private cartService: CartService) {
+    private cartService: CartService) {
   }
 
   ionViewWillEnter() {
@@ -53,6 +53,8 @@ export class BagPage implements OnInit {
     this.cartService.loadOrderlines()
       .then(res => {
         this.updateData();
+      }).catch(err => {
+        console.log('-> ', err);
       });
   }
 
@@ -93,7 +95,7 @@ export class BagPage implements OnInit {
     this.cartService.applyCoupon(this.coupon_code)
       .then(res => {
         this.navCtrl.push(CheckoutPage, {
-            headerData: this.cartService.computeCheckoutTitlePage()
+          headerData: this.cartService.computeCheckoutTitlePage()
         });
       })
       .catch(err => {

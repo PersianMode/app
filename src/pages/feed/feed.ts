@@ -38,7 +38,7 @@ export class FeedPage {
   }
 
   loadImage(imgUrl: string) {
-    if(imgUrl) {
+    if (imgUrl) {
       imgUrl = imgUrl[0] === '/' ? imgUrl : '/' + imgUrl;
       return HttpService.addHost(imgUrl);
     }
