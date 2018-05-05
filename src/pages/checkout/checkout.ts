@@ -108,6 +108,6 @@ export class CheckoutPage implements OnInit {
   }
 
   placeOrder() {
-
+    this.checkoutService.checkout();
   }
 }

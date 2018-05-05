@@ -3,6 +3,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {PaymentType} from '../enum/payment.type.enum';
 import {CartService} from './cart.service';
 import {HttpService} from './http.service';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class CheckoutService {
@@ -18,7 +19,8 @@ export class CheckoutService {
   private loyaltyPointValue = 0;
   private balance = 0;
 
-  constructor(private cartService: CartService, private httpService: HttpService) {
+  constructor(private cartService: CartService, private httpService: HttpService,
+              private authService: AuthService) {
     this.cartService.cartItems.subscribe(
       (data) => this.dataIsReady.next(data ? true : false)
     );
@@ -67,7 +69,7 @@ export class CheckoutService {
         .then((res: any) => {
           resolve({
             customer: customerAddress,
-            inventories: res.address,
+            inventories: res,
           });
         })
         .catch(err => reject(err));
@@ -89,64 +91,68 @@ export class CheckoutService {
   }
 
   private getInventoryAddress() {
-    return Promise.resolve({
-      address: [
-        {
-          '_id': '5bb78610727eb0fbaaccb573',
-          'province': 'تهران',
-          'city': 'تهران',
-          'street': ' کوچه شهریور ',
-          'district': 'میدان فاطمی خیابان فاطمی خیابان هشت بهشت',
-          'no': '۵',
-          'unit': '۱',
-          'name': 'پالادیوم'
-        },
-        {
-          '_id': '5bb78610727eb0fbaaccb574',
-          'province': 'تهران',
-          'city': 'تهران',
-          'street': ' کوچه شهریور ',
-          'district': 'میدان فاطمی خیابان فاطمی خیابان هشت بهشت',
-          'no': '۵',
-          'unit': '۱',
-          'name': 'سانا'
-        },
-        {
-          '_id': '5bb78610727eb0fbaaccb575',
-          'province': 'تهران',
-          'city': 'تهران',
-          'street': ' کوچه شهریور ',
-          'district': 'میدان فاطمی خیابان فاطمی خیابان هشت بهشت',
-          'no': '۵',
-          'unit': '۱',
-          'name': 'ایران مال'
-        }]
-    });
+    return new Promise((resolve, reject) => {
+      this.httpService.get('warehouse').subscribe(
+        (data) => {
+          const inventoriesAddress = [];
+          data.forEach(el => {
+            inventoriesAddress.push(Object.assign(el.address, {
+              name: el.name,
+              phone: el.phone,
+              is_center: el.is_center,
+            }));
+          });
 
-    // return new Promise((resolve, reject) => {
-    //   this.httpService.get('inventory/address').subscribe(
-    //     (data) => {
-    //       resolve(data.addresses);
-    //     },
-    //     (err) => {
-    //       console.error('Cannot fetch customer address: ', err);
-    //       reject(err);
-    //     }
-    //   );
-    // });
+          resolve(inventoriesAddress);
+        },
+        (err) => {
+          console.error('Cannot fetch customer address: ', err);
+          reject(err);
+        }
+      );
+    });
   }
 
   saveAddress(addressData) {
     return new Promise((resolve, reject) => {
       this.httpService.post('user/address', addressData).subscribe(
         (data) => {
-          resolve(data);
           if (!addressData._id)
             Object.assign(addressData, {_id: data.addresses[data.addresses.length - 1]._id});
           this.upsertAddress.next(addressData);
+          resolve(data);
         },
         (err) => reject(err)
       );
     });
+  }
+
+  private accumulateData() {
+    return {
+      cartItems: this.cartService.getCheckoutItems(),
+      order_id: this.cartService.getOrderId(),
+      address: this.selectedAddress,
+      customerData: this.authService.userData,
+      transaction_id: 'xyz' + Math.floor(Math.random() * 10000),
+      used_point: 0,
+      used_balance: 0,
+      total_amount: this.total,
+      is_collect: this.isClickAndCollect,
+    };
+  }
+
+  checkout() {
+    const data = this.accumulateData();
+
+    console.log('Accumulated Data: ', data);
+
+    this.httpService.post('checkout', data).subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.error('Error when checkout items: ', err);
+      }
+    );
   }
 }
