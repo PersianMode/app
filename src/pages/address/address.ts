@@ -287,6 +287,6 @@ export class AddressPage implements OnInit, AfterViewInit {
     if (isShow)
       this.loading.present();
     else
-      this.loading.dismiss();
+      this.loading.dismiss().catch(err => console.log('-> ', err));
   }
 }

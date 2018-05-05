@@ -37,21 +37,21 @@ export class SelectCount {
     if(diff > 0) {
       this.cartService.addOrderline(this.product_id, this.product_instance_id, diff)
         .then(res => {
-          this.loading.dismiss();
+          this.loading.dismiss().catch(err => console.log('-> ', err));
           this.presentLoading(false);
         })
         .catch(res => {
-          this.loading.dismiss();
+          this.loading.dismiss().catch(err => console.log('-> ', err));
         })
     }
     else {
       this.cartService.removeOrderline(this.product_instance_id, -diff)
         .then(res => {
-          this.loading.dismiss();
+          this.loading.dismiss().catch(err => console.log('-> ', err));
           this.presentLoading(false);
         })
         .catch(res => {
-          this.loading.dismiss();
+          this.loading.dismiss().catch(err => console.log('-> ', err));
         })
     }
   }
