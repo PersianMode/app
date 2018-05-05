@@ -1,6 +1,6 @@
 <ion-list dir="rtl">
-  <ion-item *ngFor="let type of pType" (click)="setType(type.value)" [ngClass]="{'selected-payment': selectedType === type.value}">
-    <ion-label class="type-field">
+  <ion-item *ngFor="let type of pType" (click)="setType(type)" [ngClass]="{'selected-payment': selectedType === type.value}">
+    <ion-label class="type-field" [ngClass]="{'not-available': type.disabled}">
       <span>{{type.name}}</span>
       <span class="amount-field" *ngIf="type.amount">({{priceFormatter(type.amount)}})</span>
     </ion-label>
