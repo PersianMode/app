@@ -10,6 +10,9 @@ export class CheckoutService {
   dataIsReady: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private paymentType = PaymentType;
   upsertAddress: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  customerAddressList = [];
+  inventoryAddressList = [];
+  addressIsUpdated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   selectedPaymentType = this.paymentType.cash;
   selectedAddress = null;
   isClickAndCollect = false;
@@ -20,7 +23,7 @@ export class CheckoutService {
   private balance = 0;
 
   constructor(private cartService: CartService, private httpService: HttpService,
-              private authService: AuthService) {
+    private authService: AuthService) {
     this.cartService.cartItems.subscribe(
       (data) => this.dataIsReady.next(data ? true : false)
     );
@@ -64,7 +67,6 @@ export class CheckoutService {
       this.getCustomerAddress()
         .then((res: any) => {
           customerAddress = res;
-          return this.getInventoryAddress();
         })
         .then((res: any) => {
           resolve({
@@ -143,9 +145,6 @@ export class CheckoutService {
 
   checkout() {
     const data = this.accumulateData();
-
-    console.log('Accumulated Data: ', data);
-
     this.httpService.post('checkout', data).subscribe(
       (res) => {
         console.log(res);

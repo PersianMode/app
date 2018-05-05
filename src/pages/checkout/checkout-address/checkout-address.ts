@@ -43,7 +43,7 @@ export class CheckoutAddress implements OnInit {
       (data) => {
         if(data) {
           let existAddress = this.customerAddressList.find(el => el._id.toString() === data._id.toString());
-          if(existAddress === -1)
+          if(!existAddress)
             this.customerAddressList.push(data);
           else
             existAddress = data;
