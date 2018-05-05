@@ -32,7 +32,7 @@ export class CheckoutAddress implements OnInit {
         this.customerAddressList = res.customer;
         this.inventoryAddressList = res.inventories;
 
-        addressLoading..catch(err => console.log('-> ', err));
+        addressLoading.dismiss().catch(err => console.log('-> ', err));
       })
       .catch(err => {
         console.error('Cannot fetch addresses of customer and inventories: ', err);
@@ -43,7 +43,7 @@ export class CheckoutAddress implements OnInit {
       (data) => {
         if(data) {
           let existAddress = this.customerAddressList.find(el => el._id.toString() === data._id.toString());
-          if(existAddress === -1)
+          if(!existAddress)
             this.customerAddressList.push(data);
           else
             existAddress = data;

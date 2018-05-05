@@ -71,6 +71,6 @@
     </ion-row>
   </ion-item>
   <ion-item>
-    <button ion-button full color="dark" large (click)="goToCheckoutPage()">پرداخت</button>
+    <button ion-button full color="dark" large (click)="goToCheckoutPage()" [disabled]="!cartItemsLength">پرداخت</button>
   </ion-item>
 </ion-content>

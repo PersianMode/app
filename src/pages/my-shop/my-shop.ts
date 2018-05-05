@@ -32,7 +32,7 @@ export class MyShopPage {
     this.placements$ = this.pageService.placement$.subscribe(res => {
 
       this.placement = res;
-
+      
       this.placement
         .filter(el => el.component_name === 'menu' && el.variable_name === 'topMenu')
         .sort((a, b) => {
@@ -91,6 +91,7 @@ export class MyShopPage {
       });
     this.selectTab = type;
 
+    this.selectTab = type;
   }
 
   generateSubMenu(entry) {

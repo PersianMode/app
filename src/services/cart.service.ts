@@ -1,7 +1,8 @@
-import {Injectable} from "@angular/core";
-import {HttpService} from "./http.service";
-import {ReplaySubject} from "rxjs/ReplaySubject";
-import {priceFormatter} from "../shared/lib/priceFormatter";
+import {Injectable} from '@angular/core';
+import {HttpService} from './http.service';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {priceFormatter} from '../shared/lib/priceFormatter';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class CartService {
@@ -9,26 +10,28 @@ export class CartService {
   cartItems: ReplaySubject<number> = new ReplaySubject<number>();
   coupon_discount = 0;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private authService: AuthService) {
     this.loadOrderlines().catch(err => {
       console.log('-> ', err);
     });
   }
 
-  loadOrderlines() {
-    return new Promise((resolve, reject) => {
-      this.httpService.post(`cart/items`, {data: {}}).subscribe(
-        data => {
-          this.updateInfo(data);
-          this.dataArray = data;
-          resolve();
-        },
-        err => {
-          console.error("error in loading orderlines:", err);
-          reject(err);
-        }
-      );
-    });
+  loadOrderlines(): any {
+    if (this.authService.isFullAuthenticated.getValue())
+      return new Promise((resolve, reject) => {
+        this.httpService.post(`cart/items`, {data: {}}).subscribe(
+          data => {
+            this.updateInfo(data);
+            this.dataArray = data;
+            resolve();
+          },
+          err => {
+            console.error("error in loading orderlines:", err);
+            reject(err);
+          }
+        );
+      });
+    return Promise.resolve();
   }
 
   updateInfo(data) {
@@ -205,5 +208,20 @@ export class CartService {
     }
 
     return data;
+  }
+
+  getCheckoutItems() {
+    return this.dataArray
+      .map(r => Object.assign({}, {
+        product_id: r.product_id,
+        product_instance_id: r.instance_id,
+        number: r.quantity,
+      }));
+  }
+
+  getOrderId() {
+    if (this.dataArray.length)
+      return this.dataArray[0].order_id;
+    return null;
   }
 }

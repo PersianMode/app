@@ -80,8 +80,10 @@ export class CheckoutPaymentType implements OnInit {
     return priceFormatter(p);
   }
 
-  setType(value) {
-    this.selectedType = value;
-    this.typeChanged.emit(value);
+  setType(type) {
+    if (!type.disabled) {
+      this.selectedType = type.value;
+      this.typeChanged.emit(type.value);
+    }
   }
 }
