@@ -41,6 +41,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {GoogleMaps} from '@ionic-native/google-maps';
 import {Geolocation} from '@ionic-native/geolocation';
 import {GooglePlus} from '@ionic-native/google-plus';
+import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {GooglePlus} from '@ionic-native/google-plus';
     CheckoutAddress,
     AddressPage,
     ProductItemComponent,
-    SizeViewerComponent
+    SizeViewerComponent,
+    ForgotPasswordPage,    
   ],
   imports: [
     BrowserModule,
@@ -96,6 +98,7 @@ import {GooglePlus} from '@ionic-native/google-plus';
     CheckoutPage,
     AddressPage,
     FilterPage,
+    ForgotPasswordPage,
   ],
   providers: [
     StatusBar,

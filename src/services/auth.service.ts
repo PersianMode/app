@@ -67,7 +67,7 @@ export class AuthService {
     this.userData = {
       usedId: data._id,
       username: data.username,
-      name: data.first_name,
+      name: data.name,
       surname: data.surname,
       mobile_no: data.mobile_no,
     };
