@@ -7,6 +7,7 @@ import {TabsPage} from '../tabs/tabs';
 import {HttpService} from '../../services/http.service';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {RegConfirmationPage} from '../regConfirmation/regConfirmation';
+import {ForgotPasswordPage} from '../forgot-password/forgot-password';
 
 // declare var window: any;
 
@@ -60,7 +61,7 @@ export class LoginPage implements OnInit {
       .catch(err => {
         console.error('Cannot login: ', err);
         this.toastCtrl.create({
-          message: 'سیستم قادر به ورود شما نیست. دوباره تلاش کنید',
+          message: 'نام کاربری یا رمز عبور صحیح نیست',
           duration: 3200,
         }).present();
       });
@@ -121,5 +122,9 @@ export class LoginPage implements OnInit {
     //       }
     //     );
     //   });
+  }
+
+  forgotPassword() {
+    this.navCtrl.push(ForgotPasswordPage);
   }
 }
