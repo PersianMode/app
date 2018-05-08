@@ -21,8 +21,8 @@ export class LoginPage implements OnInit {
   curFocus = null;
 
   //->
-  dR = '';
-  mess = '';
+  // dR = '';
+  // mess = '';
   //<-
 
   constructor(private navCtrl: NavController, private authService: AuthService,
@@ -54,7 +54,7 @@ export class LoginPage implements OnInit {
 
   login() {
     //->
-    this.dR = 'pressed';
+    // this.dR = 'pressed';
     //<-
     if (!this.loginForm.valid)
       return;
@@ -98,7 +98,7 @@ export class LoginPage implements OnInit {
       'offline': true
     }).then(res => {
       //->
-      this.dR = 'googling :D';
+      // this.dR = 'googling :D';
       //<-
       this.httpService.post('login/google/app', {
         accessToken: res.accessToken,
@@ -115,25 +115,26 @@ export class LoginPage implements OnInit {
       }).subscribe(
         (data) => {
           //->
-          this.dR = 'done';
-          this.mess = JSON.stringify(data);
+          // this.dR = 'done';
+          // this.mess = JSON.stringify(data);
           //<-
           this.authService.afterLogin(data);
           this.navCtrl.push(RegConfirmationPage, {isGoogleAuth: true, username: data.username});
         },
         (err) => {
           //->
-          this.dR = 'not done';
-          this.mess = JSON.stringify(err);
+          // this.dR = 'not done';
+          // this.mess = JSON.stringify(err);
           //<-
-          console.error('Cannot login via google: ', err);
+          console.error('Internal server error occurred: ', err);
         }
       );
     }).catch(err => {
       //->
-      this.dR = 'in catch!';
-      this.mess = JSON.stringify(err);
+      // this.dR = 'in catch!';
+      // this.mess = JSON.stringify(err);
       //<-
+      console.error('Cannot login via google: ', err);
     })
 
     // this.googlePlus.login({
