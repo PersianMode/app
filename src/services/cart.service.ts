@@ -9,6 +9,7 @@ export class CartService {
   dataArray: any = [];
   cartItems: ReplaySubject<number> = new ReplaySubject<number>();
   coupon_discount = 0;
+  coupon_code = '';
 
   constructor(private httpService: HttpService, private authService: AuthService) {
     this.loadOrderlines().catch(err => {
