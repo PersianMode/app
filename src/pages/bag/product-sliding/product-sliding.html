@@ -1,39 +1,26 @@
-<ion-list inset style="margin: 0px !important;">
-  <ion-item-sliding *ngFor="let product of products">
-    <ion-item>
-      <ion-thumbnail item-start>
-        <img src="{{product.thumbnail}}" alt="">
-      </ion-thumbnail>
-      <div>
-        <p style="color:#000;">{{product.name}}</p>
-        <p style="color:#000;">{{product.product}}</p>
-        <p style="color: #808080;">{{product.color}}</p>
-        <p style="color: #808080;">{{product.size}}</p>
-        <p style="color:#000;">{{product.cost}} <span>تومان</span></p>
-        <p (click)="actionCount()"><span>تعداد</span> 1 <ion-icon name="ios-arrow-down"></ion-icon></p>
-      </div>
-    </ion-item>
-    <ion-item-options side="right">
-      <button ion-button large color="danger" (click)="removeThisProduct(product)">
-        <ion-icon name="trash"></ion-icon>
-      </button>
-    </ion-item-options>
-  </ion-item-sliding>
+<ion-item-sliding>
+  <ion-item>
+    <ion-thumbnail item-start>
+      <img src="{{getThumbnailURL()}}" alt="">
+    </ion-thumbnail>
+    <ion-label>
 
-  <!--<ion-item-sliding *ngFor="let product of products" ion-padding>-->
-  <!--<ion-item>-->
-  <!--<ion-grid></ion-grid>-->
-  <!--<ion-thumbnail item-start>-->
-  <!--<img src="{{product.thumbnail}}">-->
-  <!--</ion-thumbnail>-->
-  <!--<h1>{{product.name}}</h1>-->
-  <!--<h5>{{product.cost}}</h5>-->
+      <p style="color: black; font-weight: 200; margin-bottom: 15px;">{{product.name}}</p>
+      <p style="color: #000;">{{formatPrice(product.cost)}} <span>تومان</span></p>
+      <p (click)="actionCount()">
+        <span>          تعداد          {{formatPrice(product.quantity)}}</span>
+        <ion-icon name="ios-arrow-down"></ion-icon>
+      </p>
+      <!--<p style="color:#000;">{{product.product}}</p>-->
+      <p style="color: black;">اندازه: {{product.size}}</p>
+      <p style="color: black;">رنگ: {{product.color.name}}</p>
+      <p class="semi-color pointer-click" style="margin-top: 10px !important;" (click)="removeThisProduct()">حذف</p>
+    </ion-label>
+  </ion-item>
 
-  <!--</ion-item>-->
-  <!--<ion-item-options side="right">-->
-  <!--<button ion-button color="danger" (click)="removeThisProduct(product)">حذف-->
-  <!--<ion-icon name="trash"></ion-icon>-->
-  <!--</button>-->
-  <!--</ion-item-options>-->
-  <!--</ion-item-sliding>-->
-</ion-list>
+  <ion-item-options side="right">
+    <button ion-button large color="danger" (click)="removeThisProduct()">
+      <ion-icon name="trash" style="font-size: 2em"></ion-icon>
+    </button>
+  </ion-item-options>
+</ion-item-sliding>

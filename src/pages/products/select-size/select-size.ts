@@ -1,6 +1,8 @@
 import {Component} from "@angular/core";
 import {LoadingController, NavController, NavParams, ToastController} from "ionic-angular";
 import {CartService} from "../../../services/cart.service";
+import {ProductService} from '../../../services/productService';
+import {ISize} from '../../../interfaces/isize.interface';
 
 @Component({
   selector: 'page-select-size',
@@ -8,51 +10,69 @@ import {CartService} from "../../../services/cart.service";
 })
 export class SelectSizePage {
 
-  instances = [];
-  rows = [];
+  productId;
+  product$: any;
+  product: any = null;
+  sizes: ISize[] = [];
   selectedSize = null;
   activeColor = null;
   loading;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private toastCtrl: ToastController, private cartService: CartService,
-              private loadingCtrl: LoadingController) {
-    if(this.navParams.get('instances') == null) {
-      this.presentToast('خطای وجود محصول');
-      return;
-    }
-    this.instances = this.navParams.get('instances');
-    this.activeColor = this.navParams.get('activeColor');
-    this.getSeparatedRowProducts(6);
+    private toastCtrl: ToastController, private cartService: CartService,
+    private loadingCtrl: LoadingController, private productService: ProductService) {
   }
+
+  ionViewWillEnter() {
+    this.productId = this.navParams.get('productId');
+    this.activeColor = this.navParams.get('activeColor');
+
+    this.product$ = this.productService.product$.subscribe(res => {
+
+      this.product = res;
+      this.sizes = (this.product && this.product.sizesByColor) ?
+        this.product.sizesByColor[this.activeColor] : null;
+    });
+
+    this.productService.getProduct(this.productId);
+
+  }
+
 
   addToBag() {
     this.presentLoading(true);
-    //this setTimeout is TEST-PURPOSE ONLY! to let us see the loading bar before adding the orderline
-    setTimeout(() => {
-      this.cartService.addOrderline(this.instances[this.selectedSize]._id, 1, (err) => {
-        if (err) {
-          return this.presentToast("لطفا مجددا تلاش کنید");
-        }
+    let foundInstance = this.product.instances.filter(x => x.product_color_id === this.activeColor && x.size === this.selectedSize)
 
-        this.loading.dismiss();
-        this.presentLoading(false);
-      });
-    }, 1000);
+    let instanceId = foundInstance && foundInstance[0] ? foundInstance[0]._id : null;
+
+    if (instanceId) {
+      this.cartService.addOrderline(this.productId, instanceId, 1)
+        .then(res => {
+          this.loading.dismiss().catch(err => console.log('-> ', err));
+          this.presentLoading(false);
+        })
+        .catch(err => {
+          this.loading.dismiss().catch(err => console.log('-> ', err));
+          this.presentToast("لطفا مجدداً تلاش کنید!");
+        })
+    } else
+      this.presentToast("محصول مورد نظر یافت نشد");
+
   }
 
-  selectSize(index = null) {
-    this.selectedSize = index;
+  selectSize(size) {
+    this.selectedSize = size;
   }
 
   presentLoading(isLoading = true) {
-    if(isLoading) {
+    if (isLoading) {
       this.loading = this.loadingCtrl.create({});
     }
     else {
       this.loading = this.loadingCtrl.create({
         spinner: 'hide',
         content: 'محصول به سبد خرید اضافه شد!',
-        duration: 2000,
+        duration: 1500,
         cssClass: 'select-size-page-header',
       });
     }
@@ -60,7 +80,7 @@ export class SelectSizePage {
     this.loading.present();
 
     this.loading.onDidDismiss(() => {
-      if(!isLoading)
+      if (!isLoading)
         this.navCtrl.pop();
     })
   }
@@ -73,31 +93,15 @@ export class SelectSizePage {
       cssClass: 'select-size-page-header',
     });
 
-    if(this.loading)
-      this.loading.dismiss();
+    if (this.loading)
+      this.loading.dismiss().catch(err => console.log('-> ', err));
 
     toast.present();
   }
 
-  getSeparatedRowProducts(s = 6) {
-    let total = [];
-    let chunk = [];
-    let i;
-    for(i = 0; i < this.instances.length; i++) {
-      chunk.push(this.instances[i]);
-      if(i % s == s-1 && i != 0) {
-        total.push(chunk);
-        chunk = [];
-      }
-    }
-    total.push(chunk);
-    this.rows = total;
+  ionViewWillLeave() {
+    this.product$.unsubscribe();
   }
 
-  formatNumber(p) {
-    //HAS BUGS!
-    // return priceFormatter(p);
-    return p;
-  }
 
 }

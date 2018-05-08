@@ -1,5 +1,5 @@
 <ion-content style="direction: rtl" padding>
-  <div class="center">
+  <div *ngIf="!shouldEnterMobileNumber" class="center">
     <div>
       <h3>تأیید ثبت نام</h3>
     </div>
@@ -22,8 +22,8 @@
           </div>
         </ion-col>
         <ion-col>
-          <div class="div-btn btn-field inform-btn clickable-link" (click)="back()">
-            <ion-label class="clickable-link">تغییر اطلاعات</ion-label>
+          <div class="div-btn btn-field inform-btn clickable-link" (click)="changeMobileNumber()">
+            <ion-label class="clickable-link">تغییر شماره تلفن همراه</ion-label>
           </div>
         </ion-col>
       </ion-row>
@@ -31,6 +31,23 @@
         <ion-col>
           <div class="div-btn btn-field inform-btn clickable-link" (click)="checkCode()">
             <ion-label class="clickable-link">ارسال کد</ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div *ngIf="shouldEnterMobileNumber" class="center">
+    <div>
+      <h3>شماره تلفن همراه خود را وارد کنید</h3>
+    </div>
+    <ion-grid>
+      <ion-row class="box-center">
+        <ion-input type="number" [(ngModel)]="mobile_no" placeholder="شماره تلفن همراه"></ion-input>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="div-btn btn-field inform-btn clickable-link" (click)="sendMobileNumber()">
+            <ion-label class="clickable-link">درخواست کد</ion-label>
           </div>
         </ion-col>
       </ion-row>
