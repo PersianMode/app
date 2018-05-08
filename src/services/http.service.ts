@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 @Injectable()
 export class HttpService {
   // REAL SERVER: '173.249.11.153'
+  // MY SERVER: '192.168.8.181'
   public static Host = "http://173.249.11.153:3000";
   serverAddress: string = "http://173.249.11.153:3000/api/";
   public static PRODUCT_IMAGE_PATH = "images/product-image";
