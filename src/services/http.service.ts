@@ -5,8 +5,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable()
 export class HttpService {
-  public static Host = "http://localhost:3000";
-  serverAddress: string = "http://localhost:3000/api/";
+  public static Host = "http://192.168.8.136:3000";
+  serverAddress: string = "http://192.168.8.136:3000/api/";
   public static PRODUCT_IMAGE_PATH = "images/product-image";
   
   userToken = null;

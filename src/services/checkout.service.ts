@@ -144,14 +144,17 @@ export class CheckoutService {
   }
 
   checkout() {
-    const data = this.accumulateData();
-    this.httpService.post('checkout', data).subscribe(
-      (res) => {
-        console.log(res);
-      },
-      (err) => {
-        console.error('Error when checkout items: ', err);
-      }
-    );
+    this.cartService.applyCoupon(this.cartService.coupon_code)
+      .then(rs => {
+        const data = this.accumulateData();
+        this.httpService.post('checkout', data).subscribe(
+          (res) => {
+            console.log(res);
+          },
+          (err) => {
+            console.error('Error when checkout items: ', err);
+          }
+        );
+      });
   }
 }
