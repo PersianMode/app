@@ -75,12 +75,12 @@
         "ANDROID_SUPPORT_V4_VERSION": "24.1.0"
       },
       "cordova-plugin-geolocation": {},
+      "cordova-plugin-googleplus": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.855842568245-15155fb0fep4v2gpdjg0nd1gaas2n7nv",
+        "WEB_APPLICATION_CLIENT_ID": "855842568245-c0q8sm090cpd377em1k0hgrtphdgdvc9.apps.googleusercontent.com"
+      },
       "cordova-android-play-services-gradle-release": {
         "PLAY_SERVICES_VERSION": "12.+"
-      },
-      "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "apps.googleusercontent.com.636231560622-e085gm2i3na18td2c2e3kiohue4kmqj9",
-        "WEB_APPLICATION_CLIENT_ID": "636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com"
       }
     },
     "platforms": [
