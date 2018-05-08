@@ -26,6 +26,9 @@ export class ProductItemComponent implements OnInit {
     if (this.product.colors && this.product.colors.length > 0) {
       return this.product.colors[0].image.thumbnail;
     }
+  }
 
+  getProductDiscount() {
+    return this.product.base_price - (this.product.base_price * this.product.discount);
   }
 }

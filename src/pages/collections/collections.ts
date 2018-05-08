@@ -29,7 +29,6 @@ export class CollectionsPage {
 
   }
 
-
   ionViewWillEnter() {
 
     this.loading = this.loadingCtrl.create({});
@@ -42,11 +41,11 @@ export class CollectionsPage {
           this.totalProducts = data;
           this.products = this.totalProducts.slice(0, this.countPerScroll);
           this.loading.dismiss().catch(err => {
-            console.log('-> ', err);
+            console.error('-> ', err);
           });
         }, err => {
           this.loading.dismiss().catch(err => {
-            console.log('-> ', err);
+            console.error('-> ', err);
           });
         });
     });
@@ -71,10 +70,9 @@ export class CollectionsPage {
 
     if (this.products.length !== this.totalProducts.length) {
       this.products = this.products.concat(this.totalProducts.slice(this.cScrollIndex - 1, this.cScrollIndex - 1 + this.countPerScroll));
-      infiniteScroll.complete();
-
     }
 
+    infiniteScroll.complete();
   }
 
   toProductDetails(id) {
@@ -90,5 +88,4 @@ export class CollectionsPage {
     this.products$.unsubscribe();
 
   }
-
 }

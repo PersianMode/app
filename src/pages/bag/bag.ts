@@ -25,6 +25,10 @@ export class BagPage implements OnInit {
 
   ionViewWillEnter() {
     this.updateOrderlines();
+
+    if(this.coupon_code) {
+      this.applyCoupon();
+    }
   }
 
   ngOnInit() {
@@ -92,14 +96,9 @@ export class BagPage implements OnInit {
   }
 
   goToCheckoutPage() {
-    this.cartService.applyCoupon(this.coupon_code)
-      .then(res => {
-        this.navCtrl.push(CheckoutPage, {
-          headerData: this.cartService.computeCheckoutTitlePage()
-        });
-      })
-      .catch(err => {
-        console.error('Cannot apply coupon code: ', err);
-      })
+    this.cartService.coupon_code = this.coupon_code;
+    this.navCtrl.push(CheckoutPage, {
+      headerData: this.cartService.computeCheckoutTitlePage()
+    });
   }
 }

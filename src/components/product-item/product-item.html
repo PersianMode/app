@@ -1,6 +1,6 @@
 <div (click)="select()" dir="rtl">
-  <div >
-    <img src="{{getThumbnailURL()}}" class="product-image"/>
+  <div>
+    <img src="{{getThumbnailURL()}}" class="product-image" />
   </div>
   <div>
     <ion-label class="product-label product-name">{{product.name}}</ion-label>
@@ -9,7 +9,9 @@
     <ion-label class="product-label">رنگ های بیشتر</ion-label>
   </div>
   <div>
-    <ion-label class="product-label">{{product.base_price.toLocaleString('fa')}} تومان</ion-label>
+    <ion-label class="product-label" [ngClass]="{'old-price': product.discount}">{{product.base_price.toLocaleString('fa')}} تومان</ion-label>
+  </div>
+  <div *ngIf="product.discount">
+    <ion-label class="product-label product-discount">{{getProductDiscount().toLocaleString('fa')}} تومان</ion-label>
   </div>
 </div>
- 
