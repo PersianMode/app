@@ -12,7 +12,7 @@ export class CartService {
 
   constructor(private httpService: HttpService, private authService: AuthService) {
     this.loadOrderlines().catch(err => {
-      console.log('-> ', err);
+      console.error('-> ', err);
     });
   }
 
@@ -134,16 +134,19 @@ export class CartService {
 
     if (this.dataArray.length > 0) {
       this.dataArray.forEach(el => {
-        let tempTotalDiscount = el.discount && el.discount.length > 0 ? el.discount.reduce((a, b) => a * b) : 0;
+        // let tempTotalDiscount = el.discount && el.discount.length > 0 ? el.discount.reduce((a, b) => a * b) : 0;
+
+        // tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
+
+        let tempTotalDiscount = el.discount ? el.discount : 0;
+
         if (el.coupon_discount) {
           if (addCoupon)
-            tempTotalDiscount *= el.coupon_discount;
+            tempTotalDiscount += Number(el.coupon_discount.toFixed(5));
         }
 
-        tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
-
         const price = el.instance_price ? el.instance_price : el.base_price;
-        discountValue += (price - (tempTotalDiscount * price)) * el.quantity;
+        discountValue += (price - ((1 - tempTotalDiscount) * price)) * el.quantity;
       });
     }
 
@@ -161,15 +164,24 @@ export class CartService {
           coupon_code: coupon_code,
         }).subscribe(
           (data) => {
-            data = data[0];
-            const someItems = this.dataArray.filter(el => el.product_id.toString() === data.product_id.toString());
-            if (someItems && someItems.length > 0) {
-              someItems.forEach(el => {
-                el["coupon_discount"] = 1 - data.discount;
+            if (data) {
+              data = data[0];
+              this.dataArray.forEach(el => {
+                el["coupon_discount"] = data.discount_ref;
               });
+
               resolve(true);
             } else
               reject({});
+
+            // const someItems = this.dataArray.filter(el => el.product_id.toString() === data.product_id.toString());
+            // if (someItems && someItems.length > 0) {
+            //   someItems.forEach(el => {
+            //     el["coupon_discount"] = 1 - data.discount;
+            //   });
+            //   resolve(true);
+            // } else
+            //   reject({});
           },
           (err) => {
             reject(err);

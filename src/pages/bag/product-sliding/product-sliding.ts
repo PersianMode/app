@@ -69,9 +69,12 @@ export class ProductSliding implements OnInit {
   }
 
   getThumbnailURL(): string {
-    
     return imagePathFixer(this.product.thumbnail, this.product.product_id, this.product.product_color_id);
-
   }
 
+  getProductDiscount() {
+    if (this.product.discount)
+      return this.product.cost - (this.product.cost * this.product.discount);
+    return 0;
+  }
 }

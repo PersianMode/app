@@ -47,7 +47,6 @@ export class ProductViewPage {
         this.thumbnails.push(color.image.thumbnail);
       })
 
-      console.log('-> ', this.product);
       this.checkBuyButton();
     });
 
@@ -106,7 +105,21 @@ export class ProductViewPage {
   }
 
   getImages() {
-
     return this.selectedColor ? this.selectedColor['image']['angles'].map(x => x.url) : null;
+  }
+
+  getPrice() {
+    if (this.product) {
+      const inst = this.product.instances.find(el => el.product_color_id === this.selectedColor._id);
+
+      if (inst && inst.price)
+        return inst.price;
+      return this.product.base_price;
+    }
+  }
+
+  getPriceDiscount() {
+    const inst = this.product.instances.find(el => el.product_color_id === this.selectedColor._id);
+    return (inst && inst.price ? inst.price : this.product.base_price) - ((inst && inst.price ? inst.price : this.product.base_price) * this.product.discount);
   }
 }

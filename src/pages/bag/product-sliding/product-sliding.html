@@ -6,7 +6,11 @@
     <ion-label>
 
       <p style="color: black; font-weight: 200; margin-bottom: 15px;">{{product.name}}</p>
-      <p style="color: #000;">{{formatPrice(product.cost)}} <span>تومان</span></p>
+      <p style="color: #000;">
+        <span [ngClass]="{'old-price': product.discount}">{{formatPrice(product.cost)}}</span>
+        <span *ngIf="product.discount" class="product-discount">{{formatPrice(getProductDiscount())}}</span>
+        <span>تومان</span>
+      </p>
       <p (click)="actionCount()">
         <span>          تعداد          {{formatPrice(product.quantity)}}</span>
         <ion-icon name="ios-arrow-down"></ion-icon>

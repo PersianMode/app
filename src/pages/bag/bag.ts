@@ -25,6 +25,10 @@ export class BagPage implements OnInit {
 
   ionViewWillEnter() {
     this.updateOrderlines();
+
+    if(this.coupon_code) {
+      this.applyCoupon();
+    }
   }
 
   ngOnInit() {
