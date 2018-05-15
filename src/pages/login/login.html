@@ -14,15 +14,15 @@
     <form (ngSubmit)="login()" [formGroup]="loginForm">
       <ion-grid>
         <ion-row class="input-container">
-          <input class="input-field left-direction" type="email"
-                 formControlName="email" placeholder="ایمیل"
-                 (focus)="setSeen('email')"
+          <input class="input-field left-direction"
+                 formControlName="username" placeholder="ایمیل یا شماره تلفن همراه"
+                 (focus)="setSeen('username')"
                  (blur)="curFocus = null"
-                 [ngClass]="(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email' ? 'input-error' : null"/>
+                 [ngClass]="(loginForm.controls['username'].hasError('required') || loginForm.controls['username'].hasError('match')) && seen['username'] && curFocus !== 'username' ? 'input-error' : null"/>
           <label
-            *ngIf="(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email'"
+            *ngIf="(loginForm.controls['username'].hasError('required') || loginForm.controls['username'].hasError('match')) && seen['username'] && curFocus !== 'username'"
             class="field-error">
-            لطفا آدرس ایمیل معتبری وارد کنید
+            لطفا آدرس ایمیل و یا شماره تلفن همراه معتبری وارد کنید
           </label>
         </ion-row>
         <ion-row class="input-container">
