@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, ToastController} from 'ionic-angular';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NavController, ToastController, LoadingController} from 'ionic-angular';
+import {FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {RegisterPage} from '../register/register';
 import {AuthService} from '../../services/auth.service';
 import {TabsPage} from '../tabs/tabs';
@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
 
   constructor(private navCtrl: NavController, private authService: AuthService,
     private toastCtrl: ToastController, private httpService: HttpService,
-    private googlePlus: GooglePlus) {
+    private googlePlus: GooglePlus, private loadingCtrl: LoadingController) {
 
   }
 
@@ -34,14 +34,34 @@ export class LoginPage implements OnInit {
 
   initForm() {
     this.loginForm = new FormBuilder().group({
-      email: [null, [
+      username: [null, [
         Validators.required,
-        Validators.email,
       ]],
       password: [null, [
         Validators.required,
       ]],
+    }, {
+      validator: this.checkUsername,
     });
+  }
+
+  checkUsername(AC: AbstractControl) {
+    const username = AC.get('username').value;
+    let isMatched = false;
+    if (username) {
+      if (username.includes('@')) {
+        isMatched = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(username);
+      } else {
+        isMatched = (/^[\u0660-\u06690-9\u06F0-\u06F9]+$/).test(username);
+      }
+    }
+
+    if (!isMatched) {
+      AC.get('username').setErrors({match: 'not matched to any type'});
+    } else {
+      AC.get('username').setErrors(null);
+      return null;
+    }
   }
 
   setSeen(item) {
@@ -50,16 +70,23 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    this.dR = 'pressed';
     if (!this.loginForm.valid)
       return;
+    
+    const waiting = this.loadingCtrl.create({
+      content: 'لطفا صبر کنید ...'
+    });
 
-    this.authService.login(this.loginForm.controls['email'].value, this.loginForm.controls['password'].value)
+    waiting.present();
+
+    this.authService.login(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)
       .then(() => {
+        waiting.dismiss();
         this.navCtrl.setRoot(TabsPage);
       })
       .catch(err => {
         console.error('Cannot login: ', err);
+        waiting.dismiss();
         this.toastCtrl.create({
           message: 'نام کاربری یا رمز عبور صحیح نیست',
           duration: 3200,
