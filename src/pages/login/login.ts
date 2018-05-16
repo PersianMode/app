@@ -127,25 +127,25 @@ export class LoginPage implements OnInit {
       // 'webClientId': '636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com',
       // 'offline': true
     }).then(res => {
-      this.dR = 'googling :D';
+      // this.dR = 'googling :D';
       this.httpService.post('login/google/app', res).subscribe(
         data => {
-          this.dR = 'done';
-          this.mess = JSON.stringify(data);
+          // this.dR = 'done';
+          // this.mess = JSON.stringify(data);
         }, err => {
-          this.dR = 'res but not done!';
-          this.mess = JSON.stringify(err);
+          // this.dR = 'res but not done!';
+          // this.mess = JSON.stringify(err);
         }
       );
     })
       .catch(rej => {
         this.httpService.post('login/google/app', rej).subscribe(
           data => {
-            this.dR = 'not done';
-            this.mess = JSON.stringify(data);
+            // this.dR = 'not done';
+            // this.mess = JSON.stringify(data);
           }, err => {
-            this.dR = 'neither res nor done!';
-            this.mess = JSON.stringify(err);
+            // this.dR = 'neither res nor done!';
+            // this.mess = JSON.stringify(err);
           }
         );
       });
