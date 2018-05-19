@@ -122,6 +122,7 @@ export class AuthService {
   afterLogin(res) {
     this.httpService.userToken = res.token;
     this.isLoggedIn = true;
+    this.setUserData(res);
     this.saveUserData(res);
   }
 

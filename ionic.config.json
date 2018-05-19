@@ -1,6 +1,6 @@
 {
-  "name": "persianmode-app",
-  "app_id": "b22fd967",
+  "name": "persianmode",
+  "app_id": "0d0fdf3b",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
