@@ -89,6 +89,9 @@ export class RegisterPage implements OnInit {
     this.curFocus = item;
   }
 
+  register_test() {
+    return this.navCtrl.push(RegConfirmationPage);
+  }
   register() {
     if (this.registerForm.valid && this.gender) {
       let data = {};
@@ -105,8 +108,9 @@ export class RegisterPage implements OnInit {
         (res) => {
           this.authService.tempData = {
             username: this.registerForm.controls['username'].value,
-            password: this.registerForm.controls['password'].value,
+            password: this.registerForm.controls['password'].value
           };
+          // 001 confirm page
           this.navCtrl.push(RegConfirmationPage);
         },
         (err) => {

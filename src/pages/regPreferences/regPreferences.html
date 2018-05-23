@@ -1,0 +1,77 @@
+<ion-content style="direction: rtl" padding>
+  <!-- tags -->
+  <div *ngIf="shouldSelectedTags">
+    <div>
+      <h3>انتخاب دسته بندی</h3>
+    </div>
+    <ion-grid>
+      <!-- select tags -->
+      <ion-row *ngFor="let chunkTag of _tags">
+          <ion-col *ngFor="let tag of chunkTag" >
+            <button ion-button full color="light" class="size-buttons"
+                    [color]= "tag.selected? 'dark': 'light'"
+                    (click)="itemSelected(tag)" >{{tag.name}}
+            </button>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="div-btn btn-field inform-btn clickable-link" (click)="setTags()">
+            <ion-label class="clickable-link">مرحله بعدی</ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <!-- sizes -->
+  <div *ngIf="shouldSelectedSize" class="center">
+    <div>
+      <h3>انتخاب سایز</h3>
+    </div>
+    <ion-grid>
+      <!-- select size -->
+      <app-size-viewer [multi]="false" [sizes]="shoesSize" (onSizeSelected)="selectSize($event)"></app-size-viewer>
+      <ion-row>
+          <ion-col>
+            <div class="div-btn btn-field inform-btn clickable-link" (click)="setSize()">
+              <ion-label class="clickable-link">مرحله بعدی</ion-label>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div class="div-btn btn-field inform-btn clickable-link" (click)="backToTags()">
+              <ion-label class="clickable-link">مرحله قبلی</ion-label>
+            </div>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <!-- brands -->
+  <div *ngIf="shouldSelectedBrand" class="center">
+    <div>
+      <h3>انتخاب برند</h3>
+    </div>
+    <ion-grid>
+      <!-- select brand -->
+      <ion-row *ngFor="let brand of _brands">
+          <ion-col>
+            <button ion-button full color="light" class="size-buttons"
+                    [color]= "brand.selected? 'dark': 'light'"
+                    (click)="itemSelected(brand)" >{{brand.name}}
+            </button>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col>
+            <div class="div-btn btn-field inform-btn clickable-link" (click)="setBrand()">
+              <ion-label class="clickable-link">تایید نهایی</ion-label>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div class="div-btn btn-field inform-btn clickable-link" (click)="backToSize()">
+              <ion-label class="clickable-link">مرحله قبلی</ion-label>
+            </div>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

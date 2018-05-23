@@ -16,6 +16,7 @@ import {IonicStorageModule} from '@ionic/storage';
 import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
+import {RegPreferencesPage} from '../pages/regPreferences/regPreferences';
 import {ProductService} from '../services/productService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
 import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
@@ -59,6 +60,7 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     LoginPage,
     RegisterPage,
     RegConfirmationPage,
+    RegPreferencesPage,
     FilterPage,
     ProductSliding,
     SelectCount,
@@ -94,6 +96,7 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
+    RegPreferencesPage,
     SelectCount,
     CheckoutPage,
     AddressPage,
