@@ -22,7 +22,7 @@ export class RegConfirmationPage implements OnInit {
 
   ngOnInit() {
     this.mobile_no = this.navParams.get('mobile_no') ? this.navParams.get('mobile_no') : null;
-    this.username = this.navParams.get('username') ? this.navParams.get('username') : null;
+    this.username = this.navParams.get('username') ? this.navParams.get('username') : this.authService.tempData.username;
     this.isGoogleAuth = this.navParams.get('isGoogleAuth') ? this.navParams.get('isGoogleAuth') : null;
     this.shouldEnterMobileNumber = !this.mobile_no;
   }
