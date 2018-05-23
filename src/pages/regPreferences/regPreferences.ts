@@ -26,7 +26,7 @@ export class RegPreferencesPage implements OnInit {
     brands: [],
     size: null
   }
-  gender = 'm';
+  gender = null;
 
   constructor(private httpClient: HttpClient,private httpService: HttpService, private toastCtrl: ToastController,
     private navCtrl: NavController, private authService: AuthService,
@@ -35,7 +35,8 @@ export class RegPreferencesPage implements OnInit {
 
   ngOnInit() {
     this.preferences.username = this.navParams.get('username') ? this.navParams.get('username') : null;
-    this.gender = this.navParams.get('gender') ? this.navParams.get('gender') : null;
+    this.gender = this.navParams.get('gender') ? this.navParams.get('gender') : 'm';
+    console.log(this.gender, this.preferences.username);
     
     // api tags
     this.httpService.get('tags/Category').subscribe(tagsRes => {
@@ -51,7 +52,6 @@ export class RegPreferencesPage implements OnInit {
     });
     // shoes json
     this.httpClient.get('../../assets/shoesSize.json').subscribe(res => {
-      console.log('res--->', res);
       if (this.gender === 'm') {
         res['men'].forEach(element => {
           this.shoesUS.push({value: element['us'], disabled: false, displayValue:  element['us']});
@@ -70,8 +70,6 @@ export class RegPreferencesPage implements OnInit {
 
   }
   itemSelected(value){
-    console.log(value.name);
-
     var index = this.items.indexOf(value);
     if (index > -1) {
       delete value.selected;
@@ -80,7 +78,6 @@ export class RegPreferencesPage implements OnInit {
       value['selected'] = true;
       this.items.push(value);
     }
-    console.log(this.items);
   }
 
   setTags() {
@@ -88,12 +85,10 @@ export class RegPreferencesPage implements OnInit {
     this.shouldSelectedTags = false;
     this.shouldSelectedSize = true;
     this.shouldSelectedBrand = false;
-
   }
   
 
   selectSize(size) {
-    console.log(size);
     this.preferences.size = size;
   }
   setSize() {
@@ -110,8 +105,6 @@ export class RegPreferencesPage implements OnInit {
     this.preferences.brands = this.items
     this.items = [];
     this.navCtrl.setRoot(TabsPage);
-    console.log('preferences', this.preferences);
-
     this.httpService.post(`customer/preferences`, {
       username: this.preferences.username,
       preferred_brands: this.preferences.brands,
@@ -119,7 +112,7 @@ export class RegPreferencesPage implements OnInit {
       preferred_size: this.preferences.size
     }).subscribe(response => {
       console.log('Done!!!');
-      
+      this.authService.applyVerification();
     });
     
   }

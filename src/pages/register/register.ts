@@ -89,9 +89,6 @@ export class RegisterPage implements OnInit {
     this.curFocus = item;
   }
 
-  register_test() {
-    return this.navCtrl.push(RegConfirmationPage);
-  }
   register() {
     if (this.registerForm.valid && this.gender) {
       let data = {};
@@ -111,7 +108,11 @@ export class RegisterPage implements OnInit {
             password: this.registerForm.controls['password'].value
           };
           // 001 confirm page
-          this.navCtrl.push(RegConfirmationPage);
+          this.navCtrl.push(RegConfirmationPage, {
+            mobile_no: this.registerForm.controls['mobile_no'].value,
+            username: this.registerForm.controls['username'].value,
+            gender: this.gender,
+          });
         },
         (err) => {
           console.error('Cannot register: ', err);

@@ -24,8 +24,8 @@ export class RegConfirmationPage implements OnInit {
 
   ngOnInit() {
     this.mobile_no = this.navParams.get('mobile_no') ? this.navParams.get('mobile_no') : null;
-    this.gender = this.navParams.get('gender') ? this.navParams.get('gender') : null;
-    this.username = this.navParams.get('username') ? this.navParams.get('username') : null;
+    this.username = this.navParams.get('username') ? this.navParams.get('username') : this.authService.tempData.username;
+    this.gender = this.navParams.get('gender') ? this.navParams.get('gender') :  null;
     this.isGoogleAuth = this.navParams.get('isGoogleAuth') ? this.navParams.get('isGoogleAuth') : null;
     this.shouldEnterMobileNumber = !this.mobile_no;
   }
@@ -61,7 +61,7 @@ export class RegConfirmationPage implements OnInit {
             (data) => {
               this.authService.setVerification(true);
               // this.navCtrl.setRoot(TabsPage);
-              this.navCtrl.setRoot(RegPreferencesPage, {
+              this.navCtrl.push(RegPreferencesPage, {
                 username: this.username,
                 gender: this.gender
               });
@@ -74,10 +74,10 @@ export class RegConfirmationPage implements OnInit {
             }
           )
         } else {
-          this.authService.login(this.authService.tempData.username, this.authService.tempData.password)
+          this.authService.login(this.authService.tempData.username, this.authService.tempData.password, false)
             .then(res => {
               // this.navCtrl.setRoot(TabsPage);
-              this.navCtrl.setRoot(RegPreferencesPage, {
+              this.navCtrl.push(RegPreferencesPage, {
                 username: this.username,
                 gender: this.gender
               });
