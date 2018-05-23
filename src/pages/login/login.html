@@ -14,29 +14,39 @@
     <form (ngSubmit)="login()" [formGroup]="loginForm">
       <ion-grid>
         <ion-row class="input-container">
-          <input class="input-field left-direction" type="email"
-                 formControlName="email" placeholder="ایمیل"
-                 (focus)="setSeen('email')"
+          <ion-input class="input-field left-direction"
+                 formControlName="username" placeholder="ایمیل یا شماره تلفن همراه"
+                 (focus)="setSeen('username')"
                  (blur)="curFocus = null"
-                 [ngClass]="(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email' ? 'input-error' : null"/>
-          <label *ngIf="(loginForm.controls['email'].hasError('required') || loginForm.controls['email'].hasError('email')) && seen['email'] && curFocus !== 'email'" class="field-error">
-            لطفا آدرس ایمیل معتبری وارد کنید
-          </label>
+                 [ngClass]="(loginForm.controls['username'].hasError('required') || loginForm.controls['username'].hasError('match')) && seen['username'] && curFocus !== 'username' ? 'input-error' : null">
+          </ion-input>
+        </ion-row>
+        <ion-row>
+          <ion-label
+            *ngIf="(loginForm.controls['username'].hasError('required') || loginForm.controls['username'].hasError('match')) && seen['username'] && curFocus !== 'username'"
+            class="field-error">
+            لطفا آدرس ایمیل و یا شماره تلفن همراه معتبری وارد کنید
+          </ion-label>
         </ion-row>
         <ion-row class="input-container">
-          <input class="input-field left-direction" type="password"
+          <ion-input class="input-field left-direction" type="password"
                  formControlName="password" placeholder="رمز عبور"
                  (focus)="setSeen('password')"
                  (blur)="curFocus = null"
-                 [ngClass]="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password' ? 'input-error' : null"/>
-          <label *ngIf="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password'" class="field-error">لطفا رمز عبور را وارد کنید</label>
+                 [ngClass]="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password' ? 'input-error' : null">
+          </ion-input>
+        </ion-row>
+        <ion-row>
+          <ion-label
+            *ngIf="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password'"
+            class="field-error">لطفا رمز عبور را وارد کنید</ion-label>
         </ion-row>
         <ion-row>
           <ion-col>
-            <a class="clickable-link forgot-link">رمز خود را فراموش کرده اید؟</a>
+            <a class="clickable-link forgot-link" (click)="forgotPassword()">رمز خود را فراموش کرده اید؟</a>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <!-- <ion-row>
           <div class="policy-link input-container">
             <label>با ورود به حساب کاربری،</label>
             <label>
@@ -48,7 +58,7 @@
             </label>
             <label>پرشین مد را پذیرفته اید</label>
           </div>
-        </ion-row>
+        </ion-row> -->
       </ion-grid>
       <ion-grid class="button-area center">
         <ion-row class="input-container">
@@ -56,6 +66,10 @@
             <label>ورود</label>
           </div>
         </ion-row>
+        <!-- <ion-row>
+          <label>{{dR}}</label>
+          <label dir="ltr">Message: {{mess}}</label>
+        </ion-row> -->
         <ion-row class="input-container">
           <a (click)="googleLogin()" class="google-btn-login clickable-link">
             <div class="btn-field google-btn clickable-link">

@@ -21,30 +21,40 @@
     "@angular/platform-browser": "5.0.3",
     "@angular/platform-browser-dynamic": "5.0.3",
     "@ionic-native/core": "4.4.0",
-    "@ionic-native/google-plus": "^4.5.3",
+    "@ionic-native/geolocation": "^4.6.0",
+    "@ionic-native/google-maps": "^4.6.3",
+    "@ionic-native/google-plus": "^4.7.0",
     "@ionic-native/native-storage": "^4.5.3",
     "@ionic-native/splash-screen": "4.4.0",
     "@ionic-native/status-bar": "4.4.0",
+    "@ionic/app-scripts": "^3.1.8",
     "@ionic/pro": "1.0.16",
     "@ionic/storage": "2.1.3",
+    "color-convert": "^1.9.1",
     "cordova-android": "^7.0.0",
+    "cordova-android-play-services-gradle-release": "^1.3.1",
+    "cordova-plugin-advanced-http": "^1.11.0",
     "cordova-plugin-device": "^1.1.4",
-    "cordova-plugin-googleplus": "git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git",
+    "cordova-plugin-file": "^6.0.1",
+    "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-googlemaps": "^2.2.9",
+    "cordova-plugin-googleplus": "^5.3.0",
     "cordova-plugin-ionic-webview": "^1.1.16",
     "cordova-plugin-nativestorage": "^2.2.2",
-    "cordova-plugin-splashscreen": "^4.0.3",
-    "cordova-plugin-whitelist": "^1.3.1",
+    "cordova-plugin-network-information": "^2.0.1",
+    "cordova-plugin-splashscreen": "^4.1.0",
+    "cordova-plugin-whitelist": "^1.3.3",
     "ionic-angular": "3.9.2",
     "ionic-plugin-keyboard": "^2.2.1",
     "ionicons": "3.0.0",
     "moment": "^2.20.1",
     "moment-jalaali": "^0.7.2",
+    "npm": "^6.0.0",
     "rxjs": "5.5.2",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.18"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.1.8",
     "typescript": "2.4.2"
   },
   "description": "An Ionic project",
@@ -58,8 +68,19 @@
       "cordova-plugin-network-information": {},
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-nativestorage": {},
+      "cordova-plugin-googlemaps": {
+        "API_KEY_FOR_ANDROID": "AIzaSyAi-l_rZmuGXqOS14fXfkQY9v9M2YlVyD4",
+        "API_KEY_FOR_IOS": "AIzaSyA0Gjgn0xS7R3XYWJM6jxsnuxbTHn4ALfU",
+        "PLAY_SERVICES_VERSION": "12.0.0",
+        "ANDROID_SUPPORT_V4_VERSION": "24.1.0"
+      },
+      "cordova-plugin-geolocation": {},
+      "cordova-android-play-services-gradle-release": {
+        "PLAY_SERVICES_VERSION": "12.+"
+      },
       "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.636231560622-53vui86atg1s9cnijhiovk6uumel3a3r"
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.636231560622-fivtnnfsd7ctdtonslikbu5elmm69mrv",
+        "WEB_APPLICATION_CLIENT_ID": "636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com"
       }
     },
     "platforms": [

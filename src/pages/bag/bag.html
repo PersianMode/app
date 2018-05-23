@@ -4,59 +4,73 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="bag-page">
-  <!--<div class="list card">-->
-  <ion-item>
-    {{products.length}} عدد
-  </ion-item>
-  <ion-item>
-    <ion-row (click)="onClickedOnPromoCode()">
+<ion-content class="bag-page">
+  <ion-list inset>
+    <ion-item style="border-bottom: 1px solid #878787;">
+      {{formatPrice(cartItemsLength)}} عدد
+    </ion-item>
+  </ion-list>
+  <ion-list inset style="margin: 0 !important;" *ngIf="products && products.length > 0">
+    <page-product-sliding *ngFor="let product of products" [product]="product"
+                          (getList)="updateOrderlines($event)"></page-product-sliding>
+  </ion-list>
+
+  <ion-grid *ngIf="cartItemsLength > 0">
+    <ion-row>
       <ion-col>
-        اگر کد تخفیف دارید، اینجا وارد کنید (اختیاری)
+        <span>اگر کد تخفیف دارید، اینجا وارد کنید (اختیاری)</span>
+        <ion-icon (click)="onClickedOnPromoCode()" name="{{isPromoCodeShown? 'arrow-dropdown': 'arrow-dropup'}}"></ion-icon>
       </ion-col>
+    </ion-row>
+    <ion-row *ngIf="isPromoCodeShown">
+      <ion-col col-9>
+        <ion-input dir="rtl" placeholder="کد تخفیف" [(ngModel)]="coupon_code"></ion-input>
+      </ion-col>
+      <ion-col col-3>
+        <button large ion-button float-left color="dark" (click)="applyCoupon()">اعمال</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-item>
+    <ion-row>
+      <ion-col text-right>امتیاز</ion-col>
       <ion-col text-left>
-        <ion-icon name="{{isPromoCodeShown? 'arrow-dropdown': 'arrow-dropup'}}"></ion-icon>
+        {{formatPrice(loyalty_point)}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-right>موجودی</ion-col>
+      <ion-col text-left>
+        {{formatPrice(balance)}} تومان
       </ion-col>
     </ion-row>
   </ion-item>
   <ion-item>
     <ion-row>
-      <ion-col text-right>
-        جمع
-      </ion-col>
+      <ion-col text-right>جمع قیمت</ion-col>
       <ion-col text-left>
-{{getSubtotalCost()}} تومان
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col text-right>
-        هزینه ارسال
-      </ion-col>
-      <ion-col text-left>
-{{shippingCost}} تومان
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col text-right>
-        مالیات
-      </ion-col>
-      <ion-col text-left>
-{{estimatedTax}} تومان
+        {{formatPrice(totalCost)}} تومان
       </ion-col>
     </ion-row>
   </ion-item>
   <ion-item>
     <ion-row>
-      <ion-col text-right>
-        جمع کل
-      </ion-col>
+      <ion-col text-right>تخفیف</ion-col>
       <ion-col text-left>
-        {{getTotalCost()}}
+        {{formatPrice(discount)}} تومان
       </ion-col>
     </ion-row>
   </ion-item>
   <ion-item>
-    <button ion-button full color="dark" large>تسویه حساب</button>
+    <ion-row>
+      <ion-col text-right>قیمت نهایی</ion-col>
+      <ion-col text-left>
+        {{formatPrice(finalTotal)}} تومان
+      </ion-col>
+    </ion-row>
   </ion-item>
-  <!--</div>-->
+  <ion-item>
+    <button ion-button full color="dark" large (click)="goToCheckoutPage()" [disabled]="!cartItemsLength">پرداخت</button>
+  </ion-item>
 </ion-content>

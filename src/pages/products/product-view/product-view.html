@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      {{currentProduct?.name}}
+      {{product?.name}}
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -9,32 +9,37 @@
 <ion-content class="product-view-page">
   <ion-card>
     <ion-slides [pager]="true" #topSlider>
-      <ion-slide *ngFor="let image of selectedColor?.image?.angles">
-        <img src="{{HOST + image}}" style="width: 100%;">
-        <!--<img src="{{tempImageUrl}}" style="width: 100%;">-->
+      <ion-slide *ngFor="let image of getImages(selectedColor);">
+        <img src="{{image}}" style="width: 100%;">
       </ion-slide>
     </ion-slides>
   </ion-card>
 
   <ion-scroll scrollX="true">
-    <img src="{{HOST + image.image}}" *ngFor="let image of thumbnails" (click)="changeColorTo(image.index)"
-         [ngClass]="{'active-image': image.index == activeColorIndex}">
-    <!--<img src="{{tempImageUrl}}" *ngFor="let image of thumbnails" (click)="changeColorTo(image.index)"-->
+    <img *ngFor="let thumbnail of thumbnails; let i = index" src="{{thumbnail}}" style="width: 144px; height: 144px;" (click)="changeColorTo(i)"
+      [ngClass]="{'active-image': i == activeColorIndex}">
   </ion-scroll>
 
-  <div class="desc">
-    {{currentProduct?.desc}}
+  <div class="color-field">
+    <ion-label>
+        <span>رنگ: </span>
+        <span>{{selectedColor?.name}}</span>
+    </ion-label>
   </div>
-  <ion-icon name="share-alt" class="card-icon"></ion-icon>
 
-  <div class="product-more-detail">
+  <div [innerHtml]="product?.desc">
+  </div>
+  <!-- <ion-icon name="share-alt" class="card-icon"></ion-icon> -->
+
+  <div class="product-more-detail" *ngIf="product?.details">
     <hr>
     <div (click)="goToDetail()">
       دیدن جزئیات بیشتر محصول
     </div>
     <hr>
   </div>
-  <br><br>
+  <br>
+  <br>
 
 </ion-content>
 
@@ -42,7 +47,10 @@
   <ion-toolbar>
     <button ion-button full color="dark" (click)="presentPopOver($event)" [disabled]="!buyButtonShouldBeActive">
       <div *ngIf="buyButtonShouldBeActive">
-        خرید {{formatPrice(currentProduct?.base_price)}} تومان
+        <span>خرید</span>
+        <span [ngClass]="{'old-price': product?.discount}">{{formatPrice(getPrice())}}</span>
+        <span *ngIf="product?.discount" class="product-discount">{{formatPrice(getPriceDiscount())}}</span>        
+        <span>تومان</span>
       </div>
       <div *ngIf="!buyButtonShouldBeActive">
         محصول تمام شده است
