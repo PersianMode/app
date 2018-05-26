@@ -2,7 +2,7 @@
   <!-- tags -->
   <div *ngIf="shouldSelectedTags">
     <div>
-      <h3>انتخاب دسته بندی</h3>
+      <h4>دسته بندی مورد علاقه خود را انتخاب نمایید</h4>
     </div>
     <ion-grid>
       <!-- select tags -->
@@ -26,11 +26,11 @@
   <!-- sizes -->
   <div *ngIf="shouldSelectedSize" class="center">
     <div>
-      <h3>انتخاب سایز</h3>
+      <h4>سایز کفش مورد علاقه خود را انتخاب نمایید</h4>
     </div>
     <ion-grid>
       <!-- select size -->
-      <app-size-viewer [multi]="false" [sizes]="shoesSize" (onSizeSelected)="selectSize($event)"></app-size-viewer>
+      <app-size-viewer [multi]="false" [sizes]="shoesSize" (onSizeSelected)="selectSize($event)" [selected]="sizeSelected"></app-size-viewer>
       <ion-row>
           <ion-col>
             <div class="div-btn btn-field inform-btn clickable-link" (click)="setSize()">
@@ -48,7 +48,7 @@
   <!-- brands -->
   <div *ngIf="shouldSelectedBrand" class="center">
     <div>
-      <h3>انتخاب برند</h3>
+      <h4>برند مورد علاقه خود را انتخاب نمایید</h4>
     </div>
     <ion-grid>
       <!-- select brand -->

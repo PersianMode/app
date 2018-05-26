@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './regPreferences.html',
 })
 export class RegPreferencesPage implements OnInit {
+  sizeSelected = [];
   shoesSize = [];
   shoesUS = [];
   items = [];
@@ -89,6 +90,8 @@ export class RegPreferencesPage implements OnInit {
   
 
   selectSize(size) {
+    console.log('size', size);
+    
     this.preferences.size = size;
   }
   setSize() {
@@ -127,6 +130,11 @@ export class RegPreferencesPage implements OnInit {
     this.shouldSelectedTags = false;
     this.shouldSelectedSize = true;
     this.shouldSelectedBrand = false;
+
+    // select size
+    this.sizeSelected = [];
+    this.sizeSelected.push({value:  this.preferences.size, displayValue: this.preferences.size, disabled: true})
+    
   }
 
 }
