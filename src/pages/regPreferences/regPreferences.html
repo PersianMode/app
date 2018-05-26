@@ -6,13 +6,13 @@
     </div>
     <ion-grid>
       <!-- select tags -->
-      <ion-row *ngFor="let chunkTag of _tags">
-          <ion-col *ngFor="let tag of chunkTag" >
-            <button ion-button full color="light" class="size-buttons"
+      <ion-row *ngFor="let tag of _tags">
+          <!-- <ion-col *ngFor="let tag of chunkTag" > -->
+            <button style="border: 2px solid gray; margin-bottom: 5px;" ion-button full color="light" class="size-buttons"
                     [color]= "tag.selected? 'dark': 'light'"
                     (click)="itemSelected(tag)" >{{tag.name}}
             </button>
-          </ion-col>
+          <!-- </ion-col> -->
       </ion-row>
       <ion-row>
         <ion-col>

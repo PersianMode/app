@@ -4,6 +4,7 @@ import {NavController, ToastController, NavParams} from 'ionic-angular';
 import {TabsPage} from "../tabs/tabs";
 import {AuthService} from "../../services/auth.service";
 import { HttpClient } from '@angular/common/http';
+import { DictionaryService } from '../../services/dictionary.service';
 
 @Component({
   selector: 'page-reg-preferences',
@@ -20,7 +21,6 @@ export class RegPreferencesPage implements OnInit {
   _tags;
   _brands;
   _size;
-  chunkTag: any = [];
   preferences = {
     username: null,
     tags: [],
@@ -31,25 +31,22 @@ export class RegPreferencesPage implements OnInit {
 
   constructor(private httpClient: HttpClient,private httpService: HttpService, private toastCtrl: ToastController,
     private navCtrl: NavController, private authService: AuthService,
-    private navParams: NavParams) {
+    private navParams: NavParams, private dict: DictionaryService) {
   }
 
   ngOnInit() {
     this.preferences.username = this.navParams.get('username') ? this.navParams.get('username') : null;
     this.gender = this.navParams.get('gender') ? this.navParams.get('gender') : 'm';
-    console.log(this.gender, this.preferences.username);
     
     // api tags
     this.httpService.get('tags/Category').subscribe(tagsRes => {
-      this.chunkTag = [];
-      const chunkLength = 3;
-  
-      // loop for chunk chunk array
-      for (let i = 0; i < tagsRes.length; i += chunkLength) {
-        this.chunkTag.push(tagsRes.slice(i, i + chunkLength));
-      }
-      this._tags = this.chunkTag;
+      const tagsArr = [];
 
+      for (let i = 0; i < tagsRes.length; i++) {
+        tagsRes[i]['name'] = this.dict.translateWord(tagsRes[i].name.trim())
+        tagsArr.push(tagsRes[i])
+      }
+      this._tags = tagsArr;
     });
     // shoes json
     this.httpClient.get('../../assets/shoesSize.json').subscribe(res => {
@@ -66,7 +63,12 @@ export class RegPreferencesPage implements OnInit {
     });
     // api brand
     this.httpService.get('brand').subscribe(brandsRes => {
-      this._brands = brandsRes;
+      const brandsArr = [];
+      for (let index = 0; index < brandsRes.length; index++) {
+        brandsRes[index]['name'] = this.dict.translateWord(brandsRes[index].name.trim());
+        brandsArr.push(brandsRes[index]);
+      }
+      this._brands = brandsArr;
     });
 
   }
@@ -82,16 +84,17 @@ export class RegPreferencesPage implements OnInit {
   }
 
   setTags() {
+    this.preferences.tags = this.items;
+    
     // state changes
     this.shouldSelectedTags = false;
     this.shouldSelectedSize = true;
     this.shouldSelectedBrand = false;
+
   }
   
 
   selectSize(size) {
-    console.log('size', size);
-    
     this.preferences.size = size;
   }
   setSize() {
@@ -99,13 +102,12 @@ export class RegPreferencesPage implements OnInit {
     this.shouldSelectedTags = false;
     this.shouldSelectedSize = false;
     this.shouldSelectedBrand = true;
-    // empty select items
-    this.preferences.tags = this.items
     this.items = [];
+    
   }
 
   setBrand() {
-    this.preferences.brands = this.items
+    this.preferences.brands = this.items;
     this.items = [];
     this.navCtrl.setRoot(TabsPage);
     this.httpService.post(`customer/preferences`, {
