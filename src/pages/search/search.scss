@@ -30,12 +30,14 @@
 }
 
 .search-item-image {
-  width: 75px;
-  height: 75px;
+  width: 120px;
+  height: 110px;
   margin-right: 10px;
 }
 
 .search-address {
+  width: 50%;
+  display: inline-block;
   font-size: 0.8em;
   color: gray;
   font-weight: bold;

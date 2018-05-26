@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {HttpService} from '../../services/http.service';
 import {DictionaryService} from '../../services/dictionary.service';
 import {imagePathFixer} from '../../shared/lib/imagePathFixer';
+import {CollectionsPage} from '../collections/collections';
 
 @Component({
   selector: 'page-search',
@@ -13,6 +14,7 @@ export class SearchPage {
   searchProductList = [];
   searchCollectionList = [];
   searchWaiting = false;
+  rows: any = [];
   i = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -27,16 +29,16 @@ export class SearchPage {
     this.searchProductList = [];
     if (!this.searchPhrase) {
       this.searchProductList = [];
+      this.searchCollectionList = [];
       return;
     }
-
     this.searchWaiting = true;
     this.httpService.post('search/Product', {
       options: {
         phrase: this.searchPhrase,
       },
       offset: 0,
-      limit: 5,
+      limit: 11,
     }).subscribe(
       (data) => {
         this.searchProductList = [];
@@ -53,6 +55,7 @@ export class SearchPage {
             });
           });
         }
+        this.alignRow();
         this.searchCollection();
       },
       (err) => {
@@ -65,6 +68,7 @@ export class SearchPage {
     this.searchCollectionList = [];
     if (!this.searchPhrase) {
       this.searchCollectionList = [];
+      this.searchProductList = [];
       return;
     }
     this.httpService.post('search/Collection', {
@@ -117,13 +121,44 @@ export class SearchPage {
       imagePathFixer(img[0].image.thumbnail, product._id, img[0]._id) : 'assets/imgs/nike-brand.jpg';
   }
 
-  selectSearchResult(el, isProduct) {
+  selectSearchResult(element, isProduct) {
+    // this.searchIsFocused = false;
+    let address = element.pages[0].address;
+    this.searchProductList = [];
+    this.searchCollectionList = [];
+    if (isProduct) {
+      this.navCtrl.push(SearchPage);
+    } else if (!isProduct) {
+      this.navCtrl.push(CollectionsPage, {address});
+    }
+  }
+  alignRow() {
+    if (this.searchProductList.length <= 0) {
+      this.rows = [];
+      return;
+    }
+    this.rows = [];
+    let chunk = [], counter = 0;
+    for (const sp in this.searchProductList) {
+      if (this.searchProductList.hasOwnProperty(sp)) {
+        chunk.push(this.searchProductList[sp]);
+        counter++;
 
+        if (counter >= 2) {
+          counter = 0;
+          this.rows.push(chunk);
+          chunk = [];
+        }
+      }
+    }
+    if (counter > 0) {
+      this.rows.push(chunk);
+    }
   }
 
-  onCancel($event) {
-    this.i++;
-    console.log('I : ', this.i);
+  onClear($event) {
+    this.searchProductList = [];
+    this.searchCollectionList = [];
   }
 
 }

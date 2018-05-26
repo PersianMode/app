@@ -190,7 +190,8 @@ input {
   color: darkred !important;
 }
 .searchbar-md .searchbar-input {
-  padding: 6px 39px;
+  direction: rtl !important;
+  padding: 6px 42px;
   border-radius: 2px;
   background-position: right 8px center;
   height: auto;

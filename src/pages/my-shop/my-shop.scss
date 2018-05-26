@@ -14,19 +14,22 @@
   display: inline-block;
   width: 20%;
   text-align: left;
-  font-size: 1.9rem;
   color: #424242;
-  //top: 5px;
+  position: absolute;
+  left: 17px;
+  top: 17px;
+  font-size: 20px;
 }
 
 .title-div {
   display: inline-block;
-  width: 70%;
+  width: 80%;
   text-align: right;
   font-family: iranyekan;
   font-weight: 500;
   color: #424242;
-  font-size: 1.7rem;
+  font-size: 1.8rem;
+  margin-right: 17px;
 }
 
 

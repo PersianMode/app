@@ -1,36 +1,43 @@
 <ion-header>
-    <ion-navbar>
-        <ion-searchbar
-                [(ngModel)]="searchPhrase"
-                (ngModelChange)="searchProduct()"
-                placeholder="جست و جو">
-        </ion-searchbar>
-    </ion-navbar>
+  <ion-navbar>
+    <ion-searchbar
+      [(ngModel)]="searchPhrase"
+      (ionInput)="searchProduct()"
+      (ionClear)="onClear($event)"
+      placeholder="جست و جو">
+    </ion-searchbar>
+  </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-<div>
+  <div>
     <div *ngIf="!searchWaiting && searchProductList.length" class="search-title">{{'محصولات'}}</div>
     <hr *ngIf="!searchWaiting &&  searchProductList.length">
-    <ion-list *ngFor="let element of searchProductList">
-        <ion-item>
-            <img class="search-item-image"
-            [src]="element.imgUrl">
-            <div class="search-name">{{element.name}}</div>
-            <div class="search-brand">{{element.brand}}{{' - '}}{{element.tags}}</div>
-            <div class="search-type">{{element.type}}</div>
-            <div class="search-article_no">{{'article_no : '}}{{element.instances}}</div>
-        </ion-item>
-    </ion-list>
+    <ion-grid *ngIf="!searchWaiting &&  searchProductList.length">
+      <ion-row *ngFor="let row of rows" text-center>
+        <ion-col *ngFor="let element of row">
+          <ion-list>
+            <ion-item>
+              <img class="search-item-image"
+                   [src]="element.imgUrl">
+              <div class="search-name" style="margin-top: 2px">{{element.name}}</div>
+              <div class="search-brand">{{element.brand}}</div>
+              <div class="search-brand">{{element.tags}}</div>
+              <div class="search-type">{{element.type}}</div>
+              <div class="search-article_no">{{'article_no : '}}{{element.instances}}</div>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <br *ngIf="!searchWaiting && searchCollectionList.length">
     <div *ngIf="!searchWaiting && searchCollectionList.length" class="search-title">{{'مجموعه ها'}}</div>
     <hr *ngIf="!searchWaiting && searchCollectionList.length">
     <ion-list *ngFor="let element of searchCollectionList">
-        <ion-item>
-            <div style="width: 50%; display: inline-block; text-align: left" class="search-name">{{element.name}}</div>
-            <div style="width: 50%; display: inline-block;" class="search-address">{{element.name_fa}}</div>
-        </ion-item>
+      <ion-item (click)="selectSearchResult(element, false)">
+        <div style="width: 50%; display: inline-block; text-align: left" class="search-name">{{element.name}}</div>
+        <div class="search-address">{{element.name_fa}}</div>
+      </ion-item>
     </ion-list>
     <br>
-</div>
+  </div>
 </ion-content>
