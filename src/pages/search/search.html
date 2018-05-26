@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-navbar>
+        <ion-searchbar
+                [(ngModel)]="searchPhrase"
+                (ngModelChange)="searchProduct()"
+                placeholder="جست و جو">
+        </ion-searchbar>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+<div>
+    <div *ngIf="!searchWaiting && searchProductList.length" class="search-title">{{'محصولات'}}</div>
+    <hr *ngIf="!searchWaiting &&  searchProductList.length">
+    <ion-list *ngFor="let element of searchProductList">
+        <ion-item>
+            <img class="search-item-image"
+            [src]="element.imgUrl">
+            <div class="search-name">{{element.name}}</div>
+            <div class="search-brand">{{element.brand}}{{' - '}}{{element.tags}}</div>
+            <div class="search-type">{{element.type}}</div>
+            <div class="search-article_no">{{'article_no : '}}{{element.instances}}</div>
+        </ion-item>
+    </ion-list>
+    <br *ngIf="!searchWaiting && searchCollectionList.length">
+    <div *ngIf="!searchWaiting && searchCollectionList.length" class="search-title">{{'مجموعه ها'}}</div>
+    <hr *ngIf="!searchWaiting && searchCollectionList.length">
+    <ion-list *ngFor="let element of searchCollectionList">
+        <ion-item>
+            <div style="width: 50%; display: inline-block; text-align: left" class="search-name">{{element.name}}</div>
+            <div style="width: 50%; display: inline-block;" class="search-address">{{element.name_fa}}</div>
+        </ion-item>
+    </ion-list>
+    <br>
+</div>
+</ion-content>

@@ -1,0 +1,44 @@
+.search-brand, .search-type, .search-article_no {
+  font-size: 0.6em;
+  color: gray;
+}
+
+.search-title {
+  font-size: 0.8em;
+  color: black;
+  text-align: center;
+  font-weight: bolder;
+  margin-top: 3px;
+}
+
+.search-item {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-weight: normal !important;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.search-name {
+  font-size: 0.5em;
+  color: black;
+  font-weight: bold;
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-item-image {
+  width: 75px;
+  height: 75px;
+  margin-right: 10px;
+}
+
+.search-address {
+  font-size: 0.8em;
+  color: gray;
+  font-weight: bold;
+  text-align: right;
+  margin: 3px;
+}

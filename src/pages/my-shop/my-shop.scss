@@ -10,6 +10,26 @@
   border-left-width: 1px;
 }
 
+.search-div {
+  display: inline-block;
+  width: 20%;
+  text-align: left;
+  font-size: 1.9rem;
+  color: #424242;
+  //top: 5px;
+}
+
+.title-div {
+  display: inline-block;
+  width: 70%;
+  text-align: right;
+  font-family: iranyekan;
+  font-weight: 500;
+  color: #424242;
+  font-size: 1.7rem;
+}
+
+
 .products-page {
   direction: rtl;
   font-family: 'iranyekan';
