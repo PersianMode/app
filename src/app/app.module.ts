@@ -25,6 +25,7 @@ import {FeedPage} from '../pages/feed/feed';
 import {CollectionsPage} from '../pages/collections/collections';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
+import {SearchPage} from '../pages/search/search';
 import {CartService} from "../services/cart.service";
 import {DictionaryService} from '../services/dictionary.service';
 import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
@@ -49,6 +50,7 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     FeedPage,
     MyShopPage,
     CollectionsPage,
+    SearchPage,
     BagPage,
     InboxPage,
     ProfilePage,
@@ -84,6 +86,7 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     FeedPage,
     MyShopPage,
     CollectionsPage,
+    SearchPage,
     BagPage,
     InboxPage,
     ProfilePage,

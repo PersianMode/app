@@ -3,6 +3,7 @@ import {NavController} from 'ionic-angular';
 import {PageService} from '../../services/page.service';
 import {CollectionsPage} from '../collections/collections';
 import {HttpService} from '../../services/http.service';
+import {SearchPage} from '../search/search';
 
 
 @Component({
@@ -117,7 +118,6 @@ export class MyShopPage {
 
 
   ionViewWillLeave() {
-
     this.placements$.unsubscribe();
   }
 
@@ -128,4 +128,7 @@ export class MyShopPage {
     }
   }
 
+  goToSearchPage() {
+    this.navCtrl.push(SearchPage);
+  }
 }
