@@ -14,7 +14,7 @@
     <hr *ngIf="!searchWaiting &&  searchProductList.length">
     <ion-grid *ngIf="!searchWaiting &&  searchProductList.length">
       <ion-row *ngFor="let row of rows" text-center>
-        <ion-col *ngFor="let element of row">
+        <ion-col *ngFor="let element of row" style="width: 50%">
           <ion-list>
             <ion-item>
               <img class="search-item-image"
