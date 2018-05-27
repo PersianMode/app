@@ -4,6 +4,7 @@ import {HttpService} from '../../services/http.service';
 import {DictionaryService} from '../../services/dictionary.service';
 import {imagePathFixer} from '../../shared/lib/imagePathFixer';
 import {CollectionsPage} from '../collections/collections';
+import {ProductViewPage} from '../products/product-view/product-view';
 
 @Component({
   selector: 'page-search',
@@ -122,15 +123,20 @@ export class SearchPage {
 
   selectSearchResult(element, isProduct) {
     // this.searchIsFocused = false;
-    let address = element.pages[0].address;
+
     this.searchProductList = [];
     this.searchCollectionList = [];
+    let address = null;
+
+    if (!isProduct)
+      address = element.pages[0].address;
     if (isProduct) {
-      this.navCtrl.push(SearchPage);
+      this.navCtrl.push(ProductViewPage, {productId: element.id});
     } else if (!isProduct) {
       this.navCtrl.push(CollectionsPage, {address});
     }
   }
+
   alignRow() {
     if (this.searchProductList.length <= 0) {
       this.rows = [];

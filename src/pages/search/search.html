@@ -16,7 +16,7 @@
       <ion-row *ngFor="let row of rows" text-center>
         <ion-col *ngFor="let element of row" style="width: 50%">
           <ion-list>
-            <ion-item>
+            <ion-item (click)="selectSearchResult(element, true)">
               <img class="search-item-image"
                    [src]="element.imgUrl">
               <div class="search-name" style="margin-top: 2px">{{element.name}}</div>
