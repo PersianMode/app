@@ -24,6 +24,14 @@
   width: 50%;
   display: inline-block;
   text-align: left;
+  font-size: 13px !important;
+  position: relative;
+  top: 5px;
+  color: black;
+  font-weight: bold;
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .search-item-image {
