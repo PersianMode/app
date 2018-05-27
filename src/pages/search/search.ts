@@ -15,7 +15,6 @@ export class SearchPage {
   searchCollectionList = [];
   searchWaiting = false;
   rows: any = [];
-  i = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private httpService: HttpService, private dictionaryService: DictionaryService) {
