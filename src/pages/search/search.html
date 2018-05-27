@@ -34,7 +34,7 @@
     <hr *ngIf="!searchWaiting && searchCollectionList.length">
     <ion-list *ngFor="let element of searchCollectionList">
       <ion-item (click)="selectSearchResult(element, false)">
-        <div style="width: 50%; display: inline-block; text-align: left" class="search-name">{{element.name}}</div>
+        <div class="search-name collection-name">{{element.name}}</div>
         <div class="search-address">{{element.name_fa}}</div>
       </ion-item>
     </ion-list>
