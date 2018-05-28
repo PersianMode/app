@@ -11,6 +11,7 @@ export class SizeViewerComponent implements OnChanges {
   @Input() sizes: ISize[] = [];
   @Input() selected = [];
   @Input() multi = false;
+  @Input() selectedSize = null;
 
   @Output() onSizeSelected = new EventEmitter();
   items: any = [];
@@ -24,18 +25,23 @@ export class SizeViewerComponent implements OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges): void {
-
-    this.items = this.selected;
+    
+    if(this.selected.length) {
+      this.items = this.selected;
+    }
 
     this.chunkSize = [];
     // chunk sizes 4
     const chunkLength = 4;
 
+    
     // loop for chunk chunk array
     for (let i = 0; i < this.sizes.length; i += chunkLength) {
       this.chunkSize.push(this.sizes.slice(i, i + chunkLength));
     }
     this.sizes = this.chunkSize;
+    
+    
   }
 
 

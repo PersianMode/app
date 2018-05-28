@@ -105,9 +105,14 @@ export class RegisterPage implements OnInit {
         (res) => {
           this.authService.tempData = {
             username: this.registerForm.controls['username'].value,
-            password: this.registerForm.controls['password'].value,
+            password: this.registerForm.controls['password'].value
           };
-          this.navCtrl.push(RegConfirmationPage);
+          // 001 confirm page
+          this.navCtrl.push(RegConfirmationPage, {
+            mobile_no: this.registerForm.controls['mobile_no'].value,
+            username: this.registerForm.controls['username'].value,
+            gender: this.gender,
+          });
         },
         (err) => {
           console.error('Cannot register: ', err);
