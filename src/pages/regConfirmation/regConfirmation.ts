@@ -101,12 +101,6 @@ export class RegConfirmationPage implements OnInit {
       }
     );
   }
-  sendMobileNumber_test() {
-    return this.navCtrl.setRoot(RegPreferencesPage, {
-      username: this.username,
-      gender: this.gender
-    });
-  }
   sendMobileNumber() {
     // return this.shouldEnterMobileNumber = false;
     this.httpService.post('register/mobile', {
