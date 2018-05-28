@@ -3,81 +3,69 @@ import {
   NavController, NavParams, PopoverController, Slides,
   ViewController
 } from "ionic-angular";
-import {HttpService} from "../../../services/http.service";
 import {ProductDetailPage} from "../product-detail/product-detail";
-import {SelectSizePage} from "../select-size/select-size";
-import {priceFormatter} from "../../../shared/lib/priceFormatter";
+import {ProductService} from '../../../services/productService';
+import {priceFormatter} from '../../../shared/lib/priceFormatter';
+import {SelectSizePage} from '../select-size/select-size';
 
 @Component({
   selector: 'page-product-view',
   templateUrl: 'product-view.html',
 })
 export class ProductViewPage {
+  productId: string;
 
   @ViewChild('topSlider') topSlider: Slides;
 
-  tempImageUrl = '../assets/imgs/shoeSample.png';
-  productId: string;
-  HOST: string;
-  currentProduct: {};
-  selectedColor: {};
-  activeColorIndex: number = 0;
-  thumbnails = [];
+  product: any;
+  product$: any;
 
+  selectedColor: any;
+  activeColorIndex: number = 0;
+  thumbnails: string[] = [];
   buyButtonShouldBeActive: Boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public viewCtrl: ViewController, private httpService: HttpService,
-              private popoverCtrl: PopoverController) {
-    this.HOST = HttpService.HOST;
-    //TODO: TEST ONLY -> REMOVE FOLLOWING LINE TO WORK WITH THE SERVER!
-    this.HOST = '';
-  }
+    public viewCtrl: ViewController, private productService: ProductService,
+    private popoverCtrl: PopoverController) {
 
-  ionViewDidLoad() {
-    this.productId = this.navParams.get('productId');
-    this.httpService.get(`product/${this.productId}`).subscribe(
-      data => {
-        this.currentProduct = data[0];
-        if (this.currentProduct && this.currentProduct['colors']) {
-          this.selectedColor = this.currentProduct['colors'][0];
-
-          //set first of each color to show in the horizontal scroll section
-          this.thumbnails = [];
-          this.currentProduct['colors'].forEach((elem, idx) => {
-            this.thumbnails.push({
-              index: idx,
-              image: elem.image.thumbnail,
-            });
-          });
-        }
-      }
-    );
   }
 
   ionViewWillEnter() {
     this.viewCtrl.setBackButtonText('بازگشت');
+    this.productId = this.navParams.get('productId');
+
+    this.productService.getProduct(this.productId);
+
+
+    this.product$ = this.productService.product$.subscribe(data => {
+
+      this.thumbnails = [];
+      this.product = data;
+      this.selectedColor = this.product.colors[0];
+      this.product.colors.forEach(color => {
+        this.thumbnails.push(color.image.thumbnail);
+      })
+
+      this.checkBuyButton();
+    });
+
+
   }
 
   changeColorTo(index) {
-    if (this.currentProduct) {
-      if (this.currentProduct['colors']) {
-        if (this.currentProduct['colors'].length > index) {
-          this.selectedColor = this.currentProduct['colors'][index];
-          this.topSlider.slideTo(0);
-          this.activeColorIndex = index;
-          this.checkBuyButton();
-          return;
-        }
-      }
-    }
-    this.activeColorIndex = 0;
+    this.selectedColor = this.product.colors[index];
+    this.topSlider.slideTo(0);
+    this.activeColorIndex = index;
+    this.checkBuyButton();
   }
+
 
   checkBuyButton() {
     let anyProductExist = false;
-    this.currentProduct['instances'].some(instance => {
-      if (this.currentProduct['colors'][this.activeColorIndex]._id === instance.product_color_id) {
+
+    this.product['instances'].some(instance => {
+      if (this.product['colors'][this.activeColorIndex]._id === instance.product_color_id) {
         anyProductExist = true;
         return true;
       }
@@ -87,19 +75,19 @@ export class ProductViewPage {
 
   goToDetail() {
     this.navCtrl.push(ProductDetailPage, {
-      details: this.currentProduct['details'] ? this.currentProduct['details'] : null
+      details: this.product['details']
     });
   }
 
+
   presentPopOver(myEvent) {
     let pop = this.popoverCtrl.create(SelectSizePage, {
-      instances: (this.currentProduct && this.currentProduct['instances']) ?
-        this.currentProduct['instances'] : null,
-      activeColor: (this.currentProduct && this.currentProduct['colors'] && this.currentProduct['colors'].length > this.activeColorIndex) ?
-        this.currentProduct['colors'][this.activeColorIndex] : null
+      productId: this.product ? this.product._id : null,
+      activeColor: (this.product && this.product['colors'] && this.product['colors'].length > this.activeColorIndex) ?
+        this.product['colors'][this.activeColorIndex]._id : null
     }, {
-      cssClass: 'select-size-popover'
-    });
+        cssClass: 'select-size-popover'
+      });
 
     pop.present({ev: myEvent});
   }
@@ -108,4 +96,30 @@ export class ProductViewPage {
     return priceFormatter(p);
   }
 
+  ionViewWillLeave() {
+    this.product$.unsubscribe();
+    this.product = null;
+    this.thumbnails = [];
+    this.selectedColor = null;
+    this.activeColorIndex = 0;
+  }
+
+  getImages() {
+    return this.selectedColor ? this.selectedColor['image']['angles'].map(x => x.url) : null;
+  }
+
+  getPrice() {
+    if (this.product) {
+      const inst = this.product.instances.find(el => el.product_color_id === this.selectedColor._id);
+
+      if (inst && inst.price)
+        return inst.price;
+      return this.product.base_price;
+    }
+  }
+
+  getPriceDiscount() {
+    const inst = this.product.instances.find(el => el.product_color_id === this.selectedColor._id);
+    return (inst && inst.price ? inst.price : this.product.base_price) - ((inst && inst.price ? inst.price : this.product.base_price) * this.product.discount);
+  }
 }

@@ -34,24 +34,7 @@
   font-size: 1.2em;
 }
 
-.color-box {
-  width: 50%;
-  margin: auto;
-}
 
-.color-checked {
-  text-align: center;
-  margin-right: 7px;
-}
-
-.color-circle {
-  width: 30px;
-  height: 30px;
-  border-style: solid;
-  border-color: rgba(197,203,201,0.68);
-  border-radius: 50%;
-  line-height: 30px;
-}
 
 .sort-item {
   font-size: 0.8em;
@@ -76,4 +59,18 @@
 
 .item-md.item-block .item-inner {
   border-bottom: none;
+}
+
+.circle{
+  top: -27px;
+  right: 6px;
+  font-size: 13px;
+  position: relative;
+}
+.color-span {
+  width: 26px;
+  overflow: hidden;
+  height: 26px;
+  display: inline-block;
+  margin: 0 0 10px 10px;
 }

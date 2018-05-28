@@ -15,11 +15,6 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-@font-face {
-  font-family: "nikeglyph";
-  src: url('../assets/fonts/OneNikeGlyphs.woff');
-}
-
 ion-label, label, ion-input, input, a, div {
   font-family: iranyekan,sans-serif;
 }
@@ -67,6 +62,7 @@ input {
   border-style: solid;
   outline: none;
   color: #8D8D8D;
+  // height: 30px;
 }
 
 .left-direction {
@@ -98,7 +94,8 @@ input {
 }
 
 .input-container {
-  margin: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   width: 100%;
 }
 
@@ -133,4 +130,67 @@ input {
 
 .alert-radio-group {
   direction: rtl;
+}
+
+.radio-icon {
+  display: none !important;
+}
+
+.range-bar {
+  left: 23px;
+}
+
+.range-bar-active {
+  left: 23px;
+  display: none !important;
+}
+
+.checkout-inner-page-title-label {
+  text-align: right;
+  padding-right: 10px !important;
+}
+
+.checkout-inner-page-title-label .toolbar-title {
+  text-align: right !important;
+}
+
+.checkout-inner-page-title-icon {
+  text-align: left;
+}
+
+.checkout-item .toolbar-background  {
+  border-style: none !important;
+}
+
+.checkout-header::after {
+  background-image: none !important;
+  height: 0px;
+  position: unset;
+}
+
+.checkout-address .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
+}
+
+.address-details .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
+}
+
+.selected-address, .selected-payment {
+  background-color: rgba(193,199,197,0.68);
+}
+
+.old-price {
+  text-decoration: line-through !important;
+}
+
+.product-discount {
+  color: darkred !important;
+}
+
+.input-error {
+  border-color: red !important;
+  border-width: 1px !important;
 }

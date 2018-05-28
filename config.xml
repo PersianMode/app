@@ -76,16 +76,27 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
-    <engine name="android" spec="^7.0.0" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.1" />
     <plugin name="cordova-plugin-device" spec="^1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
-    <plugin name="cordova-plugin-network-information" />
-    <plugin name="cordova-plugin-advanced-http" />
+    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
+    <plugin name="cordova-plugin-advanced-http" spec="^1.11.0" />
     <plugin name="cordova-plugin-nativestorage" spec="^2.2.2" />
-    <plugin name="cordova-plugin-googleplus" spec="git+https://github.com/EddyVerbruggen/cordova-plugin-googleplus.git">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.636231560622-53vui86atg1s9cnijhiovk6uumel3a3r" />
+    <plugin name="cordova-plugin-googlemaps" spec="^2.2.9">
+        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyAi-l_rZmuGXqOS14fXfkQY9v9M2YlVyD4" />
+        <variable name="API_KEY_FOR_IOS" value="AIzaSyA0Gjgn0xS7R3XYWJM6jxsnuxbTHn4ALfU" />
+        <variable name="PLAY_SERVICES_VERSION" value="12.0.0" />
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="24.1.0" />
     </plugin>
+    <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
+    <plugin name="cordova-android-play-services-gradle-release" spec="^1.3.1">
+        <variable name="PLAY_SERVICES_VERSION" value="12.+" />
+    </plugin>
+    <plugin name="cordova-plugin-googleplus" spec="^5.3.0">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.636231560622-fivtnnfsd7ctdtonslikbu5elmm69mrv" />
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com" />
+    </plugin>
+    <engine name="android" spec="^7.0.0" />
 </widget>

@@ -1,4 +1,23 @@
-<!-- Generated template for the DobComponent component -->
-<div>
-  {{text}}
-</div>
+<ion-row dir="rtl">
+  <ion-col>
+    <ion-list>
+      <ion-item>
+        <!--<ion-label style="font-size: xx-small !important;">تاریخ تولد</ion-label>-->
+        <ion-select okText="قبول" cancelText="لغو"
+                    placeholder="روز" [required]="true" (ionChange)="onChange()" [(ngModel)]="day" dir="rtl">
+          <ion-option *ngFor="let day of days" [value]="day.index">{{day.value}}</ion-option>
+        </ion-select>
+        <ion-select okText="قبول" cancelText="لغو"
+                    placeholder="ماه" dir="rtl" [required]="true" (ionChange)="onChange()" [(ngModel)]="month"
+                    style="width:110px">
+          <ion-option *ngFor="let month of months" [value]="month.index">{{month.value}}</ion-option>
+        </ion-select>
+        <ion-select okText="قبول" cancelText="لغو"
+                    placeholder="سال" dir="rtl" [required]="true" (ionChange)="onChange()" [(ngModel)]="year"
+                    style="width:85px">
+          <ion-option *ngFor="let year of years" [value]="year.index">{{year.value}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-col>
+</ion-row>

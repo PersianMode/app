@@ -6,22 +6,30 @@
 <ion-content class="card-background-page">
   <ion-card *ngFor="let feed of feed_placement" class="ion-card container">
     <div class="card-back-click">
+      <img src="{{loadImage(feed.info.imgUrl)}}"/>
+      <div class="center-center">
+        <label>{{feed.info.text}}</label>
+      </div>
+    </div>
+  </ion-card>
+  <!-- <ion-card *ngFor="let feed of feed_placement" class="ion-card container">
+    <div class="card-back-click">
       <h2 *ngIf="feed.info.topTitle"
           [style.color]="feed.info.topTitle.color ? feed.info.topTitle.color : null" class="top-title">
         {{feed.info.topTitle.title}}</h2>
-      <img src="{{feed.info.imgUrl}}"/>
+      <img src="{{loadImage(feed.info.imgUrl)}}"/>
     </div>
-      <div *ngFor="let ar of feed.info.areas">
-        <div *ngIf="ar.pos !== 'card-button'"
-             [ngClass]="ar.pos">
-          <div *ngIf="ar.title" class="title" [style.color]="ar.color ? ar.color : null">{{ar.title}}</div>
-          <div *ngIf="ar.text" class="text" [style.color]="ar.color ? ar.color : null"><b>{{ar.text}}</b></div>
-        </div>
-        <button *ngIf="ar.pos === 'card-button'" ion-button outline [color]="ar.color ? ar.color : 'light'"
-                class="card-button">{{ar.text}}</button>
-        <ion-icon *ngIf="ar.pos === 'card-icon'" name="share-alt" [style.color]="ar.color ? ar.color : null"
-                  class="card-icon"></ion-icon>
+    <div *ngFor="let ar of feed.info.areas">
+      <div *ngIf="ar.pos !== 'card-button'"
+           [ngClass]="ar.pos">
+        <div *ngIf="ar.title" class="title" [style.color]="ar.color ? ar.color : null">{{ar.title}}</div>
+        <div *ngIf="ar.text" class="text" [style.color]="ar.color ? ar.color : null"><b>{{ar.text}}</b></div>
       </div>
-    <!--</div>-->
-  </ion-card>
+      <button *ngIf="ar.pos === 'card-button'" ion-button outline [color]="ar.color ? ar.color : 'light'"
+              class="card-button">{{ar.text}}
+      </button>
+      <ion-icon *ngIf="ar.pos === 'card-icon'" name="share-alt" [style.color]="ar.color ? ar.color : null"
+                class="card-icon"></ion-icon>
+    </div>
+  </ion-card> -->
 </ion-content>
