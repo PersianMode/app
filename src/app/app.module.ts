@@ -43,6 +43,7 @@ import {GoogleMaps} from '@ionic-native/google-maps';
 import {Geolocation} from '@ionic-native/geolocation';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
+import {DobComponent} from '../components/dob/dob';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     AddressPage,
     ProductItemComponent,
     SizeViewerComponent,
-    ForgotPasswordPage,    
+    ForgotPasswordPage,
+    DobComponent,
   ],
   imports: [
     BrowserModule,
