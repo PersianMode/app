@@ -97,7 +97,7 @@
       </ion-row>
       <div class="input-container">
         <div style="border: 2px solid rgb(229, 229, 229); border-radius: 5px;
-             margin-left: 5px;" [class.input-error]="seen.dob && !dob" >
+             margin-left: 1px;" [class.input-error]="seen.dob && !dob" >
           <dob [date]="dob" (changeDob)="changeDob($event)"></dob>
         </div>
         <label class="field-error dp-hint"

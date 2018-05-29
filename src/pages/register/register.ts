@@ -21,8 +21,6 @@ export class RegisterPage implements OnInit {
   dob = null;
   dateObject = null;
 
-
-
   constructor(private httpService: HttpService, private authService: AuthService,
               public navCtrl: NavController, private toastCtrl: ToastController) {
   }
@@ -166,7 +164,6 @@ export class RegisterPage implements OnInit {
   }
 
   changeDob(date) {
-    console.log('date : ', date);
     this.dob = date;
     this.registerForm.controls['dob'].setValue(date);
     this.seen.dob = true;

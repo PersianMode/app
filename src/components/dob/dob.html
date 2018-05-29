@@ -2,7 +2,7 @@
   <ion-col>
     <ion-list>
       <ion-item>
-        <!--<ion-label style="font-size: xx-small !important;">تاریخ تولد</ion-label>-->
+        <ion-label>تاریخ تولد</ion-label>
         <ion-select okText="قبول" cancelText="لغو"
                     placeholder="روز" [required]="true" (ionChange)="onChange()" [(ngModel)]="day" dir="rtl">
           <ion-option *ngFor="let day of days" [value]="day.index">{{day.value}}</ion-option>
