@@ -7,6 +7,7 @@ import {ProductDetailPage} from "../product-detail/product-detail";
 import {ProductService} from '../../../services/productService';
 import {priceFormatter} from '../../../shared/lib/priceFormatter';
 import {SelectSizePage} from '../select-size/select-size';
+import {SearchPage} from '../../search/search';
 
 @Component({
   selector: 'page-product-view',
@@ -32,7 +33,7 @@ export class ProductViewPage {
   }
 
   ionViewWillEnter() {
-    this.viewCtrl.setBackButtonText('بازگشت');
+    // this.viewCtrl.setBackButtonText('بازگشت');
     this.productId = this.navParams.get('productId');
 
     this.productService.getProduct(this.productId);
@@ -121,5 +122,10 @@ export class ProductViewPage {
   getPriceDiscount() {
     const inst = this.product.instances.find(el => el.product_color_id === this.selectedColor._id);
     return (inst && inst.price ? inst.price : this.product.base_price) - ((inst && inst.price ? inst.price : this.product.base_price) * this.product.discount);
+  }
+
+
+  goToSearchPage() {
+    this.navCtrl.push(SearchPage);
   }
 }

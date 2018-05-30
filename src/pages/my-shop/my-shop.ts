@@ -3,6 +3,7 @@ import {NavController} from 'ionic-angular';
 import {PageService} from '../../services/page.service';
 import {CollectionsPage} from '../collections/collections';
 import {HttpService} from '../../services/http.service';
+import {SearchPage} from '../search/search';
 
 
 @Component({
@@ -22,7 +23,6 @@ export class MyShopPage {
 
 
   constructor(private pageService: PageService, public navCtrl: NavController) {
-
   }
 
   ionViewWillEnter() {
@@ -32,7 +32,7 @@ export class MyShopPage {
     this.placements$ = this.pageService.placement$.subscribe(res => {
 
       this.placement = res;
-      
+
       this.placement
         .filter(el => el.component_name === 'menu' && el.variable_name === 'topMenu')
         .sort((a, b) => {
@@ -78,7 +78,7 @@ export class MyShopPage {
           return 1;
         else if (a.info.row < b.info.row)
           return -1;
-        return 0; 
+        return 0;
       })
       .forEach(item => {
         this.typeElements.push({
@@ -117,7 +117,6 @@ export class MyShopPage {
 
 
   ionViewWillLeave() {
-
     this.placements$.unsubscribe();
   }
 
@@ -128,4 +127,7 @@ export class MyShopPage {
     }
   }
 
+  goToSearchPage() {
+    this.navCtrl.push(SearchPage);
+  }
 }

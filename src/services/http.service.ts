@@ -8,7 +8,7 @@ export class HttpService {
   public static Host = "http://localhost:3000";
   serverAddress: string = "http://localhost:3000/api/";
   public static PRODUCT_IMAGE_PATH = "images/product-image";
-  
+
   userToken = null;
 
   constructor(private http: HttpClient) {

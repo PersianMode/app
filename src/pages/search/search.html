@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <ion-searchbar
+      [(ngModel)]="searchPhrase"
+      (ionInput)="searchProduct()"
+      (ionClear)="onClear($event)"
+      placeholder="جست و جو">
+    </ion-searchbar>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div>
+    <div *ngIf="!searchWaiting && searchProductList.length" class="search-title">{{'محصولات'}}</div>
+    <hr *ngIf="!searchWaiting &&  searchProductList.length">
+    <ion-grid *ngIf="!searchWaiting &&  searchProductList.length">
+      <ion-row *ngFor="let row of rows" text-center>
+        <ion-col *ngFor="let element of row" style="width: 50%">
+          <ion-list>
+            <ion-item (click)="selectSearchResult(element, true)">
+              <img class="search-item-image"
+                   [src]="element.imgUrl">
+              <div class="search-name" style="margin-top: 2px">{{element.name}}</div>
+              <div class="search-brand">{{element.brand}}</div>
+              <div class="search-brand">{{element.tags}}</div>
+              <div class="search-type">{{element.type}}</div>
+              <div class="search-article_no">{{'article_no : '}}{{element.instances}}</div>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <br *ngIf="!searchWaiting && searchCollectionList.length">
+    <div *ngIf="!searchWaiting && searchCollectionList.length" class="search-title">{{'مجموعه ها'}}</div>
+    <hr *ngIf="!searchWaiting && searchCollectionList.length">
+    <ion-list *ngFor="let element of searchCollectionList">
+      <ion-item (click)="selectSearchResult(element, false)">
+        <div class="collection-name">{{element.name}}</div>
+        <div class="search-address">{{element.name_fa}}</div>
+      </ion-item>
+    </ion-list>
+    <br>
+  </div>
+</ion-content>
