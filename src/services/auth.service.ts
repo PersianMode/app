@@ -8,6 +8,7 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 export class AuthService {
   user: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   isFullAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private isVerified = false;
   private isLoggedIn = false;
   userData = {
     usedId: null,
@@ -82,7 +83,7 @@ export class AuthService {
     this.user.next(null);
   }
 
-  login(username, password) {
+  login(username, password, setAuthenticationStatus = true) {
     return new Promise((resolve, reject) => {
       this.httpService.post('app/login', {
         username: username,
@@ -90,7 +91,10 @@ export class AuthService {
       }).subscribe(
         (res) => {
           this.afterLogin(res);
-          this.isFullAuthenticated.next(res.is_verified);          
+          if(setAuthenticationStatus)
+            this.isFullAuthenticated.next(res.is_verified);
+          else
+            this.isVerified = res.is_verified;          
           resolve();
         },
         (err) => {
@@ -128,5 +132,9 @@ export class AuthService {
 
   setVerification(isVerified = false) {
     this.isFullAuthenticated.next(isVerified && this.isLoggedIn);
+  }
+
+  applyVerification() {
+    this.isFullAuthenticated.next(this.isVerified && this.isLoggedIn);
   }
 }

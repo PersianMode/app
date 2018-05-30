@@ -3,6 +3,7 @@ import {HttpService} from '../../services/http.service';
 import {NavController, ToastController, NavParams} from 'ionic-angular';
 import {TabsPage} from "../tabs/tabs";
 import {AuthService} from "../../services/auth.service";
+import {RegPreferencesPage} from '../regPreferences/regPreferences';
 
 @Component({
   selector: 'page-reg-confirmation',
@@ -14,6 +15,7 @@ export class RegConfirmationPage implements OnInit {
   shouldEnterMobileNumber = false;
   isGoogleAuth = false;
   username = null;
+  gender = null;
 
   constructor(private httpService: HttpService, private toastCtrl: ToastController,
     private navCtrl: NavController, private authService: AuthService,
@@ -23,6 +25,7 @@ export class RegConfirmationPage implements OnInit {
   ngOnInit() {
     this.mobile_no = this.navParams.get('mobile_no') ? this.navParams.get('mobile_no') : null;
     this.username = this.navParams.get('username') ? this.navParams.get('username') : this.authService.tempData.username;
+    this.gender = this.navParams.get('gender') ? this.navParams.get('gender') :  null;
     this.isGoogleAuth = this.navParams.get('isGoogleAuth') ? this.navParams.get('isGoogleAuth') : null;
     this.shouldEnterMobileNumber = !this.mobile_no;
   }
@@ -57,7 +60,11 @@ export class RegConfirmationPage implements OnInit {
           this.httpService.get('validUser').subscribe(
             (data) => {
               this.authService.setVerification(true);
-              this.navCtrl.setRoot(TabsPage);
+              // this.navCtrl.setRoot(TabsPage);
+              this.navCtrl.push(RegPreferencesPage, {
+                username: this.username,
+                gender: this.gender
+              });
             },
             (err) => {
               this.toastCtrl.create({
@@ -67,9 +74,13 @@ export class RegConfirmationPage implements OnInit {
             }
           )
         } else {
-          this.authService.login(this.authService.tempData.username, this.authService.tempData.password)
+          this.authService.login(this.authService.tempData.username, this.authService.tempData.password, false)
             .then(res => {
-              this.navCtrl.setRoot(TabsPage);
+              // this.navCtrl.setRoot(TabsPage);
+              this.navCtrl.push(RegPreferencesPage, {
+                username: this.username,
+                gender: this.gender
+              });
             })
             .catch(err => {
               console.error('Cannot login: ', err);
@@ -90,8 +101,8 @@ export class RegConfirmationPage implements OnInit {
       }
     );
   }
-
   sendMobileNumber() {
+    // return this.shouldEnterMobileNumber = false;
     this.httpService.post('register/mobile', {
       username: this.username,
       mobile_no: this.mobile_no,
