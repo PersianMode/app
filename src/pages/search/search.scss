@@ -11,17 +11,22 @@
   margin-top: 3px;
 }
 
-.search-item {
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  font-weight: normal !important;
-  margin-top: 10px;
-  margin-left: 10px;
-}
-
 .search-name {
   font-size: 0.5em;
+  color: black;
+  font-weight: bold;
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collection-name {
+  width: 50%;
+  display: inline-block;
+  text-align: left;
+  font-size: 13px !important;
+  position: relative;
+  top: 5px;
   color: black;
   font-weight: bold;
   white-space: pre-wrap;

@@ -104,3 +104,25 @@
   padding: 5px;
   word-wrap: break-word;
 }
+
+.search-div {
+  display: inline-block;
+  width: 20%;
+  text-align: left;
+  color: #424242;
+  position: absolute;
+  left: 17px;
+  top: 17px;
+  font-size: 20px;
+}
+
+.product-title-div {
+  display: inline-block;
+  width: 80%;
+  text-align: right;
+  font-family: iranyekan;
+  font-weight: 500;
+  color: #424242;
+  margin-right: -45px;
+  font-size: 1.6rem;
+}

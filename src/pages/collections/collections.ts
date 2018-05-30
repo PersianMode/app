@@ -3,6 +3,7 @@ import {LoadingController, Navbar, NavController, NavParams} from "ionic-angular
 import {FilterPage} from "../filter/filter";
 import {ProductService} from "../../services/productService";
 import {ProductViewPage} from "../products/product-view/product-view";
+import {SearchPage} from '../search/search';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class CollectionsPage {
 
     this.loading = this.loadingCtrl.create({});
 
-    this.navBar.setBackButtonText("بازگشت");
+    // this.navBar.setBackButtonText("بازگشت");
     this.loading.present().then(() => {
 
       this.products$ = this.productService.productList$.subscribe(
@@ -54,6 +55,7 @@ export class CollectionsPage {
 
     this.productService.collectionNameFa$.subscribe(res => {
       this.collectionName = res;
+      this.pageName = this.collectionName;
     });
 
   }
@@ -84,8 +86,10 @@ export class CollectionsPage {
   }
 
   ionViewWillLeave() {
-
     this.products$.unsubscribe();
+  }
 
+  goToSearchPage() {
+    this.navCtrl.push(SearchPage);
   }
 }
