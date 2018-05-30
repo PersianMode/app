@@ -13,7 +13,6 @@ export class HttpService {
 
   constructor(private http: HttpClient) {
   }
-
   get(url: any): Observable<any> {
     let headers: any = new HttpHeaders();
     if (this.userToken) {
