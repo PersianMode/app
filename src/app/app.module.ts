@@ -16,6 +16,7 @@ import {IonicStorageModule} from '@ionic/storage';
 import {RegisterPage} from '../pages/register/register';
 import {HttpClientModule} from '@angular/common/http';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
+import {RegPreferencesPage} from '../pages/regPreferences/regPreferences';
 import {ProductService} from '../services/productService';
 import {ProductViewPage} from "../pages/products/product-view/product-view";
 import {ProductDetailPage} from "../pages/products/product-detail/product-detail";
@@ -25,6 +26,7 @@ import {FeedPage} from '../pages/feed/feed';
 import {CollectionsPage} from '../pages/collections/collections';
 import {FilterPage} from '../pages/filter/filter';
 import {MyShopPage} from '../pages/my-shop/my-shop';
+import {SearchPage} from '../pages/search/search';
 import {CartService} from "../services/cart.service";
 import {DictionaryService} from '../services/dictionary.service';
 import {ProductSliding} from "../pages/bag/product-sliding/product-sliding";
@@ -42,6 +44,7 @@ import {GoogleMaps} from '@ionic-native/google-maps';
 import {Geolocation} from '@ionic-native/geolocation';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
+import {DobComponent} from '../components/dob/dob';
 
 @NgModule({
   declarations: [
@@ -49,6 +52,7 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     FeedPage,
     MyShopPage,
     CollectionsPage,
+    SearchPage,
     BagPage,
     InboxPage,
     ProfilePage,
@@ -59,6 +63,7 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     LoginPage,
     RegisterPage,
     RegConfirmationPage,
+    RegPreferencesPage,
     FilterPage,
     ProductSliding,
     SelectCount,
@@ -69,7 +74,8 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     AddressPage,
     ProductItemComponent,
     SizeViewerComponent,
-    ForgotPasswordPage,    
+    ForgotPasswordPage,
+    DobComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,6 +90,7 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     FeedPage,
     MyShopPage,
     CollectionsPage,
+    SearchPage,
     BagPage,
     InboxPage,
     ProfilePage,
@@ -94,6 +101,7 @@ import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
     SelectSizePage,
     RegisterPage,
     RegConfirmationPage,
+    RegPreferencesPage,
     SelectCount,
     CheckoutPage,
     AddressPage,

@@ -7,8 +7,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 export class HttpService {
   // REAL SERVER: '173.249.11.153'
   // MY SERVER: '192.168.8.181'
-  public static Host = "http://localhost:3000";
-  serverAddress: string = "http://localhost:3000/api/";
+  public static Host = "http://bankofstyle.com";
+  serverAddress: string = "http://bankofstyle.com/api/";
   public static PRODUCT_IMAGE_PATH = "images/product-image";
 
   userToken = null;
@@ -50,13 +50,14 @@ export class HttpService {
   }
 
   delete(url: any): Observable<any> {
-    let headers:any = new HttpHeaders();
+    let headers: any = new HttpHeaders();
     if (this.userToken) {
       headers = headers.append("token", this.userToken);
     }
 
     return this.http.delete(this.serverAddress + url, {observe: "response", headers: headers});
   }
+
   static addHost(url) {
     return url.includes(HttpService.Host) ? url : HttpService.Host + url;
   }

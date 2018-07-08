@@ -1,8 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <div class="product-title-div">
       {{product?.name}}
-    </ion-title>
+    </div>
+    <div class="search-div">
+      <ion-icon name="search" (click)="goToSearchPage()"></ion-icon>
+    </div>
   </ion-navbar>
 </ion-header>
 

@@ -1,6 +1,9 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{pageName}}</ion-title>
+    <div class="collections-title-div">{{pageName}}</div>
+    <div class="collecions-search-div">
+      <ion-icon name="search" (click)="goToSearchPage()"></ion-icon>
+    </div>
     <ion-buttons end>
       <button ion-button icon-only (click)="gotToProductFilter()">
         <ion-icon name="options"></ion-icon>
