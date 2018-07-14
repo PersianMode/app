@@ -1,10 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as moment from 'moment-jalaali';
-import * as mom from 'moment';
 import {HttpService} from '../../services/http.service';
 import {AuthService} from '../../services/auth.service';
-import {NavController, ToastController} from 'ionic-angular';
+import {LoadingController, NavController, ToastController} from 'ionic-angular';
 import {RegConfirmationPage} from '../regConfirmation/regConfirmation';
 import 'moment/locale/fa';
 
@@ -22,7 +21,8 @@ export class RegisterPage implements OnInit {
   dateObject = null;
 
   constructor(private httpService: HttpService, private authService: AuthService,
-              public navCtrl: NavController, private toastCtrl: ToastController) {
+              public navCtrl: NavController, private toastCtrl: ToastController,
+              private loadingCtrl: LoadingController) {
   }
 
   ngOnInit() {
@@ -63,21 +63,31 @@ export class RegisterPage implements OnInit {
   }
 
   register() {
+    const waiting = this.loadingCtrl.create({
+      content: 'لطفا صبر کنید ...',
+    });
+
     if (this.registerForm.valid && this.gender) {
       let data :any = {};
       Object.keys(this.registerForm.controls).forEach(el => data[el] = this.registerForm.controls[el].value);
       data.dob = this.dob;
       data['gender'] = this.gender;
 
+      waiting.present();
       this.httpService.put('register', data).subscribe(
         (res) => {
+          waiting.dismiss();
           this.authService.tempData = {
             username: this.registerForm.controls['username'].value,
             password: this.registerForm.controls['password'].value,
+            gender: this.gender,
           };
-          this.navCtrl.push(RegConfirmationPage);
+          this.navCtrl.push(RegConfirmationPage, {
+            mobile_no: this.registerForm.controls['mobile_no'].value,
+          });
         },
         (err) => {
+          waiting.dismiss();
           console.error('Cannot register: ', err);
 
           if (err.error === 'Username or mobile number is exist')
@@ -122,11 +132,11 @@ export class RegisterPage implements OnInit {
       imageUrl: 'https://lh4.googleusercontent.com/-o05725655m4/AAAAAAAAAAI/AAAAAAAAAYM/dImmjGwBIUk/s96-c/photo.jpg'
     }).subscribe(
       (data) => {
-        this.authService.afterLogin(data)
+        this.authService.afterLogin(data);
         this.navCtrl.push(RegConfirmationPage, {isGoogleAuth: true, username: data.username});
       },
       (err) => {
-        console.error('Cannot login via google: ', err);
+        console.error('Cannot register via google: ', err);
       }
     );
 

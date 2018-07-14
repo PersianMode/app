@@ -15,10 +15,7 @@
       <ion-grid>
         <ion-row class="input-container">
           <ion-input class="input-field left-direction"
-                 formControlName="username" placeholder="ایمیل یا شماره تلفن همراه"
-                 (focus)="setSeen('username')"
-                 (blur)="curFocus = null"
-                 [ngClass]="(loginForm.controls['username'].hasError('required') || loginForm.controls['username'].hasError('match')) && seen['username'] && curFocus !== 'username' ? 'input-error' : null">
+                 formControlName="username" placeholder="ایمیل یا شماره تلفن همراه">
           </ion-input>
         </ion-row>
         <ion-row>
@@ -66,11 +63,11 @@
             <label>ورود</label>
           </div>
         </ion-row>
-        <!--<ion-row>-->
-          <!--<label>{{dR}}</label>-->
-        <!--<br>-->
-          <!--<label dir="ltr">Message from server: {{mess}}</label>-->
-        <!--</ion-row>-->
+        <ion-row>
+          <label>{{dR}}</label>
+        <br>
+          <label dir="ltr">Message from server: {{mess}}</label>
+        </ion-row>
         <ion-row class="input-container">
           <a (click)="googleLogin()" class="google-btn-login clickable-link">
             <div class="btn-field google-btn clickable-link">
