@@ -98,5 +98,5 @@
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.636231560622-fivtnnfsd7ctdtonslikbu5elmm69mrv" />
         <variable name="WEB_APPLICATION_CLIENT_ID" value="636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com" />
     </plugin>
-    <engine name="android" spec="^7.0.0" />
+    <engine name="android" spec="7.0.0" />
 </widget>
