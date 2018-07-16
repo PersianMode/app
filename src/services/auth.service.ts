@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {HttpService} from './http.service';
 import {Storage} from '@ionic/storage';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {ToastController} from 'ionic-angular';
 
 @Injectable()
 export class AuthService {
@@ -16,27 +16,23 @@ export class AuthService {
     name: null,
     surname: null,
     mobile_no: null,
+    is_preferences_set: null,
   };
   tempData = {
     username: null,
     password: null,
+    gender: null,
   };
 
-  constructor(private httpService: HttpService, private storage: Storage) {
+  constructor(private httpService: HttpService, private storage: Storage,
+              //FOR TEST PURPOSES ONLY!
+              private toastCtrl: ToastController) {
     this.loadUserBasicData()
       .then((data) => {
         if (data)
-          this.httpService.get('validUser').subscribe(
-            (res) => {
-              this.isLoggedIn = true;
-              this.isFullAuthenticated.next(res.is_verified);
-            },
-            (er) => {
-              console.error('Cannot check user validation: ', er);
-              this.isLoggedIn = false;
-              this.isFullAuthenticated.next(false);
-            }
-          );
+          this.checkValidation().catch(err => {
+            console.error('cannot check user validation: ', err);
+          });
       })
       .catch(err => {
         console.error('Error: ', err);
@@ -47,7 +43,12 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.storage.get('user')
         .then(data => {
+          this.toastCtrl.create({
+            message: `local storage: ${JSON.stringify(data)}`,
+            duration: 5000,
+          }).present();
           if (data) {
+            console.log('data in the storage: ', data);
             this.httpService.userToken = data.token;
             delete data.token;
             this.setUserData(data);
@@ -57,10 +58,46 @@ export class AuthService {
           resolve(data);
         })
         .catch(err => {
+          this.toastCtrl.create({
+            message: `LS ERROR!: ${JSON.stringify(err)}`,
+            duration: 5000
+          }).present();
           this.user.next(null);
           console.error('Error when loading user data from storage: ', err);
           reject();
         });
+    });
+  }
+
+  checkValidation() {
+    return new Promise((resolve, reject) => {
+      this.httpService.get('validUser').subscribe(
+        res => {
+          console.log('res in checkValidation: ', res);
+          this.afterLogin(res, false).then(data => {
+            this.isLoggedIn = true;
+            this.isFullAuthenticated.next(res.is_verified);
+            resolve(res);
+          });
+        }, err => {
+          this.isLoggedIn = false;
+          this.isFullAuthenticated.next(false);
+          reject(err);
+        }
+      );
+    })
+  }
+
+  activateEmail(link) {
+    return new Promise((resolve, reject) => {
+      this.httpService.get(`user/activate/link/${link}`).subscribe(
+        data => {
+          resolve(data); // returns is_verified level too
+        }, err => {
+          console.error('could not activate via this link: ', err);
+          reject(err);
+        }
+      );
     });
   }
 
@@ -71,6 +108,7 @@ export class AuthService {
       name: data.name,
       surname: data.surname,
       mobile_no: data.mobile_no,
+      is_preferences_set: data.is_preferences_set,
     };
   }
 
@@ -81,6 +119,18 @@ export class AuthService {
   removeUser() {
     this.storage.remove('user');
     this.user.next(null);
+    this.resetUserData();
+  }
+
+  resetUserData() {
+    this.userData = {
+      usedId: null,
+      username: null,
+      name: null,
+      surname: null,
+      mobile_no: null,
+      is_preferences_set: null,
+    };
   }
 
   login(username, password, setAuthenticationStatus = true) {
@@ -90,12 +140,13 @@ export class AuthService {
         password: password,
       }).subscribe(
         (res) => {
-          this.afterLogin(res);
-          if(setAuthenticationStatus)
-            this.isFullAuthenticated.next(res.is_verified);
-          else
-            this.isVerified = res.is_verified;          
-          resolve();
+          this.afterLogin(res).then(data => {
+            if (setAuthenticationStatus)
+              this.isFullAuthenticated.next(res.is_verified);
+            else
+              this.isVerified = res.is_verified;
+            resolve(res);
+          });
         },
         (err) => {
           console.error('Cannot login. Error: ', err);
@@ -123,11 +174,32 @@ export class AuthService {
     });
   }
 
-  afterLogin(res) {
-    this.httpService.userToken = res.token;
-    this.isLoggedIn = true;
-    this.setUserData(res);
-    this.saveUserData(res);
+  afterLogin(res, hasToken = true) {
+    return new Promise((resolve, reject) => {
+      if (hasToken)
+        return resolve(res);
+
+      this.storage.get('user')
+        .then(theUser => {
+          if (!theUser)
+            return reject('no user in LS');
+
+          res.token = theUser.token;
+          resolve(res);
+        })
+        .catch(err => reject(err));
+    })
+      .then(res => {
+        this.httpService.userToken = res['token'];
+        this.isLoggedIn = true;
+        this.setUserData(res);
+        this.saveUserData(res);
+        return Promise.resolve(res);
+      })
+      .catch(err => {
+        console.error('internal error:', err);
+        return Promise.reject(err);
+      });
   }
 
   setVerification(isVerified = false) {
@@ -135,6 +207,7 @@ export class AuthService {
   }
 
   applyVerification() {
+    console.log('verification for the initiate data INPUT: ', this.isVerified, this.isLoggedIn);
     this.isFullAuthenticated.next(this.isVerified && this.isLoggedIn);
   }
 }

@@ -3,13 +3,27 @@ import {NavController, ToastController, LoadingController} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {RegisterPage} from '../register/register';
 import {AuthService} from '../../services/auth.service';
-import {TabsPage} from '../tabs/tabs';
 import {HttpService} from '../../services/http.service';
 import {GooglePlus} from '@ionic-native/google-plus';
-import {RegConfirmationPage} from '../regConfirmation/regConfirmation';
+import {ConfirmationState, RegConfirmationPage} from '../regConfirmation/regConfirmation';
 import {ForgotPasswordPage} from '../forgot-password/forgot-password';
+import {RegPreferencesPage} from '../regPreferences/regPreferences';
 
 // declare var window: any;
+export const VerificationErrors = {
+  notVerified: {
+    status: 420,
+    error: 'Customer is not verified yet',
+  },
+  notMobileVerified: {
+    status: 421,
+    error: 'Customer\'s mobile is not verified yet',
+  },
+  notEmailVerified: {
+    status: 422,
+    error: 'Customer\'s email is not verified yet',
+  },
+};
 
 @Component({
   selector: 'page-login',
@@ -19,12 +33,13 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup;
   seen = {};
   curFocus = null;
+
   dR = '';
   mess = '';
 
   constructor(private navCtrl: NavController, private authService: AuthService,
-    private toastCtrl: ToastController, private httpService: HttpService,
-    private googlePlus: GooglePlus, private loadingCtrl: LoadingController) {
+              private toastCtrl: ToastController, private httpService: HttpService,
+              private googlePlus: GooglePlus, private loadingCtrl: LoadingController) {
 
   }
 
@@ -72,25 +87,55 @@ export class LoginPage implements OnInit {
   login() {
     if (!this.loginForm.valid)
       return;
-    
+
     const waiting = this.loadingCtrl.create({
       content: 'لطفا صبر کنید ...'
     });
-
     waiting.present();
 
-    this.authService.login(this.loginForm.controls['username'].value, this.loginForm.controls['password'].value)
-      .then(() => {
+    this.authService.tempData = {
+      username: this.loginForm.controls['username'].value,
+      password: this.loginForm.controls['password'].value,
+      gender: 'm',
+    };
+
+    this.authService.login(this.authService.tempData['username'], this.authService.tempData['password'])
+      .then((res) => {
         waiting.dismiss();
-        this.navCtrl.setRoot(TabsPage);
+        console.log('res in login auth: ', res);
+
+        if (res['is_preferences_set'] === false) {
+          this.navCtrl.push(RegPreferencesPage, {
+            username: this.authService.tempData['username'],
+            gender: res['gender'] || 'm',
+          });
+        } else {
+          // this.navCtrl.push(TabsPage); -> automatically does that! so smart, isn't it?
+        }
       })
       .catch(err => {
-        console.error('Cannot login: ', err);
         waiting.dismiss();
-        this.toastCtrl.create({
-          message: 'نام کاربری یا رمز عبور صحیح نیست',
-          duration: 3200,
-        }).present();
+
+        // either wrong credential or an unverified thing
+        let confirmState: ConfirmationState;
+        switch (err.status) {
+          case VerificationErrors.notVerified.status:
+          case VerificationErrors.notMobileVerified.status:
+            confirmState = ConfirmationState.VerificationCode;
+            break;
+          case VerificationErrors.notEmailVerified.status:
+            confirmState = ConfirmationState.ActivationLinkPage;
+            break;
+          default:
+            console.error('cannot login: ', err);
+            this.toastCtrl.create({
+              message: 'نام کاربری یا رمز عبور صحیح نیست',
+              duration: 3200,
+            }).present();
+            return;
+        }
+
+        this.navCtrl.push(RegConfirmationPage, {confirmState});
       });
   }
 
@@ -100,7 +145,8 @@ export class LoginPage implements OnInit {
 
   googleLogin() {
     // The login/google/app uses mock data
-    // The data to pass to server must received from googleplus authentication
+    // The data to pass to server must be received from googleplus authentication
+
     // this.httpService.post('login/google/app', {
     //   accessToken: 'ya29.GlupBRcq4V9UCJj5RK4VJxtzM-Uy0ZRXY-j_FEHXaOMXICZqG2fxSMKIPvNKv3-vCqFuYu16gXye6yg6Trlg6dT-Lso0QFOt27MslbBXpqodWDJtNyFtRnA9g5fO',
     //   expires: 1524754249,
@@ -123,32 +169,68 @@ export class LoginPage implements OnInit {
     //   }
     // );
 
+    this.toastCtrl.create({message: 'اینجا!', duration: 500}).present();
     this.googlePlus.login({
-      // 'webClientId': '636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com',
-      // 'offline': true
+      'webClientId': '855842568245-c0q8sm090cpd377em1k0hgrtphdgdvc9.apps.googleusercontent.com',
+      'offline': true
     }).then(res => {
-      // this.dR = 'googling :D';
+      // ->
+      this.dR = 'googling :D';
+      // <-
+      this.toastCtrl.create({message: 'on G+ login' + res.email, duration: 3000}).present();
       this.httpService.post('login/google/app', res).subscribe(
-        data => {
-          // this.dR = 'done';
-          // this.mess = JSON.stringify(data);
-        }, err => {
-          // this.dR = 'res but not done!';
-          // this.mess = JSON.stringify(err);
+        (data) => {
+          //->
+          this.dR = 'done';
+          this.mess = JSON.stringify(data);
+          //<-
+          this.toastCtrl.create({message: 'posted data!', duration: 3000}).present();
+          this.authService.afterLogin(data).then(ans => {
+            this.navCtrl.push(RegConfirmationPage, {isGoogleAuth: true, username: data.username});
+          });
+        },
+        (err) => {
+          //->
+          this.dR = 'not done';
+          this.mess = JSON.stringify(err);
+          //<-
+          console.error('Internal server error occurred: ', err);
         }
       );
-    })
-      .catch(rej => {
-        this.httpService.post('login/google/app', rej).subscribe(
-          data => {
-            // this.dR = 'not done';
-            // this.mess = JSON.stringify(data);
-          }, err => {
-            // this.dR = 'neither res nor done!';
-            // this.mess = JSON.stringify(err);
-          }
-        );
-      });
+    }).catch(err => {
+      //->
+      this.dR = 'in catch!';
+      this.mess = JSON.stringify(err);
+      //<-
+      console.error('Cannot login via google: ', err);
+    });
+
+    // this.googlePlus.login({
+    //   'webClientId': '636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com',
+    //   'offline': true
+    // }).then(res => {
+    //   this.dR = 'googling :D';
+    //   this.httpService.post('login/google/app', {'res': res}).subscribe(
+    //     data => {
+    //       this.dR = 'done';
+    //       this.mess = JSON.stringify(data);
+    //     }, err => {
+    //       this.dR = 'res but not done!';
+    //       this.mess = JSON.stringify(err);
+    //     }
+    //   );
+    // })
+    //   .catch(rej => {
+    //     this.httpService.post('login/google/app', {'err': rej}).subscribe(
+    //       data => {
+    //         this.dR = 'not done';
+    //         this.mess = JSON.stringify(data);
+    //       }, err => {
+    //         this.dR = 'neither res nor done!';
+    //         this.mess = JSON.stringify(err);
+    //       }
+    //     );
+    //   });
   }
 
   forgotPassword() {
