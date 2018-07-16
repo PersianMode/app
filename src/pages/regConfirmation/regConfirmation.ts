@@ -1,18 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpService} from '../../services/http.service';
-import {NavController, ToastController, NavParams, LoadingController} from 'ionic-angular';
+import {LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {AuthService} from "../../services/auth.service";
 import {RegPreferencesPage} from '../regPreferences/regPreferences';
+import {ConfirmationState} from '../../enum/register-status.enum';
 
 const expiredLinkStatusCode = 437;
-
-export enum ConfirmationState {
-  SetMobileNumber,
-  VerificationCode,
-  ActivationLinkPage,
-  EmailActivatedSuccessfully,
-  EmailInvalidOrExpiredActivationLink,
-}
 
 @Component({
   selector: 'page-reg-confirmation',
@@ -40,14 +33,18 @@ export class RegConfirmationPage implements OnInit {
     this.isGoogleAuth = this.navParams.get('isGoogleAuth') ? this.navParams.get('isGoogleAuth') : null;
 
     // google login
-    if (!this.mobile_no)
-      this.curStatus = ConfirmationState.SetMobileNumber;
+    if (this.isGoogleAuth) {
+      if (!this.mobile_no)
+        this.curStatus = ConfirmationState.SetMobileNumber;
+      else
+        this.curStatus = ConfirmationState.VerificationCode;
+    }
 
     // overwrite if there was a dictated (!) state
     if (this.navParams.get('confirmState'))
       this.curStatus = this.navParams.get('confirmState');
 
-    // deep link should be implemented here
+    // deep link for email activation
     if (this.navParams.get('activation_link'))
       this.activateLink();
 
@@ -123,15 +120,7 @@ export class RegConfirmationPage implements OnInit {
     }).subscribe(
       (data) => {
         waiting.dismiss();
-        if (this.isGoogleAuth) { // TODO: google login -> not yet checked! and the logic is pretty hard!
-          // because we need a callback in the server to manually log the person in
-          // to allow them to put his mobile number and manually log them out!
-          // in the website it was fine, but in here we don't get a callback!!
-          // 'deeplink' might provide some goods!
-          // also googleAuthToken might do some goods!
-          // or also the 'jwt' itself!
-          // -> should be investigated!
-          console.log('this should be only for google login!');
+        if (this.isGoogleAuth) {
           this.httpService.get('validUser').subscribe(
             (data) => {
               this.authService.setVerification(true);
@@ -139,7 +128,7 @@ export class RegConfirmationPage implements OnInit {
               this.navCtrl.push(RegPreferencesPage, {
                 username: this.username,
                 gender: this.gender,
-                isFromGoogle: true,
+                isGoogleAuthConfirmation: true,
               });
             },
             (err) => {
@@ -215,6 +204,7 @@ export class RegConfirmationPage implements OnInit {
     // TODO: if from activation link ->
     // because the root is now this, so popping to root doesn't mean anything!
     // instead we have to set the app.component.ts->rootPage to LoginPage, but how?
+    // wait until deeplink functionality implemented, then will think about that!
     if (this.navParams.get('activation_link')) {
     }
   }

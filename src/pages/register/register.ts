@@ -15,7 +15,7 @@ import 'moment/locale/fa';
 export class RegisterPage implements OnInit {
   registerForm: FormGroup;
   curFocus = null;
-  seen : any = {};
+  seen: any = {};
   gender = null;
   dob = null;
   dateObject = null;
@@ -68,7 +68,7 @@ export class RegisterPage implements OnInit {
     });
 
     if (this.registerForm.valid && this.gender) {
-      let data :any = {};
+      let data: any = {};
       Object.keys(this.registerForm.controls).forEach(el => data[el] = this.registerForm.controls[el].value);
       data.dob = this.dob;
       data['gender'] = this.gender;
@@ -116,6 +116,7 @@ export class RegisterPage implements OnInit {
   }
 
   googleRegister() {
+    // just a temp API for testing -> in the end this should be replaced with the same google login in LoginPage
     // The login/google/app uses mock data
     // The data to pass to server must received from googleplus authentication
     this.httpService.post('login/google/app', {
@@ -132,8 +133,12 @@ export class RegisterPage implements OnInit {
       imageUrl: 'https://lh4.googleusercontent.com/-o05725655m4/AAAAAAAAAAI/AAAAAAAAAYM/dImmjGwBIUk/s96-c/photo.jpg'
     }).subscribe(
       (data) => {
-        this.authService.afterLogin(data);
-        this.navCtrl.push(RegConfirmationPage, {isGoogleAuth: true, username: data.username});
+        this.authService.afterLogin(data).then(res => {
+          this.navCtrl.push(RegConfirmationPage, {
+            isGoogleAuth: true,
+            username: data.username
+          });
+        });
       },
       (err) => {
         console.error('Cannot register via google: ', err);

@@ -29,7 +29,7 @@ export class RegPreferencesPage implements OnInit {
   };
   gender = null;
 
-  isFromGoogle;
+  isGoogleAuthConfirmation;
 
   constructor(private httpClient: HttpClient, private httpService: HttpService,
               private toastCtrl: ToastController, private loadingCtrl: LoadingController,
@@ -40,7 +40,7 @@ export class RegPreferencesPage implements OnInit {
   ngOnInit() {
     this.preferences.username = this.navParams.get('username') ? this.navParams.get('username') : null;
     this.gender = this.navParams.get('gender') ? this.navParams.get('gender') : 'm';
-    this.isFromGoogle = this.navParams.get('isFromGoogle') || null;
+    this.isGoogleAuthConfirmation = this.navParams.get('isGoogleAuthConfirmation') || null;
 
     // api tags
     this.httpService.get('tags/Category').subscribe(tagsRes => {
@@ -52,8 +52,9 @@ export class RegPreferencesPage implements OnInit {
       }
       this._tags = tagsArr;
     });
+
     // shoes json
-    // TODO: this doesn't work in app-production mode!
+    // TODO: this http call doesn't work in app-production mode!
     this.httpClient.get('../../assets/shoesSize.json')
       .subscribe(res => {
         if (this.gender === 'm') {
@@ -138,8 +139,8 @@ export class RegPreferencesPage implements OnInit {
       waiting.dismiss();
       this.authService.checkValidation()
         .then(res => {
-          if (this.isFromGoogle)
-            this.navCtrl.setRoot(TabsPage); // TODO: needs full testing...
+          if (this.isGoogleAuthConfirmation)
+            this.navCtrl.setRoot(TabsPage);
           else
             this.navCtrl.popToRoot();
           // this.authService.applyVerification();

@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {HttpService} from './http.service';
 import {Storage} from '@ionic/storage';
-import {ToastController} from 'ionic-angular';
 
 @Injectable()
 export class AuthService {
@@ -24,9 +23,7 @@ export class AuthService {
     gender: null,
   };
 
-  constructor(private httpService: HttpService, private storage: Storage,
-              //FOR TEST PURPOSES ONLY!
-              private toastCtrl: ToastController) {
+  constructor(private httpService: HttpService, private storage: Storage) {
     this.loadUserBasicData()
       .then((data) => {
         if (data)
@@ -43,12 +40,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.storage.get('user')
         .then(data => {
-          this.toastCtrl.create({
-            message: `local storage: ${JSON.stringify(data)}`,
-            duration: 5000,
-          }).present();
           if (data) {
-            console.log('data in the storage: ', data);
             this.httpService.userToken = data.token;
             delete data.token;
             this.setUserData(data);
@@ -58,10 +50,6 @@ export class AuthService {
           resolve(data);
         })
         .catch(err => {
-          this.toastCtrl.create({
-            message: `LS ERROR!: ${JSON.stringify(err)}`,
-            duration: 5000
-          }).present();
           this.user.next(null);
           console.error('Error when loading user data from storage: ', err);
           reject();
@@ -73,7 +61,6 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.httpService.get('validUser').subscribe(
         res => {
-          console.log('res in checkValidation: ', res);
           this.afterLogin(res, false).then(data => {
             this.isLoggedIn = true;
             this.isFullAuthenticated.next(res.is_verified);
@@ -182,7 +169,7 @@ export class AuthService {
       this.storage.get('user')
         .then(theUser => {
           if (!theUser)
-            return reject('no user in LS');
+            return reject('no user in LS!');
 
           res.token = theUser.token;
           resolve(res);
@@ -190,6 +177,8 @@ export class AuthService {
         .catch(err => reject(err));
     })
       .then(res => {
+        if (!res['name']) // just to keep things integrated
+          res['name'] = res['first_name'];
         this.httpService.userToken = res['token'];
         this.isLoggedIn = true;
         this.setUserData(res);
@@ -206,8 +195,8 @@ export class AuthService {
     this.isFullAuthenticated.next(isVerified && this.isLoggedIn);
   }
 
-  applyVerification() {
-    console.log('verification for the initiate data INPUT: ', this.isVerified, this.isLoggedIn);
-    this.isFullAuthenticated.next(this.isVerified && this.isLoggedIn);
-  }
+  // applyVerification() {
+  //   console.log('verification for the initiate data INPUT: ', this.isVerified, this.isLoggedIn);
+  //   this.isFullAuthenticated.next(this.isVerified && this.isLoggedIn);
+  // }
 }

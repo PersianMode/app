@@ -3,7 +3,6 @@ import {LoadingController, PopoverController} from "ionic-angular";
 import {SelectCount} from "../select-count/select-count";
 import {CartService} from "../../../services/cart.service";
 import {priceFormatter} from "../../../shared/lib/priceFormatter";
-// import {HttpService} from "../../../services/http.service";
 import {imagePathFixer} from "../../../shared/lib/imagePathFixer";
 
 @Component({
