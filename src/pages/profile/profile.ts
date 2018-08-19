@@ -14,9 +14,6 @@ export class ProfilePage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.authService.userData);
-    
-
     this.user = this.authService.userData;
     if (this.user && !this.user.imgUrl)
       this.user.imgUrl = 'assets/imgs/default-user.png';

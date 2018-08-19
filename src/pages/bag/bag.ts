@@ -3,6 +3,7 @@ import {AlertController, NavController} from 'ionic-angular';
 import {CartService} from "../../services/cart.service";
 import {priceFormatter} from "../../shared/lib/priceFormatter";
 import {CheckoutPage} from "../checkout/checkout";
+import {ProductService} from '../../services/productService';
 
 @Component({
   selector: 'page-bag',
@@ -20,13 +21,13 @@ export class BagPage implements OnInit {
   finalTotal = 0;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController,
-    private cartService: CartService) {
+    private cartService: CartService, private productService: ProductService) {
   }
 
   ionViewWillEnter() {
     this.updateOrderlines();
 
-    if(this.coupon_code) {
+    if (this.coupon_code) {
       this.applyCoupon();
     }
   }
@@ -40,7 +41,7 @@ export class BagPage implements OnInit {
       .catch(res => {
         this.balance = 0;
         this.loyalty_point = 0;
-      })
+      });
   }
 
   onClickedOnPromoCode() {
@@ -48,8 +49,8 @@ export class BagPage implements OnInit {
   }
 
   computeTotalCost(addCoupon = false) {
-    this.totalCost = this.cartService.calculateTotal();
-    this.discount = this.cartService.calculateDiscount(addCoupon);
+    this.totalCost = this.cartService.calculateTotal(this.products);
+    this.discount = this.cartService.calculateDiscount(this.products, addCoupon);
     this.finalTotal = this.totalCost - this.discount;
   }
 
@@ -58,17 +59,48 @@ export class BagPage implements OnInit {
       .then(res => {
         this.updateData();
       }).catch(err => {
-        console.log('-> ', err);
+        console.error('-> ', err);
       });
   }
 
   updateData(addCoupon?) {
-    let t = this.cartService.getReformedOrderlines();
-    this.products = t || [];
-    const quantityList = this.products.map(el => el.quantity);
-    this.cartItemsLength = (quantityList && quantityList.length > 0) ? quantityList.reduce((a, b) => a + b) : 0;
+    let t = this.cartService.getReformedOrderlines() || [];
 
-    this.computeTotalCost(addCoupon);
+    this.productService.getProducts(t.map(el => el.product_id))
+      .then(res => {
+        this.products = [];
+
+        t.forEach(el => {
+          const found = res.find(i => i._id === el.product_id);
+          const instance = found.instances.find(i => el.instance_id === i._id);
+          const color = found.colors.find(i => instance.product_color_id === i._id);
+
+          this.products.push(Object.assign({}, {
+            instance_id: instance._id,
+            quantity: el.quantity,
+            base_price: found.base_price,
+            brand: found.brand,
+            color,
+            dest: found.dest,
+            discount: found.discount,
+            name: found.name,
+            product_type: found.product_type,
+            instance,
+            cost: instance.price ? instance.price : found.base_price,
+            size: instance.size,
+            tags: found.tags
+          }));
+        });
+
+        const quantityList = this.products.map(el => el.quantity);
+        this.cartItemsLength = (quantityList && quantityList.length > 0) ? quantityList.reduce((a, b) => a + b, 0) : 0;
+
+        this.computeTotalCost(addCoupon);
+      })
+      .catch(err => {
+        console.error(err);
+        this.products = [];
+      })
   }
 
   formatPrice(p) {

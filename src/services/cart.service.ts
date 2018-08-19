@@ -20,7 +20,7 @@ export class CartService {
   loadOrderlines(): any {
     if (this.authService.isFullAuthenticated.getValue())
       return new Promise((resolve, reject) => {
-        this.httpService.post(`cart/items`, {data: {}}).subscribe(
+        this.httpService.get(`cart/items`).subscribe(
           data => {
             this.updateInfo(data);
             this.dataArray = data;
@@ -119,39 +119,53 @@ export class CartService {
     })
   }
 
-  calculateTotal() {
-    if (this.dataArray && this.dataArray.length > 0) {
-      return this.dataArray
-        .filter(el => el.count && el.quantity <= el.count)
-        .map(el => (el.instance_price ? el.instance_price : el.base_price) * el.quantity)
-        .reduce((a, b) => a + b);
+  calculateTotal(items) {
+    if (items && items.length) {
+      return items
+        .map(el => el.cost * el.quantity)
+        .reduce((a, b) => a + b, 0);
     }
+
+    // if (this.dataArray && this.dataArray.length > 0) {
+    //   return this.dataArray
+    //     .filter(el => el.count && el.quantity <= el.count)
+    //     .map(el => (el.instance_price ? el.instance_price : el.base_price) * el.quantity)
+    //     .reduce((a, b) => a + b, 0);
+    // }
 
     return 0;
   }
 
-  calculateDiscount(addCoupon = true) {
-    let discountValue = 0;
-
-    if (this.dataArray.length > 0) {
-      this.dataArray.forEach(el => {
-        // let tempTotalDiscount = el.discount && el.discount.length > 0 ? el.discount.reduce((a, b) => a * b) : 0;
-
-        // tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
-
-        let tempTotalDiscount = el.discount ? el.discount : 0;
-
-        if (el.coupon_discount) {
-          if (addCoupon)
-            tempTotalDiscount += Number(el.coupon_discount.toFixed(5));
-        }
-
-        const price = el.instance_price ? el.instance_price : el.base_price;
-        discountValue += (price - ((1 - tempTotalDiscount) * price)) * el.quantity;
-      });
+  calculateDiscount(items, addCoupon = true) {
+    if (items.length) {
+      return items
+        .map(i => i.cost * i.discount * i.quantity)
+        .reduce((a, b) => a + b, 0);
     }
 
-    return discountValue;
+    return 0;
+
+    // let discountValue = 0;
+
+    // if (this.dataArray.length > 0) {
+    //   this.dataArray.forEach(el => {
+    //     // let tempTotalDiscount = el.discount && el.discount.length > 0 ? el.discount.reduce((a, b) => a * b) : 0;
+
+    //     // tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
+
+    //     let tempTotalDiscount = el.discount ? el.discount : 0;
+
+    //     if (el.coupon_discount) {
+    //       if (addCoupon)
+    //         tempTotalDiscount += Number(el.coupon_discount.toFixed(5));
+    //     }
+
+    //     const price = el.instance_price ? el.instance_price : el.base_price;
+    //     discountValue += (price - ((1 - tempTotalDiscount) * price)) * el.quantity;
+    //   });
+    // }
+
+    // return discountValue;
   }
 
   addCoupon(coupon_code = "") {
