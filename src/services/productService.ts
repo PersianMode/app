@@ -335,4 +335,14 @@ export class ProductService {
     }
     this.productList$.next(sortedProducts);
   }
+
+  updateProducts(updatedProducts) {
+    updatedProducts.forEach(product => {
+      const found = this.products.findIndex(r => r._id === product._id);
+      this.enrichProductData(product);
+      if (found >= 0) {
+        this.products[found] = product;
+      }
+    });
+  }
 }

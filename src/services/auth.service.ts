@@ -11,7 +11,7 @@ export class AuthService {
   private isVerified = false;
   private isLoggedIn = false;
   userData = {
-    usedId: null,
+    userId: null,
     username: null,
     name: null,
     surname: null,
@@ -66,7 +66,7 @@ export class AuthService {
 
   setUserData(data) {
     this.userData = {
-      usedId: data._id,
+      userId: data._id,
       username: data.username,
       name: data.name,
       surname: data.surname,

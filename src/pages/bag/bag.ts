@@ -33,14 +33,21 @@ export class BagPage implements OnInit {
   }
 
   ngOnInit() {
-    this.cartService.getBalanceAndLoyalty()
-      .then(res => {
-        this.balance = res['balance'];
-        this.loyalty_point = res['loyalty_points'];
-      })
-      .catch(res => {
-        this.balance = 0;
+    this.cartService.getBalanceAndLoyalty();
+
+    this.cartService.loyaltyPoints$.subscribe(
+      data => {
+        this.loyalty_point = data;
+      },
+      err => {
         this.loyalty_point = 0;
+      });
+    this.cartService.balanceValue$.subscribe(
+      data => {
+        this.balance = data;
+      },
+      err => {
+        this.balance = 0;
       });
   }
 
@@ -49,8 +56,10 @@ export class BagPage implements OnInit {
   }
 
   computeTotalCost(addCoupon = false) {
-    this.totalCost = this.cartService.calculateTotal(this.products);
-    this.discount = this.cartService.calculateDiscount(this.products, addCoupon);
+    this.cartService.dataArray = this.products;
+
+    this.totalCost = this.cartService.calculateTotal();
+    this.discount = this.cartService.calculateDiscount(addCoupon);
     this.finalTotal = this.totalCost - this.discount;
   }
 
@@ -76,6 +85,7 @@ export class BagPage implements OnInit {
           const color = found.colors.find(i => instance.product_color_id === i._id);
 
           this.products.push(Object.assign({}, {
+            product_id: found._id,
             instance_id: instance._id,
             quantity: el.quantity,
             base_price: found.base_price,

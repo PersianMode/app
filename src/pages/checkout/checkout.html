@@ -15,9 +15,8 @@
       <ion-icon class="checkout-checkmark" *ngIf="!itemIsOpen('payment')" ios="ios-arrow-forward" md="ios-arrow-forward"></ion-icon>
     </ion-row>
     <ion-row *ngIf="itemIsOpen('payment')">
-      <checkout-payment-type [balance]="userBalance" [loyaltyPointValue]="userLoyaltyPointValue"
-                             [selectedType]="getSelectedPaymentType()" (typeChanged)="setPayment($event)"
-                             style="width: 100%"></checkout-payment-type>
+      <checkout-payment-type [balance]="userBalance" [loyaltyPointValue]="userLoyaltyPointValue" [selectedType]="getSelectedPaymentType()"
+        (typeChanged)="setPayment($event)" style="width: 100%"></checkout-payment-type>
     </ion-row>
     <ion-row class="checkout-item checkout-item-title" (click)="toggleItem('address')">
       <ion-label class="checkout-item-label">آدرس</ion-label>
@@ -26,18 +25,17 @@
       <ion-icon class="checkout-checkmark" *ngIf="!itemIsOpen('address')" ios="ios-arrow-forward" md="ios-arrow-forward"></ion-icon>
     </ion-row>
     <ion-row *ngIf="itemIsOpen('address')">
-      <checkout-address (addressChanged)="changeAddress($event)" (addressDetails)="showAddressDetails($event)"
-                        style="width: 100%;"></checkout-address>
+      <checkout-address (addressChanged)="changeAddress($event)" (addressDetails)="showAddressDetails($event)" style="width: 100%;"></checkout-address>
     </ion-row>
     <ion-row class="checkout-item checkout-item-title">
       <ion-label>فاکتور</ion-label>
     </ion-row>
     <ion-row>
-      <checkout-summary [usedLoyaltyPoint]="usedLoyaltyPoint" [usedBalance]="usedBalance" [discount]="discount"
-                        [total]="total" style="width: 100%;"></checkout-summary>
+      <checkout-summary [showCostLabel]="showCostLabel" [deliveryCost]="deliveryCost" [deliveryDiscount]="deliveryDiscount" [usedLoyaltyPoint]="usedLoyaltyPoint"
+        [usedBalance]="usedBalance" [earnedLoyaltyPoint]="earnedLoyaltyPoint" [discount]="discount" [total]="total" style="width: 100%;"></checkout-summary>
     </ion-row>
   </ion-grid>
-  <button ion-button full color="dark" (click)="placeOrder()" [disabled]="!addressIsSet">
+  <button ion-button full color="dark" (click)="placeOrder()" [disabled]="!addressIsSet || checkoutHasError">
     ثبت سفارش
   </button>
 </ion-content>
