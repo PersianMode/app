@@ -193,14 +193,8 @@ export class CheckoutService {
               resolve();
             },
             (err) => {
-              if (err.status === 200) {
-                this.cartService.emptyCart();
-                this.cartService.getBalanceAndLoyalty();
-                resolve();
-              } else {
-                console.error('Error when checkout items: ', err);
-                reject();
-              }
+              console.error('Error when checkout items: ', err);
+              reject();
             }
           );
         });
