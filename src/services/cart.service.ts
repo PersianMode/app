@@ -25,7 +25,7 @@ export class CartService {
       return new Promise((resolve, reject) => {
         this.httpService.get(`cart/items`).subscribe(
           data => {
-            this.updateInfo(data);
+            this.updateInfo(data.filter(el => el.instance_id && el.product_id));
             resolve();
           },
           err => {
@@ -75,7 +75,7 @@ export class CartService {
             return Promise.reject("nothing's changed");
 
           this.loadOrderlines().catch(err => {
-            console.log('-> ', err);
+            console.error('-> ', err);
           });
           resolve();
         },
@@ -84,7 +84,7 @@ export class CartService {
           reject();
         }
       );
-    })
+    });
   }
 
   getTotalNumber() {
@@ -225,11 +225,13 @@ export class CartService {
     let data = {
       title: "پرداخت",
       subtitle: "",
+      one_product: false,
     };
 
     if (this.dataArray.length === 1) {
       data["title"] = this.dataArray[0]["name"];
       data["subtitle"] = this.dataArray[0]["color"]["name"];
+      data["one_product"] = true;
     } else {
       data["subtitle"] += priceFormatter(this.getTotalNumber()) + " عدد"
     }

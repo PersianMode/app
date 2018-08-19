@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {LoadingController, PopoverController} from "ionic-angular";
+import {LoadingController, PopoverController, AlertController} from "ionic-angular";
 import {SelectCount} from "../select-count/select-count";
 import {CartService} from "../../../services/cart.service";
 import {priceFormatter} from "../../../shared/lib/priceFormatter";
@@ -15,26 +15,41 @@ export class ProductSliding implements OnInit {
   @Output() getList = new EventEmitter<any>();
 
   constructor(public loadingCtrl: LoadingController, public popoverCtrl: PopoverController,
-    private cartService: CartService) {
+    private cartService: CartService, private alertCtrl: AlertController) {
   }
 
   ngOnInit() {
+    console.log('PRODUCT: ', this.product);
   }
 
   removeThisProduct() {
-    let loading = this.loadingCtrl.create({
-      duration: 1000,
-    });
-    setTimeout(() => {
-      this.cartService.removeOrderline(this.product.instance_id, this.product.quantity)
-        .then(res => {
-          this.getList.emit();
-        })
-        .catch(err => {
-          console.error("error in removing orderling", err);
-        })
-    }, 200);
-    loading.present();
+    this.alertCtrl.create({
+      title: 'تأیید حذف',
+      subTitle: 'آیا می خواهید این محصول را از سبد خرید حذف کنید؟',
+      buttons: [
+        {
+          text: 'خیر',
+        },
+        {
+          text: 'حذف',
+          handler: () => {
+            let loading = this.loadingCtrl.create({
+              duration: 1000,
+            });
+            setTimeout(() => {
+              this.cartService.removeOrderline(this.product.instance_id, this.product.quantity)
+                .then(res => {
+                  this.getList.emit();
+                })
+                .catch(err => {
+                  console.error("error in removing orderling", err);
+                })
+            }, 200);
+            loading.present();
+          }
+        }
+      ]
+    }).present();
   }
 
   actionCount() {

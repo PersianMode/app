@@ -98,7 +98,8 @@ export class BagPage implements OnInit {
             instance,
             cost: instance.price ? instance.price : found.base_price,
             size: instance.size,
-            tags: found.tags
+            tags: found.tags,
+            count: instance.inventory ? instance.inventory.map(el => el.count).reduce((a, b) => a + b, 0) : 0,
           }));
         });
 

@@ -1,6 +1,10 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <div *ngIf="headerData.one_product" class="checkout-header">
+      <div class="header-title">{{headerData.title}}</div>
+      <div class="header-subtitle">{{headerData.subtitle}}</div>
+    </div>
+    <ion-title *ngIf="!headerData.one_product">
       <div class="header-title">{{headerData.title}}</div>
       <div class="header-subtitle">{{headerData.subtitle}}</div>
     </ion-title>

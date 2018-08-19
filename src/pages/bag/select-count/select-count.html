@@ -1,10 +1,7 @@
+<button ion-button color="dark" class="fixed-area" full (click)="applyChangedQuantity()" [style.background-color]="selectedQuantity === quantity ? 'gray' : 'black'">
+  انتخاب
+</button>
 <ion-content class="select-count-page">
-  <ion-grid>
-    <button ion-button color="dark" full (click)="applyChangedQuantity()" [disabled]="selectedQuantity === quantity">
-      انتخاب
-    </button>
-  </ion-grid>
-
   <ion-list radio-group [(ngModel)]="selectedQuantity">
     <ion-item *ngFor="let idx of countArray" [ngClass]="{'highlight-q': selectedQuantity === idx}">
       <ion-label class="quantity-label">
