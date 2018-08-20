@@ -19,7 +19,6 @@ export class ProductSliding implements OnInit {
   }
 
   ngOnInit() {
-    console.log('PRODUCT: ', this.product);
   }
 
   removeThisProduct() {
@@ -84,7 +83,7 @@ export class ProductSliding implements OnInit {
   }
 
   getThumbnailURL(): string {
-    return imagePathFixer(this.product.thumbnail, this.product.product_id, this.product.product_color_id);
+    return imagePathFixer(this.product.color.image.thumbnail, this.product.product_id, this.product.color._id);
   }
 
   getProductDiscount() {
