@@ -20,7 +20,7 @@ export class CartService {
   loadOrderlines(): any {
     if (this.authService.isFullAuthenticated.getValue())
       return new Promise((resolve, reject) => {
-        this.httpService.post(`cart/items`, {data: {}}).subscribe(
+        this.httpService.get(`cart/items`).subscribe(
           data => {
             this.updateInfo(data);
             this.dataArray = data;

@@ -29,7 +29,7 @@ export class TabsPage implements OnInit {
     });
   }
   ngOnDestroy() {
-    this.itemSubs.unsubscribe(); //???
+    // this.itemSubs.unsubscribe(); //???
   }
 
   priceFormatter(p) {

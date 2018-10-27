@@ -92,28 +92,28 @@ export class CheckoutService {
     });
   }
 
-  private getInventoryAddress() {
-    return new Promise((resolve, reject) => {
-      this.httpService.get('warehouse').subscribe(
-        (data) => {
-          const inventoriesAddress = [];
-          data.forEach(el => {
-            inventoriesAddress.push(Object.assign(el.address, {
-              name: el.name,
-              phone: el.phone,
-              is_center: el.is_center,
-            }));
-          });
-
-          resolve(inventoriesAddress);
-        },
-        (err) => {
-          console.error('Cannot fetch customer address: ', err);
-          reject(err);
-        }
-      );
-    });
-  }
+  // private getInventoryAddress() {
+  //   return new Promise((resolve, reject) => {
+  //     this.httpService.get('warehouse').subscribe(
+  //       (data) => {
+  //         const inventoriesAddress = [];
+  //         data.forEach(el => {
+  //           inventoriesAddress.push(Object.assign(el.address, {
+  //             name: el.name,
+  //             phone: el.phone,
+  //             is_center: el.is_center,
+  //           }));
+  //         });
+  //
+  //         resolve(inventoriesAddress);
+  //       },
+  //       (err) => {
+  //         console.error('Cannot fetch customer address: ', err);
+  //         reject(err);
+  //       }
+  //     );
+  //   });
+  // }
 
   saveAddress(addressData) {
     return new Promise((resolve, reject) => {
