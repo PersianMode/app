@@ -45,6 +45,7 @@ import {Geolocation} from '@ionic-native/geolocation';
 import {GooglePlus} from '@ionic-native/google-plus';
 import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
 import {DobComponent} from '../components/dob/dob';
+import {Deeplinks} from '@ionic-native/deeplinks';
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import {DobComponent} from '../components/dob/dob';
     CheckoutService,
     GoogleMaps,
     Geolocation,
+    Deeplinks,
   ]
 })
 export class AppModule {

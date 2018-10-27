@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController, Navbar} from 'ionic-angular';
+import {NavController, NavParams, ToastController, Navbar} from 'ionic-angular';
 import {HttpService} from '../../services/http.service';
 import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
 
@@ -16,7 +16,7 @@ export class ForgotPasswordPage implements OnInit {
   curFocus = null;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private httpService: HttpService, private toastCtrl: ToastController) {
+              private httpService: HttpService, private toastCtrl: ToastController) {
   }
 
   ionViewWillEnter() {
@@ -40,8 +40,8 @@ export class ForgotPasswordPage implements OnInit {
         Validators.required,
       ]]
     }, {
-        validator: this.matchPassword,
-      });
+      validator: this.matchPassword,
+    });
   }
 
   private matchPassword(AC: AbstractControl) {

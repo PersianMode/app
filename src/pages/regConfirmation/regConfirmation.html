@@ -1,5 +1,5 @@
 <ion-content style="direction: rtl" padding>
-  <div *ngIf="!shouldEnterMobileNumber" class="center">
+  <div *ngIf="curStatus === RegStatus.VerificationCode" class="center">
     <div>
       <h3>تأیید ثبت نام</h3>
     </div>
@@ -18,7 +18,7 @@
       <ion-row>
         <ion-col>
           <div class="div-btn btn-field inform-btn clickable-link" (click)="resendCode()">
-            <ion-label class="clickable-link">ارسال مجدد کد</ion-label>
+            <ion-label class="clickable-link" style="margin-right: 11px;">ارسال مجدد کد</ion-label>
           </div>
         </ion-col>
         <ion-col>
@@ -36,7 +36,7 @@
       </ion-row>
     </ion-grid>
   </div>
-  <div *ngIf="shouldEnterMobileNumber" class="center">
+  <div *ngIf="curStatus === RegStatus.SetMobileNumber" class="center">
     <div>
       <h3>شماره تلفن همراه خود را وارد کنید</h3>
     </div>
@@ -54,4 +54,27 @@
       </ion-row>
     </ion-grid>
   </div>
+  <div *ngIf="curStatus === RegStatus.ActivationLinkPage" class="center">
+    <div>
+      <h3>فعال سازی ایمیل</h3>
+    </div>
+    <ion-grid>
+      <ion-row style="margin-top: 16px;">
+        <ion-col style="text-align: center;">
+          <div>ایمیلی حاوی لینک فعال سازی برایتان ارسال شده است.</div>
+          <div>از طریق لینک ارسال شده اقدام به ورود نمایید.</div>
+        </ion-col>
+      </ion-row>
+      <ion-row style="margin-top: 5%;">
+        <ion-col>
+          <div class="div-btn btn-field inform-btn clickable-link" (click)="resendEmailActivationLink()">
+            <ion-label class="clickable-link">ارسال مجدد لینک فعالسازی</ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-item style="position: absolute; bottom: 1%; left: 0%;">
+    <button ion-button full color="dark" large (click)="goToLoginPage()">رفتن به صفحه ورود</button>
+  </ion-item>
 </ion-content>
