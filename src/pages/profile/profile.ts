@@ -18,7 +18,15 @@ export class ProfilePage implements OnInit {
     if (this.user && !this.user.imgUrl)
       this.user.imgUrl = 'assets/imgs/default-user.png';
 
-    this.user.fullName = this.user.name + ' ' + this.user.surname;
+    this.user.fullName = this.getFullName();
+  }
+
+  getFullName() {
+    return (
+      (this.user.name ? this.user.name : '') +
+      (this.user.name && this.user.surname ? ' ' : '') +
+      (this.user.surname ? this.user.surname : '')
+    );
   }
 
   logout() {

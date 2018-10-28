@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular';
+import { NavController, NavParams, Navbar } from 'ionic-angular';
 import {HttpService} from '../../services/http.service';
 import {DictionaryService} from '../../services/dictionary.service';
 import {imagePathFixer} from '../../shared/lib/imagePathFixer';

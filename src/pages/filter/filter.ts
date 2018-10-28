@@ -143,7 +143,7 @@ export class FilterPage implements OnInit {
   }
 
   priceRangeChange() {
-    Object.values(this.rangeValues).map(r => Math.round(r / 1000) * 1000);
+    Object.values(this.rangeValues).map((r: any) => Math.round(r / 1000) * 1000);
     this.current_filter_state.find(r => r.name === 'price').values = Object.values(this.rangeValues);
     this.formatPrices();
     this.productService.saveChecked(this.isChecked);
