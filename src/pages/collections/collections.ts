@@ -28,6 +28,7 @@ export class CollectionsPage {
   }
 
   ionViewWillEnter() {
+    this.navBar.setBackButtonText('');
     this.productService.productList$.subscribe(
       (data) => {
         this.totalProducts = data;
