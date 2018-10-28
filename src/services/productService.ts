@@ -89,6 +89,7 @@ export class ProductService {
   }
 
   extractFilters(filters = [], trigger = "") {
+    this.loadingService.enable();
     const products = trigger ? this.filteredProducts : this.products;
     let tags: any = {};
 
@@ -151,9 +152,11 @@ export class ProductService {
       }
     }
     this.filtering$.next(emittedValue);
+    this.loadingService.disable();
   }
 
   applyFilters(filters, trigger) {
+    this.loadingService.enable();
     this.filteredProducts = JSON.parse(JSON.stringify(this.products));
 
     filters.forEach(f => {
@@ -183,6 +186,7 @@ export class ProductService {
     });
     this.sortProductsAndEmit();
     this.extractFilters(filters, trigger);
+    this.loadingService.disable();
   }
 
   getProduct(productId) {
@@ -274,7 +278,7 @@ export class ProductService {
 
           this._savedSort = {value: null};
           this._savedChecked = {};
-          this.extractFilters();
+          // this.extractFilters();
           this.productList$.next(this.filteredProducts);
           this.loadingService.disable();
         }

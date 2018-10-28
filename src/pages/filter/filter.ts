@@ -55,6 +55,7 @@ export class FilterPage implements OnInit {
 
   ionViewWillEnter() {
     this.viewCtrl.setBackButtonText('بازگشت');
+    this.productService.extractFilters();
   }
 
   ngOnInit() {
