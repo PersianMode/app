@@ -73,19 +73,6 @@ export class SelectSizePage {
     this.selectedSize = size;
   }
 
-  presentLoading(isLoading = true) {
-    if (isLoading) {
-      this.loading = this.loadingCtrl.create({});
-    }
-    else {
-      this.loading = this.loadingCtrl.create();
-    }
-
-    this.loading.present();
-
-    this.loading.onDidDismiss()
-  }
-
   presentToast(message = 'خطا در انجام عملیات', position = 'bottom') {
     let toast = this.toastCtrl.create({
       message: message,
