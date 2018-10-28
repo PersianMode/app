@@ -4,6 +4,7 @@ import {PageService} from '../../services/page.service';
 import {CollectionsPage} from '../collections/collections';
 import {HttpService} from '../../services/http.service';
 import {SearchPage} from '../search/search';
+import {LoadingService} from '../../services/loadingService';
 
 
 @Component({
@@ -22,13 +23,15 @@ export class MyShopPage {
   currentType: string;
 
 
-  constructor(private pageService: PageService, public navCtrl: NavController) {
+  constructor(private pageService: PageService, public navCtrl: NavController,
+      private loadingService: LoadingService) {
   }
 
   ionViewWillEnter() {
 
     this.types = [];
 
+    this.loadingService.enable();
     this.placements$ = this.pageService.placement$.subscribe(res => {
 
       this.placement = res;
@@ -51,8 +54,10 @@ export class MyShopPage {
         });
 
       this.elementType(this.types[0]);
+      this.loadingService.disable();
     }, err => {
       console.error('Error when subscribing on page placements: ', err);
+      this.loadingService.disable();
     });
 
     this.pageService.getPage('my_shop');

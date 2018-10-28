@@ -1,11 +1,11 @@
 <ion-header>
   <ion-navbar>
     <div class="collections-title-div">{{pageName}}</div>
-    <div class="collecions-search-div">
-      <ion-icon name="search" (click)="goToSearchPage()"></ion-icon>
-    </div>
     <ion-buttons end>
-      <button ion-button icon-only (click)="gotToProductFilter()">
+      <button class="header-button" ion-button icon-only (click)="goToSearchPage()">
+        <ion-icon name="search" (click)="goToSearchPage()"></ion-icon>
+      </button>
+      <button class="header-button" ion-button icon-only (click)="gotToProductFilter()">
         <ion-icon name="options"></ion-icon>
       </button>
     </ion-buttons>
@@ -17,7 +17,7 @@
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let product of products" col-6>
-        <product-item [product]="product" (productIsSelected)="toProductDetails($event)" ></product-item>
+        <product-item [product]="product" (productIsSelected)="toProductDetails($event)"></product-item>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -26,7 +26,3 @@
   </ion-infinite-scroll>
 
 </ion-content>
-
-
-
-

@@ -5,6 +5,7 @@ import {IFilter} from '../interfaces/ifilter.interface';
 import {ToastController} from 'ionic-angular';
 import {DictionaryService} from './dictionary.service';
 import {imagePathFixer} from '../shared/lib/imagePathFixer';
+import {LoadingService} from './loadingService';
 
 const productColorMap = function (r) {
   return r.colors.map(c => c.name ? c.name.split("/")
@@ -67,7 +68,8 @@ export class ProductService {
   private _savedSort: any = {};
 
 
-  constructor(private httpService: HttpService, private toastCtrl: ToastController, private dict: DictionaryService) {
+  constructor(private httpService: HttpService, private toastCtrl: ToastController,
+    private dict: DictionaryService, private loadingService: LoadingService) {
   }
 
   getSavedChecked(): any {
@@ -254,7 +256,7 @@ export class ProductService {
   }
 
   loadProducts(address) {
-
+    this.loadingService.enable();
     this.httpService.post("collection/app/products", {address}).subscribe(
       (data) => {
 
@@ -274,15 +276,17 @@ export class ProductService {
           this._savedChecked = {};
           this.extractFilters();
           this.productList$.next(this.filteredProducts);
+          this.loadingService.disable();
         }
       },
       (err) => {
         console.error("Cannot get products of collection: ", err);
         this.toastCtrl.create({
-          message: "خطا در دریافت لیست محصولات",
+          message: err.status === 404 ? "لیست محصولی وجود ندارد" : "خطا در دریافت لیست محصولات",
           duration: 3200,
         }).present();
-        this.productList$.error(err);
+        this.productList$.next([]);
+        this.loadingService.disable();
       }
     );
   }
@@ -295,6 +299,7 @@ export class ProductService {
   }
 
   private sortProductsAndEmit() {
+    this.loadingService.enable();
     let sortedProducts = [];
     switch (this.sortInput) {
       case "newest": {
@@ -322,5 +327,6 @@ export class ProductService {
       }
     }
     this.productList$.next(sortedProducts);
+    this.loadingService.disable();
   }
 }

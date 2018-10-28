@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {PageService} from '../../services/page.service';
 import {HttpService} from '../../services/http.service';
+import {LoadingService} from '../../services/loadingService';
 
 @Component({
   selector: 'page-feed',
@@ -11,10 +12,12 @@ export class FeedPage {
   feed_placement: any;
   placements$: any;
 
-  constructor(public navCtrl: NavController, private pageService: PageService) {
+  constructor(public navCtrl: NavController, private pageService: PageService,
+      private loadingService: LoadingService) {
   }
 
   ionViewWillEnter() {
+    this.loadingService.enable();
 
     this.placements$ = this.pageService.placement$;
 
@@ -29,12 +32,11 @@ export class FeedPage {
           return -1;
         return 0;
       });
+      this.loadingService.disable();
     }, err => {
       console.error(err);
-
-    })
-
-
+      this.loadingService.disable();
+    });
   }
 
   loadImage(imgUrl: string) {

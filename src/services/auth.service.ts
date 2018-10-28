@@ -23,17 +23,29 @@ export class AuthService {
     gender: null,
   };
 
-  constructor(private httpService: HttpService, private storage: Storage) {
-    this.loadUserBasicData()
-      .then((data) => {
-        if (data)
-          this.checkValidation().catch(err => {
-            console.error('cannot check user validation: ', err);
-          });
-      })
-      .catch(err => {
-        console.error('Error: ', err);
-      })
+  constructor(private httpService: HttpService, private storage: Storage) {}
+
+  public checkIsUserValid() {
+    return new Promise((resolve, reject) => {
+      this.loadUserBasicData()
+        .then((data) => {
+          if (data) {
+            return this.checkValidation().catch(err => {
+              console.error('cannot check user validation: ', err);
+              return Promise.reject();
+            });
+          }
+
+          return Promise.reject();
+        })
+        .then(res => {
+          resolve();
+        })
+        .catch(err => {
+          console.error('Error: ', err);
+          reject();
+        });
+    });
   }
 
   loadUserBasicData() {

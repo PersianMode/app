@@ -1,17 +1,15 @@
 import {Component, ViewChild} from "@angular/core";
-import {LoadingController, Navbar, NavController, NavParams} from "ionic-angular";
+import {Navbar, NavController, NavParams} from "ionic-angular";
 import {FilterPage} from "../filter/filter";
 import {ProductService} from "../../services/productService";
 import {ProductViewPage} from "../products/product-view/product-view";
 import {SearchPage} from '../search/search';
-
 
 @Component({
   selector: "page-collection",
   templateUrl: "collections.html",
 })
 export class CollectionsPage {
-  loading: any;
   @ViewChild(Navbar) navBar: Navbar;
   pageName = null;
   address;
@@ -25,32 +23,18 @@ export class CollectionsPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private productService: ProductService,
-    private loadingCtrl: LoadingController) {
+    private productService: ProductService) {
 
   }
 
   ionViewWillEnter() {
-
-    this.loading = this.loadingCtrl.create({});
-
-    // this.navBar.setBackButtonText("بازگشت");
-    this.loading.present().then(() => {
-
-      this.products$ = this.productService.productList$.subscribe(
-        (data) => {
-          this.totalProducts = data;
-          this.products = this.totalProducts.slice(0, this.countPerScroll);
-          this.loading.dismiss().catch(err => {
-            console.error('-> ', err);
-          });
-        }, err => {
-          this.loading.dismiss().catch(err => {
-            console.error('-> ', err);
-          });
-        });
-    });
-
+    this.productService.productList$.subscribe(
+      (data) => {
+        this.totalProducts = data;
+        this.products = this.totalProducts.slice(0, this.countPerScroll);
+      }, err => {
+        console.error('Error when subscribing on productList: ', err);
+      });
 
 
     this.productService.collectionNameFa$.subscribe(res => {
@@ -86,7 +70,9 @@ export class CollectionsPage {
   }
 
   ionViewWillLeave() {
-    this.products$.unsubscribe();
+    // this.products$.unsubscribe();
+    this.products = [];
+    this.totalProducts = [];
   }
 
   goToSearchPage() {
