@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AlertController, LoadingController, Navbar, NavController, NavParams} from 'ionic-angular';
+import {AlertController, Navbar, NavController, NavParams} from 'ionic-angular';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
@@ -11,6 +11,7 @@ import {
 } from '@ionic-native/google-maps';
 import {Geolocation} from '@ionic-native/geolocation';
 import {CheckoutService} from '../../services/checkout.service';
+import {LoadingService} from '../../services/loadingService';
 
 @Component({
   selector: 'page-address',
@@ -29,15 +30,12 @@ export class AddressPage implements OnInit, AfterViewInit {
   addressForm: FormGroup;
   formIsDone = false;
   isInventoryAddress = true;
-  loading = this.loadingCtrl.create({
-    content: 'لطفا صبر کنید',
-  });
 
   constructor(private navCtrl: NavController, private navParams: NavParams,
               private alertCtrl: AlertController, private http: HttpClient,
               private authService: AuthService, private formBuilder: FormBuilder,
               private googleMaps: GoogleMaps, private checkoutService: CheckoutService,
-              private loadingCtrl: LoadingController, private geolocation: Geolocation) {
+              private loadingService: LoadingService, private geolocation: Geolocation) {
   }
 
   ionViewWillEnter() {
@@ -265,11 +263,11 @@ export class AddressPage implements OnInit, AfterViewInit {
           data[el] = this.addressForm.controls[el].value;
       });
 
-      this.setLoading(true);
+      this.loadingService.enable();
       this.checkoutService.saveAddress(data)
         .then(res => {
           this.anyChanges = false;
-          this.setLoading(false);
+          this.loadingService.disable();
           this.alertCtrl.create({
             title: 'اعمال آدرس',
             message: 'آدرس با موفقیت ثبت شد',
@@ -277,16 +275,9 @@ export class AddressPage implements OnInit, AfterViewInit {
           resolve();
         })
         .catch(err => {
-          this.setLoading(false);
+          this.loadingService.disable();
           reject(err);
         })
     });
-  }
-
-  private setLoading(isShow) {
-    if (isShow)
-      this.loading.present();
-    else
-      this.loading.dismiss().catch(err => console.log('-> ', err));
   }
 }

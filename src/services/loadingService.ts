@@ -5,19 +5,27 @@ import {LoadingController} from "ionic-angular";
 export class LoadingService {
   private loading = null;
   private counter = 0;
+  private baseConfig = {
+    content: 'لطفاً صبر کنید'
+  };
 
   constructor(private loadingCtrl: LoadingController) {
 
   }
 
-  enable(content = 'لطفا صبر کنید ...') {
+  enable(config = {}) {
     if (!this.counter) {
-      this.loading = this.loadingCtrl.create({
-        content
-      });
-
+      this.loading = this.loadingCtrl.create(Object.keys(config).length ? config : this.baseConfig);
       this.loading.present();
     }
+
+    if(!config || !config['duration']) {
+      this.counter++;
+    }
+  }
+
+  setOnDismissFunctionality(f) {
+    this.loading.onDidDismiss(f);
   }
 
   disable() {

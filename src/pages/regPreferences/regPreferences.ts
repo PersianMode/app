@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpService} from '../../services/http.service';
-import {NavController, ToastController, NavParams, LoadingController} from 'ionic-angular';
+import {NavController, ToastController, NavParams} from 'ionic-angular';
 import {AuthService} from "../../services/auth.service";
 import {HttpClient} from '@angular/common/http';
 import {DictionaryService} from '../../services/dictionary.service';
 import {TabsPage} from '../tabs/tabs';
+import {LoadingService} from '../../services/loadingService';
 
 @Component({
   selector: 'page-reg-preferences',
@@ -32,7 +33,7 @@ export class RegPreferencesPage implements OnInit {
   isGoogleAuthConfirmation;
 
   constructor(private httpClient: HttpClient, private httpService: HttpService,
-              private toastCtrl: ToastController, private loadingCtrl: LoadingController,
+              private toastCtrl: ToastController, private loadingService: LoadingService,
               private navCtrl: NavController, private authService: AuthService,
               private navParams: NavParams, private dict: DictionaryService) {
   }
@@ -125,18 +126,14 @@ export class RegPreferencesPage implements OnInit {
     this.preferences.brands = this.items;
     this.items = [];
 
-    const waiting = this.loadingCtrl.create({
-      content: 'لطفا صبر کنید ...',
-    });
-    waiting.present();
-
+    this.loadingService.enable();
     this.httpService.post(`customer/preferences`, {
       username: this.preferences.username,
       preferred_brands: this.preferences.brands,
       preferred_tags: this.preferences.tags,
       preferred_size: this.preferences.size
     }).subscribe(response => {
-      waiting.dismiss();
+      this.loadingService.disable();
       this.authService.checkValidation()
         .then(res => {
           if (this.isGoogleAuthConfirmation)
@@ -147,7 +144,7 @@ export class RegPreferencesPage implements OnInit {
         })
         .catch(err => console.error('error in validation: ', err));
     }, err => {
-      waiting.dismiss();
+      this.loadingService.disable();
       console.error('an error occurred: ', err);
     });
 

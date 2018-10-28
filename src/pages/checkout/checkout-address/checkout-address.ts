@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {LoadingController} from 'ionic-angular';
 import {CheckoutService} from '../../../services/checkout.service';
+import {LoadingService} from '../../../services/loadingService';
 
 @Component({
   selector: 'checkout-address',
@@ -14,29 +14,27 @@ export class CheckoutAddress implements OnInit {
   inventoryAddressList = [];
   selectedAddress = null;
 
-  constructor(private checkoutService: CheckoutService, private loadingCtrl: LoadingController) {
+  constructor(private checkoutService: CheckoutService, private loadingService: LoadingService) {
   }
 
   ngOnInit() {
     this.selectedAddress = this.checkoutService.selectedAddress;
     this.isClickAndCollect = this.checkoutService.isClickAndCollect;
 
-    const addressLoading = this.loadingCtrl.create({
+    this.loadingService.enable({
       content: 'در حال دریافت آدرس های شما ...',
     });
-
-    addressLoading.present();
 
     this.checkoutService.getAddresses()
       .then((res: any) => {
         this.customerAddressList = res.customer;
         this.inventoryAddressList = res.inventories;
 
-        addressLoading.dismiss().catch(err => console.log('-> ', err));
+        this.loadingService.disable();
       })
       .catch(err => {
         console.error('Cannot fetch addresses of customer and inventories: ', err);
-        addressLoading.dismiss().catch(err => console.log('-> ', err));
+        this.loadingService.disable();
       });
 
     this.checkoutService.upsertAddress.subscribe(

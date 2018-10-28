@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {LoadingController, PopoverController} from "ionic-angular";
+import {PopoverController} from "ionic-angular";
 import {SelectCount} from "../select-count/select-count";
 import {CartService} from "../../../services/cart.service";
 import {priceFormatter} from "../../../shared/lib/priceFormatter";
 import {imagePathFixer} from "../../../shared/lib/imagePathFixer";
+import {LoadingService} from "../../../services/loadingService";
 
 @Component({
   selector: "page-product-sliding",
@@ -13,7 +14,7 @@ export class ProductSliding implements OnInit {
   @Input() product;
   @Output() getList = new EventEmitter<any>();
 
-  constructor(public loadingCtrl: LoadingController, public popoverCtrl: PopoverController,
+  constructor(public loadingService: LoadingService, public popoverCtrl: PopoverController,
     private cartService: CartService) {
   }
 
@@ -21,7 +22,7 @@ export class ProductSliding implements OnInit {
   }
 
   removeThisProduct() {
-    let loading = this.loadingCtrl.create({
+    this.loadingService.enable({
       duration: 1000,
     });
     setTimeout(() => {
@@ -33,7 +34,6 @@ export class ProductSliding implements OnInit {
           console.error("error in removing orderling", err);
         })
     }, 200);
-    loading.present();
   }
 
   actionCount() {
@@ -50,13 +50,13 @@ export class ProductSliding implements OnInit {
   }
 
   onNotHavingMoreThanOneQuantity() {
-    let loading = this.loadingCtrl.create({
+
+    this.loadingService.enable({
       spinner: "hide",
       content: "تعداد این محصول قابل تغییر نیست.",
       duration: 1000,
       cssClass: "select-size-page-header",
     });
-    loading.present();
   }
 
   getMaxCount() {
