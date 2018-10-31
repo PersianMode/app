@@ -97,7 +97,7 @@ export class CheckoutService {
       this.getCustomerAddress()
         .then((res: any) => {
           customerAddress = res;
-          return this.getInventoryAddress();
+          return this.inventoryAddressList;
         })
         .then((res: any) => {
           resolve({

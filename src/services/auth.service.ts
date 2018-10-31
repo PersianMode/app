@@ -111,7 +111,7 @@ export class AuthService {
 
   resetUserData() {
     this.userData = {
-      usedId: null,
+      userId: null,
       username: null,
       name: null,
       surname: null,
