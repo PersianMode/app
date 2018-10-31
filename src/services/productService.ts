@@ -278,7 +278,7 @@ export class ProductService {
 
           this._savedSort = {value: null};
           this._savedChecked = {};
-          // this.extractFilters();
+          this.extractFilters();
           this.productList$.next(this.filteredProducts);
           this.loadingService.disable();
         }
