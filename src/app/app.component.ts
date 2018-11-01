@@ -72,6 +72,33 @@ export class MyApp implements OnInit {
         make sure you're using VPN, as google things need that
         sometimes it errors but it actually builds!
    */
+  /**
+   * NEWLY Common Issues!!!
+   * there's definitely some build errors in android studio gradle sync and build, hence the above issues:
+        in /app/build.gradle:
+          -> change all 'compile's to 'implementation' (not 'implement')!
+          -> add "apply plugin: 'com.google.gms.google-services'" (if already exists, move it) to the very end of the file
+          -> add "google()" before "mavenCentral()" in "buildscript.repositories" and "allprojects.repositories"
+          -> also add 'maven { url "https://maven.google.com" }' after the mentioned "mavenCentral()"s
+          -> in "buildscript.dependencies", there must be these:
+              classpath 'com.android.tools.build:gradle:3.1.2'
+              classpath 'com.google.gms:google-services:4.0.1'
+          -> versions of google-play-* needs to match, so the problem might be from here!
+        in build.gradle (root project):
+          -> change those "mavenCentral()" related things mentioned above in here too!
+   * if encountered "google play service update" after syncing and building and running in emulator,
+        you should check that the API level and the platform you chose supports Google Play (not Google API)
+        (Nexus 5 and 5X platforms supports this) then you can update them inside emulator in its google play
+        other than that, there doesn't seem to be any option!
+   */
+  /**
+   * Any changes made to the project, must be followed with these steps respectively for building:
+    -> run: ionic cordova build android
+    -> go to android studio, fix the probable above issues (compile, versions, etc.) and sync and build
+        --> after first configuration and sync and build, each time, only changing sdk version to "23" is needed
+    -> run on device or emulator!
+    -> for iOS, the clientIds and reverse ones must be changed according to the iOS API Key!
+   */
 
   ngOnInit() {
     this.authService.isFullAuthenticated.subscribe(

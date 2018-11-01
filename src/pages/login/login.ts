@@ -146,8 +146,8 @@ export class LoginPage implements OnInit {
 
   googleLogin() {
     this.googlePlus.login({
-      'webClientId': '855842568245-c0q8sm090cpd377em1k0hgrtphdgdvc9.apps.googleusercontent.com',
-      'offline': true
+      // 'webClientId': '986035602689-905fo138kc6jct8loqgi1j2q1g9ogd2l.apps.googleusercontent.com',
+      // 'offline': true
     }).then(res => {
       // ->
       // this.dR = 'googling :D';

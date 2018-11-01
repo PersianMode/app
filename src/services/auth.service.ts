@@ -148,6 +148,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.httpService.get('logout').subscribe(
         (res) => {
+          // TODO: might need to logout from google too! :-?
           this.removeUser();
           this.httpService.userToken = null;
           this.isLoggedIn = false;
