@@ -150,12 +150,12 @@ export class LoginPage implements OnInit {
       // 'offline': true
     }).then(res => {
       // ->
-      // this.dR = 'googling :D';
+      // this.dR = 'googling -> ';
       // <-
       this.httpService.post('login/google/app', res).subscribe(
         (data) => {
           //->
-          // this.dR = 'done';
+          // this.dR += 'done';
           // this.mess = JSON.stringify(data);
           //<-
           this.authService.afterLogin(data).then(ans => {
@@ -172,7 +172,7 @@ export class LoginPage implements OnInit {
         },
         (err) => {
           //->
-          // this.dR = 'not done';
+          // this.dR += 'not done';
           // this.mess = JSON.stringify(err);
           //<-
           console.error('Internal server error occurred: ', err);

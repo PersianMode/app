@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {HttpService} from './http.service';
 import {Storage} from '@ionic/storage';
+import {GooglePlus} from '@ionic-native/google-plus';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +24,8 @@ export class AuthService {
     gender: null,
   };
 
-  constructor(private httpService: HttpService, private storage: Storage) {
+  constructor(private httpService: HttpService, private storage: Storage,
+              private googlePlus: GooglePlus) {
     this.loadUserBasicData()
       .then((data) => {
         if (data)
@@ -148,12 +150,13 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.httpService.get('logout').subscribe(
         (res) => {
-          // TODO: might need to logout from google too! :-?
-          this.removeUser();
-          this.httpService.userToken = null;
-          this.isLoggedIn = false;
-          this.isFullAuthenticated.next(false);
-          resolve();
+          this.googlePlus.logout().then(ans => { // clear OAuth2 token, if any
+            this.removeUser();
+            this.httpService.userToken = null;
+            this.isLoggedIn = false;
+            this.isFullAuthenticated.next(false);
+            resolve();
+          });
         },
         (err) => {
           console.error('Cannot logout: ', err);

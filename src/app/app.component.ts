@@ -97,7 +97,10 @@ export class MyApp implements OnInit {
     -> go to android studio, fix the probable above issues (compile, versions, etc.) and sync and build
         --> after first configuration and sync and build, each time, only changing sdk version to "23" is needed
     -> run on device or emulator!
-    -> for iOS, the clientIds and reverse ones must be changed according to the iOS API Key!
+   * for iOS, the clientIds and reverse ones must be changed according to the iOS API Key!
+   * for first time building, these commands might be needed:
+    -> ionic cordova plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=<the_id_in_the_config_file>
+    -> ionic cordova platform add android
    */
 
   ngOnInit() {
