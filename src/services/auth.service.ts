@@ -32,11 +32,11 @@ export class AuthService {
           if (data) {
             return this.checkValidation().catch(err => {
               console.error('cannot check user validation: ', err);
-              return Promise.reject();
+              return Promise.reject('');
             });
           }
 
-          return Promise.reject();
+          return Promise.reject('');
         })
         .then(res => {
           resolve();
