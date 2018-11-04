@@ -124,8 +124,11 @@ export class ProductViewPage {
     return (inst && inst.price ? inst.price : this.product.base_price) - ((inst && inst.price ? inst.price : this.product.base_price) * this.product.discount);
   }
 
-
   goToSearchPage() {
     this.navCtrl.push(SearchPage);
+  }
+
+  shareProduct() {
+    
   }
 }
