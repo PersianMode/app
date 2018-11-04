@@ -1,0 +1,16 @@
+checkout-summary .title {
+  color: #000 !important;
+}
+
+checkout-summary .final-total {
+  font-weight: bold;
+}
+
+checkout-summary .final-total-area {
+  margin-top: 10px;
+}
+
+checkout-summary .place-order-btn {
+  padding: 10px;
+}
+/*# sourceMappingURL=checkout-summary.css.map */

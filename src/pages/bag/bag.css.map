@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,SAAS,CAAC;EACR,SAAS,EAAE,GAAG;CACf;;AAED,AAAA,SAAS,CAAC,gBAAgB,CAAC;EACzB,MAAM,EAAE,eAAe;EACvB,MAAM,EAAE,SAAS;CAClB;;AAQD,AAAA,SAAS,CAAC,OAAO,EAAE,SAAS,CAAC,MAAM,CAAC;EAClC,WAAW,EAAE,WAAW;EACxB,SAAS,EAAE,KAAK;CACjB;;AAED,AAAA,gBAAgB,EAAE,cAAc,CAAC;EAC/B,MAAM,EAAE,CAAC;CACV",
+    "sources": [
+        "bag.scss"
+    ],
+    "names": [],
+    "file": "bag.css"
+}

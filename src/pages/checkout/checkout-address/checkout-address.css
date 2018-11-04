@@ -1,0 +1,17 @@
+checkout-address .checkmark {
+  text-align: left;
+}
+
+checkout-address .address-semi-details {
+  font-size: 0.8em;
+}
+
+checkout-address .list {
+  margin: unset !important;
+}
+
+checkout-address .details-button, checkout-address .details-button:active {
+  background-color: transparent;
+  color: black;
+}
+/*# sourceMappingURL=checkout-address.css.map */

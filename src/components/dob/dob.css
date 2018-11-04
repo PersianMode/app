@@ -1,0 +1,23 @@
+dob div {
+  display: inline-block;
+}
+
+dob ion-select {
+  display: inline-block;
+  font-family: iranyekan, sans-serif !important;
+  text-align: center;
+}
+
+dob ion-option {
+  font-family: iranyekan, sans-serif !important;
+}
+
+dob .title {
+  overflow: visible;
+}
+
+dob .item {
+  padding: 0px;
+  font-size: 0.8em;
+}
+/*# sourceMappingURL=dob.css.map */

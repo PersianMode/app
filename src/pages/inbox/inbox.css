@@ -1,0 +1,43 @@
+.inbox-page ion-card {
+  direction: rtl;
+  position: relative;
+  margin: 0 0 2px 0;
+  width: 100%;
+}
+
+.inbox-page ion-card .inbox-image {
+  width: 30%;
+  height: 128px;
+}
+
+.inbox-page ion-card:active {
+  opacity: 0.8;
+}
+
+.inbox-page .card-title {
+  position: absolute;
+  top: 20%;
+  right: 35%;
+  width: 100%;
+  font-family: 'iranyekan';
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.inbox-page .card-subtitle {
+  font-family: 'iranyekan';
+  font-size: 0.8em;
+  position: absolute;
+  top: 40%;
+  right: 35%;
+  width: 100%;
+}
+
+.inbox-page .card-date {
+  font-size: 0.8em;
+  position: absolute;
+  top: 70%;
+  right: 35%;
+  width: 100%;
+}
+/*# sourceMappingURL=inbox.css.map */
