@@ -5,6 +5,7 @@ import {IFilter} from '../interfaces/ifilter.interface';
 import {ToastController} from 'ionic-angular';
 import {DictionaryService} from './dictionary.service';
 import {imagePathFixer} from '../shared/lib/imagePathFixer';
+import {SpinnerService} from "./spinner.service";
 
 const productColorMap = function (r) {
   return r.colors.map(c => c.name ? c.name.split("/")
@@ -67,7 +68,7 @@ export class ProductService {
   private _savedSort: any = {};
 
 
-  constructor(private httpService: HttpService, private toastCtrl: ToastController, private dict: DictionaryService) {
+  constructor(private httpService: HttpService, private toastCtrl: ToastController, private dict: DictionaryService, private spinnerService: SpinnerService) {
   }
 
   getSavedChecked(): any {
@@ -152,8 +153,8 @@ export class ProductService {
   }
 
   applyFilters(filters, trigger) {
+    this.spinnerService.presentLoadingDefault();
     this.filteredProducts = JSON.parse(JSON.stringify(this.products));
-
     filters.forEach(f => {
       if (f.values.length) {
         if (["brand", "type"].includes(f.name)) {
@@ -188,6 +189,7 @@ export class ProductService {
     if (found >= 0 && this.products[found].detailed) {
       this.product$.next(this.products[found]);
     } else {
+      this.spinnerService.presentLoadingDefault();
       this.httpService.get(`product/${productId}`).subscribe(data => {
         this.enrichProductData(data);
         if (found >= 0) {
@@ -254,7 +256,7 @@ export class ProductService {
   }
 
   loadProducts(address) {
-
+    this.spinnerService.presentLoadingDefault();
     this.httpService.post("collection/app/products", {address}).subscribe(
       (data) => {
 
@@ -295,6 +297,7 @@ export class ProductService {
   }
 
   private sortProductsAndEmit() {
+    this.spinnerService.presentLoadingDefault();
     let sortedProducts = [];
     switch (this.sortInput) {
       case "newest": {

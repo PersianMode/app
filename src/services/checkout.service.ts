@@ -4,6 +4,7 @@ import {PaymentType} from '../enum/payment.type.enum';
 import {CartService} from './cart.service';
 import {HttpService} from './http.service';
 import {AuthService} from './auth.service';
+import {SpinnerService} from "./spinner.service";
 
 @Injectable()
 export class CheckoutService {
@@ -23,7 +24,7 @@ export class CheckoutService {
   private balance = 0;
 
   constructor(private cartService: CartService, private httpService: HttpService,
-    private authService: AuthService) {
+    private authService: AuthService, private spinnerService: SpinnerService) {
     this.cartService.cartItems.subscribe(
       (data) => this.dataIsReady.next(data ? true : false)
     );
@@ -79,6 +80,7 @@ export class CheckoutService {
   }
 
   private getCustomerAddress() {
+    this.spinnerService.presentLoadingDefault();
     return new Promise((resolve, reject) => {
       this.httpService.get('customer/address').subscribe(
         (data) => {
@@ -116,9 +118,11 @@ export class CheckoutService {
   // }
 
   saveAddress(addressData) {
+    this.spinnerService.presentLoadingDefault();
     return new Promise((resolve, reject) => {
       this.httpService.post('user/address', addressData).subscribe(
         (data) => {
+
           if (!addressData._id)
             Object.assign(addressData, {_id: data.addresses[data.addresses.length - 1]._id});
           this.upsertAddress.next(addressData);
@@ -147,6 +151,7 @@ export class CheckoutService {
     this.cartService.applyCoupon(this.cartService.coupon_code)
       .then(rs => {
         const data = this.accumulateData();
+        this.spinnerService.presentLoadingDefault();
         this.httpService.post('checkout', data).subscribe(
           (res) => {
             console.log(res);
