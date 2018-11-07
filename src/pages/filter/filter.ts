@@ -5,6 +5,7 @@ import {ProductService} from '../../services/productService';
 import {DictionaryService} from '../../services/dictionary.service';
 import {priceFormatter} from '../../shared/lib/priceFormatter';
 import {ISize} from '../../interfaces/isize.interface';
+import {SpinnerService} from "../../services/spinner.service";
 
 @Component({
   templateUrl: 'filter.html'
@@ -49,7 +50,7 @@ export class FilterPage implements OnInit {
 
 
   constructor(public navParams: NavParams, public viewCtrl: ViewController,
-              private productService: ProductService, private dict: DictionaryService) {
+              private productService: ProductService, private dict: DictionaryService, private spinnerService: SpinnerService) {
 
   }
 
@@ -129,7 +130,7 @@ export class FilterPage implements OnInit {
 
     this.current_filter_state.forEach(el => {
       if (el.name === name) {
-        if (this.isChecked[name][value] && (el.values.length === 0 || el.values.findIndex(i => i === value) === -1 ))
+        if (this.isChecked[name][value] && (el.values.length === 0 || el.values.findIndex(i => i === value) === -1))
           el.values.push(value);
         else {
           const ind = el.values.indexOf(value);
@@ -152,6 +153,7 @@ export class FilterPage implements OnInit {
   }
 
   clearFilters() {
+    this.spinnerService.enable();
     this.current_filter_state.forEach(el => {
       el.values = [];
     });
@@ -165,6 +167,7 @@ export class FilterPage implements OnInit {
     this.sortedBy = null;
     this.productService.saveChecked(this.isChecked);
     this.productService.applyFilters(this.current_filter_state, '');
+    this.spinnerService.disable();
   }
 
   selectSortOption(index) {
