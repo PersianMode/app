@@ -190,14 +190,12 @@ export class ProductService {
     if (found >= 0 && this.products[found].detailed) {
       this.product$.next(this.products[found]);
     } else {
-      this.spinnerService.enable();
       this.httpService.get(`product/${productId}`).subscribe(data => {
         this.enrichProductData(data);
         if (found >= 0) {
           this.products[found] = data;
         }
         this.product$.next(data);
-        this.spinnerService.disable();
       });
     }
   }
@@ -258,7 +256,6 @@ export class ProductService {
   }
 
   loadProducts(address) {
-    this.spinnerService.enable();
     this.httpService.post("collection/app/products", {address}).subscribe(
       (data) => {
 
@@ -280,10 +277,8 @@ export class ProductService {
           this.productList$.next(this.filteredProducts);
 
         }
-        this.spinnerService.disable();
       },
       (err) => {
-        this.spinnerService.disable();
         console.error("Cannot get products of collection: ", err);
         this.toastCtrl.create({
           message: "خطا در دریافت لیست محصولات",

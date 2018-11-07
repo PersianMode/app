@@ -154,9 +154,9 @@ export class CheckoutService {
   }
 
   checkout() {
+    this.spinnerService.enable();
     this.cartService.applyCoupon(this.cartService.coupon_code)
       .then(rs => {
-        this.spinnerService.enable();
         const data = this.accumulateData();
         this.httpService.post('checkout', data).subscribe(
           (res) => {
