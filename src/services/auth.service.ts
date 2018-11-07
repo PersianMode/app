@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {HttpService} from './http.service';
 import {Storage} from '@ionic/storage';
-import {SpinnerService} from "./spinner.service";
 
 @Injectable()
 export class AuthService {
@@ -24,7 +23,7 @@ export class AuthService {
     gender: null,
   };
 
-  constructor(private httpService: HttpService, private storage: Storage, private spinnerService: SpinnerService) {
+  constructor(private httpService: HttpService, private storage: Storage) {
     this.loadUserBasicData()
       .then((data) => {
         if (data)
@@ -77,7 +76,6 @@ export class AuthService {
   }
 
   activateEmail(link) {
-    this.spinnerService.presentLoadingDefault();
     return new Promise((resolve, reject) => {
       this.httpService.get(`user/activate/link/${link}`).subscribe(
         data => {
@@ -123,7 +121,6 @@ export class AuthService {
   }
 
   login(username, password, setAuthenticationStatus = true) {
-    this.spinnerService.presentLoadingDefault();
     return new Promise((resolve, reject) => {
       this.httpService.post('app/login', {
         username: username,
@@ -148,7 +145,6 @@ export class AuthService {
   }
 
   logout() {
-    this.spinnerService.presentLoadingDefault();
     return new Promise((resolve, reject) => {
       this.httpService.get('logout').subscribe(
         (res) => {

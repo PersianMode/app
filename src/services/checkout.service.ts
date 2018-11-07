@@ -80,13 +80,15 @@ export class CheckoutService {
   }
 
   private getCustomerAddress() {
-    this.spinnerService.presentLoadingDefault();
+    this.spinnerService.enable();
     return new Promise((resolve, reject) => {
       this.httpService.get('customer/address').subscribe(
         (data) => {
           resolve(data.addresses);
+          this.spinnerService.disable();
         },
         (err) => {
+          this.spinnerService.disable();
           console.error('Cannot fetch customer address: ', err);
           reject(err);
         }
@@ -118,7 +120,7 @@ export class CheckoutService {
   // }
 
   saveAddress(addressData) {
-    this.spinnerService.presentLoadingDefault();
+    this.spinnerService.enable();
     return new Promise((resolve, reject) => {
       this.httpService.post('user/address', addressData).subscribe(
         (data) => {
@@ -127,8 +129,12 @@ export class CheckoutService {
             Object.assign(addressData, {_id: data.addresses[data.addresses.length - 1]._id});
           this.upsertAddress.next(addressData);
           resolve(data);
+          this.spinnerService.disable();
         },
-        (err) => reject(err)
+        (err) => {
+          this.spinnerService.disable();
+          reject(err);
+        }
       );
     });
   }
@@ -150,13 +156,15 @@ export class CheckoutService {
   checkout() {
     this.cartService.applyCoupon(this.cartService.coupon_code)
       .then(rs => {
+        this.spinnerService.enable();
         const data = this.accumulateData();
-        this.spinnerService.presentLoadingDefault();
         this.httpService.post('checkout', data).subscribe(
           (res) => {
             console.log(res);
+            this.spinnerService.disable();
           },
           (err) => {
+            this.spinnerService.disable();
             console.error('Error when checkout items: ', err);
           }
         );

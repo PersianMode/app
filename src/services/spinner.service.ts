@@ -4,18 +4,17 @@ import {LoadingController} from "ionic-angular";
 @Injectable()
 export class SpinnerService {
 
+  loading;
   constructor(public loadingCtrl: LoadingController) {
   }
 
-  presentLoadingDefault() {
-    let loading = this.loadingCtrl.create({
+  enable() {
+     this.loading = this.loadingCtrl.create({
       spinner: 'crescent',
     });
-
-    loading.present();
-
-    setTimeout(() => {
-      loading.dismiss();
-    }, 500);
+    this.loading.present();
+  }
+  disable() {
+      this.loading.dismiss();
   }
 }

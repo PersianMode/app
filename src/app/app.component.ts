@@ -9,7 +9,6 @@ import {DictionaryService} from '../services/dictionary.service';
 import {Deeplinks} from '@ionic-native/deeplinks';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
 
-
 @Component({
   templateUrl: 'app.html'
 })

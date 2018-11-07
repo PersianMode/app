@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {IFilter} from '../interfaces/ifilter.interface';
-import {ToastController} from 'ionic-angular';
+import {LoadingController, ToastController} from 'ionic-angular';
 import {DictionaryService} from './dictionary.service';
 import {imagePathFixer} from '../shared/lib/imagePathFixer';
 import {SpinnerService} from "./spinner.service";
@@ -68,7 +68,7 @@ export class ProductService {
   private _savedSort: any = {};
 
 
-  constructor(private httpService: HttpService, private toastCtrl: ToastController, private dict: DictionaryService, private spinnerService: SpinnerService) {
+  constructor(private httpService: HttpService, private toastCtrl: ToastController, private dict: DictionaryService, private spinnerService: SpinnerService, private loadingCtrl: LoadingController) {
   }
 
   getSavedChecked(): any {
@@ -153,7 +153,7 @@ export class ProductService {
   }
 
   applyFilters(filters, trigger) {
-    this.spinnerService.presentLoadingDefault();
+    this.spinnerService.enable();
     this.filteredProducts = JSON.parse(JSON.stringify(this.products));
     filters.forEach(f => {
       if (f.values.length) {
@@ -182,6 +182,7 @@ export class ProductService {
     });
     this.sortProductsAndEmit();
     this.extractFilters(filters, trigger);
+    this.spinnerService.disable();
   }
 
   getProduct(productId) {
@@ -189,13 +190,14 @@ export class ProductService {
     if (found >= 0 && this.products[found].detailed) {
       this.product$.next(this.products[found]);
     } else {
-      this.spinnerService.presentLoadingDefault();
+      this.spinnerService.enable();
       this.httpService.get(`product/${productId}`).subscribe(data => {
         this.enrichProductData(data);
         if (found >= 0) {
           this.products[found] = data;
         }
         this.product$.next(data);
+        this.spinnerService.disable();
       });
     }
   }
@@ -256,7 +258,7 @@ export class ProductService {
   }
 
   loadProducts(address) {
-    this.spinnerService.presentLoadingDefault();
+    this.spinnerService.enable();
     this.httpService.post("collection/app/products", {address}).subscribe(
       (data) => {
 
@@ -276,9 +278,12 @@ export class ProductService {
           this._savedChecked = {};
           this.extractFilters();
           this.productList$.next(this.filteredProducts);
+
         }
+        this.spinnerService.disable();
       },
       (err) => {
+        this.spinnerService.disable();
         console.error("Cannot get products of collection: ", err);
         this.toastCtrl.create({
           message: "خطا در دریافت لیست محصولات",
@@ -297,7 +302,7 @@ export class ProductService {
   }
 
   private sortProductsAndEmit() {
-    this.spinnerService.presentLoadingDefault();
+    this.spinnerService.enable();
     let sortedProducts = [];
     switch (this.sortInput) {
       case "newest": {
@@ -325,5 +330,6 @@ export class ProductService {
       }
     }
     this.productList$.next(sortedProducts);
+    this.spinnerService.disable();
   }
 }
