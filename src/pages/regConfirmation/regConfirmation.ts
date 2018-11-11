@@ -189,7 +189,7 @@ export class RegConfirmationPage implements OnInit {
       },
       (err) => {
         this.toastCtrl.create({
-          message: 'قادر به ثبت شماره تلفن همراهتان نیستیم. دوباره نلاش کنید',
+          message: 'قادر به ثبت شماره تلفن همراهتان نیستیم. دوباره تلاش کنید',
           duration: 3200,
         }).present();
         console.error('Cannot apply entered phone number: ', err);

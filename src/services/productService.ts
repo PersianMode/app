@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {IFilter} from '../interfaces/ifilter.interface';
-import {ToastController} from 'ionic-angular';
+import {LoadingController, ToastController} from 'ionic-angular';
 import {DictionaryService} from './dictionary.service';
 import {imagePathFixer} from '../shared/lib/imagePathFixer';
+import {SpinnerService} from "./spinner.service";
 
 const productColorMap = function (r) {
   return r.colors.map(c => c.name ? c.name.split("/")
@@ -66,7 +67,7 @@ export class ProductService {
   private _savedSort: any = {};
 
 
-  constructor(private httpService: HttpService, private toastCtrl: ToastController, private dict: DictionaryService) {
+  constructor(private httpService: HttpService, private toastCtrl: ToastController, private dict: DictionaryService, private spinnerService: SpinnerService, private loadingCtrl: LoadingController) {
   }
 
   getSavedChecked(): any {
@@ -151,8 +152,8 @@ export class ProductService {
   }
 
   applyFilters(filters, trigger) {
+    this.spinnerService.enable();
     this.filteredProducts = JSON.parse(JSON.stringify(this.products));
-
     filters.forEach(f => {
       if (f.values.length) {
         if (["brand", "type"].includes(f.name)) {
@@ -180,6 +181,7 @@ export class ProductService {
     });
     this.sortProductsAndEmit();
     this.extractFilters(filters, trigger);
+    this.spinnerService.disable();
   }
 
   getProduct(productId) {
@@ -267,7 +269,6 @@ export class ProductService {
   }
 
   loadProducts(address) {
-
     this.httpService.post("collection/app/products", {address}).subscribe(
       (data) => {
         if (data.name_fa) {
@@ -286,6 +287,7 @@ export class ProductService {
           this._savedChecked = {};
           this.extractFilters();
           this.productList$.next(this.filteredProducts);
+
         }
       },
       (err) => {
@@ -307,6 +309,7 @@ export class ProductService {
   }
 
   private sortProductsAndEmit() {
+    this.spinnerService.enable();
     let sortedProducts = [];
     switch (this.sortInput) {
       case "newest": {
@@ -334,6 +337,7 @@ export class ProductService {
       }
     }
     this.productList$.next(sortedProducts);
+    this.spinnerService.disable();
   }
 
   updateProducts(updatedProducts) {

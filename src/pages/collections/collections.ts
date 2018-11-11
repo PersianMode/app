@@ -68,7 +68,6 @@ export class CollectionsPage {
     this.scrollCounter++;
 
     this.cScrollIndex = this.countPerScroll * this.scrollCounter;
-
     if (this.products.length !== this.totalProducts.length) {
       this.products = this.products.concat(this.totalProducts.slice(this.cScrollIndex - 1, this.cScrollIndex - 1 + this.countPerScroll));
     }

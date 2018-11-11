@@ -46,6 +46,7 @@ import {GooglePlus} from '@ionic-native/google-plus';
 import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
 import {DobComponent} from '../components/dob/dob';
 import {Deeplinks} from '@ionic-native/deeplinks';
+import {SpinnerService} from "../services/spinner.service";
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import {Deeplinks} from '@ionic-native/deeplinks';
     GoogleMaps,
     Geolocation,
     Deeplinks,
+    SpinnerService
   ]
 })
 export class AppModule {

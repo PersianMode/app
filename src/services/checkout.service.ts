@@ -4,6 +4,7 @@ import {PaymentType} from '../enum/payment.type.enum';
 import {CartService} from './cart.service';
 import {HttpService} from './http.service';
 import {AuthService} from './auth.service';
+import {SpinnerService} from "./spinner.service";
 import {DeliveryTime} from '../constants/deliveryTime.enum';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 
@@ -40,7 +41,7 @@ export class CheckoutService {
   };
 
   constructor(private cartService: CartService, private httpService: HttpService,
-    private authService: AuthService) {
+    private authService: AuthService, private spinnerService: SpinnerService) {
     this.cartService.cartItems.subscribe(
       (data) => this.dataIsReady.next(data ? true : false)
     );
@@ -110,12 +111,15 @@ export class CheckoutService {
   }
 
   private getCustomerAddress() {
+    this.spinnerService.enable();
     return new Promise((resolve, reject) => {
       this.httpService.get('customer/address').subscribe(
         (data) => {
           resolve(data.addresses);
+          this.spinnerService.disable();
         },
         (err) => {
+          this.spinnerService.disable();
           console.error('Cannot fetch customer address: ', err);
           reject(err);
         }
@@ -147,15 +151,21 @@ export class CheckoutService {
   // }
 
   saveAddress(addressData) {
+    this.spinnerService.enable();
     return new Promise((resolve, reject) => {
       this.httpService.post('user/address', addressData).subscribe(
         (data) => {
+
           if (!addressData._id)
             Object.assign(addressData, {_id: data.addresses[data.addresses.length - 1]._id});
           this.upsertAddress.next(addressData);
           resolve(data);
+          this.spinnerService.disable();
         },
-        (err) => reject(err)
+        (err) => {
+          this.spinnerService.disable();
+          reject(err);
+        }
       );
     });
   }
@@ -226,6 +236,7 @@ export class CheckoutService {
           else {
             this.CCIncreaseLoyaltyPoints = res[0].add_point;
             resolve();
+
           }
         },
           err => {
