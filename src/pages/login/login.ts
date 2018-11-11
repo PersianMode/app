@@ -37,12 +37,9 @@ export class LoginPage implements OnInit {
   seen = {};
   curFocus = null;
 
-  // dR = '';
-  // mess = '';
-
   constructor(private navCtrl: NavController, private authService: AuthService,
-              private toastCtrl: ToastController, private httpService: HttpService,
-              private googlePlus: GooglePlus, private loadingService: LoadingService) {
+    private toastCtrl: ToastController, private httpService: HttpService,
+    private googlePlus: GooglePlus, private loadingService: LoadingService) {
 
   }
 
@@ -59,8 +56,8 @@ export class LoginPage implements OnInit {
         Validators.required,
       ]],
     }, {
-      validator: this.checkUsername,
-    });
+        validator: this.checkUsername,
+      });
   }
 
   checkUsername(AC: AbstractControl) {
@@ -91,13 +88,14 @@ export class LoginPage implements OnInit {
     if (!this.loginForm.valid)
       return;
 
-    this.loadingService.enable();
 
     this.authService.tempData = {
       username: this.loginForm.controls['username'].value,
       password: this.loginForm.controls['password'].value,
       gender: 'm',
     };
+
+    this.loadingService.enable();
 
     this.authService.login(this.authService.tempData['username'], this.authService.tempData['password'])
       .then((res) => {

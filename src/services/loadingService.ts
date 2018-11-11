@@ -13,14 +13,19 @@ export class LoadingService {
 
   }
 
-  enable(config = {}) {
+  enable(config = {}, timeout = 500, callBack = null) {
     if (!this.counter) {
-      this.loading = this.loadingCtrl.create(Object.keys(config).length ? config : this.baseConfig);
+      const conf = Object.assign({spinner: 'crescent'}, Object.keys(config).length ? config : this.baseConfig);
+      this.loading = this.loadingCtrl.create(conf);
       this.loading.present();
     }
 
     if(!config || !config['duration']) {
       this.counter++;
+    }
+
+    if(callBack) {
+      setTimeout(callBack, +timeout);
     }
   }
 

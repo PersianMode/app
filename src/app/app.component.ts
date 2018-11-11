@@ -23,8 +23,8 @@ export class MyApp implements OnInit {
     splashScreen: SplashScreen, private authService: AuthService,
     dict: DictionaryService, private deeplinks: Deeplinks,
     private toastCtrl: ToastController, private loadingService: LoadingService) {
-    this.loadingService.enable();
-    this.authService.checkIsUserValid()
+    this.loadingService.enable({}, 0, () => {
+      this.authService.checkIsUserValid()
       .then(res => {
         this.loadingService.disable();
         this.rootPage = TabsPage;
@@ -33,6 +33,7 @@ export class MyApp implements OnInit {
         this.loadingService.disable();
         this.rootPage = LoginPage;
       });
+    });
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

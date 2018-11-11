@@ -27,37 +27,37 @@ export class CheckoutAddress implements OnInit {
     this.isClickAndCollect = this.checkoutService.isClickAndCollect;
 
     this.loadingService.enable({
-      content: 'در حال دریافت آدرس های شما ...',
+      content: 'در حال دریافت اطلاعات ...',
+    }, 0, () => {
+      let receivedCount = 0;
+
+      this.checkoutService.getAddresses()
+        .then((res: any) => {
+          this.customerAddressList = res.customer;
+          this.inventoryAddressList = res.inventories;
+          receivedCount++;
+  
+          if (receivedCount === 2)
+            this.loadingService.disable();
+        })
+        .catch(err => {
+          console.error('Cannot fetch addresses of customer and inventories: ', err);
+          this.loadingService.disable();
+        });
+  
+      this.checkoutService.getDurations()
+        .then(() => {
+          this.durations = this.checkoutService.durations;
+          receivedCount++;
+  
+          if (receivedCount === 2)
+            this.loadingService.disable();
+        })
+        .catch(err => {
+          console.error('CAnnot fetch durations details: ', err);
+          this.loadingService.disable();
+        });
     });
-
-    let receivedCount = 0;
-
-    this.checkoutService.getAddresses()
-      .then((res: any) => {
-        this.customerAddressList = res.customer;
-        this.inventoryAddressList = res.inventories;
-        receivedCount++;
-
-        if (receivedCount === 2)
-          this.loadingService.disable();
-      })
-      .catch(err => {
-        console.error('Cannot fetch addresses of customer and inventories: ', err);
-        this.loadingService.disable();
-      });
-
-    this.checkoutService.getDurations()
-      .then(() => {
-        this.durations = this.checkoutService.durations;
-        receivedCount++;
-
-        if (receivedCount === 2)
-          this.loadingService.disable();
-      })
-      .catch(err => {
-        console.error('CAnnot fetch durations details: ', err);
-        this.loadingService.disable();
-      });
 
     this.checkoutService.upsertAddress.subscribe(
       (data) => {

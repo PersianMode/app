@@ -34,41 +34,43 @@ export class SelectCount {
 
   applyChangedQuantity() {
     let diff = this.selectedQuantity - this.quantity;
-    this.loadingService.enable();
-    if (diff > 0) {
-      this.cartService.addOrderline(this.product_id, this.product_instance_id, diff)
-        .then(res => {
-          this.loadingService.disable();
-          this.loadingService.enable({
-            spinner: 'hide',
-            content: 'تعداد با موفقیت تغییر کرد.',
-            duration: 1000,
-            cssClass: 'select-size-page-header',
+    this.loadingService.enable({}, 0, () => {
+      if (diff > 0) {
+        this.cartService.addOrderline(this.product_id, this.product_instance_id, diff)
+          .then(res => {
+            this.loadingService.disable();
+            this.loadingService.enable({
+              spinner: 'hide',
+              content: 'تعداد با موفقیت تغییر کرد.',
+              duration: 1000,
+              cssClass: 'select-size-page-header',
+            });
+            this.loadingService.setOnDismissFunctionality(() => {
+              this.navCtrl.pop();
+            });
+          })
+          .catch(err => {
+            console.error('Error: ', err);
           });
-          this.loadingService.setOnDismissFunctionality(() => {
-            this.navCtrl.pop();
+      }
+      else {
+        this.cartService.removeOrderline(this.product_instance_id, -diff)
+          .then(res => {
+            this.loadingService.disable();
+            this.loadingService.enable({
+              spinner: 'hide',
+              content: 'تعداد با موفقیت تغییر کرد.',
+              duration: 1000,
+              cssClass: 'select-size-page-header',
+            });
+            this.loadingService.setOnDismissFunctionality(() => {
+              this.navCtrl.pop();
+            });
+          })
+          .catch(err => {
+            console.error('Error: ', err);
           });
-        })
-        .catch(err => {
-          console.error('Error: ', err);
-        });
-    }
-    else {
-      this.cartService.removeOrderline(this.product_instance_id, -diff)
-        .then(res => {
-          this.loadingService.enable({
-            spinner: 'hide',
-            content: 'تعداد با موفقیت تغییر کرد.',
-            duration: 1000,
-            cssClass: 'select-size-page-header',
-          });
-          this.loadingService.setOnDismissFunctionality(() => {
-            this.navCtrl.pop();
-          });
-        })
-        .catch(err => {
-          console.error('Error: ', err);
-        });
-    }
+      }
+    });
   }
 }

@@ -41,32 +41,33 @@ export class SelectSizePage {
 
 
   addToBag() {
-    this.loadingService.enable();
-    let foundInstance = this.product.instances.filter(x => x.product_color_id === this.activeColor && x.size === this.selectedSize)
+    this.loadingService.enable({}, 0, () => {
+      let foundInstance = this.product.instances.filter(x => x.product_color_id === this.activeColor && x.size === this.selectedSize)
 
-    let instanceId = foundInstance && foundInstance[0] ? foundInstance[0]._id : null;
+      let instanceId = foundInstance && foundInstance[0] ? foundInstance[0]._id : null;
 
-    if (instanceId) {
-      this.cartService.addOrderline(this.productId, instanceId, 1)
-        .then(res => {
-          this.loadingService.disable();
-          this.loadingService.enable({
-            spinner: 'hide',
-            content: 'محصول به سبد خرید اضافه شد!',
-            duration: 1500,
-            cssClass: 'select-size-page-header',
-          });
-          this.loadingService.setOnDismissFunctionality(() => {
-            this.navCtrl.pop();
-          });
-        })
-        .catch(err => {
-          this.loadingService.disable();
-          this.presentToast("لطفا مجدداً تلاش کنید!");
-        })
-    } else
-      this.presentToast("محصول مورد نظر یافت نشد");
-
+      if (instanceId) {
+        this.cartService.addOrderline(this.productId, instanceId, 1)
+          .then(res => {
+            this.loadingService.disable();
+            this.loadingService.enable({
+              spinner: 'hide',
+              content: 'محصول به سبد خرید اضافه شد!',
+              duration: 1500,
+              cssClass: 'select-size-page-header',
+            });
+            this.loadingService.setOnDismissFunctionality(() => {
+              this.navCtrl.pop();
+            });
+          })
+          .catch(err => {
+            this.loadingService.disable();
+            this.presentToast("لطفا مجدداً تلاش کنید!");
+          })
+      } else {
+        this.presentToast("محصول مورد نظر یافت نشد");
+      }
+    });
   }
 
   selectSize(size) {

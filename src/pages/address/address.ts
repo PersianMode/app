@@ -263,8 +263,8 @@ export class AddressPage implements OnInit, AfterViewInit {
           data[el] = this.addressForm.controls[el].value;
       });
 
-      this.loadingService.enable();
-      this.checkoutService.saveAddress(data)
+      this.loadingService.enable({}, 0, () => {
+        this.checkoutService.saveAddress(data)
         .then(res => {
           this.anyChanges = false;
           this.loadingService.disable();
@@ -277,7 +277,8 @@ export class AddressPage implements OnInit, AfterViewInit {
         .catch(err => {
           this.loadingService.disable();
           reject(err);
-        })
+        });
+      });
     });
   }
 }

@@ -17,25 +17,25 @@ export class FeedPage {
   }
 
   ionViewWillEnter() {
-    this.loadingService.enable();
-
     this.placements$ = this.pageService.placement$;
+    
+    this.loadingService.enable({}, 0, () => {
+      this.pageService.getPage('feed');
 
-    this.pageService.getPage('feed');
-
-    this.placements$.subscribe(res => {
-      this.feed_placement = res;
-      this.feed_placement.sort((a, b) => {
-        if (a.info.row > b.info.row)
-          return 1;
-        else if (a.info.row < b.info.row)
-          return -1;
-        return 0;
+      this.placements$.subscribe(res => {
+        this.feed_placement = res;
+        this.feed_placement.sort((a, b) => {
+          if (a.info.row > b.info.row)
+            return 1;
+          else if (a.info.row < b.info.row)
+            return -1;
+          return 0;
+        });
+        this.loadingService.disable();
+      }, err => {
+        console.error(err);
+        this.loadingService.disable();
       });
-      this.loadingService.disable();
-    }, err => {
-      console.error(err);
-      this.loadingService.disable();
     });
   }
 

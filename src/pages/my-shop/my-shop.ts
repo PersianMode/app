@@ -24,40 +24,41 @@ export class MyShopPage {
 
 
   constructor(private pageService: PageService, public navCtrl: NavController,
-      private loadingService: LoadingService) {
+    private loadingService: LoadingService) {
   }
 
   ionViewWillEnter() {
 
     this.types = [];
 
-    this.loadingService.enable();
-    this.placements$ = this.pageService.placement$.subscribe(res => {
+    this.loadingService.enable({}, 0, () => {
+      this.placements$ = this.pageService.placement$.subscribe(res => {
 
-      this.placement = res;
+        this.placement = res;
 
-      this.placement
-        .filter(el => el.component_name === 'menu' && el.variable_name === 'topMenu')
-        .sort((a, b) => {
-          if (a.info.column > b.info.column)
-            return 1;
-          else if (a.info.column < b.info.column)
-            return -1;
-          return 0;
-        })
-        .forEach(item => {
-          this.types.push({
-            name: item.info.text,
-            href: item.info.href,
-            kind: item.info.href.split('/')[item.info.href.split('/').length - 1]
+        this.placement
+          .filter(el => el.component_name === 'menu' && el.variable_name === 'topMenu')
+          .sort((a, b) => {
+            if (a.info.column > b.info.column)
+              return 1;
+            else if (a.info.column < b.info.column)
+              return -1;
+            return 0;
+          })
+          .forEach(item => {
+            this.types.push({
+              name: item.info.text,
+              href: item.info.href,
+              kind: item.info.href.split('/')[item.info.href.split('/').length - 1]
+            });
           });
-        });
 
-      this.elementType(this.types[0]);
-      this.loadingService.disable();
-    }, err => {
-      console.error('Error when subscribing on page placements: ', err);
-      this.loadingService.disable();
+        this.elementType(this.types[0]);
+        this.loadingService.disable();
+      }, err => {
+        console.error('Error when subscribing on page placements: ', err);
+        this.loadingService.disable();
+      });
     });
 
     this.pageService.getPage('my_shop');

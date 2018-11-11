@@ -90,103 +90,105 @@ export class ProductService {
   }
 
   extractFilters(filters = [], trigger = "") {
-    this.loadingService.enable();
-    const products = trigger ? this.filteredProducts : this.products;
-    let tags: any = {};
-
-    const brand = Array.from(new Set([...products.map(r => r.brand)]));
-    const type = Array.from(new Set([...products.map(r => r.product_type)]));
-
-    const size = Array.from(new Set([...products.map(r => Object.keys(r.sizesInventory))
-      .reduce((x, y) => x.concat(y), []).sort()]));
-    const color = Array.from(new Set([...products.map(productColorMap)
-      .reduce((x, y) => x.concat(y), []).reduce((x, y) => x.concat(y), [])]));
-
-    let price;
-    if (trigger === "price") {
-      price = [];
-    } else {
-      price = products.map(r => r.base_price);
-
-      if (price && price.length > 1 && price[0] !== price[1]) {
-        const minPrice = Math.min(...price);
-        const maxPrice = Math.max(...price);
-        price = [minPrice, maxPrice];
-      } else {
+    this.loadingService.enable({}, 500, () => {
+      const products = trigger ? this.filteredProducts : this.products;
+      let tags: any = {};
+  
+      const brand = Array.from(new Set([...products.map(r => r.brand)]));
+      const type = Array.from(new Set([...products.map(r => r.product_type)]));
+  
+      const size = Array.from(new Set([...products.map(r => Object.keys(r.sizesInventory))
+        .reduce((x, y) => x.concat(y), []).sort()]));
+      const color = Array.from(new Set([...products.map(productColorMap)
+        .reduce((x, y) => x.concat(y), []).reduce((x, y) => x.concat(y), [])]));
+  
+      let price;
+      if (trigger === "price") {
         price = [];
-      }
-    }
-
-    tags = {brand, type, price, size, color};
-
-    if (trigger && trigger !== "price") {
-      tags[trigger] = this.collectionTags[trigger] ? this.collectionTags[trigger] : [];
-    }
-
-    products.forEach(p => p.tags.forEach(tag => {
-      const tagGroupName = tag.tg_name;
-      if (!tags[tagGroupName]) {
-        tags[tagGroupName] = new Set();
-      }
-      tags[tagGroupName].add(tag.name);
-    }));
-
-    if (trigger) {
-      this.collectionTagsAfterFilter = tags;
-    } else {
-      this.collectionTags = tags;
-    }
-
-    const emittedValue = [];
-    for (const name in tags) {
-      if (tags.hasOwnProperty(name)) {
-        const values = Array.from(tags[name]);
-        const found = filters.find(r => r.name === name);
-        if (values.length > 1 || (found && found.values.length)) {
-          emittedValue.push({
-            name: name,
-            name_fa: this.dict.translateWord(name),
-            values,
-            values_fa: values.map((r: string | number) => name !== "color" ? this.dict.translateWord(r) : this.dict.convertColor(r + ""))
-          });
+      } else {
+        price = products.map(r => r.base_price);
+  
+        if (price && price.length > 1 && price[0] !== price[1]) {
+          const minPrice = Math.min(...price);
+          const maxPrice = Math.max(...price);
+          price = [minPrice, maxPrice];
+        } else {
+          price = [];
         }
       }
-    }
-    this.filtering$.next(emittedValue);
-    this.loadingService.disable();
+  
+      tags = {brand, type, price, size, color};
+  
+      if (trigger && trigger !== "price") {
+        tags[trigger] = this.collectionTags[trigger] ? this.collectionTags[trigger] : [];
+      }
+  
+      products.forEach(p => p.tags.forEach(tag => {
+        const tagGroupName = tag.tg_name;
+        if (!tags[tagGroupName]) {
+          tags[tagGroupName] = new Set();
+        }
+        tags[tagGroupName].add(tag.name);
+      }));
+  
+      if (trigger) {
+        this.collectionTagsAfterFilter = tags;
+      } else {
+        this.collectionTags = tags;
+      }
+  
+      const emittedValue = [];
+      for (const name in tags) {
+        if (tags.hasOwnProperty(name)) {
+          const values = Array.from(tags[name]);
+          const found = filters.find(r => r.name === name);
+          if (values.length > 1 || (found && found.values.length)) {
+            emittedValue.push({
+              name: name,
+              name_fa: this.dict.translateWord(name),
+              values,
+              values_fa: values.map((r: string | number) => name !== "color" ? this.dict.translateWord(r) : this.dict.convertColor(r + ""))
+            });
+          }
+        }
+      }
+      this.filtering$.next(emittedValue);
+      this.loadingService.disable();
+    });
   }
 
   applyFilters(filters, trigger) {
-    this.loadingService.enable();
-    this.filteredProducts = JSON.parse(JSON.stringify(this.products));
-    filters.forEach(f => {
-      if (f.values.length) {
-        if (["brand", "type"].includes(f.name)) {
-          this.filteredProducts = this.filteredProducts.filter(r => Array.from(f.values).includes(r[f.name]));
-        } else if (f.name === "color") {
-          this.filteredProducts
-            .forEach((p, pi) => this.filteredProducts[pi].colors = p.colors
-              .filter(c => Array.from(f.values).filter(v => c.name ? c.name.split("/").includes(v) : false).length));
-          this.filteredProducts.forEach((p, pi) => this.enrichProductData(this.filteredProducts[pi]));
-        } else if (f.name === "size") {
-          this.filteredProducts.forEach((p, pi) => this.filteredProducts[pi].instances = p.instances
-            .filter(i => Array.from(f.values).includes(i.size)));
-          this.filteredProducts.forEach((p, pi) => this.filteredProducts[pi].colors = p.colors
-            .filter(c => p.instances.map(i => i.product_color_id).includes(c._id)));
-          this.filteredProducts.forEach((p, pi) => this.enrichProductData(this.filteredProducts[pi]));
-        } else if (f.name === "price") {
-          this.filteredProducts = this.filteredProducts.filter(p => p.base_price >= f.values[0] && p.base_price <= f.values[1]);
-        } else {
-          this.filteredProducts = this.filteredProducts
-            .filter(p => p.tags.filter(t => Array.from(f.values).includes(t.name)).length);
+    this.loadingService.enable({}, 500, () => {
+      this.filteredProducts = JSON.parse(JSON.stringify(this.products));
+      filters.forEach(f => {
+        if (f.values.length) {
+          if (["brand", "type"].includes(f.name)) {
+            this.filteredProducts = this.filteredProducts.filter(r => Array.from(f.values).includes(r[f.name]));
+          } else if (f.name === "color") {
+            this.filteredProducts
+              .forEach((p, pi) => this.filteredProducts[pi].colors = p.colors
+                .filter(c => Array.from(f.values).filter(v => c.name ? c.name.split("/").includes(v) : false).length));
+            this.filteredProducts.forEach((p, pi) => this.enrichProductData(this.filteredProducts[pi]));
+          } else if (f.name === "size") {
+            this.filteredProducts.forEach((p, pi) => this.filteredProducts[pi].instances = p.instances
+              .filter(i => Array.from(f.values).includes(i.size)));
+            this.filteredProducts.forEach((p, pi) => this.filteredProducts[pi].colors = p.colors
+              .filter(c => p.instances.map(i => i.product_color_id).includes(c._id)));
+            this.filteredProducts.forEach((p, pi) => this.enrichProductData(this.filteredProducts[pi]));
+          } else if (f.name === "price") {
+            this.filteredProducts = this.filteredProducts.filter(p => p.base_price >= f.values[0] && p.base_price <= f.values[1]);
+          } else {
+            this.filteredProducts = this.filteredProducts
+              .filter(p => p.tags.filter(t => Array.from(f.values).includes(t.name)).length);
+          }
         }
-      }
-
-      this.filteredProducts = this.cleanProductsList(this.filteredProducts);
+  
+        this.filteredProducts = this.cleanProductsList(this.filteredProducts);
+      });
+      this.sortProductsAndEmit();
+      this.extractFilters(filters, trigger);
+      this.loadingService.disable();
     });
-    this.sortProductsAndEmit();
-    this.extractFilters(filters, trigger);
-    this.loadingService.disable();
   }
 
   getProduct(productId) {
@@ -316,36 +318,36 @@ export class ProductService {
   }
 
   private sortProductsAndEmit() {
-    this.loadingService.enable();
-    let sortedProducts = [];
-    switch (this.sortInput) {
-      case "newest": {
-        sortedProducts = this.filteredProducts.slice().sort(newestSort);
-        break;
+    this.loadingService.enable({}, 500, () => {
+      let sortedProducts = [];
+      switch (this.sortInput) {
+        case "newest": {
+          sortedProducts = this.filteredProducts.slice().sort(newestSort);
+          break;
+        }
+        case "highest": {
+          sortedProducts = this.filteredProducts.slice().sort(reviewSort);
+          break;
+        }
+        case "cheapest": {
+          sortedProducts = this.filteredProducts.slice().sort(priceSort);
+          break;
+        }
+        case "most": {
+          sortedProducts = this.filteredProducts.slice().sort(priceSortReverse);
+          break;
+        }
+        case "alphabetical": {
+          sortedProducts = this.filteredProducts.slice().sort(nameSort);
+          break;
+        }
+        default: {
+          sortedProducts = this.filteredProducts;
+        }
       }
-      case "highest": {
-        sortedProducts = this.filteredProducts.slice().sort(reviewSort);
-        break;
-      }
-      case "cheapest": {
-        sortedProducts = this.filteredProducts.slice().sort(priceSort);
-        break;
-      }
-      case "most": {
-        sortedProducts = this.filteredProducts.slice().sort(priceSortReverse);
-        break;
-      }
-      case "alphabetical": {
-        sortedProducts = this.filteredProducts.slice().sort(nameSort);
-        break;
-      }
-      default: {
-        sortedProducts = this.filteredProducts;
-      }
-    }
-    this.productList$.next(sortedProducts);
-    
-    this.loadingService.disable();
+      this.productList$.next(sortedProducts);
+      this.loadingService.disable();
+    });
   }
 
   updateProducts(updatedProducts) {
