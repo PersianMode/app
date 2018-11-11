@@ -12,7 +12,7 @@ export class ProductItemComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.product.desc = this.product.tags ? this.product.tags.join(' ') : null;
+    this.product.desc = this.product.tags ? this.product.tags.map(el => el.name).join(' ') : null;
   }
 
   select() {

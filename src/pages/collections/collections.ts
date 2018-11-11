@@ -31,10 +31,9 @@ export class CollectionsPage {
   }
 
   ionViewWillEnter() {
-
     this.loading = this.loadingCtrl.create({});
-
-    // this.navBar.setBackButtonText("بازگشت");
+    this.navBar.setBackButtonText("بازگشت");
+    
     this.loading.present().then(() => {
 
       this.products$ = this.productService.productList$.subscribe(
