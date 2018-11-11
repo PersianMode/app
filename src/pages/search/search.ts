@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, NavParams, Navbar } from 'ionic-angular';
 import {HttpService} from '../../services/http.service';
 import {DictionaryService} from '../../services/dictionary.service';
 import {imagePathFixer} from '../../shared/lib/imagePathFixer';
@@ -11,6 +11,8 @@ import {ProductViewPage} from '../products/product-view/product-view';
   templateUrl: 'search.html',
 })
 export class SearchPage {
+  @ViewChild(Navbar) navBar: Navbar;
+
   searchPhrase = null;
   searchProductList = [];
   searchCollectionList = [];
@@ -22,7 +24,7 @@ export class SearchPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SearchPage');
+    this.navBar.setBackButtonText("بازگشت");
   }
 
   searchProduct() {

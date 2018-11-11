@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {PopoverController} from "ionic-angular";
+import {LoadingController, PopoverController, AlertController} from "ionic-angular";
 import {SelectCount} from "../select-count/select-count";
 import {CartService} from "../../../services/cart.service";
 import {priceFormatter} from "../../../shared/lib/priceFormatter";
@@ -14,26 +14,42 @@ export class ProductSliding implements OnInit {
   @Input() product;
   @Output() getList = new EventEmitter<any>();
 
-  constructor(public loadingService: LoadingService, public popoverCtrl: PopoverController,
-    private cartService: CartService) {
+  constructor(public loadingService: LoadingService, public loadingCtrl: LoadingController,
+    private cartService: CartService, private alertCtrl: AlertController,
+    public popoverCtrl: PopoverController) {
   }
 
   ngOnInit() {
   }
 
   removeThisProduct() {
-    this.loadingService.enable({
-      duration: 1000,
-    });
-    setTimeout(() => {
-      this.cartService.removeOrderline(this.product.instance_id, this.product.quantity)
-        .then(res => {
-          this.getList.emit();
-        })
-        .catch(err => {
-          console.error("error in removing orderling", err);
-        })
-    }, 200);
+    this.alertCtrl.create({
+      title: 'تأیید حذف',
+      subTitle: 'آیا می خواهید این محصول را از سبد خرید حذف کنید؟',
+      buttons: [
+        {
+          text: 'خیر',
+        },
+        {
+          text: 'حذف',
+          handler: () => {
+            let loading = this.loadingCtrl.create({
+              duration: 1000,
+            });
+            setTimeout(() => {
+              this.cartService.removeOrderline(this.product.instance_id, this.product.quantity)
+                .then(res => {
+                  this.getList.emit();
+                })
+                .catch(err => {
+                  console.error("error in removing orderling", err);
+                })
+            }, 200);
+            loading.present();
+          }
+        }
+      ]
+    }).present();
   }
 
   actionCount() {
@@ -50,7 +66,6 @@ export class ProductSliding implements OnInit {
   }
 
   onNotHavingMoreThanOneQuantity() {
-
     this.loadingService.enable({
       spinner: "hide",
       content: "تعداد این محصول قابل تغییر نیست.",
@@ -68,7 +83,7 @@ export class ProductSliding implements OnInit {
   }
 
   getThumbnailURL(): string {
-    return imagePathFixer(this.product.thumbnail, this.product.product_id, this.product.product_color_id);
+    return imagePathFixer(this.product.color.image.thumbnail, this.product.product_id, this.product.color._id);
   }
 
   getProductDiscount() {

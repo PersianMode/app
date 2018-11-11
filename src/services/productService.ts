@@ -2,17 +2,17 @@ import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {IFilter} from '../interfaces/ifilter.interface';
-import {ToastController} from 'ionic-angular';
+import {LoadingController, ToastController} from 'ionic-angular';
 import {DictionaryService} from './dictionary.service';
 import {imagePathFixer} from '../shared/lib/imagePathFixer';
 import {LoadingService} from './loadingService';
+import {SpinnerService} from "./spinner.service";
 
 const productColorMap = function (r) {
   return r.colors.map(c => c.name ? c.name.split("/")
     .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color value
     : []);
 };
-
 
 const newestSort = function (a, b) {
   if (a.year && b.year && a.season && b.season && ((a.year * 8 + a.season) - (b.year * 8 + b.season))) {
@@ -69,7 +69,8 @@ export class ProductService {
 
 
   constructor(private httpService: HttpService, private toastCtrl: ToastController,
-    private dict: DictionaryService, private loadingService: LoadingService) {
+    private dict: DictionaryService, private spinnerService: SpinnerService,
+    private loadingCtrl: LoadingController, private loadingService: LoadingService) {
   }
 
   getSavedChecked(): any {
@@ -158,7 +159,6 @@ export class ProductService {
   applyFilters(filters, trigger) {
     this.loadingService.enable();
     this.filteredProducts = JSON.parse(JSON.stringify(this.products));
-
     filters.forEach(f => {
       if (f.values.length) {
         if (["brand", "type"].includes(f.name)) {
@@ -202,6 +202,20 @@ export class ProductService {
         this.product$.next(data);
       });
     }
+  }
+
+  getProducts(productIds) {
+    const promiseList = [];
+    productIds.forEach(i => {
+      const found = this.products.findIndex(r => r._id === i);
+      if(found >= 0 && this.products[found].detailed) {
+        promiseList.push(Promise.resolve(this.products[found]));
+      } else {
+        promiseList.push(this.httpService.get(`product/${i}`).toPromise());
+      }
+    });
+
+    return Promise.all(promiseList);
   }
 
   private cleanProductsList(data: any[]) {
@@ -263,7 +277,6 @@ export class ProductService {
     this.loadingService.enable();
     this.httpService.post("collection/app/products", {address}).subscribe(
       (data) => {
-
         if (data.name_fa) {
           this.collectionName = data.name_fa;
           this.collectionNameFa$.next(data.name_fa);
@@ -331,6 +344,17 @@ export class ProductService {
       }
     }
     this.productList$.next(sortedProducts);
+    
     this.loadingService.disable();
+  }
+
+  updateProducts(updatedProducts) {
+    updatedProducts.forEach(product => {
+      const found = this.products.findIndex(r => r._id === product._id);
+      this.enrichProductData(product);
+      if (found >= 0) {
+        this.products[found] = product;
+      }
+    });
   }
 }

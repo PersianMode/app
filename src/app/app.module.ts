@@ -48,6 +48,7 @@ import {DobComponent} from '../components/dob/dob';
 import {Deeplinks} from '@ionic-native/deeplinks';
 import {LoadingService} from '../services/loadingService';
 import {SocialSharing} from '@ionic-native/social-sharing';
+import {SpinnerService} from "../services/spinner.service";
 
 @NgModule({
   declarations: [
@@ -129,6 +130,7 @@ import {SocialSharing} from '@ionic-native/social-sharing';
     Geolocation,
     Deeplinks,
     SocialSharing,
+    SpinnerService
   ]
 })
 export class AppModule {

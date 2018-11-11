@@ -3,27 +3,45 @@
     <ion-item>
       <ion-label *ngIf="isClickAndCollect">تحویل در فروشگاه</ion-label>
       <ion-label *ngIf="!isClickAndCollect">ارسال به آدرس</ion-label>
-      <ion-toggle [(ngModel)]="isClickAndCollect"></ion-toggle>
+      <ion-toggle [(ngModel)]="isClickAndCollect" (ngModelChange)="toggleDeliveryDestination()"></ion-toggle>
     </ion-item>
   </ion-list>
 
-  <ion-list *ngIf="!isClickAndCollect">
-    <ion-item *ngFor="let c_adr of customerAddressList"
-              [ngClass]="{'selected-address': compareAddress(c_adr) && !isClickAndCollect}">
-      <button item-start ion-button clear icon-only (click)="addressDetailForm(c_adr, false)" class="details-button">
-        <ion-icon ios="md-create" md="md-create"></ion-icon>
-      </button>
-      <ion-label item-end class="address-semi-details" (click)="setAddress(c_adr)">
-        <span>{{c_adr.province}} - {{c_adr.city}} - {{c_adr.street}}</span>
-        <span> ({{c_adr.recipient_name}} {{c_adr.recipient_surname}})</span>
-      </ion-label>
-    </ion-item>
-    <button ion-button full color="dark" (click)="addressDetailForm(null, false)">افزودن آدرس جدید</button>
-  </ion-list>
+  <div *ngIf="!isClickAndCollect">
+    <ion-list>
+      <ion-item *ngFor="let c_adr of customerAddressList" [ngClass]="{'selected-address': compareAddress(c_adr) && !isClickAndCollect}">
+        <button item-start ion-button clear icon-only (click)="addressDetailForm(c_adr, false)" class="details-button">
+          <ion-icon ios="md-create" md="md-create"></ion-icon>
+        </button>
+        <ion-label item-end class="address-semi-details" (click)="setAddress(c_adr)">
+          <span>{{c_adr.province}} - {{c_adr.city}} - {{c_adr.street}}</span>
+          <span> ({{c_adr.recipient_name}} {{c_adr.recipient_surname}})</span>
+        </ion-label>
+      </ion-item>
+      <button ion-button full color="dark" (click)="addressDetailForm(null, false)">افزودن آدرس جدید</button>
+    </ion-list>
+
+    <h6>زمان تحویل</h6>
+    <ion-list>
+      <ion-item *ngFor="let d of durations" (click)="selectDuration(d)" [ngClass]="{'selected-address': selectedDuration && selectedDuration._id === d._id && !isClickAndCollect}"
+        class="delivery-time">
+        {{d.name}}{{(d.delivery_days === 2 || d.delivery_days === 3) ? ' (مخصوص استان تهران)' : ''}}
+      </ion-item>
+    </ion-list>
+
+    <div *ngIf="selectedDuration">
+      <h6>بازه تحویل</h6>
+      <ion-list>
+        <ion-item *ngFor="let dt of getDeliveryTimeList()" (click)="selectDeliveryTime(dt)" [ngClass]="{'selected-address': selectedDeliveryTime === dt && !isClickAndCollect}"
+          class="delivery-time">
+          {{getDeliveryTimeDisplay(dt)}}
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
 
   <ion-list *ngIf="isClickAndCollect">
-    <ion-item *ngFor="let i_adr of inventoryAddressList"
-              [ngClass]="{'selected-address': compareAddress(i_adr) && isClickAndCollect}">
+    <ion-item *ngFor="let i_adr of inventoryAddressList" [ngClass]="{'selected-address': compareAddress(i_adr) && isClickAndCollect}">
       <button item-start ion-button clear icon-only (click)="addressDetailForm(i_adr, true)" class="details-button">
         <ion-icon name="information-circle"></ion-icon>
       </button>

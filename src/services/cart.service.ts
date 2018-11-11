@@ -10,6 +10,9 @@ export class CartService {
   cartItems: ReplaySubject<number> = new ReplaySubject<number>();
   coupon_discount = 0;
   coupon_code = '';
+  loyaltyPoints$: ReplaySubject<number> = new ReplaySubject<number>();
+  balanceValue$: ReplaySubject<number> = new ReplaySubject<number>();
+  private orderId = null;
 
   constructor(private httpService: HttpService, private authService: AuthService) {
     this.loadOrderlines().catch(err => {
@@ -22,8 +25,7 @@ export class CartService {
       return new Promise((resolve, reject) => {
         this.httpService.get(`cart/items`).subscribe(
           data => {
-            this.updateInfo(data);
-            this.dataArray = data;
+            this.updateInfo(data.filter(el => el.instance_id && el.product_id));
             resolve();
           },
           err => {
@@ -37,6 +39,7 @@ export class CartService {
 
   updateInfo(data) {
     this.dataArray = data;
+    this.orderId = this.dataArray && this.dataArray.length ? this.dataArray[0].order_id : null;
     this.cartItems.next(this.getTotalNumber());
   }
 
@@ -72,7 +75,7 @@ export class CartService {
             return Promise.reject("nothing's changed");
 
           this.loadOrderlines().catch(err => {
-            console.log('-> ', err);
+            console.error('-> ', err);
           });
           resolve();
         },
@@ -81,7 +84,7 @@ export class CartService {
           reject();
         }
       );
-    })
+    });
   }
 
   getTotalNumber() {
@@ -106,52 +109,63 @@ export class CartService {
   }
 
   getBalanceAndLoyalty() {
-    return new Promise((resolve, reject) => {
-      this.httpService.get(`customer/balance`).subscribe(
-        data => {
-          resolve({balance: data["balance"], loyalty_points: data["loyalty_points"]});
-        },
-        err => {
-          console.error("couldn't get balance and loyalty points");
-          reject(0);
-        }
-      );
-    })
+    this.httpService.get(`customer/balance`).subscribe(
+      data => {
+        this.balanceValue$.next(data.balance);
+        this.loyaltyPoints$.next(data.loyalty_points);
+      },
+      err => {
+        console.error("couldn't get balance and loyalty points");
+      });
   }
 
   calculateTotal() {
-    if (this.dataArray && this.dataArray.length > 0) {
+    if (this.dataArray && this.dataArray.length) {
       return this.dataArray
-        .filter(el => el.count && el.quantity <= el.count)
-        .map(el => (el.instance_price ? el.instance_price : el.base_price) * el.quantity)
-        .reduce((a, b) => a + b);
+        .map(el => el.cost * el.quantity)
+        .reduce((a, b) => a + b, 0);
     }
+
+    // if (this.dataArray && this.dataArray.length > 0) {
+    //   return this.dataArray
+    //     .filter(el => el.count && el.quantity <= el.count)
+    //     .map(el => (el.instance_price ? el.instance_price : el.base_price) * el.quantity)
+    //     .reduce((a, b) => a + b, 0);
+    // }
 
     return 0;
   }
 
-  calculateDiscount(addCoupon = true) {
-    let discountValue = 0;
-
-    if (this.dataArray.length > 0) {
-      this.dataArray.forEach(el => {
-        // let tempTotalDiscount = el.discount && el.discount.length > 0 ? el.discount.reduce((a, b) => a * b) : 0;
-
-        // tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
-
-        let tempTotalDiscount = el.discount ? el.discount : 0;
-
-        if (el.coupon_discount) {
-          if (addCoupon)
-            tempTotalDiscount += Number(el.coupon_discount.toFixed(5));
-        }
-
-        const price = el.instance_price ? el.instance_price : el.base_price;
-        discountValue += (price - ((1 - tempTotalDiscount) * price)) * el.quantity;
-      });
+  calculateDiscount(items, addCoupon = true) {
+    if (items.length) {
+      return items
+        .map(i => i.cost * i.discount * i.quantity)
+        .reduce((a, b) => a + b, 0);
     }
 
-    return discountValue;
+    return 0;
+
+    // let discountValue = 0;
+
+    // if (this.dataArray.length > 0) {
+    //   this.dataArray.forEach(el => {
+    //     // let tempTotalDiscount = el.discount && el.discount.length > 0 ? el.discount.reduce((a, b) => a * b) : 0;
+
+    //     // tempTotalDiscount = Number(tempTotalDiscount.toFixed(5));
+
+    //     let tempTotalDiscount = el.discount ? el.discount : 0;
+
+    //     if (el.coupon_discount) {
+    //       if (addCoupon)
+    //         tempTotalDiscount += Number(el.coupon_discount.toFixed(5));
+    //     }
+
+    //     const price = el.instance_price ? el.instance_price : el.base_price;
+    //     discountValue += (price - ((1 - tempTotalDiscount) * price)) * el.quantity;
+    //   });
+    // }
+
+    // return discountValue;
   }
 
   addCoupon(coupon_code = "") {
@@ -211,11 +225,13 @@ export class CartService {
     let data = {
       title: "پرداخت",
       subtitle: "",
+      one_product: false,
     };
 
     if (this.dataArray.length === 1) {
       data["title"] = this.dataArray[0]["name"];
       data["subtitle"] = this.dataArray[0]["color"]["name"];
+      data["one_product"] = true;
     } else {
       data["subtitle"] += priceFormatter(this.getTotalNumber()) + " عدد"
     }
@@ -225,7 +241,7 @@ export class CartService {
 
   getCheckoutItems() {
     return this.dataArray
-      .map(r => Object.assign({}, {
+      .map(r => Object.assign(r, {
         product_id: r.product_id,
         product_instance_id: r.instance_id,
         number: r.quantity,
@@ -233,8 +249,14 @@ export class CartService {
   }
 
   getOrderId() {
-    if (this.dataArray.length)
-      return this.dataArray[0].order_id;
-    return null;
+    return this.orderId;
+  }
+
+  emptyCart() {
+    this.dataArray = [];
+    this.orderId = null;
+    this.cartItems.next(0);
+    this.coupon_code = '';
+    this.coupon_discount = 0;
   }
 }
