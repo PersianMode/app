@@ -1,7 +1,8 @@
 import {Component, ViewChild} from "@angular/core";
 import {
   NavController, NavParams, PopoverController, Slides,
-  ViewController
+  ViewController,
+  Navbar
 } from "ionic-angular";
 import {ProductDetailPage} from "../product-detail/product-detail";
 import {ProductService} from '../../../services/productService';
@@ -17,6 +18,7 @@ export class ProductViewPage {
   productId: string;
 
   @ViewChild('topSlider') topSlider: Slides;
+  @ViewChild(Navbar) navBar: Navbar;
 
   product: any;
   product$: any;
@@ -33,7 +35,7 @@ export class ProductViewPage {
   }
 
   ionViewWillEnter() {
-    // this.viewCtrl.setBackButtonText('بازگشت');
+    this.navBar.setBackButtonText('بازگشت');
     this.productId = this.navParams.get('productId');
 
     this.productService.getProduct(this.productId);

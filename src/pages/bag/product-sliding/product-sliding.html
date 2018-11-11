@@ -1,9 +1,9 @@
 <ion-item-sliding>
   <ion-item>
     <ion-thumbnail item-start>
-      <img src="{{getThumbnailURL()}}" alt="">
+      <img [src]="getThumbnailURL()" alt="">
     </ion-thumbnail>
-    <ion-label>
+    <ion-label class="cart-item-label">
 
       <p style="color: black; font-weight: 200; margin-bottom: 15px;">{{product.name}}</p>
       <p style="color: #000;">

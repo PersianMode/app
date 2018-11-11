@@ -89,7 +89,6 @@ export class MyShopPage {
           showSubMenu: false,
         });
       });
-    this.selectTab = type;
 
     this.selectTab = type;
   }

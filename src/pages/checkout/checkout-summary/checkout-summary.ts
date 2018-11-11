@@ -16,12 +16,57 @@ export class CheckoutSummary implements OnInit {
   }
 
   @Input()
+  set earnedLoyaltyPoint(value) {
+    this._earnedLoyaltyPoint = value;
+  }
+
+  get earnedLoyaltyPoint(){
+    return this._earnedLoyaltyPoint;
+  }
+
+  @Input()
+  set showCostLabel(value) {
+    this._showCostLabel = value;
+
+    this.calculateTotal();
+  }
+
+  get showCostLabel() {
+    return this._showCostLabel;
+  }
+
+  @Input()
+  set deliveryCost(value) {
+    this._deliveryCost = value;
+    if (value) {
+      this.calculateTotal();
+    }
+  }
+
+  get deliveryCost() {
+    return this._deliveryCost;
+  }
+
+  @Input()
+  set deliveryDiscount(value) {
+    if (!value)
+      value = 0;
+
+    this._deliveryDiscount = value;
+    this.calculateTotal();
+  }
+
+  get deliveryDiscount() {
+    return this._deliveryDiscount;
+  }
+
+  @Input()
   set discount(value) {
     this._discount = value;
     this.calculateTotal();
   }
   get discount() {
-    return this._discount;
+    return this._discount || 0;
   }
 
   @Input()
@@ -39,7 +84,7 @@ export class CheckoutSummary implements OnInit {
     this._usedLoyaltyPoint = value;
     this.calculateTotal();
   }
-  get usedLoyaltyPoint(){
+  get usedLoyaltyPoint() {
     return this._usedLoyaltyPoint;
   }
 
@@ -47,6 +92,10 @@ export class CheckoutSummary implements OnInit {
   private _discount = 0;
   private _usedBalance = 0;
   private _usedLoyaltyPoint = 0;
+  private _showCostLabel = false;
+  private _deliveryCost = 0;
+  private _deliveryDiscount = 0;
+  private _earnedLoyaltyPoint = 0;
   finalTotal = 0;
 
   constructor() {
@@ -67,7 +116,7 @@ export class CheckoutSummary implements OnInit {
   }
 
   calculateTotal() {
-    this.finalTotal = this.total - (this.discount ? this.discount : 0);
+    this.finalTotal = this.total + this.deliveryCost - this.discount - this.usedBalance - this.usedLoyaltyPoint - this.deliveryDiscount;
     if (this.usedBalance && this.usedBalance > this.finalTotal) {
       this.usedBalance = this.finalTotal;
       this.finalTotal = 0;

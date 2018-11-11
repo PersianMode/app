@@ -13,7 +13,6 @@ const productColorMap = function (r) {
     : []);
 };
 
-
 const newestSort = function (a, b) {
   if (a.year && b.year && a.season && b.season && ((a.year * 8 + a.season) - (b.year * 8 + b.season))) {
     return (a.year * 8 + a.season) - (b.year * 8 + b.season);
@@ -200,6 +199,20 @@ export class ProductService {
     }
   }
 
+  getProducts(productIds) {
+    const promiseList = [];
+    productIds.forEach(i => {
+      const found = this.products.findIndex(r => r._id === i);
+      if(found >= 0 && this.products[found].detailed) {
+        promiseList.push(Promise.resolve(this.products[found]));
+      } else {
+        promiseList.push(this.httpService.get(`product/${i}`).toPromise());
+      }
+    });
+
+    return Promise.all(promiseList);
+  }
+
   private cleanProductsList(data: any[]) {
     return data.filter(p => p.instances.length && p.colors.length);
   }
@@ -258,7 +271,6 @@ export class ProductService {
   loadProducts(address) {
     this.httpService.post("collection/app/products", {address}).subscribe(
       (data) => {
-
         if (data.name_fa) {
           this.collectionName = data.name_fa;
           this.collectionNameFa$.next(data.name_fa);
@@ -326,5 +338,15 @@ export class ProductService {
     }
     this.productList$.next(sortedProducts);
     this.spinnerService.disable();
+  }
+
+  updateProducts(updatedProducts) {
+    updatedProducts.forEach(product => {
+      const found = this.products.findIndex(r => r._id === product._id);
+      this.enrichProductData(product);
+      if (found >= 0) {
+        this.products[found] = product;
+      }
+    });
   }
 }

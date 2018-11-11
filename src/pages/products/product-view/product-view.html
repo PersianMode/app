@@ -23,14 +23,14 @@
       [ngClass]="{'active-image': i == activeColorIndex}">
   </ion-scroll>
 
-  <div class="color-field">
+  <div class="details-field">
     <ion-label>
         <span>رنگ: </span>
         <span>{{selectedColor?.name}}</span>
     </ion-label>
   </div>
 
-  <div [innerHtml]="product?.desc">
+  <div class="details-field" [innerHtml]="product?.desc">
   </div>
   <!-- <ion-icon name="share-alt" class="card-icon"></ion-icon> -->
 
