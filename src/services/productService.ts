@@ -2,11 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpService} from './http.service';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {IFilter} from '../interfaces/ifilter.interface';
-import {LoadingController, ToastController} from 'ionic-angular';
+import {ToastController} from 'ionic-angular';
 import {DictionaryService} from './dictionary.service';
 import {imagePathFixer} from '../shared/lib/imagePathFixer';
 import {LoadingService} from './loadingService';
-import {SpinnerService} from "./spinner.service";
 
 const productColorMap = function (r) {
   return r.colors.map(c => c.name ? c.name.split("/")
@@ -69,8 +68,7 @@ export class ProductService {
 
 
   constructor(private httpService: HttpService, private toastCtrl: ToastController,
-    private dict: DictionaryService, private spinnerService: SpinnerService,
-    private loadingCtrl: LoadingController, private loadingService: LoadingService) {
+    private dict: DictionaryService, private loadingService: LoadingService) {
   }
 
   getSavedChecked(): any {

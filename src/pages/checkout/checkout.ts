@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Navbar, NavController, NavParams, ToastController, LoadingController, AlertController} from "ionic-angular";
+import {Navbar, NavController, NavParams, ToastController, AlertController} from "ionic-angular";
 import {CheckoutService} from '../../services/checkout.service';
 import {PaymentType} from '../../enum/payment.type.enum';
 import {AddressPage} from '../address/address';
 import {ProductService} from '../../services/productService';
+import {LoadingService} from '../../services/loadingService';
 
 @Component({
   selector: 'page-checkout',
@@ -38,7 +39,7 @@ export class CheckoutPage implements OnInit {
 
   constructor(private navParams: NavParams, private toastCtrl: ToastController,
     private checkoutService: CheckoutService, private navCtrl: NavController,
-    private loadingCtrl: LoadingController, private productService: ProductService,
+    private loadingService: LoadingService, private productService: ProductService,
     private alertCtrl: AlertController) {
   }
 
@@ -78,25 +79,21 @@ export class CheckoutPage implements OnInit {
 
     this.addressIsSet = this.checkoutService.selectedAddress ? true : false;
 
-    const loyaltyDetailsLoading = this.loadingCtrl.create({
-      content: 'در حال دریافت اطلاعات وفاداری ...',
-    });
-
-    loyaltyDetailsLoading.present();
+    this.loadingService.enable({content: 'در حال دریافت اطلاعات وفاداری ...'});
 
     Promise.all([
       this.checkoutService.getAddLoyaltyPoints(),
       this.checkoutService.getLoyaltyGroup(),
     ])
       .then(res => {
-        loyaltyDetailsLoading.dismiss().catch(er => console.error(er));
+        this.loadingService.disable();
       })
       .catch(err => {
         this.toastCtrl.create({
           message: 'قادر به دریافت لیست گروه های وفاداری نیستیم. دوباره تلاش کنید',
           duration: 3200,
         }).present();
-        loyaltyDetailsLoading.dismiss().catch(er => console.error(er));
+        this.loadingService.disable();
       });
   }
 
