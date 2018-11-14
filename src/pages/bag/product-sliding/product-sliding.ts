@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {LoadingController, PopoverController, AlertController} from "ionic-angular";
+import {PopoverController, AlertController} from "ionic-angular";
 import {SelectCount} from "../select-count/select-count";
 import {CartService} from "../../../services/cart.service";
 import {priceFormatter} from "../../../shared/lib/priceFormatter";
 import {imagePathFixer} from "../../../shared/lib/imagePathFixer";
+import {LoadingService} from "../../../services/loadingService";
 
 @Component({
   selector: "page-product-sliding",
@@ -13,8 +14,8 @@ export class ProductSliding implements OnInit {
   @Input() product;
   @Output() getList = new EventEmitter<any>();
 
-  constructor(public loadingCtrl: LoadingController, public popoverCtrl: PopoverController,
-    private cartService: CartService, private alertCtrl: AlertController) {
+  constructor(public loadingService: LoadingService, private cartService: CartService,
+    private alertCtrl: AlertController, public popoverCtrl: PopoverController) {
   }
 
   ngOnInit() {
@@ -31,19 +32,17 @@ export class ProductSliding implements OnInit {
         {
           text: 'حذف',
           handler: () => {
-            let loading = this.loadingCtrl.create({
-              duration: 1000,
-            });
-            setTimeout(() => {
+            this.loadingService.enable({duration: 1000}, 200, () => {
               this.cartService.removeOrderline(this.product.instance_id, this.product.quantity)
                 .then(res => {
                   this.getList.emit();
+                  this.loadingService.disable();
                 })
                 .catch(err => {
                   console.error("error in removing orderling", err);
-                })
-            }, 200);
-            loading.present();
+                  this.loadingService.disable();
+                });
+            });
           }
         }
       ]
@@ -61,16 +60,6 @@ export class ProductSliding implements OnInit {
     overCtrl.onDidDismiss(() => {
       this.getList.emit();
     })
-  }
-
-  onNotHavingMoreThanOneQuantity() {
-    let loading = this.loadingCtrl.create({
-      spinner: "hide",
-      content: "تعداد این محصول قابل تغییر نیست.",
-      duration: 1000,
-      cssClass: "select-size-page-header",
-    });
-    loading.present();
   }
 
   getMaxCount() {

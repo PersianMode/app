@@ -9,6 +9,8 @@ import {ProductService} from '../../../services/productService';
 import {priceFormatter} from '../../../shared/lib/priceFormatter';
 import {SelectSizePage} from '../select-size/select-size';
 import {SearchPage} from '../../search/search';
+import {SocialSharing} from '@ionic-native/social-sharing';
+import {HttpService} from "../../../services/http.service";
 
 @Component({
   selector: 'page-product-view',
@@ -30,12 +32,12 @@ export class ProductViewPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, private productService: ProductService,
-    private popoverCtrl: PopoverController) {
+    private popoverCtrl: PopoverController, private socialSharing: SocialSharing) {
 
   }
 
   ionViewWillEnter() {
-    this.navBar.setBackButtonText('بازگشت');
+    this.navBar.setBackButtonText('');
     this.productId = this.navParams.get('productId');
 
     this.productService.getProduct(this.productId);
@@ -126,8 +128,13 @@ export class ProductViewPage {
     return (inst && inst.price ? inst.price : this.product.base_price) - ((inst && inst.price ? inst.price : this.product.base_price) * this.product.discount);
   }
 
-
   goToSearchPage() {
     this.navCtrl.push(SearchPage);
+  }
+
+  shareProduct() {
+    if (this.product) {
+      this.socialSharing.share('محصول ' + this.product.name, 'محصولات پرشین مد', null, HttpService.Host + '/product/' + this.product.id + '/' + this.selectedColor);
+    }
   }
 }

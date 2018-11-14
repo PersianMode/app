@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {LoadingController} from 'ionic-angular';
 import {CheckoutService} from '../../../services/checkout.service';
+import {LoadingService} from '../../../services/loadingService';
 import {DeliveryTime} from '../../../constants/deliveryTime.enum';
 
 @Component({
@@ -19,47 +19,45 @@ export class CheckoutAddress implements OnInit {
   selectedDuration = null;
   selectedDeliveryTime = null;
 
-  constructor(private checkoutService: CheckoutService, private loadingCtrl: LoadingController) {
+  constructor(private checkoutService: CheckoutService, private loadingService: LoadingService) {
   }
 
   ngOnInit() {
     this.selectedAddress = this.checkoutService.selectedAddress;
     this.isClickAndCollect = this.checkoutService.isClickAndCollect;
 
-    const addressLoading = this.loadingCtrl.create({
+    this.loadingService.enable({
       content: 'در حال دریافت اطلاعات ...',
+    }, 0, () => {
+      let receivedCount = 0;
+
+      this.checkoutService.getAddresses()
+        .then((res: any) => {
+          this.customerAddressList = res.customer;
+          this.inventoryAddressList = res.inventories;
+          receivedCount++;
+  
+          if (receivedCount === 2)
+            this.loadingService.disable();
+        })
+        .catch(err => {
+          console.error('Cannot fetch addresses of customer and inventories: ', err);
+          this.loadingService.disable();
+        });
+  
+      this.checkoutService.getDurations()
+        .then(() => {
+          this.durations = this.checkoutService.durations;
+          receivedCount++;
+  
+          if (receivedCount === 2)
+            this.loadingService.disable();
+        })
+        .catch(err => {
+          console.error('CAnnot fetch durations details: ', err);
+          this.loadingService.disable();
+        });
     });
-
-    addressLoading.present();
-
-    let receivedCount = 0;
-
-    this.checkoutService.getAddresses()
-      .then((res: any) => {
-        this.customerAddressList = res.customer;
-        this.inventoryAddressList = res.inventories;
-        receivedCount++;
-
-        if (receivedCount === 2)
-          addressLoading.dismiss().catch(err => console.error('-> ', err));
-      })
-      .catch(err => {
-        console.error('Cannot fetch addresses of customer and inventories: ', err);
-        addressLoading.dismiss().catch(err => console.error('-> ', err));
-      });
-
-    this.checkoutService.getDurations()
-      .then(() => {
-        this.durations = this.checkoutService.durations;
-        receivedCount++;
-
-        if (receivedCount === 2)
-          addressLoading.dismiss().catch(err => console.error('-> ', err));
-      })
-      .catch(err => {
-        console.error('CAnnot fetch durations details: ', err);
-        addressLoading.dismiss().catch(err => console.error('-> ', err));
-      });
 
     this.checkoutService.upsertAddress.subscribe(
       (data) => {

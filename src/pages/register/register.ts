@@ -3,9 +3,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as moment from 'moment-jalaali';
 import {HttpService} from '../../services/http.service';
 import {AuthService} from '../../services/auth.service';
-import {LoadingController, NavController, ToastController} from 'ionic-angular';
+import {NavController, ToastController} from 'ionic-angular';
 import {RegConfirmationPage} from '../regConfirmation/regConfirmation';
 import 'moment/locale/fa';
+import {LoadingService} from '../../services/loadingService';
 
 @Component({
   selector: 'page-register',
@@ -22,7 +23,7 @@ export class RegisterPage implements OnInit {
 
   constructor(private httpService: HttpService, private authService: AuthService,
               public navCtrl: NavController, private toastCtrl: ToastController,
-              private loadingCtrl: LoadingController) {
+              private loadingService: LoadingService) {
   }
 
   ngOnInit() {
@@ -63,20 +64,16 @@ export class RegisterPage implements OnInit {
   }
 
   register() {
-    const waiting = this.loadingCtrl.create({
-      content: 'لطفا صبر کنید ...',
-    });
-
     if (this.registerForm.valid && this.gender) {
       let data: any = {};
       Object.keys(this.registerForm.controls).forEach(el => data[el] = this.registerForm.controls[el].value);
       data.dob = this.dob;
       data['gender'] = this.gender;
 
-      waiting.present();
+      this.loadingService.enable();
       this.httpService.put('register', data).subscribe(
         (res) => {
-          waiting.dismiss();
+          this.loadingService.disable();
           this.authService.tempData = {
             username: this.registerForm.controls['username'].value,
             password: this.registerForm.controls['password'].value,
@@ -87,7 +84,7 @@ export class RegisterPage implements OnInit {
           });
         },
         (err) => {
-          waiting.dismiss();
+          this.loadingService.disable();
           console.error('Cannot register: ', err);
 
           if (err.error === 'Username or mobile number is exist')

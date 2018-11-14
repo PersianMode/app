@@ -1,9 +1,9 @@
 <ion-row dir="rtl">
   <ion-col>
     <ion-list>
-      <ion-item>
-        <ion-label>تاریخ تولد</ion-label>
-        <ion-select okText="قبول" cancelText="لغو"
+      <ion-item class="item">
+        <ion-label class="title">تاریخ تولد</ion-label>
+        <ion-select okText="قبول" cancelText="لغو" style="padding: unset"
                     placeholder="روز" [required]="true" (ionChange)="onChange()" [(ngModel)]="day" dir="rtl">
           <ion-option *ngFor="let day of days" [value]="day.index">{{day.value}}</ion-option>
         </ion-select>

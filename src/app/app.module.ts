@@ -46,7 +46,8 @@ import {GooglePlus} from '@ionic-native/google-plus';
 import {ForgotPasswordPage} from '../pages/forgot-password/forgot-password';
 import {DobComponent} from '../components/dob/dob';
 import {Deeplinks} from '@ionic-native/deeplinks';
-import {SpinnerService} from "../services/spinner.service";
+import {LoadingService} from '../services/loadingService';
+import {SocialSharing} from '@ionic-native/social-sharing';
 
 @NgModule({
   declarations: [
@@ -121,12 +122,13 @@ import {SpinnerService} from "../services/spinner.service";
     ProductService,
     PageService,
     CartService,
+    LoadingService,
     DictionaryService,
     CheckoutService,
     GoogleMaps,
     Geolocation,
     Deeplinks,
-    SpinnerService
+    SocialSharing
   ]
 })
 export class AppModule {

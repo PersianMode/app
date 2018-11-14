@@ -1,0 +1,126 @@
+.product-view-page ion-card {
+  position: relative;
+  text-align: center;
+  margin: 2px 0 2px 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.product-view-page .card-icon {
+  position: relative;
+  font-size: 3em;
+  text-align: center;
+  left: 46%;
+}
+
+.product-view-page .card-icon:active {
+  opacity: 0.2;
+}
+
+.product-view-page ion-scroll {
+  white-space: nowrap;
+  max-width: 100%;
+  max-height: 100%;
+  height: 50%;
+}
+
+.product-view-page ion-scroll img {
+  max-height: 100%;
+  max-width: 100%;
+  height: 80%;
+  margin: 1px;
+}
+
+.product-view-page .active-image {
+  opacity: 0.75;
+  background: #c2c2c2;
+}
+
+.product-view-page .desc {
+  clear: both;
+  white-space: pre-wrap;
+  text-align: justify;
+  direction: rtl;
+  font-family: iranyekan;
+  font-weight: 200;
+  padding: 0px 20px;
+  font-size: 1em;
+}
+
+.product-view-page .product-more-detail {
+  margin: 30px 0 0 0 !important;
+  text-align: right;
+  direction: rtl;
+}
+
+.product-view-page .product-more-detail div {
+  padding: 4px 20px 4px 20px;
+}
+
+.product-view-page .product-more-detail:active {
+  opacity: 0.8;
+}
+
+.product-view-page .left-view {
+  position: relative;
+  float: left;
+  left: 10%;
+}
+
+.product-view-page .right-view {
+  position: relative;
+  float: right;
+  right: 10%;
+}
+
+.select-size-popover .popover-content {
+  height: auto;
+}
+
+.popover-content {
+  bottom: 0px !important;
+  left: 0px !important;
+}
+
+.swiper-pagination {
+  padding: 3px;
+  bottom: 0px;
+}
+
+.swiper-pagination .swiper-pagination-bullet {
+  background: #878787;
+  margin: 0 3px;
+}
+
+.product-discount {
+  color: red !important;
+}
+
+.color-field {
+  direction: rtl;
+  padding: 5px;
+  word-wrap: break-word;
+}
+
+.search-div {
+  display: inline-block;
+  width: 20%;
+  text-align: left;
+  color: #424242;
+  position: absolute;
+  left: 17px;
+  top: 17px;
+  font-size: 20px;
+}
+
+.product-title-div {
+  display: inline-block;
+  width: 80%;
+  text-align: right;
+  font-family: iranyekan;
+  font-weight: 500;
+  color: #424242;
+  margin-right: -45px;
+  font-size: 1.6rem;
+}
+/*# sourceMappingURL=product-view.css.map */

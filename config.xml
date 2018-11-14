@@ -84,15 +84,15 @@
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-plugin-advanced-http" spec="^1.11.0" />
     <plugin name="cordova-plugin-nativestorage" spec="^2.2.2" />
-    <plugin name="cordova-plugin-googlemaps" spec="^2.2.9">
+    <plugin name="cordova-plugin-googlemaps" spec="2.2.9">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyAi-l_rZmuGXqOS14fXfkQY9v9M2YlVyD4" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyA0Gjgn0xS7R3XYWJM6jxsnuxbTHn4ALfU" />
-        <variable name="PLAY_SERVICES_VERSION" value="12.0.0" />
+        <variable name="PLAY_SERVICES_VERSION" value="12" />
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="24.1.0" />
     </plugin>
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-android-play-services-gradle-release" spec="^1.3.1">
-        <variable name="PLAY_SERVICES_VERSION" value="12.+" />
+        <variable name="PLAY_SERVICES_VERSION" value="11.0.+" />
     </plugin>
     <plugin name="ionic-plugin-deeplinks" spec="^1.0.15">
         <variable name="URL_SCHEME" value="bankofstyle" />
@@ -112,7 +112,7 @@
         <variable name="DEEPLINK_5_SCHEME" value=" " />
         <variable name="DEEPLINK_5_HOST" value=" " />
     </plugin>
-    <plugin name="cordova-plugin-googleplus" spec="^5.3.0">
+    <plugin name="cordova-plugin-googleplus" spec="5.3.0">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.855842568245-15155fb0fep4v2gpdjg0nd1gaas2n7nv" />
         <variable name="WEB_APPLICATION_CLIENT_ID" value="855842568245-c0q8sm090cpd377em1k0hgrtphdgdvc9.apps.googleusercontent.com" />
     </plugin>

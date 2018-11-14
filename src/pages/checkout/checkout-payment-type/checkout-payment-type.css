@@ -1,0 +1,13 @@
+.amount-field {
+  float: left;
+  margin-left: 20px;
+}
+
+.type-field {
+  width: 80%;
+}
+
+.not-available {
+  color: gray;
+}
+/*# sourceMappingURL=checkout-payment-type.css.map */

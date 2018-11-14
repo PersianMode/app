@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpService} from '../../services/http.service';
-import {LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {NavController, NavParams, ToastController} from 'ionic-angular';
 import {AuthService} from "../../services/auth.service";
 import {RegPreferencesPage} from '../regPreferences/regPreferences';
 import {ConfirmationState} from '../../enum/register-status.enum';
+import {LoadingService} from '../../services/loadingService';
 
 const expiredLinkStatusCode = 437;
 
@@ -23,7 +24,7 @@ export class RegConfirmationPage implements OnInit {
 
   constructor(private httpService: HttpService, private toastCtrl: ToastController,
               private navCtrl: NavController, private authService: AuthService,
-              private navParams: NavParams, private loadingCtrl: LoadingController) {
+              private navParams: NavParams, private loadingService: LoadingService) {
   }
 
   ngOnInit() {
@@ -78,22 +79,19 @@ export class RegConfirmationPage implements OnInit {
   }
 
   resendEmailActivationLink() {
-    const waiting = this.loadingCtrl.create({
-      content: 'لطفا صبر کنید ...',
-    });
-    waiting.present();
+    this.loadingService.enable();
     this.httpService.post('user/auth/link', {
       username: this.username,
       is_forgot_mail: false,
     }).subscribe(
       data => {
-        waiting.dismiss();
+        this.loadingService.disable();
         this.toastCtrl.create({
           message: 'لینک فعال سازی با موفقیت ارسال شد',
           duration: 3200,
         }).present();
       }, err => {
-        waiting.dismiss();
+        this.loadingService.disable();        
         this.toastCtrl.create({
           message: 'خطا در ارسال لینک فعال سازی',
           duration: 2300,
@@ -110,16 +108,13 @@ export class RegConfirmationPage implements OnInit {
   }
 
   checkCode() {
-    const waiting = this.loadingCtrl.create({
-      content: 'لطفا صبر کنید ...',
-    });
-    waiting.present();
+    this.loadingService.enable();
     this.httpService.post('register/verify', {
       username: this.username,
       code: this.code,
     }).subscribe(
       (data) => {
-        waiting.dismiss();
+        this.loadingService.disable();
         if (this.isGoogleAuth) {
           this.httpService.get('validUser').subscribe(
             (data) => {
@@ -147,7 +142,7 @@ export class RegConfirmationPage implements OnInit {
         }
       },
       (err) => {
-        waiting.dismiss();
+        this.loadingService.disable();
         console.error('Cannot verify registration: ', err);
 
         this.toastCtrl.create({

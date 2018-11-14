@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,WAAW,CAAC,KAAK,CAAC;EAChB,UAAU,EAAE,MAAM;CACnB",
+    "sources": [
+        "regPreferences.scss"
+    ],
+    "names": [],
+    "file": "regPreferences.css"
+}

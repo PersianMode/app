@@ -3,9 +3,14 @@
     <div class="product-title-div">
       {{product?.name}}
     </div>
-    <div class="search-div">
-      <ion-icon name="search" (click)="goToSearchPage()"></ion-icon>
-    </div>
+    <ion-buttons end>
+      <button class="header-buttons" ion-button icon-only (click)="shareProduct()">
+        <ion-icon name="share"></ion-icon>
+      </button>
+      <button class="header-buttons" ion-button icon-only (click)="goToSearchPage()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

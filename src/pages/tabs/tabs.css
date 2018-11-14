@@ -1,0 +1,152 @@
+ion-header {
+  direction: rtl;
+  font-family: 'iranyekan';
+}
+
+.ion-ios-my-home:before,
+.ion-ios-my-home-circle:before,
+.ion-ios-my-home-circle-outline:before,
+.ion-ios-my-home-outline:before,
+.ion-md-my-home:before,
+.ion-md-my-home-circle:before,
+.ion-md-my-home-circle-outline:before,
+.ion-md-my-home-outline:before {
+  content: url(../../assets/imgs/my-home.png);
+  height: 32px;
+  width: 32px;
+}
+
+.ion-ios-my-shoe:before,
+.ion-ios-my-shoe-circle:before,
+.ion-ios-my-shoe-circle-outline:before,
+.ion-ios-my-shoe-outline:before,
+.ion-md-my-shoe:before,
+.ion-md-my-shoe-circle:before,
+.ion-md-my-shoe-circle-outline:before,
+.ion-md-my-shoe-outline:before {
+  content: url(../../assets/imgs/my-shoe.png);
+  height: 32px;
+  width: 32px;
+}
+
+.ion-ios-my-bag:before,
+.ion-ios-my-bag-circle:before,
+.ion-ios-my-bag-circle-outline:before,
+.ion-ios-my-bag-outline:before,
+.ion-md-my-bag:before,
+.ion-md-my-bag-circle:before,
+.ion-md-my-bag-circle-outline:before,
+.ion-md-my-bag-outline:before {
+  content: url(../../assets/imgs/my-shop.png);
+  height: 32px;
+  width: 32px;
+}
+
+.ion-ios-my-inbox:before,
+.ion-ios-my-inbox-circle:before,
+.ion-ios-my-inbox-circle-outline:before,
+.ion-ios-my-inbox-outline:before,
+.ion-md-my-inbox:before,
+.ion-md-my-inbox-circle:before,
+.ion-md-my-inbox-circle-outline:before,
+.ion-md-my-inbox-outline:before {
+  content: url(../../assets/imgs/my-inbox.png);
+  height: 32px;
+  width: 32px;
+}
+
+.ion-ios-my-profile:before,
+.ion-ios-my-profile-circle:before,
+.ion-ios-my-profile-circle-outline:before,
+.ion-ios-my-profile-outline:before,
+.ion-md-my-profile:before,
+.ion-md-my-profile-circle:before,
+.ion-md-my-profile-circle-outline:before,
+.ion-md-my-profile-outline:before {
+  content: url(../../assets/imgs/my-profile.png);
+  height: 32px;
+  width: 32px;
+}
+
+.ion-ios-my-events:before,
+.ion-ios-my-events-circle:before,
+.ion-ios-my-events-circle-outline:before,
+.ion-ios-my-events-outline:before,
+.ion-md-my-events:before,
+.ion-md-my-events-circle:before,
+.ion-md-my-events-circle-outline:before,
+.ion-md-my-events-outline:before {
+  content: url(../../assets/imgs/events.png);
+  height: 32px;
+  width: 32px;
+}
+
+.ion-ios-my-orders:before,
+.ion-ios-my-orders-circle:before,
+.ion-ios-my-orders-circle-outline:before,
+.ion-ios-my-orders-outline:before,
+.ion-md-my-orders:before,
+.ion-md-my-orders-circle:before,
+.ion-md-my-orders-circle-outline:before,
+.ion-md-my-orders-outline:before {
+  content: url(../../assets/imgs/orders.png);
+  height: 32px;
+  width: 32px;
+}
+
+.ion-ios-my-pass:before,
+.ion-ios-my-pass-circle:before,
+.ion-ios-my-pass-circle-outline:before,
+.ion-ios-my-pass-outline:before,
+.ion-md-my-pass:before,
+.ion-md-my-pass-circle:before,
+.ion-md-my-pass-circle-outline:before,
+.ion-md-my-pass-outline:before {
+  content: url(../../assets/imgs/pass.png);
+  height: 32px;
+  width: 32px;
+}
+
+.ion-ios-my-settings:before,
+.ion-ios-my-settings-circle:before,
+.ion-ios-my-settings-circle-outline:before,
+.ion-ios-my-settings-outline:before,
+.ion-md-my-settings:before,
+.ion-md-my-settings-circle:before,
+.ion-md-my-settings-circle-outline:before,
+.ion-md-my-settings-outline:before {
+  content: url(../../assets/imgs/settings.png);
+  height: 32px;
+  width: 32px;
+}
+
+.tabs-md .tab-button[aria-selected=true] {
+  background: #c2c2c2;
+}
+
+.tabs-ios .tab-button[aria-selected=true] {
+  background: #c2c2c2;
+}
+
+.tab-badge {
+  left: 4%;
+  top: 6%;
+  left: calc(50% - 50px);
+  padding: 1px 6px;
+  position: absolute;
+  height: auto;
+  font-size: 12px;
+  line-height: 16px;
+  border-radius: 50%;
+}
+
+.badge-md-secondary {
+  color: #fff;
+  background-color: #32db64;
+}
+
+.has-icon .tab-badge {
+  left: calc(50% - -5px);
+  top: calc(30% - 7px);
+}
+/*# sourceMappingURL=tabs.css.map */
