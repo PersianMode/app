@@ -32,6 +32,7 @@ export class MyApp implements OnInit {
       .catch(err => {
         this.loadingService.disable();
         this.rootPage = LoginPage;
+        console.error("error in initial validating user: ", err);
       });
     });
 
@@ -111,11 +112,30 @@ export class MyApp implements OnInit {
         (Nexus 5 and 5X platforms supports this) then you can update them inside emulator in its google play
         other than that, there doesn't seem to be any option!
    */
+
+  /**
+   * More issues :(
+    -> use these versions: (the 4 of them must be using the same version!)
+       implementation "com.squareup.okhttp3:okhttp-urlconnection:3.10.0"
+       implementation "com.google.android.gms:play-services-maps:12.0.1"
+       implementation "com.google.android.gms:play-services-location:12.0.1"
+       implementation "com.android.support:support-core-utils:24.1.0"
+       implementation "com.google.android.gms:play-services-auth:12.0.1"
+       implementation "com.google.android.gms:play-services-identity:12.0.1"
+    -> fix the versions as above in "project.properties" in root directory
+    -> try running with "ionic cordova run android"
+    -> The "PluginMap.java" and "PluginStreetViewPanorama.java" in app/source/main/java/plugin/google/maps
+        might come up with idiotic errors! In that case, comment out the error lines (or delete entire file for the latter)
+    -> might need to add google-service.json config file
+    -> might need to generate signed APK and using debug.keystore (key alias: androiddebugkey, password is generally: android)
+   */
   /**
    * Any changes made to the project, must be followed with these steps respectively for building:
     -> run: ionic cordova build android
     -> go to android studio, fix the probable above issues (compile, versions, etc.) and sync and build
     -> run on device or emulator!
+    OR JUST
+    -> ionic cordova run android (if not the first time and errors are fixed somehow)
    * for iOS, the clientIds and reverse ones must be changed according to the iOS API Key!
    * for first time building, these commands might be needed:
     -> ionic cordova plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=<the_id_in_the_config_file>

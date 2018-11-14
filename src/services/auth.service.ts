@@ -26,7 +26,6 @@ export class AuthService {
 
   constructor(private httpService: HttpService, private storage: Storage,
               private googlePlus: GooglePlus) {
-    this.checkIsUserValid();
   }
 
   public checkIsUserValid() {
@@ -40,13 +39,13 @@ export class AuthService {
             });
           }
 
-          return Promise.reject('');
+          return Promise.reject('no user data');
         })
         .then(res => {
           resolve();
         })
         .catch(err => {
-          console.error('Error: ', err);
+          console.error('Error in user validation: ', err);
           reject();
         });
     });
@@ -164,13 +163,13 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.httpService.get('logout').subscribe(
         (res) => {
-          this.googlePlus.logout().then(ans => { // clear OAuth2 token, if any
-            this.removeUser();
-            this.httpService.userToken = null;
-            this.isLoggedIn = false;
-            this.isFullAuthenticated.next(false);
-            resolve();
-          });
+          this.removeUser();
+          this.httpService.userToken = null;
+          this.isLoggedIn = false;
+          this.isFullAuthenticated.next(false);
+          this.googlePlus.logout() // remove google tokens, if any
+            .then(ans => resolve())
+            .catch(ans => resolve());
         },
         (err) => {
           console.error('Cannot logout: ', err);

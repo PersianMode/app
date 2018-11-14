@@ -145,8 +145,9 @@ export class LoginPage implements OnInit {
 
   googleLogin() {
     this.googlePlus.login({
-      'webClientId': '986035602689-905fo138kc6jct8loqgi1j2q1g9ogd2l.apps.googleusercontent.com',
-      // 'offline': true
+      'scopes': '',
+      'webClientId': '986035602689-7m3qqtr3o3c1pop9sqcgtjpre77o4ved.apps.googleusercontent.com',
+      'offline': true
     }).then(res => {
       // ->
       this.dR = 'googling -> ';
@@ -154,8 +155,8 @@ export class LoginPage implements OnInit {
       this.httpService.post('login/google/app', res).subscribe(
         (data) => {
           //->
-          // this.dR += 'done';
-          // this.mess = JSON.stringify(data);
+          this.dR += 'done';
+          this.mess = JSON.stringify(data);
           //<-
           this.authService.afterLogin(data).then(ans => {
             if (data.mobile_no && data.is_verified === bothVerifiedCode) {
