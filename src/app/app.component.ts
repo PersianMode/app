@@ -84,6 +84,13 @@ export class MyApp implements OnInit {
               classpath 'com.android.tools.build:gradle:3.1.2'
               classpath 'com.google.gms:google-services:4.0.1'
           -> versions of google-play-* needs to match, so the problem might be from here!
+              one that might work: (outdated, maybe)
+                 implementation "com.squareup.okhttp3:okhttp-urlconnection:3.10.0"
+                 implementation "com.google.android.gms:play-services-maps:15.0.1"
+                 implementation "com.google.android.gms:play-services-location:15.0.1"
+                 implementation "com.android.support:support-core-utils:24.1.0"
+                 implementation "com.google.android.gms:play-services-auth:15.0.1"
+                 implementation "com.google.android.gms:play-services-identity:15.0.1"
         in build.gradle (root project):
           -> change those "mavenCentral()" related things mentioned above in here too!
    * if encountered "google play service update" after syncing and building and running in emulator,
@@ -95,7 +102,6 @@ export class MyApp implements OnInit {
    * Any changes made to the project, must be followed with these steps respectively for building:
     -> run: ionic cordova build android
     -> go to android studio, fix the probable above issues (compile, versions, etc.) and sync and build
-        --> after first configuration and sync and build, each time, only changing sdk version to "23" is needed
     -> run on device or emulator!
    * for iOS, the clientIds and reverse ones must be changed according to the iOS API Key!
    * for first time building, these commands might be needed:

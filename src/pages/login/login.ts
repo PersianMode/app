@@ -36,8 +36,8 @@ export class LoginPage implements OnInit {
   seen = {};
   curFocus = null;
 
-  // dR = '';
-  // mess = '';
+  dR = '';
+  mess = '';
 
   constructor(private navCtrl: NavController, private authService: AuthService,
               private toastCtrl: ToastController, private httpService: HttpService,
@@ -146,11 +146,11 @@ export class LoginPage implements OnInit {
 
   googleLogin() {
     this.googlePlus.login({
-      // 'webClientId': '986035602689-905fo138kc6jct8loqgi1j2q1g9ogd2l.apps.googleusercontent.com',
+      'webClientId': '986035602689-905fo138kc6jct8loqgi1j2q1g9ogd2l.apps.googleusercontent.com',
       // 'offline': true
     }).then(res => {
       // ->
-      // this.dR = 'googling -> ';
+      this.dR = 'googling -> ';
       // <-
       this.httpService.post('login/google/app', res).subscribe(
         (data) => {
@@ -172,16 +172,16 @@ export class LoginPage implements OnInit {
         },
         (err) => {
           //->
-          // this.dR += 'not done';
-          // this.mess = JSON.stringify(err);
+          this.dR += 'not done';
+          this.mess = JSON.stringify(err);
           //<-
           console.error('Internal server error occurred: ', err);
         }
       );
     }).catch(err => {
       //->
-      // this.dR = 'in catch!';
-      // this.mess = JSON.stringify(err);
+      this.dR = 'in catch!';
+      this.mess = JSON.stringify(err);
       //<-
       console.error('Cannot login via google: ', err);
     });
