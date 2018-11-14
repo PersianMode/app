@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, ToastController, LoadingController} from 'ionic-angular';
+import {NavController, ToastController} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {RegisterPage} from '../register/register';
 import {AuthService} from '../../services/auth.service';
@@ -9,6 +9,7 @@ import {RegConfirmationPage} from '../regConfirmation/regConfirmation';
 import {ForgotPasswordPage} from '../forgot-password/forgot-password';
 import {RegPreferencesPage} from '../regPreferences/regPreferences';
 import {ConfirmationState} from '../../enum/register-status.enum';
+import {LoadingService} from '../../services/loadingService';
 
 // declare var window: any;
 export const VerificationErrors = {
@@ -40,8 +41,8 @@ export class LoginPage implements OnInit {
   mess = '';
 
   constructor(private navCtrl: NavController, private authService: AuthService,
-              private toastCtrl: ToastController, private httpService: HttpService,
-              private googlePlus: GooglePlus, private loadingCtrl: LoadingController) {
+    private toastCtrl: ToastController, private httpService: HttpService,
+    private googlePlus: GooglePlus, private loadingService: LoadingService) {
 
   }
 
@@ -58,8 +59,8 @@ export class LoginPage implements OnInit {
         Validators.required,
       ]],
     }, {
-      validator: this.checkUsername,
-    });
+        validator: this.checkUsername,
+      });
   }
 
   checkUsername(AC: AbstractControl) {
@@ -90,10 +91,6 @@ export class LoginPage implements OnInit {
     if (!this.loginForm.valid)
       return;
 
-    const waiting = this.loadingCtrl.create({
-      content: 'لطفا صبر کنید ...'
-    });
-    waiting.present();
 
     this.authService.tempData = {
       username: this.loginForm.controls['username'].value,
@@ -101,9 +98,11 @@ export class LoginPage implements OnInit {
       gender: 'm',
     };
 
+    this.loadingService.enable();
+
     this.authService.login(this.authService.tempData['username'], this.authService.tempData['password'])
       .then((res) => {
-        waiting.dismiss();
+        this.loadingService.disable();
 
         if (res['is_preferences_set'] === false) {
           this.navCtrl.push(RegPreferencesPage, {
@@ -115,7 +114,7 @@ export class LoginPage implements OnInit {
         }
       })
       .catch(err => {
-        waiting.dismiss();
+        this.loadingService.disable();
 
         // either wrong credential or an unverified thing
         let confirmState: ConfirmationState;

@@ -30,3 +30,12 @@
   text-align: center;
   color: black;
 }
+
+.fixed-area {
+  position: fixed;
+  z-index: 1000;
+}
+
+.select-count-page {
+  margin-top: 52px;
+}

@@ -1,29 +1,31 @@
-.segment-ios .segment-button:last-of-type {
-  border-left-width: 1px;
-}
-
-.collection-segment {
-  padding: 5px;
-}
-
-.collections-title-div {
-  display: inline-block;
-  width: 80%;
-  text-align: right;
-  font-family: iranyekan;
-  font-weight: 500;
-  color: #424242;
-  margin-right: -45px;
-  font-size: 1.6rem;
-}
-
-.collecions-search-div {
-  display: inline-block;
-  width: 20%;
-  text-align: left;
-  color: #424242;
-  position: absolute;
-  left: 45px;
-  top: 17px;
-  font-size: 20px;
+page-collection {
+  .segment-ios .segment-button:last-of-type {
+    border-left-width: 1px;
+  }
+  
+  .collection-segment {
+    padding: 5px;
+  }
+  
+  .collections-title-div {
+    display: inline-block;
+    width: 80%;
+    text-align: right;
+    font-family: iranyekan;
+    font-weight: 500;
+    color: #424242;
+    margin-right: -45px;
+    font-size: 1.6rem;
+  }
+  
+  .collecions-search-div {
+    display: inline-block;
+    width: 20%;
+    text-align: left;
+    color: #424242;
+    position: absolute;
+    left: 45px;
+    top: 17px;
+    font-size: 20px;
+  }
 }

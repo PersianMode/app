@@ -11,7 +11,7 @@ export class AuthService {
   private isVerified = false;
   private isLoggedIn = false;
   userData = {
-    usedId: null,
+    userId: null,
     username: null,
     name: null,
     surname: null,
@@ -26,16 +26,30 @@ export class AuthService {
 
   constructor(private httpService: HttpService, private storage: Storage,
               private googlePlus: GooglePlus) {
-    this.loadUserBasicData()
-      .then((data) => {
-        if (data)
-          this.checkValidation().catch(err => {
-            console.error('cannot check user validation: ', err);
-          });
-      })
-      .catch(err => {
-        console.error('Error: ', err);
-      })
+    this.checkIsUserValid();
+  }
+
+  public checkIsUserValid() {
+    return new Promise((resolve, reject) => {
+      this.loadUserBasicData()
+        .then((data) => {
+          if (data) {
+            return this.checkValidation().catch(err => {
+              console.error('cannot check user validation: ', err);
+              return Promise.reject('');
+            });
+          }
+
+          return Promise.reject('');
+        })
+        .then(res => {
+          resolve();
+        })
+        .catch(err => {
+          console.error('Error: ', err);
+          reject();
+        });
+    });
   }
 
   loadUserBasicData() {
@@ -92,7 +106,7 @@ export class AuthService {
 
   setUserData(data) {
     this.userData = {
-      usedId: data._id,
+      userId: data._id,
       username: data.username,
       name: data.name,
       surname: data.surname,
@@ -113,7 +127,7 @@ export class AuthService {
 
   resetUserData() {
     this.userData = {
-      usedId: null,
+      userId: null,
       username: null,
       name: null,
       surname: null,

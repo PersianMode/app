@@ -4,7 +4,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   selector: 'product-item',
   templateUrl: 'product-item.html'
 })
-export class ProductItemComponent implements OnInit{
+export class ProductItemComponent implements OnInit {
   @Output() productIsSelected = new EventEmitter();
   @Input() product;
 
@@ -12,7 +12,7 @@ export class ProductItemComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.product.desc = this.product.tags ? this.product.tags.join(' ') : null;
+    this.product.desc = this.product.tags ? this.product.tags.map(el => el.name).join(' ') : null;
   }
 
   select() {

@@ -1,6 +1,7 @@
 <div (click)="select()" dir="rtl">
-  <div>
-    <img src="{{product.colors[0].image.thumbnail}}" class="product-image"/>
+  <div class="product-image">
+    <img *ngIf="product.colors[0].image.thumbnail" src="{{product.colors[0].image.thumbnail}}"/>
+    <div>&nbsp;</div>
   </div>
   <div>
     <ion-label class="product-label product-name">{{product.name}}</ion-label>

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACE,YADU,CACV,MAAM,CAAC;EACL,UAAU,EAAE,IAAI;CACjB",
+    "sources": [
+        "size-viewer.scss"
+    ],
+    "names": [],
+    "file": "size-viewer.css"
+}

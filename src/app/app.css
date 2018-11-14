@@ -1,0 +1,199 @@
+ion-label, label, ion-input, input, a, div {
+  font-family: iranyekan,sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: irankharazmi;
+}
+
+.center {
+  text-align: center;
+}
+
+.box-center {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.persian-mode-center-logo {
+  font-family: nastaliq;
+  font-size: 30px;
+  display: inline-block;
+  color: black;
+  -webkit-transition: all .3s ease-in;
+  transition: all .3s ease-in;
+}
+
+.persian-mode-center-logo span {
+  top: -20px;
+  right: -16px;
+  position: relative;
+  font-size: 80%;
+}
+
+input {
+  border-radius: 5px;
+  border-color: #E5E5E5;
+  border-style: solid;
+  outline: none;
+  color: #8D8D8D;
+}
+
+.input-field {
+  width: 98%;
+  border-radius: 5px;
+  border-color: #E5E5E5;
+  border-style: solid;
+  outline: none;
+  color: #8D8D8D;
+}
+
+.left-direction {
+  direction: ltr;
+}
+
+.right-direction {
+  direction: rtl;
+}
+
+.right-direction input {
+  text-align: right;
+  padding-right: 5px;
+}
+
+.clickable-link {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.input-error {
+  border-color: red;
+  border-width: 1px;
+}
+
+.field-error {
+  font-size: 0.75em;
+  color: red;
+}
+
+.input-container {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.btn-field {
+  padding: 5px 0px 5px 5px;
+  width: 100%;
+}
+
+.div-btn {
+  border: solid #E5E5E5 thin;
+  border-radius: 3px;
+  text-align: center;
+  color: #8D8D8D;
+}
+
+.inform-btn {
+  background-color: #000;
+  color: white;
+}
+
+.google-btn {
+  background: #df4a32;
+  color: white;
+  border-radius: 3px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.log-reg-main-content {
+  margin-top: 25px;
+}
+
+.alert-radio-group {
+  direction: rtl;
+}
+
+.radio-icon {
+  display: none !important;
+}
+
+.range-bar {
+  left: 23px;
+}
+
+.range-bar-active {
+  left: 23px;
+  display: none !important;
+}
+
+.checkout-inner-page-title-label {
+  text-align: right;
+  padding-right: 10px !important;
+}
+
+.checkout-inner-page-title-label .toolbar-title {
+  text-align: right !important;
+}
+
+.checkout-inner-page-title-icon {
+  text-align: left;
+}
+
+.checkout-item .toolbar-background {
+  border-style: none !important;
+}
+
+.checkout-header::after {
+  background-image: none !important;
+  height: 0px;
+  position: unset;
+}
+
+.checkout-address .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
+}
+
+.address-details .popover-content {
+  top: 0px !important;
+  max-height: 100% !important;
+}
+
+.selected-address, .selected-payment {
+  background-color: rgba(193, 199, 197, 0.68);
+}
+
+.old-price {
+  text-decoration: line-through !important;
+}
+
+.product-discount {
+  color: darkred !important;
+}
+
+.searchbar-md .searchbar-input {
+  direction: rtl !important;
+  padding: 6px 42px;
+  border-radius: 2px;
+  background-position: right 8px center;
+  height: auto;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 3rem;
+  color: #141414;
+  background-color: #fff;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.input-error {
+  border-color: red !important;
+  border-width: 1px !important;
+}
+
+.header-buttons {
+  padding: 20px !important;
+}
+/*# sourceMappingURL=app.css.map */

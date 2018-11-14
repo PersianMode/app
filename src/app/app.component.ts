@@ -8,20 +8,33 @@ import {LoginPage} from '../pages/login/login';
 import {DictionaryService} from '../services/dictionary.service';
 import {Deeplinks} from '@ionic-native/deeplinks';
 import {RegConfirmationPage} from '../pages/regConfirmation/regConfirmation';
+import {LoadingService} from '../services/loadingService';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp implements OnInit {
-  rootPage: any = TabsPage;
+  rootPage: any = LoginPage;
 
   @ViewChild(Nav) navChild: NavController;
 
 
   constructor(private platform: Platform, statusBar: StatusBar,
-              splashScreen: SplashScreen, private authService: AuthService,
-              dict: DictionaryService, private deeplinks: Deeplinks,
-              private toastCtrl: ToastController) {
+    splashScreen: SplashScreen, private authService: AuthService,
+    dict: DictionaryService, private deeplinks: Deeplinks,
+    private toastCtrl: ToastController, private loadingService: LoadingService) {
+    this.loadingService.enable({}, 0, () => {
+      this.authService.checkIsUserValid()
+      .then(res => {
+        this.loadingService.disable();
+        this.rootPage = TabsPage;
+      })
+      .catch(err => {
+        this.loadingService.disable();
+        this.rootPage = LoginPage;
+      });
+    });
+
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
