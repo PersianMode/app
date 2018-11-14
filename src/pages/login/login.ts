@@ -37,8 +37,8 @@ export class LoginPage implements OnInit {
   seen = {};
   curFocus = null;
 
-  dR = '';
-  mess = '';
+  // dR = '';
+  // mess = '';
 
   constructor(private navCtrl: NavController, private authService: AuthService,
     private toastCtrl: ToastController, private httpService: HttpService,
@@ -150,13 +150,13 @@ export class LoginPage implements OnInit {
       'offline': true
     }).then(res => {
       // ->
-      this.dR = 'googling -> ';
+      // this.dR = 'googling -> ';
       // <-
       this.httpService.post('login/google/app', res).subscribe(
         (data) => {
           //->
-          this.dR += 'done';
-          this.mess = JSON.stringify(data);
+          // this.dR += 'done';
+          // this.mess = JSON.stringify(data);
           //<-
           this.authService.afterLogin(data).then(ans => {
             if (data.mobile_no && data.is_verified === bothVerifiedCode) {
@@ -172,16 +172,16 @@ export class LoginPage implements OnInit {
         },
         (err) => {
           //->
-          this.dR += 'not done';
-          this.mess = JSON.stringify(err);
+          // this.dR += 'not done';
+          // this.mess = JSON.stringify(err);
           //<-
           console.error('Internal server error occurred: ', err);
         }
       );
     }).catch(err => {
       //->
-      this.dR = 'in catch!';
-      this.mess = JSON.stringify(err);
+      // this.dR = 'in catch!';
+      // this.mess = JSON.stringify(err);
       //<-
       console.error('Cannot login via google: ', err);
     });
