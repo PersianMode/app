@@ -5,6 +5,7 @@ import {ProductService} from '../../services/productService';
 import {DictionaryService} from '../../services/dictionary.service';
 import {priceFormatter} from '../../shared/lib/priceFormatter';
 import {ISize} from '../../interfaces/isize.interface';
+import {LoadingService} from '../../services/loadingService';
 
 @Component({
   templateUrl: 'filter.html'
@@ -49,12 +50,14 @@ export class FilterPage implements OnInit {
 
 
   constructor(public navParams: NavParams, public viewCtrl: ViewController,
-              private productService: ProductService, private dict: DictionaryService) {
+              private productService: ProductService, private dict: DictionaryService,
+              private loadingService: LoadingService) {
 
   }
 
   ionViewWillEnter() {
     this.viewCtrl.setBackButtonText('بازگشت');
+    // this.productService.extractFilters();
   }
 
   ngOnInit() {
@@ -129,7 +132,7 @@ export class FilterPage implements OnInit {
 
     this.current_filter_state.forEach(el => {
       if (el.name === name) {
-        if (this.isChecked[name][value] && (el.values.length === 0 || el.values.findIndex(i => i === value) === -1 ))
+        if (this.isChecked[name][value] && (el.values.length === 0 || el.values.findIndex(i => i === value) === -1))
           el.values.push(value);
         else {
           const ind = el.values.indexOf(value);
@@ -143,7 +146,7 @@ export class FilterPage implements OnInit {
   }
 
   priceRangeChange() {
-    Object.values(this.rangeValues).map(r => Math.round(r / 1000) * 1000);
+    Object.values(this.rangeValues).map((r: any) => Math.round(r / 1000) * 1000);
     this.current_filter_state.find(r => r.name === 'price').values = Object.values(this.rangeValues);
     this.formatPrices();
     this.productService.saveChecked(this.isChecked);
@@ -152,19 +155,22 @@ export class FilterPage implements OnInit {
   }
 
   clearFilters() {
-    this.current_filter_state.forEach(el => {
-      el.values = [];
-    });
-
-    for (const name in this.isChecked) {
-      for (const value in this.isChecked[name]) {
-        this.isChecked[name][value] = false;
+    this.loadingService.enable({}, 500, () => {
+      this.current_filter_state.forEach(el => {
+        el.values = [];
+      });
+  
+      for (const name in this.isChecked) {
+        for (const value in this.isChecked[name]) {
+          this.isChecked[name][value] = false;
+        }
       }
-    }
-
-    this.sortedBy = null;
-    this.productService.saveChecked(this.isChecked);
-    this.productService.applyFilters(this.current_filter_state, '');
+  
+      this.sortedBy = null;
+      this.productService.saveChecked(this.isChecked);
+      this.productService.applyFilters(this.current_filter_state, '');
+      this.loadingService.disable();
+    });
   }
 
   selectSortOption(index) {

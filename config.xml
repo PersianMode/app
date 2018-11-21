@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="persian.mode.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>persianmode-app</name>
+<widget id="com.pm.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
@@ -12,7 +12,7 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <preference name="ScrollEnabled" value="false" />
-    <preference name="android-minSdkVersion" value="16" />
+    <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="FadeSplashScreenDuration" value="300" />
@@ -84,19 +84,37 @@
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-plugin-advanced-http" spec="^1.11.0" />
     <plugin name="cordova-plugin-nativestorage" spec="^2.2.2" />
-    <plugin name="cordova-plugin-googlemaps" spec="^2.2.9">
+    <plugin name="cordova-plugin-googlemaps" spec="2.2.9">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyAi-l_rZmuGXqOS14fXfkQY9v9M2YlVyD4" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyA0Gjgn0xS7R3XYWJM6jxsnuxbTHn4ALfU" />
-        <variable name="PLAY_SERVICES_VERSION" value="12.0.0" />
+        <variable name="PLAY_SERVICES_VERSION" value="12" />
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="24.1.0" />
     </plugin>
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-android-play-services-gradle-release" spec="^1.3.1">
-        <variable name="PLAY_SERVICES_VERSION" value="12.+" />
+        <variable name="PLAY_SERVICES_VERSION" value="11.0.+" />
     </plugin>
-    <plugin name="cordova-plugin-googleplus" spec="^5.3.0">
-        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.636231560622-fivtnnfsd7ctdtonslikbu5elmm69mrv" />
-        <variable name="WEB_APPLICATION_CLIENT_ID" value="636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com" />
+    <plugin name="ionic-plugin-deeplinks" spec="^1.0.15">
+        <variable name="URL_SCHEME" value="bankofstyle" />
+        <variable name="DEEPLINK_SCHEME" value="https" />
+        <variable name="DEEPLINK_HOST" value="bankofstyle.com" />
+        <variable name="ANDROID_PATH_PREFIX" value="/" />
+        <variable name="ANDROID_2_PATH_PREFIX" value="/" />
+        <variable name="ANDROID_3_PATH_PREFIX" value="/" />
+        <variable name="ANDROID_4_PATH_PREFIX" value="/" />
+        <variable name="ANDROID_5_PATH_PREFIX" value="/" />
+        <variable name="DEEPLINK_2_SCHEME" value=" " />
+        <variable name="DEEPLINK_2_HOST" value=" " />
+        <variable name="DEEPLINK_3_SCHEME" value=" " />
+        <variable name="DEEPLINK_3_HOST" value=" " />
+        <variable name="DEEPLINK_4_SCHEME" value=" " />
+        <variable name="DEEPLINK_4_HOST" value=" " />
+        <variable name="DEEPLINK_5_SCHEME" value=" " />
+        <variable name="DEEPLINK_5_HOST" value=" " />
     </plugin>
-    <engine name="android" spec="^7.0.0" />
+    <plugin name="cordova-plugin-googleplus" spec="5.3.0">
+        <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.855842568245-15155fb0fep4v2gpdjg0nd1gaas2n7nv" />
+        <variable name="WEB_APPLICATION_CLIENT_ID" value="855842568245-c0q8sm090cpd377em1k0hgrtphdgdvc9.apps.googleusercontent.com" />
+    </plugin>
+    <engine name="android" spec="7.0.0" />
 </widget>

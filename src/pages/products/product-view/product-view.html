@@ -3,9 +3,14 @@
     <div class="product-title-div">
       {{product?.name}}
     </div>
-    <div class="search-div">
-      <ion-icon name="search" (click)="goToSearchPage()"></ion-icon>
-    </div>
+    <ion-buttons end>
+      <button class="header-buttons" ion-button icon-only (click)="shareProduct()">
+        <ion-icon name="share"></ion-icon>
+      </button>
+      <button class="header-buttons" ion-button icon-only (click)="goToSearchPage()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -23,14 +28,14 @@
       [ngClass]="{'active-image': i == activeColorIndex}">
   </ion-scroll>
 
-  <div class="color-field">
+  <div class="details-field">
     <ion-label>
         <span>رنگ: </span>
         <span>{{selectedColor?.name}}</span>
     </ion-label>
   </div>
 
-  <div [innerHtml]="product?.desc">
+  <div class="details-field" [innerHtml]="product?.desc">
   </div>
   <!-- <ion-icon name="share-alt" class="card-icon"></ion-icon> -->
 

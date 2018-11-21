@@ -11,7 +11,7 @@
 
 <ion-content class="products-page">
     <ion-segment [(ngModel)]="currentType" color="dark" class="product-segment">
-        <ion-segment-button *ngFor="let type of types" value="{{type.href}}" (click)="elementType(type)">
+        <ion-segment-button *ngFor="let type of types" value="{{type.href}}" (click)="elementType(type)" [style.background-color]="selectTab === type ? '#c1c5cc' : 'white'">
             {{type.name}}
         </ion-segment-button>
     </ion-segment>

@@ -1,0 +1,25 @@
+.select-size-page .done-button {
+  position: fixed;
+  z-index: 999;
+}
+
+.select-size-page .quantity-list {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.highlight-q {
+  background-color: #DDD;
+  opacity: 0.6;
+}
+
+.popover-content {
+  top: 80%;
+  bottom: 30%;
+}
+
+.quantity-label {
+  text-align: center;
+  color: black;
+}
+/*# sourceMappingURL=select-count.css.map */

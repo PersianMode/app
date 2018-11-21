@@ -1,87 +1,89 @@
-.product-segment {
-  padding: 5px;
-}
-
-.active:active{
-  opacity: 0.8;
-}
-
-.segment-ios .segment-button:last-of-type {
-  border-left-width: 1px;
-}
-
-.search-div {
-  display: inline-block;
-  width: 20%;
-  text-align: left;
-  color: #424242;
-  position: absolute;
-  left: 17px;
-  top: 17px;
-  font-size: 20px;
-}
-
-.title-div {
-  display: inline-block;
-  width: 80%;
-  text-align: right;
-  font-family: iranyekan;
-  font-weight: 500;
-  color: #424242;
-  font-size: 1.8rem;
-  margin-right: 17px;
-}
-
-
-.products-page {
-  direction: rtl;
-  font-family: 'iranyekan';
-
-  ion-card {
-    position: relative;
-    text-align: center;
-    margin: 0 0 5px 0;
-    width: 100%;
-    max-height: 200px;
-  }
-
-  .card-image {
-    max-height: 100%;
-    max-width: 100%;
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-  }
-
-  ion-card:active {
-    opacity: 0.8;
-  }
-
-  .brand-image {
-    max-width: 100%;
-    max-height: 80px;
+page-my-shop {
+  .product-segment {
     padding: 5px;
   }
 
-  .brand-image:active {
-    background-color: #c2c2c2;
-    opacity: 0.7;
+  .active:active{
+    opacity: 0.8;
   }
 
-  .brand-image-left-border {
-    border-left: 1px solid gray;
+  .segment-ios .segment-button:last-of-type {
+    border-left-width: 1px;
   }
 
-  .column-down-border {
-    border-bottom: 1px solid gray;
-  }
-
-  .card-title {
+  .search-div {
+    display: inline-block;
+    width: 20%;
+    text-align: left;
+    color: #424242;
     position: absolute;
-    top: 40%;
-    font-size: 2em;
-    width: 100%;
-    font-weight: bold;
-    color: #fff;
+    left: 17px;
+    top: 12px;
+    font-size: 20px;
+  }
+
+  .title-div {
+    display: inline-block;
+    width: 80%;
+    text-align: right;
+    font-family: iranyekan;
+    font-weight: 500;
+    color: #424242;
+    font-size: 1.8rem;
+    margin-right: 17px;
+  }
+
+
+  .products-page {
+    direction: rtl;
+    font-family: 'iranyekan';
+
+    ion-card {
+      position: relative;
+      text-align: center;
+      margin: 0 0 5px 0;
+      width: 100%;
+      max-height: 200px;
+    }
+
+    .card-image {
+      max-height: 100%;
+      max-width: 100%;
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
+
+    ion-card:active {
+      opacity: 0.8;
+    }
+
+    .brand-image {
+      max-width: 100%;
+      max-height: 80px;
+      padding: 5px;
+    }
+
+    .brand-image:active {
+      background-color: #c2c2c2;
+      opacity: 0.7;
+    }
+
+    .brand-image-left-border {
+      border-left: 1px solid gray;
+    }
+
+    .column-down-border {
+      border-bottom: 1px solid gray;
+    }
+
+    .card-title {
+      position: absolute;
+      top: 40%;
+      font-size: 2em;
+      width: 100%;
+      font-weight: bold;
+      color: #fff;
+    }
   }
 }

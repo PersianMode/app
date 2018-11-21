@@ -1,8 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Navbar, NavController, NavParams} from "ionic-angular";
+import {Navbar, NavController, NavParams, ToastController, AlertController} from "ionic-angular";
 import {CheckoutService} from '../../services/checkout.service';
 import {PaymentType} from '../../enum/payment.type.enum';
 import {AddressPage} from '../address/address';
+import {ProductService} from '../../services/productService';
+import {LoadingService} from '../../services/loadingService';
 
 @Component({
   selector: 'page-checkout',
@@ -19,6 +21,11 @@ export class CheckoutPage implements OnInit {
   headerData;
   addressIsSet = false;
   paymentType = PaymentType;
+  earnedLoyaltyPoint = 0;
+  deliveryCost = 0;
+  deliveryDiscount = 0;
+  showCostLabel = false;
+  checkoutHasError = false;
   private itemList = [
     {
       item: 'payment',
@@ -30,8 +37,10 @@ export class CheckoutPage implements OnInit {
     }
   ];
 
-  constructor(private navParams: NavParams,
-              private checkoutService: CheckoutService, private navCtrl: NavController) {
+  constructor(private navParams: NavParams, private toastCtrl: ToastController,
+    private checkoutService: CheckoutService, private navCtrl: NavController,
+    private loadingService: LoadingService, private productService: ProductService,
+    private alertCtrl: AlertController) {
   }
 
   ionViewWillEnter() {
@@ -50,24 +59,42 @@ export class CheckoutPage implements OnInit {
       }
     );
 
-    this.checkoutService.getLoyaltyBalance()
-      .then((res: any) => {
-        this.userBalance = res.balance;
-        this.userLoyaltyPointValue = res.loyaltyPointValue;
+    this.checkoutService.getLoyaltyBalance();
 
-        switch (this.checkoutService.selectedPaymentType) {
-          case this.paymentType.balance:
-            this.usedBalance = this.userBalance;
-            break;
-          case this.paymentType.loyaltyPoint:
-            this.usedLoyaltyPoint = this.userLoyaltyPointValue;
-            break;
-        }
-      }).catch(err =>{
-        console.log('-> ', err);
+    this.checkoutService.loyaltyPointValue$.subscribe(
+      data => {
+        this.userLoyaltyPointValue = data;
+      },
+      err => {
+        this.userLoyaltyPointValue = 0;
+      });
+
+    this.checkoutService.balance$.subscribe(
+      data => {
+        this.userBalance = data;
+      },
+      err => {
+        this.userBalance = 0;
       });
 
     this.addressIsSet = this.checkoutService.selectedAddress ? true : false;
+
+    this.loadingService.enable({content: 'در حال دریافت اطلاعات وفاداری ...'});
+
+    Promise.all([
+      this.checkoutService.getAddLoyaltyPoints(),
+      this.checkoutService.getLoyaltyGroup(),
+    ])
+      .then(res => {
+        this.loadingService.disable();
+      })
+      .catch(err => {
+        this.toastCtrl.create({
+          message: 'قادر به دریافت لیست گروه های وفاداری نیستیم. دوباره تلاش کنید',
+          duration: 3200,
+        }).present();
+        this.loadingService.disable();
+      });
   }
 
   itemIsOpen(item) {
@@ -96,11 +123,20 @@ export class CheckoutPage implements OnInit {
       this.usedLoyaltyPoint = this.userLoyaltyPointValue;
 
     this.checkoutService.selectedPaymentType = data;
+
+    this.calculateEarnPoint();
   }
 
   changeAddress(data) {
-    this.checkoutService.setAddress(data.selectedAddress, data.isCC);
-    this.addressIsSet = data.selectedAddress;
+    this.checkoutService.setAddress(data.selectedAddress, data.isCC, data.duration, data.delivery_time);
+    this.addressIsSet = data.isCC ? !!data.selectedAddress : !!(data.selectedAddress && data.duration && data.delivery_time);
+
+    this.calculateEarnPoint();
+
+    this.showCostLabel = !data.isCC;
+
+    if (!data.isCC && data.duration)
+      this.calculateDiscount(data.duration._id);
   }
 
   showAddressDetails(data) {
@@ -108,6 +144,85 @@ export class CheckoutPage implements OnInit {
   }
 
   placeOrder() {
-    this.checkoutService.checkout();
+    this.finalCheck()
+      .then(res => {
+        this.checkoutService.checkout()
+          .then(res => {
+            this.alertCtrl.create({
+              title: 'ثبت سفارش',
+              subTitle: 'سفارش شما به موفقیت ثبت شد',
+            }).present();
+            this.navCtrl.popToRoot();
+          })
+          .catch(err => {
+            this.alertCtrl.create({
+              title: 'خطا در ثبت سفارش',
+              subTitle: 'در ثبت سفارش خطایی رخ داده است. دوباره تلاش کنید',
+              buttons: ['قبول'],
+            }).present();
+          });
+      })
+      .catch(err => {
+
+      })
+  }
+
+  calculateEarnPoint() {
+    this.earnedLoyaltyPoint = this.checkoutService.calculateEarnPoint();
+  }
+
+  calculateDiscount(durationId) {
+    if (durationId) {
+      this.checkoutService.calculateDeliveryDiscount(durationId)
+        .then((res: any) => {
+          this.deliveryCost = res.res_delivery_cost;
+          this.deliveryDiscount = res.res_delivery_discount;
+        })
+        .catch(err => {
+          console.error('error occured in getting delivery cost and discount', err);
+        });
+    }
+  }
+
+  finalCheck() {
+    return new Promise((resolve, reject) => {
+      this.checkoutService.finalCheck().subscribe(res => {
+        let changeMessage = ''
+        const soldOuts = res.filter(x => x.errors && x.errors.length && x.errors.includes('soldOut'));
+        const discountChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('discountChanged'));
+        const priceChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('priceChanged'));
+        if ((soldOuts && soldOuts.length) ||
+          (discountChanges && discountChanges.length) ||
+          (priceChanges && priceChanges.length)) {
+          changeMessage = '';
+
+          if (!!soldOuts && !!soldOuts.length)
+            changeMessage = 'متاسفانه برخی از محصولات به پایان رسیده اند';
+          else if (discountChanges && discountChanges.length)
+            changeMessage = 'برخی از تخفیف ها تغییر کرده است';
+          else if (priceChanges && priceChanges.length)
+            changeMessage = 'برخی از قیمت ها تغییر کرده است';
+
+          this.productService.updateProducts(res);
+          if (changeMessage) {
+            this.alertCtrl.create({
+              title: 'تغییر اطلاعات',
+              subTitle: 'متاسفانه مشخصات برخی از موارد سبد خرید شما مانند موجودی تغییر کرده است. لطفا موارد را تصحیح و دوباره اقدام به خرید نمایید',
+              buttons: ['قبول']
+            }).present();
+            this.checkoutHasError = true;
+            reject();
+          } else {
+            this.checkoutHasError = false;
+            resolve();
+          }
+        } else {
+          resolve();
+        }
+      },
+        err => {
+          reject();
+        });
+    });
   }
 }

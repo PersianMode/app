@@ -1,0 +1,58 @@
+ion-navbar {
+  text-align: center;
+}
+
+.header-title {
+  font-weight: bold;
+  padding-bottom: 4px;
+  padding-top: 10px;
+}
+
+.header-subtitle {
+  padding-bottom: 10px;
+  font-size: 0.6em;
+  color: #878787;
+}
+
+.checkout-page {
+  text-align: center;
+  padding: 10px;
+}
+
+ion-item:active {
+  background-color: #878787;
+  opacity: 0.8;
+}
+
+.checkout-item {
+  direction: rtl;
+  margin-top: 2px;
+}
+
+.checkout-grid .first-item {
+  margin-top: 0px;
+}
+
+.checkout-item-label {
+  text-align: right;
+}
+
+.warn-label {
+  text-align: left !important;
+  color: rgba(203, 3, 11, 0.68);
+}
+
+.checkout-item-title {
+  background-color: rgba(176, 182, 180, 0.68);
+  padding: 5px;
+}
+
+.checkout-grid {
+  padding: unset;
+}
+
+.checkout-checkmark {
+  height: 10px;
+  margin-top: 14px;
+}
+/*# sourceMappingURL=checkout.css.map */
