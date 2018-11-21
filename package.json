@@ -25,12 +25,12 @@
     "@ionic-native/deeplinks": "^4.9.2",
     "@ionic-native/geolocation": "^4.9.2",
     "@ionic-native/google-maps": "^4.8.2",
-    "@ionic-native/google-plus": "^4.9.2",
+    "@ionic-native/google-plus": "^4.16.0",
     "@ionic-native/native-storage": "^4.9.2",
     "@ionic-native/social-sharing": "^4.17.0",
     "@ionic-native/splash-screen": "4.4.0",
     "@ionic-native/status-bar": "4.4.0",
-    "@ionic/app-scripts": "^3.1.11",
+    "@ionic/app-scripts": "^3.2.0",
     "@ionic/pro": "1.0.16",
     "@ionic/storage": "2.1.3",
     "color-convert": "^1.9.2",
@@ -58,7 +58,7 @@
     "minimist": "^1.2.0",
     "moment": "^2.22.2",
     "moment-jalaali": "^0.7.4",
-    "npm": "^6.0.0",
+    "npm": "^6.4.1",
     "rxjs": "5.5.2",
     "sw-toolbox": "3.6.0",
     "xml2js": "^0.4.19",
@@ -79,14 +79,14 @@
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-nativestorage": {},
       "cordova-plugin-googlemaps": {
-        "API_KEY_FOR_ANDROID": "AIzaSyAi-l_rZmuGXqOS14fXfkQY9v9M2YlVyD4",
-        "API_KEY_FOR_IOS": "AIzaSyA0Gjgn0xS7R3XYWJM6jxsnuxbTHn4ALfU",
+        "API_KEY_FOR_ANDROID": "AIzaSyDtTuBl6bxe7DbpSAIcKZmszrRZkOh1Ky4",
+        "API_KEY_FOR_IOS": "AIzaSyAVFwOKbM7RkdVr5g629GQ1yYTTxnGBR68",
         "PLAY_SERVICES_VERSION": "12.0.0",
         "ANDROID_SUPPORT_V4_VERSION": "24.1.0"
       },
       "cordova-plugin-geolocation": {},
       "cordova-android-play-services-gradle-release": {
-        "PLAY_SERVICES_VERSION": "12.+"
+        "PLAY_SERVICES_VERSION": "11.8.0"
       },
       "ionic-plugin-deeplinks": {
         "URL_SCHEME": "bankofstyle",
@@ -107,9 +107,8 @@
         "DEEPLINK_5_HOST": " "
       },
       "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.636231560622-fivtnnfsd7ctdtonslikbu5elmm69mrv",
-        "WEB_APPLICATION_CLIENT_ID": "636231560622-hr7vctis0fsihrf8gomv1seug37tl695.apps.googleusercontent.com",
-        "PLAY_SERVICES_VERSION": "11.8.0"
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.986035602689-905fo138kc6jct8loqgi1j2q1g9ogd2l",
+        "WEB_APPLICATION_CLIENT_ID": "986035602689-905fo138kc6jct8loqgi1j2q1g9ogd2l.apps.googleusercontent.com"
       }
     },
     "platforms": [
