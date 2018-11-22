@@ -157,6 +157,8 @@ export class MyApp implements OnInit {
     - zipalign -v 4 app-release-unsigned.apk bankofstyle.apk
     - apksigner verify platforms\android\app\build\outputs\apk\release\bankofstyle.apk
    *  ENJOY!
+   NOTE: you can test deeplinks with QR Codes, at: https://www.qr-code-generator.com
+        use this scheme to generate QR code:     bankofstyle://login/oauth/:<activation_link>
    */
 
   ngOnInit() {
