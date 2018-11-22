@@ -145,14 +145,15 @@ export class MyApp implements OnInit {
    * Take these steps respectively if you want to release the app:
     - make necessary changes in httpService (Host and assetPrefix)
     - comment @import and add them to index.html (as --prod refuses the former)
-    - change Android API Keys to release keys (2 in packages.json and 2 in config.xml)
-    - make sure the webClientId in login component is Web Client Id, not Android Client ID!
+    - change Android API Keys to Android Release Keys (2 in packages.json and 2 in config.xml)
+    - make sure the webClientId in login component is "Web" Client Id, not Android Client ID!
     - change directory to root ionic app, then:
     - ionic cordova build android --release --prod
-    - need a release keystore. suppose you have one with the name 'release.jks' and alias 'androidreleasekey'
+    - need a UNIQUE release keystore. suppose you have one with the name 'release.jks' and alias 'androidreleasekey'
     - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore %USERPROFILE%\.android\release.jks \
         platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk androidreleasekey
-    - 'zipalign' and 'apksigner' are found in <path-to-sdk>/build-tools/x.x.x
+    - enter its password (generally it's "android")
+    - 'zipalign' and 'apksigner' are found in <path-to-sdk>/build-tools/x.x.x (if not already in system path env vars)
     - zipalign -v 4 app-release-unsigned.apk bankofstyle.apk
     - apksigner verify platforms\android\app\build\outputs\apk\release\bankofstyle.apk
    *  ENJOY!
@@ -172,8 +173,6 @@ export class MyApp implements OnInit {
   }
 
   deepLinkToActivationLink() {
-    // TODO: might be conflicted with the rootPage setting in ngOnInit!
-    // TODO: should test this in real app (in real server)!
     this.deeplinks.routeWithNavController(this.navChild, {
       '/login/oauth/:activation_link': RegConfirmationPage
     }).subscribe(
@@ -188,7 +187,7 @@ export class MyApp implements OnInit {
       },
       nomatch => {
         this.toastCtrl.create({
-          message: 'in the no match part!',
+          message: 'خطا در دریافت لینک',
           duration: 5000,
         }).present();
       }
