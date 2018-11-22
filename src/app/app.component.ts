@@ -150,11 +150,10 @@ export class MyApp implements OnInit {
     - change directory to root ionic app, then:
     - ionic cordova build android --release --prod
     - need a UNIQUE release keystore. suppose you have one with the name 'release.jks' and alias 'androidreleasekey'
-    - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore %USERPROFILE%\.android\release.jks \
-        platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk androidreleasekey
+    - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore %USERPROFILE%\.android\release.jks platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk androidreleasekey
     - enter its password (generally it's "android")
     - 'zipalign' and 'apksigner' are found in <path-to-sdk>/build-tools/x.x.x (if not already in system path env vars)
-    - zipalign -v 4 app-release-unsigned.apk bankofstyle.apk
+    - zipalign -v 4 platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk platforms\android\app\build\outputs\apk\release\bankofstyle.apk
     - apksigner verify platforms\android\app\build\outputs\apk\release\bankofstyle.apk
    *  ENJOY!
    NOTE: you can test deeplinks with QR Codes, at: https://www.qr-code-generator.com

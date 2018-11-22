@@ -114,5 +114,8 @@
     "platforms": [
       "android"
     ]
+  },
+  "config": {
+    "ionic_cleancss": "./cleancss.config.js"
   }
 }
