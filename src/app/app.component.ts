@@ -141,6 +141,23 @@ export class MyApp implements OnInit {
     -> ionic cordova platform add android
    */
 
+  /** BUILD FOR PRODUCTION AND RELEASE NOTES
+   * Take these steps respectively if you want to release the app:
+    - make necessary changes in httpService (Host and assetPrefix)
+    - comment @import and add them to index.html (as --prod refuses the former)
+    - change Android API Keys to release keys (2 in packages.json and 2 in config.xml)
+    - make sure the webClientId in login component is Web Client Id, not Android Client ID!
+    - change directory to root ionic app, then:
+    - ionic cordova build android --release --prod
+    - need a release keystore. suppose you have one with the name 'release.jks' and alias 'androidreleasekey'
+    - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore %USERPROFILE%\.android\release.jks \
+        platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk androidreleasekey
+    - 'zipalign' and 'apksigner' are found in <path-to-sdk>/build-tools/x.x.x
+    - zipalign -v 4 app-release-unsigned.apk bankofstyle.apk
+    - apksigner verify platforms\android\app\build\outputs\apk\release\bankofstyle.apk
+   *  ENJOY!
+   */
+
   ngOnInit() {
     this.authService.isFullAuthenticated.subscribe(
       (data) => {

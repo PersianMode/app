@@ -170,7 +170,7 @@ export class LoginPage implements OnInit {
           //<-
           this.loadingService.disable();
           this.toastCtrl.create({
-            message: 'انتقال اطلاعات ناموفق بود. لطفا مجدداً تلاش کنید',
+            message: `انتقال اطلاعات ناموفق بود. لطفا مجدداً تلاش کنید`,
             duration: 3200
           }).present();
           console.error('Internal server error occurred: ', err);
