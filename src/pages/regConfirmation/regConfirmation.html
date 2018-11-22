@@ -74,7 +74,40 @@
       </ion-row>
     </ion-grid>
   </div>
-  <ion-item style="position: absolute; bottom: 1%; left: 0%;">
+  <div *ngIf="curStatus === RegStatus.EmailInvalidOrExpiredActivationLink" class="center">
+    <div>
+      <h3>فعال سازی ایمیل</h3>
+    </div>
+    <ion-grid>
+      <ion-row style="margin-top: 16px;">
+        <ion-col style="text-align: center;">
+          <div>کد فعال سازی وارد شده اشتباه یا منقضی است.</div>
+          <div>لطفا مجدداً اقدام نمایید.</div>
+        </ion-col>
+      </ion-row>
+      <ion-row style="margin-top: 5%;">
+        <ion-col>
+          <div class="div-btn btn-field inform-btn clickable-link" (click)="resendEmailActivationLink()">
+            <ion-label class="clickable-link">ارسال مجدد لینک فعالسازی</ion-label>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div *ngIf="curStatus === RegStatus.EmailActivatedSuccessfully" class="center">
+    <div>
+      <h3>فعال سازی ایمیل</h3>
+    </div>
+    <ion-grid>
+      <ion-row style="margin-top: 16px;">
+        <ion-col style="text-align: center;">
+          <div>ایمیل شما با موفقیت فعال گردید.</div>
+          <div>لطفاً از طریق دکمه زیر، اقدام به ورود نمایید.</div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-item style="position: absolute; bottom: 1%; left: 0;">
     <button ion-button full color="dark" large (click)="goToLoginPage()">رفتن به صفحه ورود</button>
   </ion-item>
 </ion-content>

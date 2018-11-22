@@ -42,8 +42,8 @@ export class MyApp implements OnInit {
       statusBar.styleDefault();
       splashScreen.hide();
 
-      if (this.platform.is('cordova'))
-        this.deepLinkToActivationLink();
+      // if (this.platform.is('cordova'))
+      this.deepLinkToActivationLink();
     }).catch(err => {
       console.warn('Platform not ready');
     });
@@ -112,7 +112,6 @@ export class MyApp implements OnInit {
         (Nexus 5 and 5X platforms supports this) then you can update them inside emulator in its google play
         other than that, there doesn't seem to be any option!
    */
-
   /**
    * More issues :(
     -> use these versions: (the 4 of them must be using the same version!)
@@ -162,11 +161,6 @@ export class MyApp implements OnInit {
       '/login/oauth/:activation_link': RegConfirmationPage
     }).subscribe(
       match => {
-        this.toastCtrl.create({
-          message: 'IN THE MATCH PART!',
-          duration: 5000,
-        }).present();
-
         let urlParts = match.$link.url.split('/');
 
         if (urlParts[2] === 'login' && urlParts[3] === 'oauth') {

@@ -5,8 +5,8 @@ import {AuthService} from "../../services/auth.service";
 import {RegPreferencesPage} from '../regPreferences/regPreferences';
 import {ConfirmationState} from '../../enum/register-status.enum';
 import {LoadingService} from '../../services/loadingService';
+import {expiredLinkStatusCode} from '../../constants/verifications.const';
 
-const expiredLinkStatusCode = 437;
 
 @Component({
   selector: 'page-reg-confirmation',
@@ -53,26 +53,32 @@ export class RegConfirmationPage implements OnInit {
   }
 
   activateLink() {
+    this.loadingService.enable();
     this.authService.activateEmail(this.navParams.get('activation_link'))
       .then(res => {
         this.curStatus = ConfirmationState.EmailActivatedSuccessfully;
+        this.loadingService.disable();
       })
       .catch(err => {
         if (err && err.status === expiredLinkStatusCode) {
           this.curStatus = ConfirmationState.EmailInvalidOrExpiredActivationLink;
         }
+        this.loadingService.disable();
       });
   }
 
   resendCode() {
+    this.loadingService.enable();
     this.httpService.post('register/resend', {username: this.username}).subscribe(
-      (data) => {
+      data => {
+        this.loadingService.disable();
         this.toastCtrl.create({
           message: 'کد جدید برایتان ارسال شد',
           duration: 2500,
         }).present();
       },
-      (err) => {
+      err => {
+        this.loadingService.disable();
         console.error('could not resend the code: ', err);
       }
     );
@@ -91,7 +97,7 @@ export class RegConfirmationPage implements OnInit {
           duration: 3200,
         }).present();
       }, err => {
-        this.loadingService.disable();        
+        this.loadingService.disable();
         this.toastCtrl.create({
           message: 'خطا در ارسال لینک فعال سازی',
           duration: 2300,
@@ -113,11 +119,11 @@ export class RegConfirmationPage implements OnInit {
       username: this.username,
       code: this.code,
     }).subscribe(
-      (data) => {
+      data => {
         this.loadingService.disable();
         if (this.isGoogleAuth) {
           this.httpService.get('validUser').subscribe(
-            (data) => {
+            data => {
               this.authService.setVerification(true);
               // this.navCtrl.setRoot(TabsPage);
               this.navCtrl.push(RegPreferencesPage, {
@@ -126,7 +132,7 @@ export class RegConfirmationPage implements OnInit {
                 isGoogleAuthConfirmation: true,
               });
             },
-            (err) => {
+            err => {
               this.toastCtrl.create({
                 message: 'ورود خودکار امکان پذیر نمی باشد. دوباره وارد شوید',
                 duration: 3200,
@@ -141,7 +147,7 @@ export class RegConfirmationPage implements OnInit {
             });
         }
       },
-      (err) => {
+      err => {
         this.loadingService.disable();
         console.error('Cannot verify registration: ', err);
 
@@ -174,15 +180,18 @@ export class RegConfirmationPage implements OnInit {
   }
 
   sendMobileNumber() {
+    this.loadingService.enable();
     this.httpService.post('register/mobile', {mobile_no: this.mobile_no}).subscribe(
-      (data) => {
+      data => {
+        this.loadingService.disable();
         this.toastCtrl.create({
           message: 'کد تأیید ارسال شد',
           duration: 3000,
         }).present();
         this.curStatus = ConfirmationState.VerificationCode;
       },
-      (err) => {
+      err => {
+        this.loadingService.disable();
         this.toastCtrl.create({
           message: 'قادر به ثبت شماره تلفن همراهتان نیستیم. دوباره تلاش کنید',
           duration: 3200,
@@ -195,12 +204,5 @@ export class RegConfirmationPage implements OnInit {
 
   goToLoginPage() {
     this.navCtrl.popToRoot();
-
-    // TODO: if from activation link ->
-    // because the root is now this, so popping to root doesn't mean anything!
-    // instead we have to set the app.component.ts->rootPage to LoginPage, but how?
-    // wait until deeplink functionality implemented, then will think about that!
-    if (this.navParams.get('activation_link')) {
-    }
   }
 }

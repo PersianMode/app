@@ -10,23 +10,9 @@ import {ForgotPasswordPage} from '../forgot-password/forgot-password';
 import {RegPreferencesPage} from '../regPreferences/regPreferences';
 import {ConfirmationState} from '../../enum/register-status.enum';
 import {LoadingService} from '../../services/loadingService';
+import {bothVerifiedCode, VerificationErrors} from '../../constants/verifications.const';
 
 // declare var window: any;
-export const VerificationErrors = {
-  notVerified: {
-    status: 420,
-    error: 'Customer is not verified yet',
-  },
-  notMobileVerified: {
-    status: 421,
-    error: 'Customer\'s mobile is not verified yet',
-  },
-  notEmailVerified: {
-    status: 422,
-    error: 'Customer\'s email is not verified yet',
-  },
-};
-const bothVerifiedCode = 3;
 
 @Component({
   selector: 'page-login',
@@ -41,8 +27,8 @@ export class LoginPage implements OnInit {
   // mess = '';
 
   constructor(private navCtrl: NavController, private authService: AuthService,
-    private toastCtrl: ToastController, private httpService: HttpService,
-    private googlePlus: GooglePlus, private loadingService: LoadingService) {
+              private toastCtrl: ToastController, private httpService: HttpService,
+              private googlePlus: GooglePlus, private loadingService: LoadingService) {
 
   }
 
@@ -59,8 +45,8 @@ export class LoginPage implements OnInit {
         Validators.required,
       ]],
     }, {
-        validator: this.checkUsername,
-      });
+      validator: this.checkUsername,
+    });
   }
 
   checkUsername(AC: AbstractControl) {
@@ -147,34 +133,46 @@ export class LoginPage implements OnInit {
     this.googlePlus.login({
       'scopes': '',
       'webClientId': '986035602689-7m3qqtr3o3c1pop9sqcgtjpre77o4ved.apps.googleusercontent.com',
-      'offline': true
+      // 'offline': true
     }).then(res => {
       // ->
       // this.dR = 'googling -> ';
       // <-
+      this.loadingService.enable({content: 'در حال دریافت اطلاعات'});
       this.httpService.post('login/google/app', res).subscribe(
-        (data) => {
+        data => {
           //->
           // this.dR += 'done';
           // this.mess = JSON.stringify(data);
           //<-
-          this.authService.afterLogin(data).then(ans => {
-            if (data.mobile_no && data.is_verified === bothVerifiedCode) {
-              this.authService.isFullAuthenticated.next(true);
-            } else { // if verification conditions weren't met
-              this.navCtrl.push(RegConfirmationPage, {
-                isGoogleAuth: true,
-                username: data.username,
-                mobile_no: data.mobile_no || null,
-              });
-            }
-          });
+          this.authService.afterLogin(data)
+            .then(ans => {
+              if (data.mobile_no && data.is_verified === bothVerifiedCode) {
+                this.authService.isFullAuthenticated.next(true);
+              } else { // if verification conditions weren't met
+                this.navCtrl.push(RegConfirmationPage, {
+                  isGoogleAuth: true,
+                  username: data.username,
+                  mobile_no: data.mobile_no || null,
+                });
+              }
+              this.loadingService.disable();
+            })
+            .catch(err => {
+              console.error('error in after login: ', err);
+              this.loadingService.disable();
+            });
         },
-        (err) => {
+        err => {
           //->
           // this.dR += 'not done';
           // this.mess = JSON.stringify(err);
           //<-
+          this.loadingService.disable();
+          this.toastCtrl.create({
+            message: 'انتقال اطلاعات ناموفق بود. لطفا مجدداً تلاش کنید',
+            duration: 3200
+          }).present();
           console.error('Internal server error occurred: ', err);
         }
       );
@@ -183,6 +181,11 @@ export class LoginPage implements OnInit {
       // this.dR = 'in catch!';
       // this.mess = JSON.stringify(err);
       //<-
+      this.loadingService.disable();
+      this.toastCtrl.create({
+        message: 'خطا در دریافت اطلاعات از مقصد',
+        duration: 2000
+      }).present();
       console.error('Cannot login via google: ', err);
     });
   }

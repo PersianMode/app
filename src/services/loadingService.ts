@@ -20,11 +20,11 @@ export class LoadingService {
       this.loading.present();
     }
 
-    if(!config || !config['duration']) {
+    if (!config || !config['duration']) {
       this.counter++;
     }
 
-    if(callBack) {
+    if (callBack) {
       setTimeout(callBack, +timeout);
     }
   }

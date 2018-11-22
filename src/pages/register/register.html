@@ -38,8 +38,8 @@
       <ion-row class="input-container">
         <ion-input class="input-field left-direction" type="text"
                    placeholder="تلفن همراه" formControlName="mobile_no"
-                   (focus)="setSeen('mobile_no')"
-                   (blur)="curFocus = null"
+                   (ionFocus)="setSeen('mobile_no')"
+                   (ionBlur)="curFocus = null"
                    [ngClass]="(registerForm.controls['mobile_no'].hasError('required') || registerForm.controls['mobile_no'].hasError('pattern')) && seen['mobile_no'] && curFocus !== 'mobile_no' ? 'input-error' : null">
         </ion-input>
       </ion-row>
@@ -50,8 +50,8 @@
       <ion-row class="input-container">
         <ion-input class="input-field left-direction" type="email"
                    placeholder="ایمیل" formControlName="username"
-                   (focus)="setSeen('username')"
-                   (blur)="curFocus = null"
+                   (ionFocus)="setSeen('username')"
+                   (ionBlur)="curFocus = null"
                    [ngClass]="(registerForm.controls['username'].hasError('required') || registerForm.controls['username'].hasError('email')) && seen['username'] && curFocus !== 'username' ? 'input-error' : null">
         </ion-input>
       </ion-row>
@@ -62,8 +62,8 @@
       <ion-row class="input-container">
         <ion-input class="input-field left-direction" type="password"
                    placeholder="رمز عبور" formControlName="password"
-                   (focus)="setSeen('password')"
-                   (blur)="curFocus = null"
+                   (ionFocus)="setSeen('password')"
+                   (ionBlur)="curFocus = null"
                    [ngClass]="(registerForm.controls['password'].hasError('required') || registerForm.controls['password'].hasError('minlength')) && seen['password'] && curFocus !== 'password' ? 'input-error' : null">
         </ion-input>
       </ion-row>
@@ -74,8 +74,8 @@
       <ion-row class="input-container right-direction">
         <ion-input class="input-field left-direction" type="text"
                    placeholder="نام" formControlName="first_name"
-                   (focus)="setSeen('first_name')"
-                   (blur)="curFocus = null"
+                   (ionFocus)="setSeen('first_name')"
+                   (ionBlur)="curFocus = null"
                    [ngClass]="registerForm.controls['first_name'].hasError('required') && seen['first_name'] && curFocus !== 'first_name' ? 'input-error' : null">
         </ion-input>
       </ion-row>
@@ -86,8 +86,8 @@
       <ion-row class="input-container right-direction">
         <ion-input class="input-field" type="text"
                    placeholder="نام خانوادگی" formControlName="surname"
-                   (focus)="setSeen('surname')"
-                   (blur)="curFocus = null"
+                   (ionFocus)="setSeen('surname')"
+                   (ionBlur)="curFocus = null"
                    [ngClass]="registerForm.controls['surname'].hasError('required') && seen['surname'] && curFocus !== 'surname' ? 'input-error' : null">
         </ion-input>
       </ion-row>
