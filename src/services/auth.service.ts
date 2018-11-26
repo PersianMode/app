@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {HttpService} from './http.service';
 import {Storage} from '@ionic/storage';
+import {GooglePlus} from '@ionic-native/google-plus';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +24,9 @@ export class AuthService {
     gender: null,
   };
 
-  constructor(private httpService: HttpService, private storage: Storage) {}
+  constructor(private httpService: HttpService, private storage: Storage,
+              private googlePlus: GooglePlus) {
+  }
 
   public checkIsUserValid() {
     return new Promise((resolve, reject) => {
@@ -36,13 +39,13 @@ export class AuthService {
             });
           }
 
-          return Promise.reject('');
+          return Promise.reject('no user data');
         })
         .then(res => {
           resolve();
         })
         .catch(err => {
-          console.error('Error: ', err);
+          console.error('Error in user validation: ', err);
           reject();
         });
     });
@@ -164,7 +167,9 @@ export class AuthService {
           this.httpService.userToken = null;
           this.isLoggedIn = false;
           this.isFullAuthenticated.next(false);
-          resolve();
+          this.googlePlus.logout() // remove google tokens, if any
+            .then(ans => resolve())
+            .catch(ans => resolve());
         },
         (err) => {
           console.error('Cannot logout: ', err);

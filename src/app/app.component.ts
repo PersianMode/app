@@ -32,6 +32,7 @@ export class MyApp implements OnInit {
       .catch(err => {
         this.loadingService.disable();
         this.rootPage = LoginPage;
+        console.error("error in initial validating user: ", err);
       });
     });
 
@@ -84,6 +85,61 @@ export class MyApp implements OnInit {
           https://docs.gradle.org/current/userguide/build_environment.html#sec:configuring_jvm_memory
         make sure you're using VPN, as google things need that
         sometimes it errors but it actually builds!
+   */
+  /**
+   * NEWLY Common Issues!!!
+   * there's definitely some build errors in android studio gradle sync and build, hence the above issues:
+        in /app/build.gradle:
+          -> change all 'compile's to 'implementation' (not 'implement')!
+          -> add "apply plugin: 'com.google.gms.google-services'" (if already exists, move it) to the very end of the file
+          -> add "google()" before "mavenCentral()" in "buildscript.repositories" and "allprojects.repositories"
+          -> also add 'maven { url "https://maven.google.com" }' after the mentioned "mavenCentral()"s
+          -> in "buildscript.dependencies", there must be these:
+              classpath 'com.android.tools.build:gradle:3.1.2'
+              classpath 'com.google.gms:google-services:4.0.1'
+          -> versions of google-play-* needs to match, so the problem might be from here!
+              one that might work: (outdated, maybe)
+                 implementation "com.squareup.okhttp3:okhttp-urlconnection:3.10.0"
+                 implementation "com.google.android.gms:play-services-maps:15.0.1"
+                 implementation "com.google.android.gms:play-services-location:15.0.1"
+                 implementation "com.android.support:support-core-utils:24.1.0"
+                 implementation "com.google.android.gms:play-services-auth:15.0.1"
+                 implementation "com.google.android.gms:play-services-identity:15.0.1"
+        in build.gradle (root project):
+          -> change those "mavenCentral()" related things mentioned above in here too!
+   * if encountered "google play service update" after syncing and building and running in emulator,
+        you should check that the API level and the platform you chose supports Google Play (not Google API)
+        (Nexus 5 and 5X platforms supports this) then you can update them inside emulator in its google play
+        other than that, there doesn't seem to be any option!
+   */
+
+  /**
+   * More issues :(
+    -> use these versions: (the 4 of them must be using the same version!)
+       implementation "com.squareup.okhttp3:okhttp-urlconnection:3.10.0"
+       implementation "com.google.android.gms:play-services-maps:12.0.1"
+       implementation "com.google.android.gms:play-services-location:12.0.1"
+       implementation "com.android.support:support-core-utils:24.1.0"
+       implementation "com.google.android.gms:play-services-auth:12.0.1"
+       implementation "com.google.android.gms:play-services-identity:12.0.1"
+    -> fix the versions as above in "project.properties" in root directory
+    -> try running with "ionic cordova run android"
+    -> The "PluginMap.java" and "PluginStreetViewPanorama.java" in app/source/main/java/plugin/google/maps
+        might come up with idiotic errors! In that case, comment out the error lines (or delete entire file for the latter)
+    -> might need to add google-service.json config file
+    -> might need to generate signed APK and using debug.keystore (key alias: androiddebugkey, password is generally: android)
+   */
+  /**
+   * Any changes made to the project, must be followed with these steps respectively for building:
+    -> run: ionic cordova build android
+    -> go to android studio, fix the probable above issues (compile, versions, etc.) and sync and build
+    -> run on device or emulator!
+    OR JUST
+    -> ionic cordova run android (if not the first time and errors are fixed somehow)
+   * for iOS, the clientIds and reverse ones must be changed according to the iOS API Key!
+   * for first time building, these commands might be needed:
+    -> ionic cordova plugin add cordova-plugin-googleplus --variable REVERSED_CLIENT_ID=<the_id_in_the_config_file>
+    -> ionic cordova platform add android
    */
 
   ngOnInit() {

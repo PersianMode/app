@@ -1,0 +1,54 @@
+<!--
+  Generated template for the OrdersPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar>
+        <ion-title>سفارش ها</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-card *ngFor="let order of orderArray" style="padding: 5px">
+        <!--<ion-grid>-->
+        <ion-row>
+            <!--<ion-col width-5>-->
+            <!--{{(orderArray.indexOf(order)+1).toLocaleString('fa')}}-->
+            <!--</ion-col>-->
+            <ion-col>
+                <div>
+                    زمان ثبت سفارش : {{order.jalali_date}}
+                </div>
+                <div style="direction: ltr">
+                    {{order.order_lines.length.toLocaleString('fa')}} : تعداد ارقام کالا
+                </div>
+                <div style="direction: ltr">
+                    هزینه کل بر حسب تومان : {{makePersianNumber(order.total_amount, true)}}
+                </div>
+
+                <div *ngIf="order.is_collect" style="direction: ltr">
+                    {{' دریافت شده از ' + order.address.wharehouse_name + ' توسط ' + order.address.recipient_name +
+                    ' '
+                    +
+                    order.address.recipient_surname}}
+                </div>
+
+                <div *ngIf="!order.is_collect" style="direction: ltr">
+                    ارسال شده به استان {{order.address.province}} شهر
+                    {{order.address.city}}
+                    <br>
+                    {{order.address.district}} {{order.address.street}} {{order.address.no ? 'پلاک ' +
+                    makePersianNumber(order.address.no, false) : ''}}
+                    {{order.address.unit ? 'واحد' + makePersianNumber(order.address.unit, false) : ''}}
+                </div>
+                <div style="text-align: left">
+                    <ion-icon name="eye" tooltip="مشاهده جزییات سفارش" (click)="goToOrderLinesPage(order._id)"></ion-icon>
+                </div>
+            </ion-col>
+        </ion-row>
+        <!--</ion-grid>-->
+    </ion-card>
+</ion-content>
+
