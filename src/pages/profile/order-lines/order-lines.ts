@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {NavController, NavParams } from 'ionic-angular';
 import {OrderService} from '../../../services/order.service';
 import {DictionaryService} from '../../../services/dictionary.service';
 import {imagePathFixer} from '../../../shared/lib/imagePathFixer';
 import {OrderStatus} from '../../../enum/order_status';
+import {makePersianNumber} from '../../../shared/lib/makePersianNumber';
+
 
 /**
  * Generated class for the OrderLinesPage page.
@@ -58,19 +60,15 @@ export class OrderLinesPage implements OnInit{
     console.log('ionViewDidLoad OrderLinesPage');
   }
 
-  getThumbnailURL(boughtColor, product) {
+  getThumbnailURL(boughtColor, product): string {
     return imagePathFixer(boughtColor.image.thumbnail, product._id, boughtColor._id);
   }
 
-
   makePersianNumber(a: string, isPrice) {
-    if (isNaN((+a)))
-      return a;
-    return (+a).toLocaleString('fa', {useGrouping: isPrice});
+    return makePersianNumber(a, isPrice);
   }
 
   orderStatus(ol) {
     return ol.tickets.length !== 0 ? OrderStatus.filter(os => os.status === ol.tickets[ol.tickets.length - 1].status)[0].title : 'نامشخص';
   }
-
 }

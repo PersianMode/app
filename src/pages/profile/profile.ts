@@ -24,7 +24,9 @@ export class ProfilePage implements OnInit {
       this.user.imgUrl = 'assets/imgs/default-user.png';
 
     this.user.fullName = this.getFullName();
-    this.orderService.getAllOrders();
+  }
+
+  ionViewDidEnter() {
   }
 
   getFullName() {

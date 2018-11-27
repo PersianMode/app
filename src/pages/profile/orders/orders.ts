@@ -3,8 +3,9 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {AuthService} from '../../../services/auth.service';
 import {HttpService} from '../../../services/http.service';
 import {OrderService} from '../../../services/order.service';
-import * as moment from 'jalali-moment';
 import {OrderLinesPage} from '../order-lines/order-lines';
+import {dateFormatter} from '../../../shared/lib/dateFormatter';
+import {makePersianNumber} from '../../../shared/lib/makePersianNumber';
 
 /**
  * Generated class for the OrdersPage page.
@@ -18,7 +19,7 @@ import {OrderLinesPage} from '../order-lines/order-lines';
   templateUrl: 'orders.html',
 })
 export class OrdersPage implements OnInit {
-  orderArray: any = [];
+  orderArray = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController, private httpService: HttpService,
@@ -26,33 +27,35 @@ export class OrdersPage implements OnInit {
   }
 
   ngOnInit() {
-    this.orderArray = this.orderService.orderArray;
-    this.orderArray.forEach(el => [el.jalali_date, el.time] = this.dateFormatter(el.order_time));
+    this.orderService.orderArray.subscribe(result => {
+      if (!result.length)
+        return;
+      this.orderArray = result;
+      this.orderArray.forEach(el => [el.jalali_date, el.time] = dateFormatter(el.order_time));
+    });
+
+    this.orderService.getAllOrders();
+
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OrdersPage');
+    this.orderService.getAllOrders();
   }
 
   ionViewWillEnter() {
+    this.orderService.orderArray.subscribe(result => {
+      if (!result.length)
+        return;
+      this.orderArray = result;
+      this.orderArray.forEach(el => [el.jalali_date, el.time] = dateFormatter(el.order_time));
+    });
+
+    this.orderService.getAllOrders();
     this.viewCtrl.setBackButtonText('بازگشت');
   }
 
-  dateFormatter(d) {
-    const date = moment(d);
-    if (date.isValid())
-      return [
-        [date.jDate(), date.jMonth() + 1, date.jYear()].map(r => r.toLocaleString('fa', {useGrouping: false})).join(' / '),
-        [date.hour(), date.minute(), date.second()].map(r => (r < 10 ? '۰' : '') + r.toLocaleString('fa', {useGrouping: false})).join(':')
-      ];
-    else return ['', ''];
-  }
-
-
   makePersianNumber(a: string, isPrice) {
-    if (isNaN((+a)))
-      return a;
-    return (+a).toLocaleString('fa', {useGrouping: isPrice});
+    return makePersianNumber(a, isPrice);
   }
 
   goToOrderLinesPage(orderId) {
@@ -62,5 +65,4 @@ export class OrdersPage implements OnInit {
     };
     this.navCtrl.push(OrderLinesPage);
   }
-
 }
