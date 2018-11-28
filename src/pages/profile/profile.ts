@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {AuthService} from '../../services/auth.service';
+import {HttpService} from '../../services/http.service';
+import {ProductDetailPage} from '../products/product-detail/product-detail';
+import {OrdersPage} from './orders/orders';
+import {OrderService} from '../../services/order.service';
 
 @Component({
   selector: 'page-profile',
@@ -9,7 +13,8 @@ import {AuthService} from '../../services/auth.service';
 export class ProfilePage implements OnInit {
   user = null;
 
-  constructor(public navCtrl: NavController, private authService: AuthService) {
+  constructor(public navCtrl: NavController, private authService: AuthService,
+              private orderService: OrderService) {
 
   }
 
@@ -19,6 +24,9 @@ export class ProfilePage implements OnInit {
       this.user.imgUrl = 'assets/imgs/default-user.png';
 
     this.user.fullName = this.getFullName();
+  }
+
+  ionViewDidEnter() {
   }
 
   getFullName() {
@@ -33,5 +41,8 @@ export class ProfilePage implements OnInit {
     this.authService.logout();
   }
 
+  goToOrderPage() {
+    this.navCtrl.push(OrdersPage);
+  }
 
 }

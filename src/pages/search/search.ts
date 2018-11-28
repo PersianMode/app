@@ -53,7 +53,7 @@ export class SearchPage {
               type: this.dictionaryService.translateWord(el.product_type.name),
               imgUrl: this.getProductThumbnail(el),
               tags: this.dictionaryService.translateWord(el.tags.name),
-              instances: el.instances.article_no,
+              instances: el.article_no,
             });
           });
         }

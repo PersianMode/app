@@ -1,0 +1,45 @@
+<!--
+  Generated template for the OrderLinesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>جزییات سفارش</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-card *ngFor="let ol of noDuplicateOrderLine">
+        <ion-row style="padding: 5px">
+            <img src="{{getThumbnailURL(ol.boughtColor, ol.product)}}"/>
+            <div style="color: black; width: 100%; font-weight: bold;">
+                {{ol.product.name}}
+            </div>
+        </ion-row>
+        <ion-grid>
+            <ion-row>
+                <ion-col width-65 style="text-align: right">اندازه : {{ol.product_instance.displaySize}}</ion-col>
+                <ion-col width-35>
+                    تعداد : {{makePersianNumber(ol.quantity, false)}} عدد
+
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col width-65 style="text-align: right">قیمت واحد : {{makePersianNumber(ol.product.instances.price ? ol.product.instances.price : ol.product.base_price, true)}}</ion-col>
+                <ion-col width-35>
+                    تخفیف : --
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col style="text-align: right">وضعیت سفارش : {{orderStatus(ol)}}</ion-col>
+            </ion-row>
+        </ion-grid>
+    </ion-card>
+</ion-content>

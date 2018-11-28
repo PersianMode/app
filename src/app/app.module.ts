@@ -48,6 +48,11 @@ import {DobComponent} from '../components/dob/dob';
 import {Deeplinks} from '@ionic-native/deeplinks';
 import {LoadingService} from '../services/loadingService';
 import {SocialSharing} from '@ionic-native/social-sharing';
+import {OrdersPage} from '../pages/profile/orders/orders';
+import {OrderService} from '../services/order.service';
+import {OrderLinesPage} from '../pages/profile/order-lines/order-lines';
+import {TooltipsModule} from 'ionic-tooltips';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -79,9 +84,13 @@ import {SocialSharing} from '@ionic-native/social-sharing';
     SizeViewerComponent,
     ForgotPasswordPage,
     DobComponent,
+    OrdersPage,
+    OrderLinesPage
   ],
   imports: [
     BrowserModule,
+    TooltipsModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
     IonicModule.forRoot(MyApp),
@@ -110,6 +119,8 @@ import {SocialSharing} from '@ionic-native/social-sharing';
     AddressPage,
     FilterPage,
     ForgotPasswordPage,
+    OrdersPage,
+    OrderLinesPage
   ],
   providers: [
     StatusBar,
@@ -128,7 +139,8 @@ import {SocialSharing} from '@ionic-native/social-sharing';
     GoogleMaps,
     Geolocation,
     Deeplinks,
-    SocialSharing
+    SocialSharing,
+    OrderService
   ]
 })
 export class AppModule {
