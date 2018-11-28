@@ -42,8 +42,8 @@ export class MyApp implements OnInit {
       statusBar.styleDefault();
       splashScreen.hide();
 
-      if (this.platform.is('cordova'))
-        this.deepLinkToActivationLink();
+      // if (this.platform.is('cordova'))
+      this.deepLinkToActivationLink();
     }).catch(err => {
       console.warn('Platform not ready');
     });
@@ -112,7 +112,6 @@ export class MyApp implements OnInit {
         (Nexus 5 and 5X platforms supports this) then you can update them inside emulator in its google play
         other than that, there doesn't seem to be any option!
    */
-
   /**
    * More issues :(
     -> use these versions: (the 4 of them must be using the same version!)
@@ -142,6 +141,25 @@ export class MyApp implements OnInit {
     -> ionic cordova platform add android
    */
 
+  /** BUILD FOR PRODUCTION AND RELEASE NOTES
+   * Take these steps respectively if you want to release the app:
+    - make necessary changes in httpService (Host and assetPrefix)
+    - comment @import and add them to index.html (as --prod refuses the former)
+    - change Android API Keys to Android Release Keys (2 in packages.json and 2 in config.xml)
+    - make sure the webClientId in login component is "Web" Client Id, not Android Client ID!
+    - change directory to root ionic app, then:
+    - ionic cordova build android --release --prod
+    - need a UNIQUE release keystore. suppose you have one with the name 'release.jks' and alias 'androidreleasekey'
+    - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore %USERPROFILE%\.android\release.jks platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk androidreleasekey
+    - enter its password (generally it's "android")
+    - 'zipalign' and 'apksigner' are found in <path-to-sdk>/build-tools/x.x.x (if not already in system path env vars)
+    - zipalign -v 4 platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk platforms\android\app\build\outputs\apk\release\bankofstyle.apk
+    - apksigner verify platforms\android\app\build\outputs\apk\release\bankofstyle.apk
+   *  ENJOY!
+   NOTE: you can test deeplinks with QR Codes, at: https://www.qr-code-generator.com
+        use this scheme to generate QR code:     bankofstyle://login/oauth/:<activation_link>
+   */
+
   ngOnInit() {
     this.authService.isFullAuthenticated.subscribe(
       (data) => {
@@ -156,17 +174,10 @@ export class MyApp implements OnInit {
   }
 
   deepLinkToActivationLink() {
-    // TODO: might be conflicted with the rootPage setting in ngOnInit!
-    // TODO: should test this in real app (in real server)!
     this.deeplinks.routeWithNavController(this.navChild, {
       '/login/oauth/:activation_link': RegConfirmationPage
     }).subscribe(
       match => {
-        this.toastCtrl.create({
-          message: 'IN THE MATCH PART!',
-          duration: 5000,
-        }).present();
-
         let urlParts = match.$link.url.split('/');
 
         if (urlParts[2] === 'login' && urlParts[3] === 'oauth') {
@@ -177,7 +188,7 @@ export class MyApp implements OnInit {
       },
       nomatch => {
         this.toastCtrl.create({
-          message: 'in the no match part!',
+          message: 'خطا در دریافت لینک',
           duration: 5000,
         }).present();
       }

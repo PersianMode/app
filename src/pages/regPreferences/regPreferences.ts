@@ -55,8 +55,7 @@ export class RegPreferencesPage implements OnInit {
     });
 
     // shoes json
-    // TODO: this http call doesn't work in app-production mode!
-    this.httpClient.get('../../assets/shoesSize.json')
+    this.httpClient.get(HttpService.assetPrefix + 'shoesSize.json')
       .subscribe(res => {
         if (this.gender === 'm') {
           res['men'].forEach(element => {

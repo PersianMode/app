@@ -16,8 +16,8 @@
         <ion-row class="input-container">
           <ion-input class="input-field left-direction"
                  formControlName="username" placeholder="ایمیل یا شماره تلفن همراه"
-                 (focus)="setSeen('username')"
-                 (blur)="curFocus = null"
+                 (ionFocus)="setSeen('username')"
+                 (ionBlur)="curFocus = null"
                  [ngClass]="(loginForm.controls['username'].hasError('required') || loginForm.controls['username'].hasError('match')) && seen['username'] && curFocus !== 'username' ? 'input-error' : null">
           </ion-input>
         </ion-row>
@@ -31,8 +31,8 @@
         <ion-row class="input-container">
           <ion-input class="input-field left-direction" type="password"
                  formControlName="password" placeholder="رمز عبور"
-                 (focus)="setSeen('password')"
-                 (blur)="curFocus = null"
+                 (ionFocus)="setSeen('password')"
+                 (ionBlur)="curFocus = null"
                  [ngClass]="loginForm.controls['password'].hasError('required') && seen['password'] && curFocus !== 'password' ? 'input-error' : null">
           </ion-input>
         </ion-row>
