@@ -144,9 +144,9 @@ export class MyApp implements OnInit {
   /** BUILD FOR PRODUCTION AND RELEASE NOTES
    * Take these steps respectively if you want to release the app:
     - make necessary changes in httpService (Host and assetPrefix)
-    - comment @import and add them to index.html (as --prod refuses the former)
+    - comment @import and add them to index.html (as --prod refuses the former) (Done)
     - change Android API Keys to Android Release Keys (2 in packages.json and 2 in config.xml)
-    - make sure the webClientId in login component is "Web" Client Id, not Android Client ID!
+    - make sure the webClientId in googlePlus.login component is "Web" Client Id, not Android Client ID!
     - change directory to root ionic app, then:
     - ionic cordova build android --release --prod
     - need a UNIQUE release keystore. suppose you have one with the name 'release.jks' and alias 'androidreleasekey'
