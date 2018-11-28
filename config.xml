@@ -3,7 +3,7 @@
     <name>Persian Mode</name>
     <description>Persian Mode App</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.1.107:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -116,5 +116,6 @@
         <variable name="DEEPLINK_5_SCHEME" value=" " />
         <variable name="DEEPLINK_5_HOST" value=" " />
     </plugin>
+    <allow-navigation href="http://192.168.1.107:8100" />
     <engine name="android" spec="7.0.0" />
 </widget>
