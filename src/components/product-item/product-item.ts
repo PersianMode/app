@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {HttpService} from '../../services/http.service';
 
 @Component({
   selector: 'product-item',
@@ -7,8 +8,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class ProductItemComponent implements OnInit {
   @Output() productIsSelected = new EventEmitter();
   @Input() product;
+  noImagePic;
 
   constructor() {
+    this.noImagePic = HttpService.assetPrefix + 'imgs/no_image.png';
   }
 
   ngOnInit() {

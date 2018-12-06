@@ -5,7 +5,6 @@ import {ToastController} from 'ionic-angular';
 
 @Injectable()
 export class OrderService {
-  // orderArray: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   orderArray: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   orderData: any;
   constructor(private httpService: HttpService, private toastCtrl: ToastController) {
@@ -15,6 +14,7 @@ export class OrderService {
     this.httpService.get('orders').subscribe(
       (info) => {
         this.orderArray.next(info.orders);
+        console.log(JSON.stringify({"info orders": info}));
       },
       (err) => {
         console.error('error');

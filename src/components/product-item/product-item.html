@@ -1,18 +1,18 @@
 <div (click)="select()" dir="rtl">
   <div class="product-image">
-    <img *ngIf="product.colors[0].image.thumbnail" src="{{product.colors[0].image.thumbnail}}"/>
+    <img src="{{product?.colors[0].image.thumbnail || noImagePic}}"/>
     <div>&nbsp;</div>
   </div>
   <div>
-    <ion-label class="product-label product-name">{{product.name}}</ion-label>
+    <ion-label class="product-label product-name">{{product?.name}}</ion-label>
   </div>
-  <div *ngIf="product.desc">
-    <ion-label class="product-label">{{product.desc}}</ion-label>
+  <div *ngIf="product?.desc">
+    <ion-label class="product-label">{{product?.desc}}</ion-label>
   </div>
   <div>
     <ion-label class="product-label">رنگ های بیشتر</ion-label>
   </div>
   <div>
-    <ion-label class="product-label">{{product.base_price.toLocaleString('fa')}} تومان</ion-label>
+    <ion-label class="product-label">{{product?.base_price.toLocaleString('fa')}} تومان</ion-label>
   </div>
 </div>

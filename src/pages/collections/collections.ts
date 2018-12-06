@@ -23,7 +23,7 @@ export class CollectionsPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private productService: ProductService) {
+              private productService: ProductService) {
 
   }
 
