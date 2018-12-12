@@ -14,7 +14,6 @@ export class OrderService {
     this.httpService.get('orders').subscribe(
       (info) => {
         this.orderArray.next(info.orders);
-        console.log(JSON.stringify({"info orders": info}));
       },
       (err) => {
         console.error('error');

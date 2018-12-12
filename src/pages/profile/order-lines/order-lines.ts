@@ -5,6 +5,7 @@ import {DictionaryService} from '../../../services/dictionary.service';
 import {imagePathFixer} from '../../../shared/lib/imagePathFixer';
 import {OrderStatus} from '../../../enum/order_status';
 import {makePersianNumber} from '../../../shared/lib/makePersianNumber';
+import {ProductViewPage} from '../../products/product-view/product-view';
 
 @Component({
   selector: 'page-order-lines',
@@ -59,5 +60,9 @@ export class OrderLinesPage implements OnInit {
 
   orderStatus(ol) {
     return ol.tickets.length !== 0 ? OrderStatus.filter(os => os.status === ol.tickets[ol.tickets.length - 1].status)[0].title : 'نامشخص';
+  }
+
+  goToProductViewPage(ol) {
+    this.navCtrl.push(ProductViewPage, {productId: ol.product._id});
   }
 }
