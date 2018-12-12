@@ -58,7 +58,6 @@ export class ProductViewPage {
     });
 
     this.topSlider.slideTo(0);
-
   }
 
   changeColorTo(index) {

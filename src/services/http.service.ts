@@ -7,7 +7,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 export class HttpService {
   // NOTE: choose one of the options below for custom profiles
   // public static Host = "http://10.0.2.2:3000";     // -> use this for testing in android emulator
-  public static Host = "http://192.168.1.3:3000";// -> use this for testing in android real device when server is running in computer on the local IP on the same network that the mobile is
+  public static Host = "http://192.168.42.49:3000";// -> use this for testing in android real device when server is running in computer on the local IP on the same network that the mobile is
   // public static Host = "http://173.249.11.153";    // -> use this for production in real server
   // public static Host = "http://bankofstyle.com";   // -> use this for production in real server
   // public static Host = "http://localhost:3000";    // -> use this for testing in browser in windows

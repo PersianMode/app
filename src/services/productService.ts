@@ -9,7 +9,7 @@ import {LoadingService} from './loadingService';
 
 const productColorMap = function (r) {
   return r.colors.map(c => c.name ? c.name.split("/")
-    .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color value
+      .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color value
     : []);
 };
 
@@ -68,7 +68,7 @@ export class ProductService {
 
 
   constructor(private httpService: HttpService, private toastCtrl: ToastController,
-    private dict: DictionaryService, private loadingService: LoadingService) {
+              private dict: DictionaryService, private loadingService: LoadingService) {
   }
 
   getSavedChecked(): any {
@@ -190,30 +190,34 @@ export class ProductService {
   }
 
   getProduct(productId) {
-    const found = this.products.findIndex(r => r._id === productId);
-    if (found >= 0 && this.products[found].detailed) {
-      this.product$.next(this.products[found]);
-    } else {
-      this.loadingService.enable();
-      this.httpService.get(`product/${productId}`).subscribe(data => {
-        this.enrichProductData(data);
-        if (found >= 0) {
-          this.products[found] = data;
-        }
-        this.product$.next(data);
-        this.loadingService.disable();
-      }, err => {
-        console.error("could not get product details: ", err);
-        this.loadingService.disable();
-      });
-    }
+    return new Promise((resolve, reject) => {
+      const found = this.products.findIndex(r => r._id === productId);
+      if (found >= 0 && this.products[found].detailed) {
+        this.product$.next(this.products[found]);
+      } else {
+        this.loadingService.enable();
+        this.httpService.get(`product/${productId}`).subscribe(data => {
+          this.enrichProductData(data);
+          if (found >= 0) {
+            this.products[found] = data;
+          }
+          this.product$.next(data);
+          this.loadingService.disable();
+          resolve(data);
+        }, err => {
+          console.error("could not get product details: ", err);
+          this.loadingService.disable();
+          reject(err);
+        });
+      }
+    });
   }
 
   getProducts(productIds) {
     const promiseList = [];
     productIds.forEach(i => {
       const found = this.products.findIndex(r => r._id === i);
-      if(found >= 0 && this.products[found].detailed) {
+      if (found >= 0 && this.products[found].detailed) {
         promiseList.push(Promise.resolve(this.products[found]));
       } else {
         promiseList.push(this.httpService.get(`product/${i}`).toPromise());
@@ -241,7 +245,10 @@ export class ProductService {
       const angles = [];
       item.image.angles.forEach(r => {
         if (!r.url) {
-          const temp = {url: imagePathFixer(r, data.id, item._id), type: r.split(".").pop(-1) === "webm" ? "video" : "photo"};
+          const temp = {
+            url: imagePathFixer(r, data.id, item._id),
+            type: r.split(".").pop(-1) === "webm" ? "video" : "photo"
+          };
           angles.push(temp);
         } else {
           angles.push(r);

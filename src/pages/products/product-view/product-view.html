@@ -16,9 +16,9 @@
 
 <ion-content class="product-view-page">
   <ion-card>
-    <ion-slides [pager]="true" #topSlider zoom>
+    <ion-slides [pager]="true" #topSlider zoom dir="rtl">
       <ion-slide *ngFor="let image of selectedPictures;">
-        <div class="swiper-zoom-container">
+        <div class="swiper-zoom-container left-direction">
           <img src="{{image || noImagePic}}" style="width: 100%;">
         </div>
       </ion-slide>
