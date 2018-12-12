@@ -39,7 +39,10 @@
     </ion-label>
   </div>
 
-  <div class="details-field" [innerHtml]="product?.desc"></div>
+  <!--<div class="details-field" [innerHtml]="product?.desc"></div>-->
+  <div class="details-field">{{product?.desc}}</div>
+  <br>
+  <div class="desc-tag-field">{{product?.desc_tag}}</div>
   <!-- <ion-icon name="share-alt" class="card-icon"></ion-icon> -->
 
   <div class="product-more-detail" *ngIf="product?.details">

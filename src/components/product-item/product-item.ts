@@ -15,7 +15,7 @@ export class ProductItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.product.desc = this.product.tags ? this.product.tags.map(el => el.name).join(' ') : null;
+    this.product.desc_tag = this.product.tags ? this.product.tags.map(el => el.name).join(' ') : this.product.desc || null;
   }
 
   select() {
