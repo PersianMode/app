@@ -16,7 +16,7 @@
 <ion-content padding>
     <ion-card *ngFor="let ol of noDuplicateOrderLine">
         <ion-row style="padding: 5px">
-            <img src="{{getThumbnailURL(ol.boughtColor, ol.product)}}"/>
+            <img src="{{getThumbnailURL(ol.boughtColor, ol.product)}}" style="height: 100%;"/>
             <div style="color: black; width: 100%; font-weight: bold;">
                 {{ol.product.name}}
             </div>

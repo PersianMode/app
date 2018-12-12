@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {AuthService} from '../../services/auth.service';
 import {OrdersPage} from './orders/orders';
+import {HttpService} from '../../services/http.service';
 
 @Component({
   selector: 'page-profile',
@@ -17,7 +18,7 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
     this.user = this.authService.userData;
     if (this.user && !this.user.imgUrl)
-      this.user.imgUrl = 'assets/imgs/default-user.png';
+      this.user.imgUrl = HttpService.assetPrefix + 'imgs/default-user.png';
 
     this.user.fullName = this.getFullName();
   }

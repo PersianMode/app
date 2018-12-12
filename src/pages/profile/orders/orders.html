@@ -34,7 +34,7 @@
           makePersianNumber(order.address.no, false) : ''}}
           {{order.address.unit ? 'واحد' + makePersianNumber(order.address.unit, false) : ''}}
         </div>
-        <div style="text-align: left">
+        <div style="text-align: left; font-size: 2em;">
           <ion-icon name="eye" tooltip="مشاهده جزییات سفارش" (click)="goToOrderLinesPage(order._id)"></ion-icon>
         </div>
       </ion-col>

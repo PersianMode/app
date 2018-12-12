@@ -25,7 +25,6 @@ export class OrdersPage implements OnInit {
     });
 
     this.orderService.getAllOrders();
-
   }
 
   ionViewDidLoad() {
