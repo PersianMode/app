@@ -1,27 +1,21 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, NavParams } from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {OrderService} from '../../../services/order.service';
 import {DictionaryService} from '../../../services/dictionary.service';
 import {imagePathFixer} from '../../../shared/lib/imagePathFixer';
 import {OrderStatus} from '../../../enum/order_status';
 import {makePersianNumber} from '../../../shared/lib/makePersianNumber';
-
-
-/**
- * Generated class for the OrderLinesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {ProductViewPage} from '../../products/product-view/product-view';
 
 @Component({
   selector: 'page-order-lines',
   templateUrl: 'order-lines.html',
 })
-export class OrderLinesPage implements OnInit{
+export class OrderLinesPage implements OnInit {
   orderData: any;
   orderLines = [];
   noDuplicateOrderLine = [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private orderService: OrderService,
               private dict: DictionaryService) {
   }
@@ -56,10 +50,6 @@ export class OrderLinesPage implements OnInit{
     });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad OrderLinesPage');
-  }
-
   getThumbnailURL(boughtColor, product): string {
     return imagePathFixer(boughtColor.image.thumbnail, product._id, boughtColor._id);
   }
@@ -70,5 +60,9 @@ export class OrderLinesPage implements OnInit{
 
   orderStatus(ol) {
     return ol.tickets.length !== 0 ? OrderStatus.filter(os => os.status === ol.tickets[ol.tickets.length - 1].status)[0].title : 'نامشخص';
+  }
+
+  goToProductViewPage(ol) {
+    this.navCtrl.push(ProductViewPage, {productId: ol.product._id});
   }
 }

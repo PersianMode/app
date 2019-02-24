@@ -127,6 +127,9 @@ export class MyApp implements OnInit {
         might come up with idiotic errors! In that case, comment out the error lines (or delete entire file for the latter)
     -> might need to add google-service.json config file
     -> might need to generate signed APK and using debug.keystore (key alias: androiddebugkey, password is generally: android)
+    -> if socialsharing installation encountered error, a possible workaround is:
+        to move "jcenter()" below "maven..." in "build.gradle"
+        change versionings in "project.properties" (or just comment v4 thing!)
    */
   /**
    * Any changes made to the project, must be followed with these steps respectively for building:
@@ -141,12 +144,24 @@ export class MyApp implements OnInit {
     -> ionic cordova platform add android
    */
 
+  /** MANUAL LOG CAT ON DEVICE
+   * to run the app in real device (plugged in) with every change,
+   * use 'ionic cordova run android --livereload --device'. Then
+   * use 'adb shell' to enter the device's shell (terminal), then
+   * use 'ps -ef | grep persianmode' to get the PID of it, then
+   * use 'logcat --pid=<pid>' with the found pid to see the logs.
+   *
+   * or just use 'monitor' from 'sdk/tools' dir to open Android Device Monitor
+   *
+   * if encountered "Connection Error ....:8100", turn off your firewall!
+   */
+
   /** BUILD FOR PRODUCTION AND RELEASE NOTES
    * Take these steps respectively if you want to release the app:
     - make necessary changes in httpService (Host and assetPrefix)
-    - comment @import and add them to index.html (as --prod refuses the former)
+    - comment @import and add them to index.html (as --prod refuses the former) (Done)
     - change Android API Keys to Android Release Keys (2 in packages.json and 2 in config.xml)
-    - make sure the webClientId in login component is "Web" Client Id, not Android Client ID!
+    - make sure the webClientId in googlePlus.login component is "Web" Client Id, not Android Client ID!
     - change directory to root ionic app, then:
     - ionic cordova build android --release --prod
     - need a UNIQUE release keystore. suppose you have one with the name 'release.jks' and alias 'androidreleasekey'

@@ -38,9 +38,9 @@ export class CheckoutPage implements OnInit {
   ];
 
   constructor(private navParams: NavParams, private toastCtrl: ToastController,
-    private checkoutService: CheckoutService, private navCtrl: NavController,
-    private loadingService: LoadingService, private productService: ProductService,
-    private alertCtrl: AlertController) {
+              private checkoutService: CheckoutService, private navCtrl: NavController,
+              private loadingService: LoadingService, private productService: ProductService,
+              private alertCtrl: AlertController) {
   }
 
   ionViewWillEnter() {
@@ -187,39 +187,39 @@ export class CheckoutPage implements OnInit {
   finalCheck() {
     return new Promise((resolve, reject) => {
       this.checkoutService.finalCheck().subscribe(res => {
-        let changeMessage = ''
-        const soldOuts = res.filter(x => x.errors && x.errors.length && x.errors.includes('soldOut'));
-        const discountChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('discountChanged'));
-        const priceChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('priceChanged'));
-        if ((soldOuts && soldOuts.length) ||
-          (discountChanges && discountChanges.length) ||
-          (priceChanges && priceChanges.length)) {
-          changeMessage = '';
+          let changeMessage = ''
+          const soldOuts = res.filter(x => x.errors && x.errors.length && x.errors.includes('soldOut'));
+          const discountChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('discountChanged'));
+          const priceChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('priceChanged'));
+          if ((soldOuts && soldOuts.length) ||
+            (discountChanges && discountChanges.length) ||
+            (priceChanges && priceChanges.length)) {
+            changeMessage = '';
 
-          if (!!soldOuts && !!soldOuts.length)
-            changeMessage = 'متاسفانه برخی از محصولات به پایان رسیده اند';
-          else if (discountChanges && discountChanges.length)
-            changeMessage = 'برخی از تخفیف ها تغییر کرده است';
-          else if (priceChanges && priceChanges.length)
-            changeMessage = 'برخی از قیمت ها تغییر کرده است';
+            if (!!soldOuts && !!soldOuts.length)
+              changeMessage = 'متاسفانه برخی از محصولات به پایان رسیده اند';
+            else if (discountChanges && discountChanges.length)
+              changeMessage = 'برخی از تخفیف ها تغییر کرده است';
+            else if (priceChanges && priceChanges.length)
+              changeMessage = 'برخی از قیمت ها تغییر کرده است';
 
-          this.productService.updateProducts(res);
-          if (changeMessage) {
-            this.alertCtrl.create({
-              title: 'تغییر اطلاعات',
-              subTitle: 'متاسفانه مشخصات برخی از موارد سبد خرید شما مانند موجودی تغییر کرده است. لطفا موارد را تصحیح و دوباره اقدام به خرید نمایید',
-              buttons: ['قبول']
-            }).present();
-            this.checkoutHasError = true;
-            reject();
+            this.productService.updateProducts(res);
+            if (changeMessage) {
+              this.alertCtrl.create({
+                title: 'تغییر اطلاعات',
+                subTitle: 'متاسفانه مشخصات برخی از موارد سبد خرید شما مانند موجودی تغییر کرده است. لطفا موارد را تصحیح و دوباره اقدام به خرید نمایید',
+                buttons: ['قبول']
+              }).present();
+              this.checkoutHasError = true;
+              reject();
+            } else {
+              this.checkoutHasError = false;
+              resolve();
+            }
           } else {
-            this.checkoutHasError = false;
             resolve();
           }
-        } else {
-          resolve();
-        }
-      },
+        },
         err => {
           reject();
         });

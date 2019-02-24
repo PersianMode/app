@@ -26,14 +26,16 @@ export class ProductViewPage {
   product$: any;
 
   selectedColor: any;
+  selectedPictures: any;
   activeColorIndex: number = 0;
   thumbnails: string[] = [];
   buyButtonShouldBeActive: Boolean = true;
+  noImagePic;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public viewCtrl: ViewController, private productService: ProductService,
-    private popoverCtrl: PopoverController, private socialSharing: SocialSharing) {
-
+              public viewCtrl: ViewController, private productService: ProductService,
+              private popoverCtrl: PopoverController, private socialSharing: SocialSharing) {
+    this.noImagePic = HttpService.assetPrefix + 'imgs/no_image.png';
   }
 
   ionViewWillEnter() {
@@ -44,22 +46,24 @@ export class ProductViewPage {
 
 
     this.product$ = this.productService.product$.subscribe(data => {
-
       this.thumbnails = [];
       this.product = data;
       this.selectedColor = this.product.colors[0];
+      this.selectedPictures = this.getImages();
       this.product.colors.forEach(color => {
         this.thumbnails.push(color.image.thumbnail);
-      })
-
+      });
       this.checkBuyButton();
+      // console.log(JSON.stringify({"product": this.product}));
     });
 
-
+    this.topSlider.slideTo(0);
   }
 
   changeColorTo(index) {
     this.selectedColor = this.product.colors[index];
+    this.selectedPictures = this.getImages();
+    this.topSlider.update();
     this.topSlider.slideTo(0);
     this.activeColorIndex = index;
     this.checkBuyButton();
@@ -91,8 +95,8 @@ export class ProductViewPage {
       activeColor: (this.product && this.product['colors'] && this.product['colors'].length > this.activeColorIndex) ?
         this.product['colors'][this.activeColorIndex]._id : null
     }, {
-        cssClass: 'select-size-popover'
-      });
+      cssClass: 'select-size-popover'
+    });
 
     pop.present({ev: myEvent});
   }
@@ -106,6 +110,7 @@ export class ProductViewPage {
     this.product = null;
     this.thumbnails = [];
     this.selectedColor = null;
+    this.selectedPictures = this.getImages();
     this.activeColorIndex = 0;
   }
 
@@ -134,7 +139,7 @@ export class ProductViewPage {
 
   shareProduct() {
     if (this.product) {
-      this.socialSharing.share('محصول ' + this.product.name, 'محصولات پرشین مد', null, HttpService.Host + '/product/' + this.product.id + '/' + this.selectedColor);
+      this.socialSharing.share('محصول ' + this.product.name, 'محصولات پرشین مد', null, HttpService.Host + '/product/' + this.product.id + '/' + this.selectedColor._id);
     }
   }
 }

@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {PopoverController, AlertController} from "ionic-angular";
+import {PopoverController, AlertController, NavController} from "ionic-angular";
 import {SelectCount} from "../select-count/select-count";
 import {CartService} from "../../../services/cart.service";
 import {priceFormatter} from "../../../shared/lib/priceFormatter";
 import {imagePathFixer} from "../../../shared/lib/imagePathFixer";
 import {LoadingService} from "../../../services/loadingService";
+import {ProductViewPage} from '../../products/product-view/product-view';
 
 @Component({
   selector: "page-product-sliding",
@@ -15,7 +16,8 @@ export class ProductSliding implements OnInit {
   @Output() getList = new EventEmitter<any>();
 
   constructor(public loadingService: LoadingService, private cartService: CartService,
-    private alertCtrl: AlertController, public popoverCtrl: PopoverController) {
+              private alertCtrl: AlertController, public popoverCtrl: PopoverController,
+              private navCtrl: NavController) {
   }
 
   ngOnInit() {
@@ -78,5 +80,9 @@ export class ProductSliding implements OnInit {
     if (this.product.discount)
       return this.product.cost - (this.product.cost * this.product.discount);
     return 0;
+  }
+
+  goToProductViewPage() {
+    this.navCtrl.push(ProductViewPage, {productId: this.product.product_id});
   }
 }

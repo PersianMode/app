@@ -1,6 +1,6 @@
 <ion-item-sliding>
   <ion-item>
-    <ion-thumbnail item-start>
+    <ion-thumbnail (click)="goToProductViewPage()" item-start>
       <img [src]="getThumbnailURL()" alt="">
     </ion-thumbnail>
     <ion-label class="cart-item-label">
