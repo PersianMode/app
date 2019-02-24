@@ -1,12 +1,4 @@
-<div>
-  <ion-row>
-    <ion-col>
-      <div class="input-container" style="margin-top: 20px;">
-        <div class="inform-btn div-btn" >آپلود</div>
-      </div>
-    </ion-col>
-  </ion-row>
-</div>
+
 
 <ion-header>
   <ion-navbar color="primary">
@@ -25,7 +17,15 @@
       </ion-item>
     </ng-container>
   </ion-list>
-
+  <div>
+    <ion-row>
+      <ion-col>
+        <div class="input-container" style="margin-top: 20px;">
+          <div class="inform-btn div-btn" >آپلود</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>
 
 <ion-footer *ngIf="currentFile.file" [@showHide]="displayFooter">
@@ -56,5 +56,6 @@
     </ion-grid>
   </ion-toolbar>
 </ion-footer>
+
 
 <!--(click)=""-->

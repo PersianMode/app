@@ -52,11 +52,7 @@ export class musicPlayerPage {
     private store: Store<any>,
     public auth: AuthService
   ) {
-
-      // if (isLoggedIn) {
       this.getDocuments();
-      // }
-
   }
 
   getDocuments() {
