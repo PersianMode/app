@@ -16,13 +16,13 @@ export class CheckoutPage implements OnInit {
   total = 0;
   discount = 0;
   usedBalance = 0;
-  usedLoyaltyPoint = 0;
+  // usedLoyaltyPoint = 0;
   userBalance = 0;
-  userLoyaltyPointValue = 0;
+  // userLoyaltyPointValue = 0;
   headerData;
   addressIsSet = false;
   paymentType = PaymentType;
-  earnedLoyaltyPoint = 0;
+  // earnedLoyaltyPoint = 0;
   deliveryCost = 0;
   deliveryDiscount = 0;
   showCostLabel = false;
@@ -62,13 +62,13 @@ export class CheckoutPage implements OnInit {
 
     this.checkoutService.getLoyaltyBalance();
 
-    this.checkoutService.loyaltyPointValue$.subscribe(
-      data => {
-        this.userLoyaltyPointValue = data;
-      },
-      err => {
-        this.userLoyaltyPointValue = 0;
-      });
+    // this.checkoutService.loyaltyPointValue$.subscribe(
+    //   data => {
+    //     this.userLoyaltyPointValue = data;
+    //   },
+    //   err => {
+    //     this.userLoyaltyPointValue = 0;
+    //   });
 
     this.checkoutService.balance$.subscribe(
       data => {
@@ -115,13 +115,13 @@ export class CheckoutPage implements OnInit {
   }
 
   setPayment(data) {
-    this.usedLoyaltyPoint = 0;
+    // this.usedLoyaltyPoint = 0;
     this.usedBalance = 0;
 
     if (data === this.paymentType.balance)
       this.usedBalance = this.userBalance;
-    else if (data === this.paymentType.loyaltyPoint)
-      this.usedLoyaltyPoint = this.userLoyaltyPointValue;
+    // else if (data === this.paymentType.loyaltyPoint)
+    //   this.usedLoyaltyPoint = this.userLoyaltyPointValue;
 
     this.checkoutService.selectedPaymentType = data;
 
@@ -169,7 +169,7 @@ export class CheckoutPage implements OnInit {
   }
 
   calculateEarnPoint() {
-    this.earnedLoyaltyPoint = this.checkoutService.calculateEarnPoint();
+    // this.earnedLoyaltyPoint = this.checkoutService.calculateEarnPoint();
   }
 
   calculateDiscount(durationId) {
@@ -188,7 +188,7 @@ export class CheckoutPage implements OnInit {
   finalCheck() {
     return new Promise((resolve, reject) => {
       this.checkoutService.finalCheck().subscribe(res => {
-          let changeMessage = ''
+          let changeMessage = '';
           const soldOuts = res.filter(x => x.errors && x.errors.length && x.errors.includes('soldOut'));
           const discountChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('discountChanged'));
           const priceChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('priceChanged'));
