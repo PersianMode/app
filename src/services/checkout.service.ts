@@ -41,7 +41,7 @@ export class CheckoutService {
   };
 
   constructor(private cartService: CartService, private httpService: HttpService,
-    private authService: AuthService, private loadingService: LoadingService) {
+              private authService: AuthService, private loadingService: LoadingService) {
     this.cartService.cartItems.subscribe(
       (data) => this.dataIsReady.next(data ? true : false)
     );
@@ -98,7 +98,7 @@ export class CheckoutService {
       this.getCustomerAddress()
         .then((res: any) => {
           customerAddress = res;
-          return this.inventoryAddressList;
+          return this.getInventoryAddress();
         })
         .then((res: any) => {
           resolve({
@@ -128,28 +128,32 @@ export class CheckoutService {
     });
   }
 
-  // private getInventoryAddress() {
-  //   return new Promise((resolve, reject) => {
-  //     this.httpService.get('warehouse').subscribe(
-  //       (data) => {
-  //         const inventoriesAddress = [];
-  //         data.forEach(el => {
-  //           inventoriesAddress.push(Object.assign(el.address, {
-  //             name: el.name,
-  //             phone: el.phone,
-  //             is_center: el.is_center,
-  //           }));
-  //         });
-  //
-  //         resolve(inventoriesAddress);
-  //       },
-  //       (err) => {
-  //         console.error('Cannot fetch customer address: ', err);
-  //         reject(err);
-  //       }
-  //     );
-  //   });
-  // }
+  private getInventoryAddress() {
+    return new Promise((resolve, reject) => {
+      this.loadingService.enable({}, 500, () => {
+        this.httpService.get('warehouse').subscribe(
+          (data) => {
+            this.loadingService.disable();
+            const inventoriesAddress = [];
+            data.forEach(el => {
+              inventoriesAddress.push(Object.assign(el.address, {
+                name: el.name,
+                phone: el.phone,
+                is_center: el.is_center,
+              }));
+            });
+
+            resolve(inventoriesAddress);
+          },
+          (err) => {
+            this.loadingService.disable();
+            console.error('Cannot fetch customer address: ', err);
+            reject(err);
+          }
+        );
+      });
+    });
+  }
 
   saveAddress(addressData) {
     return new Promise((resolve, reject) => {
@@ -233,14 +237,14 @@ export class CheckoutService {
     return new Promise((resolve, reject) => {
       this.httpService.get('deliverycc')
         .subscribe(res => {
-          if (!res || !res.length)
-            reject();
-          else {
-            this.CCIncreaseLoyaltyPoints = res[0].add_point;
-            resolve();
+            if (!res || !res.length)
+              reject();
+            else {
+              this.CCIncreaseLoyaltyPoints = res[0].add_point;
+              resolve();
 
-          }
-        },
+            }
+          },
           err => {
             console.error('Cannot get loyalty groups: ', err);
             reject();
@@ -252,9 +256,9 @@ export class CheckoutService {
     return new Promise((resolve, reject) => {
       this.httpService.get('loyaltygroup')
         .subscribe(res => {
-          this.loyaltyGroups = res;
-          resolve();
-        },
+            this.loyaltyGroups = res;
+            resolve();
+          },
           err => {
             console.error('Cannot get loyalty groups: ', err);
             reject();
@@ -310,8 +314,8 @@ export class CheckoutService {
     return new Promise((resolve, reject) => {
       this.httpService.post('/calculate/order/price', data)
         .subscribe(res => {
-          resolve(res);
-        },
+            resolve(res);
+          },
           err => {
             reject();
           });

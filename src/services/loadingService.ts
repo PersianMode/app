@@ -10,7 +10,6 @@ export class LoadingService {
   };
 
   constructor(private loadingCtrl: LoadingController) {
-
   }
 
   enable(config = {}, timeout = 500, callBack = null) {
@@ -40,7 +39,7 @@ export class LoadingService {
 
     if (!this.counter) {
       this.loading.dismiss().catch(err => {
-        console.error('-> ', err);
+        console.error('-> ', err); // a frequent error occurs: removeView was not found
       });
     }
   }

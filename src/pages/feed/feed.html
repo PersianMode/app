@@ -6,9 +6,9 @@
 <ion-content class="card-background-page">
   <ion-card *ngFor="let feed of feed_placement" class="ion-card container">
     <div class="card-back-click">
-      <img src="{{loadImage(feed.info.imgUrl)}}"/>
+      <img src="{{loadImage(feed?.info.imgUrl)}}"/>
       <div class="center-center">
-        <label>{{feed.info.text}}</label>
+        <label>{{feed?.info.text}}</label>
       </div>
     </div>
   </ion-card>

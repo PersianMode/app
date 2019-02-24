@@ -11,9 +11,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding dir="rtl">
-
   <ion-grid>
     <ion-row>
       <ion-col *ngFor="let product of products" col-6>
@@ -24,5 +22,4 @@
   <ion-infinite-scroll (ionInfinite)="loadOtherProducts($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
-
 </ion-content>

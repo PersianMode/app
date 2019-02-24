@@ -5,8 +5,7 @@
 </ion-header>
 
 <ion-content>
-
-  <div class="list card">
+  <div>
     <ion-item class="profile-item">
       <div class="profile-picture big-profile-picture">
         <img src="{{user.imgUrl}}">
@@ -18,8 +17,8 @@
     </ion-item>
     <ion-item class="profile-item">
       <ion-row style="width: 100%">
-        <ion-col width-25>
-          <ion-icon name="my-orders" (click)="goToOrderPage()"></ion-icon>
+        <ion-col width-25 (click)="goToOrderPage()">
+          <ion-icon name="my-orders"></ion-icon>
           <br>
           سفارشات
         </ion-col>
