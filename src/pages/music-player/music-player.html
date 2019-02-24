@@ -8,7 +8,7 @@
 
 <ion-content padding>
 
-  <ion-list *ngIf="files.length && loggedIn">
+  <ion-list *ngIf="files.length">
     <ng-container *ngFor="let file of files; let i = index">
       <ion-item text-wrap (click)="openFile(file, i)">
         <ion-icon color="primary" item-start name="musical-note"></ion-icon>{{ file.name }}
@@ -17,15 +17,6 @@
       </ion-item>
     </ng-container>
   </ion-list>
-  <div>
-    <ion-row>
-      <ion-col>
-        <div class="input-container" style="margin-top: 20px;">
-          <div class="inform-btn div-btn" >آپلود</div>
-        </div>
-      </ion-col>
-    </ion-row>
-  </div>
 </ion-content>
 
 <ion-footer *ngIf="currentFile.file" [@showHide]="displayFooter">

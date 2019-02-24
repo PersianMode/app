@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams, Navbar, Content, LoadingController} from 'ionic-angular';
 import {AuthService} from '../../services/auth.service';
-import {HttpService} from '../../services/http.service';
 import {FormControl} from '@angular/forms';
 import {trigger, state, style, animate, transition } from '@angular/animations';
 import {AudioProvider} from '../../services/audio';
