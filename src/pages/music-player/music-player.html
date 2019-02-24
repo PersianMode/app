@@ -1,0 +1,60 @@
+<div>
+  <ion-row>
+    <ion-col>
+      <div class="input-container" style="margin-top: 20px;">
+        <div class="inform-btn div-btn" >آپلود</div>
+      </div>
+    </ion-col>
+  </ion-row>
+</div>
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Audio Player</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list *ngIf="files.length && loggedIn">
+    <ng-container *ngFor="let file of files; let i = index">
+      <ion-item text-wrap (click)="openFile(file, i)">
+        <ion-icon color="primary" item-start name="musical-note"></ion-icon>{{ file.name }}
+        <p item-end *ngIf="currentFile.index === i">SELECTED</p>
+        <ion-icon item-end name="play" *ngIf="currentFile.index !== i"></ion-icon>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+</ion-content>
+
+<ion-footer *ngIf="currentFile.file" [@showHide]="displayFooter">
+  <ion-toolbar color="primary">
+    <ion-range min="0" color="light" [max]="state.durationSec" [formControl]="seekbar" (ionFocus)="onSeekStart()" (ionBlur)="onSeekEnd($event)"
+               name="seekbar">
+      <ion-label color="light" range-left>{{ state.time }}</ion-label>
+      <ion-label color="light" range-right>{{ state.duration }}</ion-label>
+    </ion-range>
+  </ion-toolbar>
+
+  <ion-toolbar color="primary" padding>
+    <ion-grid>
+      <ion-row align-items-center id="media-controls">
+        <button clear ion-col ion-button [disabled]="isFirstPlaying()" (click)="previous()">
+          <ion-icon color="light" name="skip-backward"> </ion-icon>
+        </button>
+        <button clear ion-col ion-button *ngIf="!state.playing" (click)="play()">
+          <ion-icon color="light" name="play"></ion-icon>
+        </button>
+        <button clear ion-col ion-button *ngIf="!!state.playing" (click)="pause()">
+          <ion-icon color="light" name="pause"></ion-icon>
+        </button>
+        <button clear ion-col ion-button [disabled]="isLastPlaying()" (click)="next()">
+          <ion-icon color="light" name="skip-forward"></ion-icon>
+        </button>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
+
+<!--(click)=""-->
