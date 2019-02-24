@@ -124,7 +124,7 @@ export class CheckoutSummary implements OnInit {
       this.usedBalance = this.finalTotal;
       this.finalTotal = 0;
     } else {
-      this.finalTotal = 0;
+      // this.finalTotal = 0;
     }
     // else if (this.usedLoyaltyPoint && this.usedLoyaltyPoint > this.finalTotal) {
     //   this.usedLoyaltyPoint = this.finalTotal;
