@@ -98,7 +98,7 @@ export class CheckoutService {
       this.getCustomerAddress()
         .then((res: any) => {
           customerAddress = res;
-          return this.inventoryAddressList;
+          return this.getInventoryAddress();
         })
         .then((res: any) => {
           resolve({
@@ -128,28 +128,28 @@ export class CheckoutService {
     });
   }
 
-  // private getInventoryAddress() {
-  //   return new Promise((resolve, reject) => {
-  //     this.httpService.get('warehouse').subscribe(
-  //       (data) => {
-  //         const inventoriesAddress = [];
-  //         data.forEach(el => {
-  //           inventoriesAddress.push(Object.assign(el.address, {
-  //             name: el.name,
-  //             phone: el.phone,
-  //             is_center: el.is_center,
-  //           }));
-  //         });
-  //
-  //         resolve(inventoriesAddress);
-  //       },
-  //       (err) => {
-  //         console.error('Cannot fetch customer address: ', err);
-  //         reject(err);
-  //       }
-  //     );
-  //   });
-  // }
+  private getInventoryAddress() {
+    return new Promise((resolve, reject) => {
+      this.httpService.get('warehouse').subscribe(
+        (data) => {
+          const inventoriesAddress = [];
+          data.forEach(el => {
+            inventoriesAddress.push(Object.assign(el.address, {
+              name: el.name,
+              phone: el.phone,
+              is_center: el.is_center,
+            }));
+          });
+
+          resolve(inventoriesAddress);
+        },
+        (err) => {
+          console.error('Cannot fetch customer address: ', err);
+          reject(err);
+        }
+      );
+    });
+  }
 
   saveAddress(addressData) {
     return new Promise((resolve, reject) => {
@@ -198,7 +198,7 @@ export class CheckoutService {
       this.cartService.applyCoupon(this.cartService.coupon_code)
         .then(rs => {
           const data = this.accumulateData();
-          this.httpService.post('checkout', data).subscribe(
+          this.httpService.post('checkout/false', data).subscribe(
             (res) => {
               this.cartService.emptyCart();
               this.cartService.getBalanceAndLoyalty();
@@ -308,7 +308,7 @@ export class CheckoutService {
       duration_id: durationId
     };
     return new Promise((resolve, reject) => {
-      this.httpService.post('/calculate/order/price', data)
+      this.httpService.post('calculate/order/price', data)
         .subscribe(res => {
           resolve(res);
         },

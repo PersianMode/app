@@ -5,6 +5,7 @@ import {PaymentType} from '../../enum/payment.type.enum';
 import {AddressPage} from '../address/address';
 import {ProductService} from '../../services/productService';
 import {LoadingService} from '../../services/loadingService';
+import {HttpService} from '../../services/http.service';
 
 @Component({
   selector: 'page-checkout',
@@ -40,7 +41,7 @@ export class CheckoutPage implements OnInit {
   constructor(private navParams: NavParams, private toastCtrl: ToastController,
     private checkoutService: CheckoutService, private navCtrl: NavController,
     private loadingService: LoadingService, private productService: ProductService,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController, private httpService: HttpService) {
   }
 
   ionViewWillEnter() {
@@ -175,8 +176,8 @@ export class CheckoutPage implements OnInit {
     if (durationId) {
       this.checkoutService.calculateDeliveryDiscount(durationId)
         .then((res: any) => {
-          this.deliveryCost = res.res_delivery_cost;
-          this.deliveryDiscount = res.res_delivery_discount;
+          this.deliveryCost = res.delivery_cost;
+          this.deliveryDiscount = res.delivery_discount;
         })
         .catch(err => {
           console.error('error occured in getting delivery cost and discount', err);
@@ -187,7 +188,7 @@ export class CheckoutPage implements OnInit {
   finalCheck() {
     return new Promise((resolve, reject) => {
       this.checkoutService.finalCheck().subscribe(res => {
-        let changeMessage = ''
+        let changeMessage = '';
         const soldOuts = res.filter(x => x.errors && x.errors.length && x.errors.includes('soldOut'));
         const discountChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('discountChanged'));
         const priceChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('priceChanged'));
