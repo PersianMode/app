@@ -125,19 +125,24 @@ export class CheckoutPage implements OnInit {
 
     this.checkoutService.selectedPaymentType = data;
 
-    this.calculateEarnPoint();
+    // this.calculateEarnPoint();
   }
 
   changeAddress(data) {
+    if(data.isCC || !data.duration) {
+      this.deliveryCost = 0;
+      this.deliveryDiscount = 0;
+    }
     this.checkoutService.setAddress(data.selectedAddress, data.isCC, data.duration, data.delivery_time);
     this.addressIsSet = data.isCC ? !!data.selectedAddress : !!(data.selectedAddress && data.duration && data.delivery_time);
 
-    this.calculateEarnPoint();
+    // this.calculateEarnPoint();
 
     this.showCostLabel = !data.isCC;
 
-    if (!data.isCC && data.duration)
+    if (!data.isCC && data.duration) {
       this.calculateDiscount(data.duration._id);
+    }
   }
 
   showAddressDetails(data) {
@@ -168,9 +173,9 @@ export class CheckoutPage implements OnInit {
       })
   }
 
-  calculateEarnPoint() {
-    // this.earnedLoyaltyPoint = this.checkoutService.calculateEarnPoint();
-  }
+  // calculateEarnPoint() {
+  //   this.earnedLoyaltyPoint = this.checkoutService.calculateEarnPoint();
+  // }
 
   calculateDiscount(durationId) {
     if (durationId) {

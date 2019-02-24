@@ -13,6 +13,7 @@ export class CheckoutSummary implements OnInit {
   }
 
   get total() {
+    console.log(this._total);
     return this._total;
   }
 
