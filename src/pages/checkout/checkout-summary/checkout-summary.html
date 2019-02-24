@@ -11,14 +11,14 @@
     <p item-left class="title">موجودی</p>
     <p item-right>{{priceFormatter(usedBalance)}}- تومان</p>
   </ion-item>
-  <ion-item *ngIf="usedLoyaltyPoint">
-    <p item-left class="title">امتیاز وفاداری</p>
-    <p item-right>{{priceFormatter(usedLoyaltyPoint)}} امتیاز</p>
-  </ion-item>
-  <ion-item *ngIf="!usedLoyaltyPoint">
-    <p item-left class="title">امتیاز بدست آمده از این خرید</p>
-    <p item-right>{{priceFormatter(earnedLoyaltyPoint)}} امتیاز </p>
-  </ion-item>
+  <!--<ion-item *ngIf="usedLoyaltyPoint">-->
+    <!--<p item-left class="title">امتیاز وفاداری</p>-->
+    <!--<p item-right>{{priceFormatter(usedLoyaltyPoint)}} امتیاز</p>-->
+  <!--</ion-item>-->
+  <!--<ion-item *ngIf="!usedLoyaltyPoint">-->
+    <!--<p item-left class="title">امتیاز بدست آمده از این خرید</p>-->
+    <!--<p item-right>{{priceFormatter(earnedLoyaltyPoint)}} امتیاز </p>-->
+  <!--</ion-item>-->
   <ion-item *ngIf="showCostLabel">
     <p item-left class="title">هزینه ارسال</p>
     <p item-right>{{priceFormatter(deliveryCost)}} تومان </p>
