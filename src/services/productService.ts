@@ -9,7 +9,7 @@ import {LoadingService} from './loadingService';
 
 const productColorMap = function (r) {
   return r.colors.map(c => c.name ? c.name.split("/")
-    .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color value
+      .map(x => x.replace(/\W/g, '')) // remove all non alpha-numeric chars from color value
     : []);
 };
 
@@ -68,7 +68,7 @@ export class ProductService {
 
 
   constructor(private httpService: HttpService, private toastCtrl: ToastController,
-    private dict: DictionaryService, private loadingService: LoadingService) {
+              private dict: DictionaryService, private loadingService: LoadingService) {
   }
 
   getSavedChecked(): any {
@@ -91,21 +91,21 @@ export class ProductService {
     this.loadingService.enable({}, 500, () => {
       const products = trigger ? this.filteredProducts : this.products;
       let tags: any = {};
-  
+
       const brand = Array.from(new Set([...products.map(r => r.brand)]));
       const type = Array.from(new Set([...products.map(r => r.product_type)]));
-  
+
       const size = Array.from(new Set([...products.map(r => Object.keys(r.sizesInventory))
         .reduce((x, y) => x.concat(y), []).sort()]));
       const color = Array.from(new Set([...products.map(productColorMap)
         .reduce((x, y) => x.concat(y), []).reduce((x, y) => x.concat(y), [])]));
-  
+
       let price;
       if (trigger === "price") {
         price = [];
       } else {
         price = products.map(r => r.base_price);
-  
+
         if (price && price.length > 1 && price[0] !== price[1]) {
           const minPrice = Math.min(...price);
           const maxPrice = Math.max(...price);
@@ -114,13 +114,13 @@ export class ProductService {
           price = [];
         }
       }
-  
+
       tags = {brand, type, price, size, color};
-  
+
       if (trigger && trigger !== "price") {
         tags[trigger] = this.collectionTags[trigger] ? this.collectionTags[trigger] : [];
       }
-  
+
       products.forEach(p => p.tags.forEach(tag => {
         const tagGroupName = tag.tg_name;
         if (!tags[tagGroupName]) {
@@ -128,13 +128,13 @@ export class ProductService {
         }
         tags[tagGroupName].add(tag.name);
       }));
-  
+
       if (trigger) {
         this.collectionTagsAfterFilter = tags;
       } else {
         this.collectionTags = tags;
       }
-  
+
       const emittedValue = [];
       for (const name in tags) {
         if (tags.hasOwnProperty(name)) {
@@ -180,7 +180,7 @@ export class ProductService {
               .filter(p => p.tags.filter(t => Array.from(f.values).includes(t.name)).length);
           }
         }
-  
+
         this.filteredProducts = this.cleanProductsList(this.filteredProducts);
       });
       this.sortProductsAndEmit();
@@ -190,25 +190,34 @@ export class ProductService {
   }
 
   getProduct(productId) {
-    const found = this.products.findIndex(r => r._id === productId);
-    if (found >= 0 && this.products[found].detailed) {
-      this.product$.next(this.products[found]);
-    } else {
-      this.httpService.get(`product/${productId}`).subscribe(data => {
-        this.enrichProductData(data);
-        if (found >= 0) {
-          this.products[found] = data;
-        }
-        this.product$.next(data);
-      });
-    }
+    return new Promise((resolve, reject) => {
+      const found = this.products.findIndex(r => r._id === productId);
+      if (found >= 0 && this.products[found].detailed) {
+        this.product$.next(this.products[found]);
+      } else {
+        this.loadingService.enable();
+        this.httpService.get(`product/${productId}`).subscribe(data => {
+          this.enrichProductData(data);
+          if (found >= 0) {
+            this.products[found] = data;
+          }
+          this.product$.next(data);
+          this.loadingService.disable();
+          resolve(data);
+        }, err => {
+          console.error("could not get product details: ", err);
+          this.loadingService.disable();
+          reject(err);
+        });
+      }
+    });
   }
 
   getProducts(productIds) {
     const promiseList = [];
     productIds.forEach(i => {
       const found = this.products.findIndex(r => r._id === i);
-      if(found >= 0 && this.products[found].detailed) {
+      if (found >= 0 && this.products[found].detailed) {
         promiseList.push(Promise.resolve(this.products[found]));
       } else {
         promiseList.push(this.httpService.get(`product/${i}`).toPromise());
@@ -236,7 +245,10 @@ export class ProductService {
       const angles = [];
       item.image.angles.forEach(r => {
         if (!r.url) {
-          const temp = {url: imagePathFixer(r, data.id, item._id), type: r.split(".").pop(-1) === "webm" ? "video" : "photo"};
+          const temp = {
+            url: imagePathFixer(r, data.id, item._id),
+            type: r.split(".").pop(-1) === "webm" ? "video" : "photo"
+          };
           angles.push(temp);
         } else {
           angles.push(r);

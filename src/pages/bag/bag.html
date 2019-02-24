@@ -18,7 +18,7 @@
   <ion-grid *ngIf="cartItemsLength > 0">
     <ion-row>
       <ion-col>
-        <span>اگر کد تخفیف دارید، اینجا وارد کنید (اختیاری)</span>
+        <span (click)="onClickedOnPromoCode()"> اگر کد تخفیف دارید، اینجا وارد کنید (اختیاری)</span>
         <ion-icon (click)="onClickedOnPromoCode()" name="{{isPromoCodeShown? 'arrow-dropdown': 'arrow-dropup'}}"></ion-icon>
       </ion-col>
     </ion-row>

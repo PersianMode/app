@@ -13,8 +13,8 @@ export class HttpService {
   public static Host = "http://localhost:3000";    // -> use this for testing in browser in windows
 
   // NOTE: choose one of the options below for custom profiles
-  // public static assetPrefix = '../../assets/';  // -> use this for testing in browser with ionic serve, etc.
-  public static assetPrefix = 'assets/';        // -> use this for testing in real device or when building
+  public static assetPrefix = '../../assets/';  // -> use this for testing in browser with ionic serve, etc.
+  // public static assetPrefix = 'assets/';        // -> use this for testing in real device or when building
   serverAddress: string = HttpService.Host + "/api/";
   public static PRODUCT_IMAGE_PATH = "images/product-image";
 
@@ -24,10 +24,7 @@ export class HttpService {
   }
 
   get(url: any): Observable<any> {
-    let headers: any = new HttpHeaders();
-    if (this.userToken) {
-      headers = headers.append("token", this.userToken);
-    }
+    let headers: any = this.getHeader();
 
     return this.http.get(this.serverAddress + url, {
       observe: "response",
@@ -36,10 +33,7 @@ export class HttpService {
   }
 
   put(url: any, values: any): Observable<any> {
-    let headers: any = new HttpHeaders();
-    if (this.userToken) {
-      headers = headers.append("token", this.userToken);
-    }
+    let headers: any = this.getHeader();
 
     return this.http.put(this.serverAddress + url, values, {
       observe: "response",
@@ -48,10 +42,7 @@ export class HttpService {
   }
 
   post(url: any, values: any): Observable<any> {
-    let headers: any = new HttpHeaders();
-    if (this.userToken) {
-      headers = headers.append("token", this.userToken);
-    }
+    let headers: any = this.getHeader();
 
     return this.http.post(this.serverAddress + url, values, {
       observe: "response",
@@ -60,15 +51,20 @@ export class HttpService {
   }
 
   delete(url: any): Observable<any> {
-    let headers: any = new HttpHeaders();
-    if (this.userToken) {
-      headers = headers.append("token", this.userToken);
-    }
+    let headers: any = this.getHeader();
 
     return this.http.delete(this.serverAddress + url, {
       observe: "response",
       headers: headers
     });
+  }
+
+  getHeader() {
+    let headers: any = new HttpHeaders();
+    if (this.userToken) {
+      headers = headers.append("token", this.userToken);
+    }
+    return headers;
   }
 
   static addHost(url) {
