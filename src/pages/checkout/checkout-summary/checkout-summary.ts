@@ -13,7 +13,6 @@ export class CheckoutSummary implements OnInit {
   }
 
   get total() {
-    console.log(this._total);
     return this._total;
   }
 
@@ -29,6 +28,7 @@ export class CheckoutSummary implements OnInit {
   @Input()
   set showCostLabel(value) {
     this._showCostLabel = value;
+    this.ignoreDeliveryItems = !!!value;
 
     this.calculateTotal();
   }
@@ -99,6 +99,7 @@ export class CheckoutSummary implements OnInit {
   private _deliveryCost = 0;
   private _deliveryDiscount = 0;
   // private _earnedLoyaltyPoint = 0;
+  ignoreDeliveryItems = false;
   finalTotal = 0;
 
   constructor() {
@@ -120,12 +121,10 @@ export class CheckoutSummary implements OnInit {
 
   calculateTotal() {
     // this.finalTotal = this.total + this.deliveryCost - this.discount - this.usedBalance - this.usedLoyaltyPoint - this.deliveryDiscount;
-    this.finalTotal = this.total + this.deliveryCost - this.discount - this.usedBalance - this.deliveryDiscount;
+    this.finalTotal = this.total + (this.ignoreDeliveryItems ? 0 : this.deliveryCost - this.deliveryDiscount) - this.discount - this.usedBalance;
     if (this.usedBalance && this.usedBalance > this.finalTotal) {
       this.usedBalance = this.finalTotal;
       this.finalTotal = 0;
-    } else {
-      // this.finalTotal = 0;
     }
     // else if (this.usedLoyaltyPoint && this.usedLoyaltyPoint > this.finalTotal) {
     //   this.usedLoyaltyPoint = this.finalTotal;

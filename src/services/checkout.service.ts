@@ -301,7 +301,7 @@ export class CheckoutService {
       delivery_value: 0,
       shop_value: earnedLoyaltyPoint,
       earn_point: 0,
-    }
+    };
 
     return earnedLoyaltyPoint;
   }
