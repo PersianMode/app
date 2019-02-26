@@ -26,17 +26,17 @@ export class CheckoutPaymentType implements OnInit {
       this.pType.find(el => el.value === this.paymentType.balance).amount = 0;
     }
   }
-
-  @Input()
-  set loyaltyPointValue(value) {
-    if (value) {
-      this.pType.find(el => el.value === this.paymentType.loyaltyPoint).disabled = false;
-      this.pType.find(el => el.value === this.paymentType.loyaltyPoint).amount = this.getValue(value);
-    } else {
-      this.pType.find(el => el.value === this.paymentType.loyaltyPoint).disabled = true;
-      this.pType.find(el => el.value === this.paymentType.loyaltyPoint).amount = 0;
-    }
-  }
+  //
+  // @Input()
+  // set loyaltyPointValue(value) {
+  //   if (value) {
+  //     this.pType.find(el => el.value === this.paymentType.loyaltyPoint).disabled = false;
+  //     this.pType.find(el => el.value === this.paymentType.loyaltyPoint).amount = this.getValue(value);
+  //   } else {
+  //     this.pType.find(el => el.value === this.paymentType.loyaltyPoint).disabled = true;
+  //     this.pType.find(el => el.value === this.paymentType.loyaltyPoint).amount = 0;
+  //   }
+  // }
 
   @Output() typeChanged = new EventEmitter();
 

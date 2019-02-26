@@ -117,7 +117,6 @@ export class CheckoutAddress implements OnInit {
     this.selectedAddress = null;
     this.selectedDuration = null;
     this.selectedDeliveryTime = null;
-
     this.setAddress();
   }
 }

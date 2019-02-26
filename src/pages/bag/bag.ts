@@ -13,7 +13,7 @@ export class BagPage implements OnInit {
   products: any[] = [];
   cartItemsLength: number = 0;
   isPromoCodeShown: Boolean = false;
-  loyalty_point: number = 0;
+  // loyalty_point: number = 0;
   balance: number = 0;
   totalCost: number = 0;
   discount: number = 0;
@@ -35,13 +35,13 @@ export class BagPage implements OnInit {
   ngOnInit() {
     this.cartService.getBalanceAndLoyalty();
 
-    this.cartService.loyaltyPoints$.subscribe(
-      data => {
-        this.loyalty_point = data;
-      },
-      err => {
-        this.loyalty_point = 0;
-      });
+    // this.cartService.loyaltyPoints$.subscribe(
+    //   data => {
+    //     this.loyalty_point = data;
+    //   },
+    //   err => {
+    //     this.loyalty_point = 0;
+    //   });
     this.cartService.balanceValue$.subscribe(
       data => {
         this.balance = data;

@@ -202,7 +202,7 @@ export class CheckoutService {
       this.cartService.applyCoupon(this.cartService.coupon_code)
         .then(rs => {
           const data = this.accumulateData();
-          this.httpService.post('checkout', data).subscribe(
+          this.httpService.post('checkout/false', data).subscribe(
             (res) => {
               this.cartService.emptyCart();
               this.cartService.getBalanceAndLoyalty();
@@ -301,7 +301,7 @@ export class CheckoutService {
       delivery_value: 0,
       shop_value: earnedLoyaltyPoint,
       earn_point: 0,
-    }
+    };
 
     return earnedLoyaltyPoint;
   }
@@ -312,7 +312,7 @@ export class CheckoutService {
       duration_id: durationId
     };
     return new Promise((resolve, reject) => {
-      this.httpService.post('/calculate/order/price', data)
+      this.httpService.post('calculate/order/price', data)
         .subscribe(res => {
             resolve(res);
           },
