@@ -24,6 +24,7 @@ export class PageService {
   }
 
   getPage(pageName) {
+    console.log('Page Name : ', pageName);
     return new Promise((resolve, reject) => {
       if (!this.cache[pageName]) {
         this.httpService.post('page', {address: pageName}).subscribe(
