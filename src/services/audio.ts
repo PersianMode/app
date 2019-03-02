@@ -65,7 +65,7 @@ export class AudioProvider {
   }
 
   seekTo(seconds) {
-    this.audioObj.currentTime = seconds;
+    this.audioObj.currentTime = seconds;z
   }
 
   formatTime(time, format) {

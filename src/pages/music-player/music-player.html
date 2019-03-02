@@ -8,21 +8,21 @@
 
 <ion-content padding>
 
-  <ion-list *ngIf="files.length">
-    <ng-container *ngFor="let file of files; let i = index">
-      <ion-item text-wrap (click)="openFile(file, i)">
-        <ion-icon color="primary" item-start name="musical-note"></ion-icon>{{ file.name }}
-        <p item-end *ngIf="currentFile.index === i">SELECTED</p>
+  <ion-list *ngIf="tracklist.length">
+    <ng-container *ngFor="let track of tracklist; let i = index">
+      <ion-item text-wrap (click)="openFile(track, i)">
+        <ion-icon color="primary" item-start name="musical-note"></ion-icon>{{ track.trackName }}  | {{ track.artistName }}
+        <ion-icon  item-end *ngIf="currentFile.index === i" name="musical-notes"></ion-icon >
         <ion-icon item-end name="play" *ngIf="currentFile.index !== i"></ion-icon>
       </ion-item>
     </ng-container>
   </ion-list>
 </ion-content>
 
-<ion-footer *ngIf="currentFile.file" [@showHide]="displayFooter">
+<ion-footer *ngIf="currentFile.track" [@showHide]="displayFooter">
   <ion-toolbar color="primary">
     <ion-range min="0" color="light" [max]="state.durationSec" [formControl]="seekbar" (ionFocus)="onSeekStart()" (ionBlur)="onSeekEnd($event)"
-               name="seekbar">
+               name="seekbar" style="margin-right: 20px;">
       <ion-label color="light" range-left>{{ state.time }}</ion-label>
       <ion-label color="light" range-right>{{ state.duration }}</ion-label>
     </ion-range>
@@ -47,6 +47,3 @@
     </ion-grid>
   </ion-toolbar>
 </ion-footer>
-
-
-<!--(click)=""-->

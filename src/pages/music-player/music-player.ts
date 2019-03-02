@@ -8,6 +8,7 @@ import {CANPLAY, LOADEDMETADATA, PLAYING, TIMEUPDATE, LOADSTART, RESET} from './
 import {Store} from '@ngrx/store';
 import {CloudProvider} from '../../services/cloud';
 import {pluck, filter, map, distinctUntilChanged} from 'rxjs/operators';
+import {HttpService} from "../../services/http.service";
 
 @Component({
   selector: 'page-music-player',
@@ -32,6 +33,7 @@ import {pluck, filter, map, distinctUntilChanged} from 'rxjs/operators';
   ]
 })
 export class musicPlayerPage {
+  tracklist = [];
   files: any = [];
   seekbar: FormControl = new FormControl("seekbar");
   state: any = {};
@@ -49,11 +51,24 @@ export class musicPlayerPage {
     public loadingCtrl: LoadingController,
     public cloudProvider: CloudProvider,
     private store: Store<any>,
-    public auth: AuthService
+    public auth: AuthService,
+    private httpService: HttpService
   ) {
       this.getDocuments();
   }
-
+  getTrackInfo() {
+    this.httpService.get('trackList/get_tracklist').subscribe(
+      data => {
+        this.tracklist = data;
+      },
+      err => {
+        console.error('Cannot get tracklist ', err);
+        // this.snackBar.open('قادر به دریافت لیست آهنگ ها نیستیم. دوباره تلاش کنید', null, {
+        //   duration: 3200,
+        // });
+      }
+    );
+  }
   getDocuments() {
     let loader = this.presentLoading();
     this.cloudProvider.getFiles().subscribe(files => {
@@ -71,6 +86,7 @@ export class musicPlayerPage {
   }
 
   ionViewWillLoad() {
+    this.getTrackInfo()
     this.store.select('appState').subscribe((value: any) => {
       this.state = value.media;
     });
@@ -98,9 +114,9 @@ export class musicPlayerPage {
       });
   }
 
-  openFile(file, index) {
-    this.currentFile = { index, file };
-    this.playStream(file.url);
+  openFile(track, index) {
+    this.currentFile = { index, track };
+    this.playStream(`http://localhost:3000${track.path}`);
   }
 
   resetState() {
@@ -210,6 +226,8 @@ export class musicPlayerPage {
     this.currentFile = {};
     this.displayFooter = "inactive";
   }
+
+
 }
 
 
