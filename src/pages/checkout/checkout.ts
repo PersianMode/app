@@ -5,6 +5,7 @@ import {PaymentType} from '../../enum/payment.type.enum';
 import {AddressPage} from '../address/address';
 import {ProductService} from '../../services/productService';
 import {LoadingService} from '../../services/loadingService';
+import {HttpService} from '../../services/http.service';
 
 @Component({
   selector: 'page-checkout',
@@ -15,13 +16,13 @@ export class CheckoutPage implements OnInit  {
   total = 0;
   discount = 0;
   usedBalance = 0;
-  usedLoyaltyPoint = 0;
+  // usedLoyaltyPoint = 0;
   userBalance = 0;
-  userLoyaltyPointValue = 0;
+  // userLoyaltyPointValue = 0;
   headerData;
   addressIsSet = false;
   paymentType = PaymentType;
-  earnedLoyaltyPoint = 0;
+  // earnedLoyaltyPoint = 0;
   deliveryCost = 0;
   deliveryDiscount = 0;
   showCostLabel = false;
@@ -40,7 +41,7 @@ export class CheckoutPage implements OnInit  {
   constructor(private navParams: NavParams, private toastCtrl: ToastController,
     private checkoutService: CheckoutService, private navCtrl: NavController,
     private loadingService: LoadingService, private productService: ProductService,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController, private httpService: HttpService) {
   }
 
   ionViewWillEnter() {
@@ -61,13 +62,13 @@ export class CheckoutPage implements OnInit  {
 
     this.checkoutService.getLoyaltyBalance();
 
-    this.checkoutService.loyaltyPointValue$.subscribe(
-      data => {
-        this.userLoyaltyPointValue = data;
-      },
-      err => {
-        this.userLoyaltyPointValue = 0;
-      });
+    // this.checkoutService.loyaltyPointValue$.subscribe(
+    //   data => {
+    //     this.userLoyaltyPointValue = data;
+    //   },
+    //   err => {
+    //     this.userLoyaltyPointValue = 0;
+    //   });
 
     this.checkoutService.balance$.subscribe(
       data => {
@@ -114,29 +115,34 @@ export class CheckoutPage implements OnInit  {
   }
 
   setPayment(data) {
-    this.usedLoyaltyPoint = 0;
+    // this.usedLoyaltyPoint = 0;
     this.usedBalance = 0;
 
     if (data === this.paymentType.balance)
       this.usedBalance = this.userBalance;
-    else if (data === this.paymentType.loyaltyPoint)
-      this.usedLoyaltyPoint = this.userLoyaltyPointValue;
+    // else if (data === this.paymentType.loyaltyPoint)
+    //   this.usedLoyaltyPoint = this.userLoyaltyPointValue;
 
     this.checkoutService.selectedPaymentType = data;
 
-    this.calculateEarnPoint();
+    // this.calculateEarnPoint();
   }
 
   changeAddress(data) {
+    if(data.isCC || !data.duration) {
+      this.deliveryCost = 0;
+      this.deliveryDiscount = 0;
+    }
     this.checkoutService.setAddress(data.selectedAddress, data.isCC, data.duration, data.delivery_time);
     this.addressIsSet = data.isCC ? !!data.selectedAddress : !!(data.selectedAddress && data.duration && data.delivery_time);
 
-    this.calculateEarnPoint();
+    // this.calculateEarnPoint();
 
     this.showCostLabel = !data.isCC;
 
-    if (!data.isCC && data.duration)
+    if (!data.isCC && data.duration) {
       this.calculateDiscount(data.duration._id);
+    }
   }
 
   showAddressDetails(data) {
@@ -187,9 +193,9 @@ export class CheckoutPage implements OnInit  {
       })
   }
 
-  calculateEarnPoint() {
-    this.earnedLoyaltyPoint = this.checkoutService.calculateEarnPoint();
-  }
+  // calculateEarnPoint() {
+  //   this.earnedLoyaltyPoint = this.checkoutService.calculateEarnPoint();
+  // }
 
   calculateDiscount(durationId) {
     if (durationId) {
@@ -207,39 +213,39 @@ export class CheckoutPage implements OnInit  {
   finalCheck() {
     return new Promise((resolve, reject) => {
       this.checkoutService.finalCheck().subscribe(res => {
-        let changeMessage = ''
-        const soldOuts = res.filter(x => x.errors && x.errors.length && x.errors.includes('soldOut'));
-        const discountChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('discountChanged'));
-        const priceChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('priceChanged'));
-        if ((soldOuts && soldOuts.length) ||
-          (discountChanges && discountChanges.length) ||
-          (priceChanges && priceChanges.length)) {
-          changeMessage = '';
+          let changeMessage = '';
+          const soldOuts = res.filter(x => x.errors && x.errors.length && x.errors.includes('soldOut'));
+          const discountChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('discountChanged'));
+          const priceChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('priceChanged'));
+          if ((soldOuts && soldOuts.length) ||
+            (discountChanges && discountChanges.length) ||
+            (priceChanges && priceChanges.length)) {
+            changeMessage = '';
 
-          if (!!soldOuts && !!soldOuts.length)
-            changeMessage = 'متاسفانه برخی از محصولات به پایان رسیده اند';
-          else if (discountChanges && discountChanges.length)
-            changeMessage = 'برخی از تخفیف ها تغییر کرده است';
-          else if (priceChanges && priceChanges.length)
-            changeMessage = 'برخی از قیمت ها تغییر کرده است';
+            if (!!soldOuts && !!soldOuts.length)
+              changeMessage = 'متاسفانه برخی از محصولات به پایان رسیده اند';
+            else if (discountChanges && discountChanges.length)
+              changeMessage = 'برخی از تخفیف ها تغییر کرده است';
+            else if (priceChanges && priceChanges.length)
+              changeMessage = 'برخی از قیمت ها تغییر کرده است';
 
-          this.productService.updateProducts(res);
-          if (changeMessage) {
-            this.alertCtrl.create({
-              title: 'تغییر اطلاعات',
-              subTitle: 'متاسفانه مشخصات برخی از موارد سبد خرید شما مانند موجودی تغییر کرده است. لطفا موارد را تصحیح و دوباره اقدام به خرید نمایید',
-              buttons: ['قبول']
-            }).present();
-            this.checkoutHasError = true;
-            reject();
+            this.productService.updateProducts(res);
+            if (changeMessage) {
+              this.alertCtrl.create({
+                title: 'تغییر اطلاعات',
+                subTitle: 'متاسفانه مشخصات برخی از موارد سبد خرید شما مانند موجودی تغییر کرده است. لطفا موارد را تصحیح و دوباره اقدام به خرید نمایید',
+                buttons: ['قبول']
+              }).present();
+              this.checkoutHasError = true;
+              reject();
+            } else {
+              this.checkoutHasError = false;
+              resolve();
+            }
           } else {
-            this.checkoutHasError = false;
             resolve();
           }
-        } else {
-          resolve();
-        }
-      },
+        },
         err => {
           reject();
         });

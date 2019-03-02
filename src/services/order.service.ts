@@ -5,7 +5,6 @@ import {ToastController} from 'ionic-angular';
 
 @Injectable()
 export class OrderService {
-  // orderArray: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   orderArray: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   orderData: any;
   constructor(private httpService: HttpService, private toastCtrl: ToastController) {

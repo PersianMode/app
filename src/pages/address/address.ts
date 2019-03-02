@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AlertController, Navbar, NavController, NavParams} from 'ionic-angular';
+import {AlertController, Navbar, NavController, NavParams, ToastController} from 'ionic-angular';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
@@ -12,6 +12,7 @@ import {
 import {Geolocation} from '@ionic-native/geolocation';
 import {CheckoutService} from '../../services/checkout.service';
 import {LoadingService} from '../../services/loadingService';
+import {HttpService} from '../../services/http.service';
 
 @Component({
   selector: 'page-address',
@@ -34,7 +35,7 @@ export class AddressPage implements OnInit, AfterViewInit {
   constructor(private navCtrl: NavController, private navParams: NavParams,
               private alertCtrl: AlertController, private http: HttpClient,
               private authService: AuthService, private formBuilder: FormBuilder,
-              private googleMaps: GoogleMaps, private checkoutService: CheckoutService,
+              private checkoutService: CheckoutService, private toastCtrl: ToastController,
               private loadingService: LoadingService, private geolocation: Geolocation) {
   }
 
@@ -51,7 +52,7 @@ export class AddressPage implements OnInit, AfterViewInit {
     if (this.address && this.address._id)
       this.isNew = false;
 
-    this.http.get('assets/province.json').subscribe(
+    this.http.get(HttpService.assetPrefix + 'province.json').subscribe(
       (info: any) => {
         this.provinceCityList = info;
         if (this.isNew)
@@ -75,11 +76,13 @@ export class AddressPage implements OnInit, AfterViewInit {
           lat: this.addressForm.controls['lat'].value,
           lng: this.addressForm.controls['long'].value,
         },
+        zoom: 18,
+        tilt: 30
       }
     };
 
     let element = this.mapElement.nativeElement;
-    this.map = this.googleMaps.create(element, mapOptions);
+    this.map = GoogleMaps.create(element, mapOptions);
 
     this.map.setClickable(true);
 
@@ -92,11 +95,18 @@ export class AddressPage implements OnInit, AfterViewInit {
               this.addressForm.controls['long'].setValue(res.coords.longitude);
 
               this.settingMap(new LatLng(res.coords.latitude, res.coords.longitude));
+            })
+            .catch(err => {
+              console.error(`error in getting current location: ${JSON.stringify(err)}`);
+              this.settingMap();
             });
         } else {
           this.settingMap();
         }
       })
+      .catch(err => {
+        console.error(`error in map ready google event: ${JSON.stringify(err)}`);
+      });
   }
 
   private settingMap(loc?: LatLng) {
@@ -110,11 +120,11 @@ export class AddressPage implements OnInit, AfterViewInit {
     // Move camera
     const options = {
       target: loc,
-      zoom: 15,
-      tilt: 10,
+      zoom: 18,
+      tilt: 30,
     };
 
-    this.map.moveCamera(options);
+    this.map.moveCamera(options).catch(err => console.error("error settings camera:", err));
 
     // Add marker
     this.map.addMarker({
@@ -125,7 +135,7 @@ export class AddressPage implements OnInit, AfterViewInit {
         lat: this.addressForm.controls['lat'].value,
         lng: this.addressForm.controls['long'].value,
       },
-      draggable: this.isNew && !this.isInventoryAddress ? true : false,
+      draggable: this.isNew && !this.isInventoryAddress,
     })
       .then((marker: any) => {
         marker.on(GoogleMapsEvent.MARKER_DRAG_END).subscribe((data) => {
@@ -133,6 +143,9 @@ export class AddressPage implements OnInit, AfterViewInit {
           this.addressForm.controls['long'].setValue(data.lng);
         });
       })
+      .catch(err => {
+        console.error(`error in setting marker for map ${JSON.stringify(err)}`);
+      });
   }
 
   initForm() {
@@ -200,6 +213,13 @@ export class AddressPage implements OnInit, AfterViewInit {
               this.submitAddress()
                 .then(res => {
                   this.navCtrl.pop();
+                })
+                .catch(err => {
+                  this.toastCtrl.create({
+                    message: `خطا در ذخیره سازی آدرس`,
+                    duration: 4000
+                  }).present();
+                  console.error("error in saving address: ", err);
                 });
             }
           },
@@ -265,19 +285,24 @@ export class AddressPage implements OnInit, AfterViewInit {
 
       this.loadingService.enable({}, 0, () => {
         this.checkoutService.saveAddress(data)
-        .then(res => {
-          this.anyChanges = false;
-          this.loadingService.disable();
-          this.alertCtrl.create({
-            title: 'اعمال آدرس',
-            message: 'آدرس با موفقیت ثبت شد',
-          }).present();
-          resolve();
-        })
-        .catch(err => {
-          this.loadingService.disable();
-          reject(err);
-        });
+          .then(res => {
+            this.anyChanges = false;
+            this.loadingService.disable();
+            this.loadingService.enable({
+              spinner: 'hide',
+              content: 'آدرس با موفقیت ثبت شد',
+              duration: 1500,
+              cssClass: 'select-size-page-header',
+            });
+            this.loadingService.setOnDismissFunctionality(() => {
+              this.navCtrl.pop();
+              resolve();
+            });
+          })
+          .catch(err => {
+            this.loadingService.disable();
+            reject(err);
+          });
       });
     });
   }
