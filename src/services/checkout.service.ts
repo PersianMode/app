@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {PaymentType} from '../enum/payment.type.enum';
-import {CartService} from './cart.service';
-import {HttpService} from './http.service';
-import {AuthService} from './auth.service';
-import {DeliveryTime} from '../constants/deliveryTime.enum';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
-import {LoadingService} from './loadingService';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { PaymentType } from '../enum/payment.type.enum';
+import { CartService } from './cart.service';
+import { HttpService } from './http.service';
+import { AuthService } from './auth.service';
+import { DeliveryTime } from '../constants/deliveryTime.enum';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { LoadingService } from './loadingService';
 
 @Injectable()
 export class CheckoutService {
@@ -19,6 +19,7 @@ export class CheckoutService {
   selectedPaymentType = this.paymentType.cash;
   selectedAddress = null;
   isClickAndCollect = false;
+  durationId = null;
   selectedDuration = null;
   selectedDeliveryTime = null;
   CCIncreaseLoyaltyPoints = [];
@@ -52,6 +53,7 @@ export class CheckoutService {
     this.isClickAndCollect = isCC;
     this.selectedDuration = duration;
     this.selectedDeliveryTime = delivery_time ? DeliveryTime[delivery_time] : null;
+    this.durationId = duration ? duration._id : null
   }
 
   setTotal(value) {
@@ -157,7 +159,7 @@ export class CheckoutService {
         this.httpService.post('user/address', addressData).subscribe(
           (data) => {
             if (!addressData._id)
-              Object.assign(addressData, {_id: data.addresses[data.addresses.length - 1]._id});
+              Object.assign(addressData, { _id: data.addresses[data.addresses.length - 1]._id });
 
             this.upsertAddress.next(addressData);
             this.loadingService.disable();
@@ -172,21 +174,16 @@ export class CheckoutService {
     });
   }
 
-  private accumulateData() {
+  accumulateData() {
     const obj = {
-      discount: this.discount,
-      duration_days: this.selectedDuration ? this.selectedDuration.delivery_days : null,
+
+      duration_id: this.durationId,
       time_slot: this.selectedDeliveryTime,
       paymentType: this.selectedPaymentType,
-      loyalty: this.earnSpentPointObj,
-      cartItems: this.cartService.getCheckoutItems(),
+      cartItems: null,
       order_id: this.cartService.getOrderId(),
       address: this.selectedAddress,
       customerData: this.authService.userData,
-      transaction_id: 'xyz' + Math.floor(Math.random() * 10000),
-      used_point: 0,
-      used_balance: 0,
-      total_amount: this.total,
       is_collect: this.isClickAndCollect,
     };
 
@@ -195,21 +192,20 @@ export class CheckoutService {
 
   checkout() {
     return new Promise((resolve, reject) => {
-      this.cartService.applyCoupon(this.cartService.coupon_code)
-        .then(rs => {
-          const data = this.accumulateData();
-          this.httpService.post('checkout', data).subscribe(
-            (res) => {
-              this.cartService.emptyCart();
-              this.cartService.getBalanceAndLoyalty();
-              resolve();
-            },
-            (err) => {
-              console.error('Error when checkout items: ', err);
-              reject();
-            }
-          );
-        });
+
+      const data = this.accumulateData();
+
+      this.httpService.post('checkout/false', data).subscribe(res => {
+        this.cartService.emptyCart();
+        this.cartService.getBalanceAndLoyalty();
+        resolve(res);
+      },
+        (err) => {
+          console.error('Error when checkout items: ', err);
+          reject();
+        }
+      );
+
     });
   }
 

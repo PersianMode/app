@@ -10,7 +10,7 @@ import {LoadingService} from '../../services/loadingService';
   selector: 'page-checkout',
   templateUrl: 'checkout.html',
 })
-export class CheckoutPage implements OnInit {
+export class CheckoutPage implements OnInit  {
   @ViewChild(Navbar) navBar: Navbar;
   total = 0;
   discount = 0;
@@ -144,17 +144,37 @@ export class CheckoutPage implements OnInit {
   }
 
   placeOrder() {
+    const IdArray = [
+      'invoiceNumber',
+      'invoiceDate',
+      'amount',
+      'terminalCode',
+      'merchantCode',
+      'redirectAddress',
+      'timeStamp',
+      'action',
+      'mobile',
+      'email',
+      'sign'
+    ];
     this.finalCheck()
       .then(res => {
+        const accData = this.checkoutService.accumulateData()
+        console.log(accData,res);
         this.checkoutService.checkout()
           .then(res => {
-            this.alertCtrl.create({
+          //  window.open('')
+            window.open('http://localhost:3000/IPG/transfer' + '/' + accData.order_id ,'_system')
+              this.alertCtrl.create({
               title: 'ثبت سفارش',
               subTitle: 'سفارش شما به موفقیت ثبت شد',
             }).present();
             this.navCtrl.popToRoot();
+           
           })
           .catch(err => {
+            console.log(err);
+            
             this.alertCtrl.create({
               title: 'خطا در ثبت سفارش',
               subTitle: 'در ثبت سفارش خطایی رخ داده است. دوباره تلاش کنید',
@@ -175,8 +195,8 @@ export class CheckoutPage implements OnInit {
     if (durationId) {
       this.checkoutService.calculateDeliveryDiscount(durationId)
         .then((res: any) => {
-          this.deliveryCost = res.res_delivery_cost;
-          this.deliveryDiscount = res.res_delivery_discount;
+          this.deliveryCost = res.delivery_cost;
+          this.deliveryDiscount = res.delivery_discount;
         })
         .catch(err => {
           console.error('error occured in getting delivery cost and discount', err);

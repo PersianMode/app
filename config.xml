@@ -94,10 +94,6 @@
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.986035602689-905fo138kc6jct8loqgi1j2q1g9ogd2l" />
         <variable name="WEB_APPLICATION_CLIENT_ID" value="986035602689-905fo138kc6jct8loqgi1j2q1g9ogd2l.apps.googleusercontent.com" />
     </plugin>
-    <plugin name="cordova-android-play-services-gradle-release" spec="^1.4.4">
-        <variable name="PLAY_SERVICES_VERSION" value="11.8.0" />
-    </plugin>
-    <engine name="android" spec="7.0.0" />
     <allow-navigation href="http://192.168.1.108:8100" />
     <plugin name="ionic-plugin-deeplinks" spec="^1.0.17">
         <variable name="URL_SCHEME" value="bankofstyle" />
@@ -117,4 +113,8 @@
         <variable name="DEEPLINK_5_SCHEME" value=" " />
         <variable name="DEEPLINK_5_HOST" value=" " />
     </plugin>
+    <plugin name="cordova-android-play-services-gradle-release" spec="^2.0.0">
+        <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
+    </plugin>
+    <engine name="android" spec="7.1.4" />
 </widget>
