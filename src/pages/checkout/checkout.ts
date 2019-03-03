@@ -5,6 +5,7 @@ import {PaymentType} from '../../enum/payment.type.enum';
 import {AddressPage} from '../address/address';
 import {ProductService} from '../../services/productService';
 import {LoadingService} from '../../services/loadingService';
+import {HttpService} from '../../services/http.service';
 
 @Component({
   selector: 'page-checkout',
@@ -15,13 +16,13 @@ export class CheckoutPage implements OnInit {
   total = 0;
   discount = 0;
   usedBalance = 0;
-  usedLoyaltyPoint = 0;
+  // usedLoyaltyPoint = 0;
   userBalance = 0;
-  userLoyaltyPointValue = 0;
+  // userLoyaltyPointValue = 0;
   headerData;
   addressIsSet = false;
   paymentType = PaymentType;
-  earnedLoyaltyPoint = 0;
+  // earnedLoyaltyPoint = 0;
   deliveryCost = 0;
   deliveryDiscount = 0;
   showCostLabel = false;
@@ -38,9 +39,9 @@ export class CheckoutPage implements OnInit {
   ];
 
   constructor(private navParams: NavParams, private toastCtrl: ToastController,
-              private checkoutService: CheckoutService, private navCtrl: NavController,
-              private loadingService: LoadingService, private productService: ProductService,
-              private alertCtrl: AlertController) {
+    private checkoutService: CheckoutService, private navCtrl: NavController,
+    private loadingService: LoadingService, private productService: ProductService,
+    private alertCtrl: AlertController, private httpService: HttpService) {
   }
 
   ionViewWillEnter() {
@@ -61,13 +62,13 @@ export class CheckoutPage implements OnInit {
 
     this.checkoutService.getLoyaltyBalance();
 
-    this.checkoutService.loyaltyPointValue$.subscribe(
-      data => {
-        this.userLoyaltyPointValue = data;
-      },
-      err => {
-        this.userLoyaltyPointValue = 0;
-      });
+    // this.checkoutService.loyaltyPointValue$.subscribe(
+    //   data => {
+    //     this.userLoyaltyPointValue = data;
+    //   },
+    //   err => {
+    //     this.userLoyaltyPointValue = 0;
+    //   });
 
     this.checkoutService.balance$.subscribe(
       data => {
@@ -114,29 +115,34 @@ export class CheckoutPage implements OnInit {
   }
 
   setPayment(data) {
-    this.usedLoyaltyPoint = 0;
+    // this.usedLoyaltyPoint = 0;
     this.usedBalance = 0;
 
     if (data === this.paymentType.balance)
       this.usedBalance = this.userBalance;
-    else if (data === this.paymentType.loyaltyPoint)
-      this.usedLoyaltyPoint = this.userLoyaltyPointValue;
+    // else if (data === this.paymentType.loyaltyPoint)
+    //   this.usedLoyaltyPoint = this.userLoyaltyPointValue;
 
     this.checkoutService.selectedPaymentType = data;
 
-    this.calculateEarnPoint();
+    // this.calculateEarnPoint();
   }
 
   changeAddress(data) {
+    if(data.isCC || !data.duration) {
+      this.deliveryCost = 0;
+      this.deliveryDiscount = 0;
+    }
     this.checkoutService.setAddress(data.selectedAddress, data.isCC, data.duration, data.delivery_time);
     this.addressIsSet = data.isCC ? !!data.selectedAddress : !!(data.selectedAddress && data.duration && data.delivery_time);
 
-    this.calculateEarnPoint();
+    // this.calculateEarnPoint();
 
     this.showCostLabel = !data.isCC;
 
-    if (!data.isCC && data.duration)
+    if (!data.isCC && data.duration) {
       this.calculateDiscount(data.duration._id);
+    }
   }
 
   showAddressDetails(data) {
@@ -167,16 +173,16 @@ export class CheckoutPage implements OnInit {
       })
   }
 
-  calculateEarnPoint() {
-    this.earnedLoyaltyPoint = this.checkoutService.calculateEarnPoint();
-  }
+  // calculateEarnPoint() {
+  //   this.earnedLoyaltyPoint = this.checkoutService.calculateEarnPoint();
+  // }
 
   calculateDiscount(durationId) {
     if (durationId) {
       this.checkoutService.calculateDeliveryDiscount(durationId)
         .then((res: any) => {
-          this.deliveryCost = res.res_delivery_cost;
-          this.deliveryDiscount = res.res_delivery_discount;
+          this.deliveryCost = res.delivery_cost;
+          this.deliveryDiscount = res.delivery_discount;
         })
         .catch(err => {
           console.error('error occured in getting delivery cost and discount', err);
@@ -187,7 +193,7 @@ export class CheckoutPage implements OnInit {
   finalCheck() {
     return new Promise((resolve, reject) => {
       this.checkoutService.finalCheck().subscribe(res => {
-          let changeMessage = ''
+          let changeMessage = '';
           const soldOuts = res.filter(x => x.errors && x.errors.length && x.errors.includes('soldOut'));
           const discountChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('discountChanged'));
           const priceChanges = res.filter(x => x.warnings && x.warnings.length && x.warnings.includes('priceChanged'));

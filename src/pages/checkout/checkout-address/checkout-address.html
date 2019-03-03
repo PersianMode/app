@@ -45,8 +45,8 @@
       <button item-start ion-button clear icon-only (click)="addressDetailForm(i_adr, true)" class="details-button">
         <ion-icon name="information-circle"></ion-icon>
       </button>
-      <ion-label item-start class="address-semi-details" (click)="setAddress(i_adr)">
-        <span>{{i_adr.name}}</span>
+      <ion-label item-end class="address-semi-details" (click)="setAddress(i_adr)">
+        <span>{{i_adr.name}} - {{i_adr.city}} - خیابان {{i_adr.street}}</span>
       </ion-label>
     </ion-item>
   </ion-list>

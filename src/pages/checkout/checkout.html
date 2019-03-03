@@ -21,9 +21,12 @@
                 md="ios-arrow-forward"></ion-icon>
     </ion-row>
     <ion-row *ngIf="itemIsOpen('payment')">
-      <checkout-payment-type [balance]="userBalance" [loyaltyPointValue]="userLoyaltyPointValue"
-                             [selectedType]="getSelectedPaymentType()"
-                             (typeChanged)="setPayment($event)" style="width: 100%"></checkout-payment-type>
+      <!--<checkout-payment-type [balance]="userBalance" [loyaltyPointValue]="userLoyaltyPointValue"-->
+                             <!--[selectedType]="getSelectedPaymentType()"-->
+                             <!--(typeChanged)="setPayment($event)" style="width: 100%"></checkout-payment-type>-->
+        <checkout-payment-type [balance]="userBalance"
+                               [selectedType]="getSelectedPaymentType()"
+                               (typeChanged)="setPayment($event)" style="width: 100%"></checkout-payment-type>
     </ion-row>
     <ion-row class="checkout-item checkout-item-title" (click)="toggleItem('address')">
       <ion-label class="checkout-item-label">آدرس</ion-label>
@@ -41,10 +44,14 @@
       <ion-label>فاکتور</ion-label>
     </ion-row>
     <ion-row>
-      <checkout-summary [showCostLabel]="showCostLabel" [deliveryCost]="deliveryCost"
-                        [deliveryDiscount]="deliveryDiscount" [usedLoyaltyPoint]="usedLoyaltyPoint"
-                        [usedBalance]="usedBalance" [earnedLoyaltyPoint]="earnedLoyaltyPoint" [discount]="discount"
-                        [total]="total" style="width: 100%;"></checkout-summary>
+      <!--<checkout-summary [showCostLabel]="showCostLabel" [deliveryCost]="deliveryCost"-->
+                        <!--[deliveryDiscount]="deliveryDiscount" [usedLoyaltyPoint]="usedLoyaltyPoint"-->
+                        <!--[usedBalance]="usedBalance" [earnedLoyaltyPoint]="earnedLoyaltyPoint" [discount]="discount"-->
+                        <!--[total]="total" style="width: 100%;"></checkout-summary>-->
+        <checkout-summary [showCostLabel]="showCostLabel" [deliveryCost]="deliveryCost"
+                          [deliveryDiscount]="deliveryDiscount"
+                          [usedBalance]="usedBalance" [discount]="discount"
+                          [total]="total" style="width: 100%;"></checkout-summary>
     </ion-row>
   </ion-grid>
   <button ion-button full color="dark" (click)="placeOrder()" [disabled]="!addressIsSet || checkoutHasError">
