@@ -20,10 +20,12 @@
 
 <ion-footer *ngIf="currentFile.track" [@showHide]="displayFooter">
   <ion-toolbar color="primary">
-    <ion-range min="0" color="light" [max]="state.durationSec" [formControl]="seekbar" (ionFocus)="onSeekStart()" (ionBlur)="onSeekEnd($event)"
+    <ion-range min="0" color="light" [max]="state.durationSec" [formControl]="seekbar" (ionFocus)="onSeekStart()"
+               (ionBlur)="onSeekEnd($event)"
                name="seekbar" style="padding:0 !important;">
       <ion-label color="light" range-left style="margin:0 !important; width:60px">{{ state.time }}</ion-label>
-      <ion-label color="light" range-right style="margin:0 0 0 30px !important;width:60px">{{ state.duration }}</ion-label>
+      <ion-label color="light" range-right style="margin:0 0 0 30px !important;width:60px">{{ state.duration }}
+      </ion-label>
     </ion-range>
   </ion-toolbar>
 
