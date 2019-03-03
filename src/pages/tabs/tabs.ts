@@ -6,6 +6,7 @@ import {MyShopPage} from '../my-shop/my-shop';
 import {FeedPage} from '../feed/feed';
 import {CartService} from '../../services/cart.service';
 import {priceFormatter} from '../../shared/lib/priceFormatter';
+import {musicPlayerPage} from "../music-player/music-player";
 
 @Component({
   templateUrl: 'tabs.html',
@@ -17,6 +18,7 @@ export class TabsPage implements OnInit {
   tabBagRoot = BagPage;
   tabInboxRoot = InboxPage;
   tabProfileRoot = ProfilePage;
+  tabMusicPlayerRoot = musicPlayerPage;
   cartNum;
   itemSubs;
 
@@ -29,7 +31,7 @@ export class TabsPage implements OnInit {
     });
   }
   ngOnDestroy() {
-    // this.itemSubs.unsubscribe(); //???
+
   }
 
   priceFormatter(p) {

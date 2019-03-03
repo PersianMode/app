@@ -53,6 +53,10 @@ import {OrderService} from '../services/order.service';
 import {OrderLinesPage} from '../pages/profile/order-lines/order-lines';
 import {TooltipsModule} from 'ionic-tooltips';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {musicPlayerPage} from "../pages/music-player/music-player";
+import {AudioProvider} from "../services/audio";
+import { StoreModule } from '@ngrx/store';
+import { mediaStateReducer } from '../pages/music-player/store';
 
 @NgModule({
   declarations: [
@@ -85,7 +89,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ForgotPasswordPage,
     DobComponent,
     OrdersPage,
-    OrderLinesPage
+    OrderLinesPage,
+    musicPlayerPage
   ],
   imports: [
     BrowserModule,
@@ -93,8 +98,11 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
+    StoreModule.forRoot({
+      appState: mediaStateReducer
+    }),
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -120,7 +128,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     FilterPage,
     ForgotPasswordPage,
     OrdersPage,
-    OrderLinesPage
+    OrderLinesPage,
+    musicPlayerPage
   ],
   providers: [
     StatusBar,
@@ -140,7 +149,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     Geolocation,
     Deeplinks,
     SocialSharing,
-    OrderService
+    OrderService,
+    AudioProvider,
   ]
 })
 export class AppModule {

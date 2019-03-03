@@ -36,7 +36,7 @@ export class MyShopPage {
     });
 
     this.loadingService.enable({}, 0, () => {
-      this.pageService.getPage('my_shop').then(() => {
+      this.pageService.getPage('music_player').then(() => {
         this.loadingService.disable();
       }).catch(err => {
         this.loadingService.disable();
