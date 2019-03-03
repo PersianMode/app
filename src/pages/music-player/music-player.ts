@@ -2,13 +2,14 @@ import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams, Navbar, Content, LoadingController} from 'ionic-angular';
 import {AuthService} from '../../services/auth.service';
 import {FormControl} from '@angular/forms';
-import {trigger, state, style, animate, transition } from '@angular/animations';
+import {trigger, state, style, animate, transition} from '@angular/animations';
 import {AudioProvider} from '../../services/audio';
 import {CANPLAY, LOADEDMETADATA, PLAYING, TIMEUPDATE, LOADSTART, RESET} from './store';
 import {Store} from '@ngrx/store';
-import {CloudProvider} from '../../services/cloud';
 import {pluck, filter, map, distinctUntilChanged} from 'rxjs/operators';
 import {HttpService} from "../../services/http.service";
+import {LoadingService} from "../../services/loadingService";
+import {PageService} from "../../services/page.service";
 
 @Component({
   selector: 'page-music-player',
@@ -33,7 +34,6 @@ import {HttpService} from "../../services/http.service";
   ]
 })
 export class musicPlayerPage {
-  tracklist = [];
   files: any = [];
   seekbar: FormControl = new FormControl("seekbar");
   state: any = {};
@@ -44,37 +44,41 @@ export class musicPlayerPage {
   @ViewChild(Navbar) navBar: Navbar;
   @ViewChild(Content) content: Content;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public audioProvider: AudioProvider,
-    public loadingCtrl: LoadingController,
-    public cloudProvider: CloudProvider,
-    private store: Store<any>,
-    public auth: AuthService,
-    private httpService: HttpService
-  ) {
-      this.getDocuments();
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public audioProvider: AudioProvider,
+              public loadingCtrl: LoadingController,
+              private store: Store<any>,
+              public auth: AuthService,
+              private httpService: HttpService,
+              private loadingService: LoadingService,
+              private pageService: PageService) {
   }
+
+  ionViewWillEnter() {
+
+    this.loadingService.enable({}, 0, () => {
+      this.pageService.getPage('my_shop').then(() => {
+        this.getTrackInfo();
+        this.loadingService.disable();
+      }).catch(err => {
+        this.loadingService.disable();
+      });
+    });
+  }
+
   getTrackInfo() {
     this.httpService.get('trackList/get_tracklist').subscribe(
       data => {
-        this.tracklist = data;
+        this.files = data;
       },
       err => {
         console.error('Cannot get tracklist ', err);
-        // this.snackBar.open('قادر به دریافت لیست آهنگ ها نیستیم. دوباره تلاش کنید', null, {
-        //   duration: 3200,
-        // });
+        let loading = this.loadingCtrl.create({
+          content: 'قادر به دریافت لیست آهنگ ها نیستیم. دوباره تلاش کنید'
+        });
       }
     );
-  }
-  getDocuments() {
-    let loader = this.presentLoading();
-    this.cloudProvider.getFiles().subscribe(files => {
-      this.files = files;
-      loader.dismiss();
-    });
   }
 
   presentLoading() {
@@ -85,8 +89,8 @@ export class musicPlayerPage {
     return loading;
   }
 
-  ionViewWillLoad() {
-    this.getTrackInfo()
+  ngOnInit() {
+    this.getTrackInfo();
     this.store.select('appState').subscribe((value: any) => {
       this.state = value.media;
     });
@@ -115,13 +119,13 @@ export class musicPlayerPage {
   }
 
   openFile(track, index) {
-    this.currentFile = { index, track };
+    this.currentFile = {index, track};
     this.playStream(`http://localhost:3000${track.path}`);
   }
 
   resetState() {
     this.audioProvider.stop();
-    this.store.dispatch({ type: RESET });
+    this.store.dispatch({type: RESET});
   }
 
   playStream(url) {
@@ -131,7 +135,7 @@ export class musicPlayerPage {
 
       switch (event.type) {
         case 'canplay':
-          return this.store.dispatch({ type: CANPLAY, payload: { value: true } });
+          return this.store.dispatch({type: CANPLAY, payload: {value: true}});
 
         case 'loadedmetadata':
           return this.store.dispatch({
@@ -150,10 +154,10 @@ export class musicPlayerPage {
           });
 
         case 'playing':
-          return this.store.dispatch({ type: PLAYING, payload: { value: true } });
+          return this.store.dispatch({type: PLAYING, payload: {value: true}});
 
         case 'pause':
-          return this.store.dispatch({ type: PLAYING, payload: { value: false } });
+          return this.store.dispatch({type: PLAYING, payload: {value: false}});
 
         case 'timeupdate':
           return this.store.dispatch({
@@ -168,7 +172,7 @@ export class musicPlayerPage {
           });
 
         case 'loadstart':
-          return this.store.dispatch({ type: LOADSTART, payload: { value: true } });
+          return this.store.dispatch({type: LOADSTART, payload: {value: true}});
       }
     });
   }

@@ -55,7 +55,6 @@ import {TooltipsModule} from 'ionic-tooltips';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {musicPlayerPage} from "../pages/music-player/music-player";
 import {AudioProvider} from "../services/audio";
-import {CloudProvider} from "../services/cloud";
 import { StoreModule } from '@ngrx/store';
 import { mediaStateReducer } from '../pages/music-player/store';
 
@@ -152,7 +151,6 @@ import { mediaStateReducer } from '../pages/music-player/store';
     SocialSharing,
     OrderService,
     AudioProvider,
-    CloudProvider
   ]
 })
 export class AppModule {
